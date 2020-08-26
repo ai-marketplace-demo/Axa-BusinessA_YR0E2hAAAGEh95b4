@@ -1,0 +1,25 @@
+version: 0.2
+
+env:
+  variables:
+    GIT_REMOTE: "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/datahubui"
+
+  parameter-store:
+    DATAHUBUI_BUCKET: "/datahub/ui/staging/bucket"
+    DATAHUBUI_DISTRIBUTION: "/datahub/ui/staging/distribution"
+
+phases:
+  pre_build:
+    commands:
+      - npm install
+      - GENERATE_SOURCEMAP=false REACT_APP_STAGE=staging npm run build
+  build:
+    commands:
+      - aws s3 cp --recursive --acl public-read ./build s3://$DATAHUBUI_BUCKET/
+      - aws s3 cp --acl public-read --cache-control="max-age=0, no-cache, no-store, must-revalidate" ./build/service-worker.js s3://$DATAHUBUI_BUCKET/
+      - aws s3 cp --acl public-read --cache-control="max-age=0, no-cache, no-store, must-revalidate" ./build/index.html s3://$DATAHUBUI_BUCKET/
+      - aws cloudfront create-invalidation --distribution-id $DATAHUBUI_DISTRIBUTION --paths /index.html /service-worker.js
+
+artifacts:
+  files:
+    - '**/*'
