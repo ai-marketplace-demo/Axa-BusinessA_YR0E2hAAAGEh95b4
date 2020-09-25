@@ -13,6 +13,7 @@ const getEnvironment = ({environmentUri})=>{
                     name
                     label
                     AwsAccountId
+                    quicksight_enabled
                     region
                     owner
                     SamlGroupName

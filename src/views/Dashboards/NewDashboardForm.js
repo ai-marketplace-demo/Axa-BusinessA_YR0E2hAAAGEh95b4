@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import Steps from "../../components/Steps/Steps";
 import useClient from "../../api/client";
 import createDashboard from "../../api/Dashboard/createDashboard";
+import importDashboard from "../../api/Dashboard/importDashboard";
 import listOrganizationEnvironments from "../../api/Environment/listOrganizationEnvironments";
 import listOrganizations from "../../api/Organization/listOrganizations";
 import {AwsRegionsSelect, getRegionLabel}  from "../../components/AwsRegions/AwsRegionSelect";
@@ -55,6 +56,7 @@ const NewDashboardForm= (_props)=>{
         env: {},
         org:{},
         SamlGroupName: '',
+        dashboardId: 'quicksight dashboard id',
         description:'dashboard description',
         topics:[],
         tags:[]});
@@ -103,10 +105,11 @@ const NewDashboardForm= (_props)=>{
     const submitForm=async ()=>{
         setIsSubmitting(true);
         const res = await client.mutate(
-            createDashboard({
+            importDashboard({
                 input:{
                     label :formData.label,
                     environmentUri:formData.env.value,
+                    dashboardId:formData.dashboardId,
                     //region : formData.region.value,
                     tags:formData.tags,
                     SamlGroupName:formData.SamlGroupName,
@@ -130,7 +133,7 @@ const NewDashboardForm= (_props)=>{
     return <Container>
         <Row>
             <Col xs={4}>
-                <h4> <Icon.BarChartLine xs={48}/> Create New Dashboard</h4>
+                <h4> <Icon.BarChartLine xs={48}/> Import Quicksight Dashboard</h4>
             </Col>
             <Col xs={8}>
                 {(isSubmitting)?(
@@ -139,7 +142,7 @@ const NewDashboardForm= (_props)=>{
                             <Spinner animation={`border`} variant={`primary`}/>
                         </Col>
                         <Col xs={8}>
-                            <p>Creating your dashboard, it should take a few seconds</p>
+                            <p>Importing your dashboard, it should take a few seconds</p>
                         </Col>
                     </Row>
                 ):(
@@ -170,6 +173,13 @@ const NewDashboardForm= (_props)=>{
                                         <Select isDisabled={true} value={formData.env?formData.env.region:''}/>
                                     </Col>
                                 </Row>
+                            </Col>
+                        </Row>
+                        <Row className={"mt-1"}>
+                            <Col xs={2}><b>Dashboard Id</b></Col>
+                            <Col xs={10}>
+                                <input
+                                    className={`form-control`} name={"dashboardId"}  value={formData.dashboardId} onChange={handleChange} style={{width:'100%'}} placeholder={"Quicksight Dashboard Id"}></input>
                             </Col>
                         </Row>
 

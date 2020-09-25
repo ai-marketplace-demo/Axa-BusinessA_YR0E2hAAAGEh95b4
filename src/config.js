@@ -1,6 +1,28 @@
 let conf;
 
 switch (process.env.REACT_APP_STAGE) {
+    case 'mushhz':
+        conf = {
+            s3: {
+                REGION: "eu-west-1",
+                BUCKET: "stage-dh-datahubcloudfron-cftdistrobucket2ef8083f-nzhg68gh388y"
+            },
+            apiGateway: {
+                REGION: "eu-west-1",
+                URL:"https://gd1waa6w3c.execute-api.eu-west-1.amazonaws.com/prod/graphql",
+            },
+            cognito: {
+                REGION: "eu-west-1",
+                USER_POOL_ID: "eu-west-1_s79fS8VHm",
+                APP_CLIENT_ID: "3vidp4ftv0h3iguthgudmighh8",
+                DOMAIN:"https://datahub3vidp4ftv0h3iguthgudmighh8.auth.eu-west-1.amazoncognito.com",// shahzad
+                REDIRECT_URI : 'https://d3maw90xp7pgil.cloudfront.net/',
+                SIGNOUT_URL: 'https://www.example.com',
+                TYPE:"token",
+                SCOPE:['email','openid','profile']
+            },
+
+        };
     case 'staging':
         conf = {
             s3: {
@@ -79,21 +101,25 @@ switch (process.env.REACT_APP_STAGE) {
             },
             apiGateway: {
                 REGION: "eu-west-1",
-                //URL: "http://localhost:5000/graphql", // local dev
-                URL: "http://localhost:3000/graphql", // local dev with cdkproxy
-                //URL: " https://dh1csfmcr9.execute-api.eu-west-1.amazonaws.com/prod/graphql",
+                //URL:"https://gd1waa6w3c.execute-api.eu-west-1.amazonaws.com/prod/graphql",
+                URL: "https://127.0.0.1:3000/graphql", // local dev https
             },
             cognito: {
                 REGION: "eu-west-1",
-                //USER_POOL_ID: "eu-west-1_K2PY7apuA",
-                USER_POOL_ID: "eu-west-1_wjo8MipZb",
+                //USER_POOL_ID: "eu-west-1_U3PjTzEct", //mine
+                USER_POOL_ID: "eu-west-1_wjo8MipZb", //mine
+                //USER_POOL_ID: "eu-west-1_s79fS8VHm",//shahzad
 
-                //APP_CLIENT_ID: "6plgeu810i5c6pjrkttk3t0g5m",
-                APP_CLIENT_ID: "3og3gcrtv1rnu6396600oveh4b",
-                //DOMAIN:"https://datahub-staging-moshir.auth.eu-west-1.amazoncognito.com",
-                DOMAIN:"https://dhdomaintest.auth.eu-west-1.amazoncognito.com",
 
-                REDIRECT_URI : 'http://localhost:1234/',
+                APP_CLIENT_ID: "3og3gcrtv1rnu6396600oveh4b", //mine
+                //APP_CLIENT_ID: "3vidp4ftv0h3iguthgudmighh8", //shahzad
+
+                DOMAIN:"https://dhdomaintest.auth.eu-west-1.amazoncognito.com",// mine
+                //DOMAIN:"https://datahub3vidp4ftv0h3iguthgudmighh8.auth.eu-west-1.amazoncognito.com",// shahzad
+
+
+                REDIRECT_URI : 'https://localhost:1234/',
+                //REDIRECT_URI : 'https://127.0.0.1:1234/',
                 SIGNOUT_URL: 'https://www.example.com',
                 //IDENTITY_POOL_ID: "eu-west-1:b23949f9-be68-4a20-bc31-b6c93d1fdf04",
                 TYPE:"token",
@@ -110,6 +136,7 @@ switch (process.env.REACT_APP_STAGE) {
         };
         break;
 }
+
 
 export default {
     ...conf,

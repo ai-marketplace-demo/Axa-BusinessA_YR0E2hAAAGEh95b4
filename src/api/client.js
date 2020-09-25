@@ -28,6 +28,7 @@ const useClient=()=>{
             console.log("got token", t);
             const httpLink = new HttpLink({
                 uri: config.apiGateway.URL,
+
             });
             const authLink = new ApolloLink((operation, forward) => {
                 operation.setContext({
@@ -39,6 +40,7 @@ const useClient=()=>{
                         AccessKeyId: 'none',
                         SecretKey: 'none',
                         username: 'moshirm@amazon.fr', //this is for local development only
+                        //username: 'jeff', //this is for local development only
                         //groups: 'a,n' //this is for local development only
                     }
                 });

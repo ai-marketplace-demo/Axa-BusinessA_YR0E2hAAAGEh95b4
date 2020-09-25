@@ -96,17 +96,10 @@ const DatasetList = (props)=>{
     return <Styled>
         <Container className={""}>
             <Row>
-                <Col xs={3}>
+                <Col xs={8}>
                     <h3> <Icon.Folder/> My Datasets </h3>
                 </Col>
-                <Col xs={7}>
-                    <Row className={`mt-2`}>
-                        <Col xs={4}><i>Found {datasets.count} results</i></Col>
-                        <Col className={`pt-1 text-right`} xs={2}><Icon.ChevronLeft onClick={previouPage}/></Col>
-                        <Col className={` text-center`} xs={4}>Page {datasets.page}/{datasets.pages}</Col>
-                        <Col className={`pt-1 text-left`} xs={2}><Icon.ChevronRight onClick={nextPage}/></Col>
-                    </Row>
-                </Col>
+
                 <Col xs={1} className={`mt-2`}>
                     <MainActionButton>
                         <Link to={"/newdataset"}>
@@ -116,6 +109,18 @@ const DatasetList = (props)=>{
                 </Col>
             </Row>
             <Row className={"mt-3"}>
+                <Col xs={12}>
+                    <Row>
+                        <Col xs={7}>
+                            <Row className={`mt-2`}>
+                                <Col xs={4}><i>Found {datasets.count} results</i></Col>
+                                <Col className={`pt-1 text-right`} xs={2}><Icon.ChevronLeft onClick={previouPage}/></Col>
+                                <Col className={` text-center`} xs={4}>Page {datasets.page}/{datasets.pages}</Col>
+                                <Col className={`pt-1 text-left`} xs={2}><Icon.ChevronRight onClick={nextPage}/></Col>
+                            </Row>
+                        </Col>
+                    </Row>
+                </Col>
                 <Col xs={12}>
                     <input className={"form-control"} name={'search'} value={search} onKeyDown={handleKeyDown} onChange={handleInputChange} placeholder={"search your datasets"} style={{width:'100%'}}/>
                 </Col>

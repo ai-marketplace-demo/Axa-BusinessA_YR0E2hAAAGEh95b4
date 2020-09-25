@@ -8,7 +8,7 @@ import {Link,useParams,useLocation,useHistory} from "react-router-dom";
 import { toast } from 'react-toastify';
 import Steps from "../../components/Steps/Steps";
 import useClient from "../../api/client";
-import createSqlPipeline from "../../api/SqlPipeline/createSqlPipeline";
+import createDashboard from "../../api/Dashboard/createDashboard";
 import listOrganizationEnvironments from "../../api/Environment/listOrganizationEnvironments";
 import listOrganizations from "../../api/Organization/listOrganizations";
 import {AwsRegionsSelect, getRegionLabel}  from "../../components/AwsRegions/AwsRegionSelect";
@@ -44,18 +44,18 @@ const Topics=Object.keys({
     return {label : k, value:k}
 })
 
-const NewSqlPipelineForm= (_props)=>{
+const StartSession= (_props)=>{
     let location=useLocation();
     let history = useHistory();
     const client  = useClient();
 
 
     let [formData, setFormData]=useState({
-        label:'SqlPipeline name',
+        label:'Dashboard name',
         env: {},
         org:{},
         SamlGroupName: '',
-        description:'sqlPipeline description',
+        description:'dashboard description',
         topics:[],
         tags:[]});
 
@@ -103,7 +103,7 @@ const NewSqlPipelineForm= (_props)=>{
     const submitForm=async ()=>{
         setIsSubmitting(true);
         const res = await client.mutate(
-            createSqlPipeline({
+            createDashboard({
                 input:{
                     label :formData.label,
                     environmentUri:formData.env.value,
@@ -117,7 +117,7 @@ const NewSqlPipelineForm= (_props)=>{
         )
         setIsSubmitting(false);
         if (!res.errors){
-            toast(`Created SqlPipeline  ${formData.label} in ${formData.org.label}/${formData.env.label}`,{
+            toast(`Created Dashboard  ${formData.label} in ${formData.org.label}/${formData.env.label}`,{
                 hideProgressBar:true,
                 onClose:()=>{history.goBack()}
             })
@@ -130,7 +130,7 @@ const NewSqlPipelineForm= (_props)=>{
     return <Container>
         <Row>
             <Col xs={4}>
-                <h4> <Icon.ArrowRepeat xs={48}/> Create New SqlPipeline</h4>
+                <h4> <Icon.BarChartLine xs={48}/> Create New Dashboard</h4>
             </Col>
             <Col xs={8}>
                 {(isSubmitting)?(
@@ -139,7 +139,7 @@ const NewSqlPipelineForm= (_props)=>{
                             <Spinner animation={`border`} variant={`primary`}/>
                         </Col>
                         <Col xs={8}>
-                            <p>Creating your sqlPipeline, it should take a few seconds</p>
+                            <p>Creating your dashboard, it should take a few seconds</p>
                         </Col>
                     </Row>
                 ):(
@@ -177,7 +177,7 @@ const NewSqlPipelineForm= (_props)=>{
                             <Col xs={2}><b>Admin Group</b></Col>
                             <Col xs={10}>
                                 <input
-                                    className={`form-control`} name={"SamlGroupName"}  value={formData.SamlGroupName} onChange={handleChange} style={{width:'100%'}} placeholder={"SqlPipeline Members Group"}></input>
+                                    className={`form-control`} name={"SamlGroupName"}  value={formData.SamlGroupName} onChange={handleChange} style={{width:'100%'}} placeholder={"Dashboard Members Group"}></input>
                             </Col>
                         </Row>
                         <Row className={"mt-1"}>
@@ -249,4 +249,4 @@ const NewSqlPipelineForm= (_props)=>{
 
 }
 
-export default NewSqlPipelineForm;
+export default NewDashboardForm;

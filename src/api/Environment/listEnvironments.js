@@ -23,8 +23,12 @@ const listEnvironments = ({filter})=>{
                         owner
                         SamlGroupName
                         EnvironmentDefaultIAMRoleName
+                        stack{
+                            status
+                        }
                         organization{
                             organizationUri
+                            name
                         }
                     }
 

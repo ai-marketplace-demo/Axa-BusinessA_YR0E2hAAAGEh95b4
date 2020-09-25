@@ -9,10 +9,11 @@ import * as Icon from "react-bootstrap-icons";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
-dayjs.extend(relativeTime)
+dayjs.extend(relativeTime);
+
 const OrganizationStyled = styled.div`
-border-radius: 4px;
-height:15rem;
+border-radius: 6px;
+height:19rem;
 width :100%;
 padding: 15px;
 margin-top: 2px;
@@ -26,6 +27,19 @@ transition: transform 0.2s ease-in-out;
 
 }
 
+
+`
+
+const OrganizationBody =styled.div`
+height: 11rem;
+`
+
+const OrganizationTitle =styled.div`
+height: 6ch;
+`
+
+const OrganizationFooter=styled.div`
+height:6ch;
 `
 
 const OrganizationListItem= (props)=>{
@@ -39,7 +53,7 @@ const OrganizationListItem= (props)=>{
     return <Col className="" xs={4}>
         <OrganizationStyled color={`${canGo?"white":"ghostwhite"}`}>
 
-
+            <OrganizationTitle>
             <Row className={`mt-2`}>
                 <Col xs={2}>
                     <Avatar className={`mr-3`} size={28} round={true} name={org.label}/>
@@ -61,7 +75,8 @@ const OrganizationListItem= (props)=>{
                     </If>
                 </Col>
             </Row>
-
+            </OrganizationTitle>
+            <OrganizationBody>
             <Row className={`mt-1`}>
                 <Col xs={2}></Col>
                 <Col xs={10}>
@@ -79,6 +94,8 @@ const OrganizationListItem= (props)=>{
                 </Col>
 
             </Row>
+
+
             <Row>
                 <Col xs={2}>
                     <Icon.PersonCheck/>
@@ -114,13 +131,16 @@ const OrganizationListItem= (props)=>{
                     <small>{dayjs(org.created).fromNow()}</small>
                 </Col>
             </Row>
-            <Row className={`mt-2 border-top`}>
+            </OrganizationBody>
+            <OrganizationFooter>
+            <Row className={`mt-2 pt-2 pb-2 border-top`}>
                 <Col className={`mt-1`}>
                     {org.tags.map((t)=>{
                         return <Tag tag={t}/>
                     })}
                 </Col>
             </Row>
+            </OrganizationFooter>
 
         </OrganizationStyled>
 

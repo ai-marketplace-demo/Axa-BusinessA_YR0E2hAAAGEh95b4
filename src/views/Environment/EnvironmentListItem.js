@@ -2,7 +2,7 @@ import React ,{useState,useEffect} from "react";
 import {Container, Table,Row, Badge,Col,Spinner} from "react-bootstrap";
 import styled from "styled-components";
 import Avatar from "react-avatar"
-import {If,Then,Else} from "react-if";
+import {If,Then,Else,Case,When,Default,Switch} from "react-if";
 import * as Icon from "react-bootstrap-icons";
 import Select from 'react-select'
 import Tag from "../../components/Tag/Tag";
@@ -23,7 +23,7 @@ text-align: center;
 background-color: salmon;
 `
 const Card=styled.div`
-height: 24ch;
+height: 27ch;
 margin-top: 6px;
 border-radius: 4px;
 background-color: white;
@@ -88,6 +88,27 @@ const EnvironmentListItem=(props)=>{
             </Col>
             <Col xs={10}>
                 <div style={{fontSize:'12px'}}> {environment.EnvironmentDefaultIAMRoleName}</div>
+            </Col>
+        </Row>
+        <Row className={`mt-2`}>
+            <Col xs={2}>
+                <Icon.Gear/>
+            </Col>
+            <Col xs={10}>
+                <Col xs={1}>
+                     <Switch>
+                     <Case condition={environment.stack.status=="CREATE_COMPLETE"}>
+                         <Badge pill variant={`success`}>{environment.stack.status}</Badge>
+                     </Case>
+                     <Case condition={environment.stack.status=="IN_PROGRESS"}>
+                         <Spinner variant={`primary`} size={`sm`}/>
+                     </Case>
+                     <Default>
+                         <Badge pill variant={`warning`}>{environment.stack.status}</Badge>
+                     </Default>
+                     </Switch>
+                </Col>
+
             </Col>
         </Row>
 

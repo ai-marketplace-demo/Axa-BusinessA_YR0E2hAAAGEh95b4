@@ -13,7 +13,8 @@ import DashboardListItem from "./DashboardListItem";
 import dayjs from "dayjs";
 import getDashboard from "../../api/Dashboard/getDashboard";
 import EnvironmentOverview from "../EnvironmentPlayground/EnvironmentOverview";
-
+import QuicksightDesigner from "./QuicksightDesigner";
+import DashboardOverview from "./DashboardOverview";
 
 
 const FullScreen = styled.div`
@@ -89,11 +90,19 @@ const DashboardAdmin = (props)=>{
                         onSelect={(k) => setKey(k)}
                     >
                         <Tab eventKey="Overview" title={'Overview'}>
-                            <h1>Overview</h1>
+                            <If condition={key=='Overview'}>
+                                <Then>
+                                    <DashboardOverview dashboard={dashboard}/>
+                                </Then>
+                            </If>
                         </Tab>
 
-                        <Tab eventKey="Design" title="Design">
-                            <h1>Design</h1>
+                        <Tab eventKey="Design" title="View">
+                            <If condition={key=="Design"}>
+                                <Then>
+                                    <QuicksightDesigner/>
+                                </Then>
+                            </If>
                         </Tab>
                         <Tab eventKey="Shares" title="Shares">
                             <h1>Shares</h1>

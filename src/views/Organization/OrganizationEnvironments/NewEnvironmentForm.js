@@ -1,4 +1,4 @@
-import React ,{useState} from "react";
+import React ,{useState,useEffect} from "react";
 import {Container, Table,Row, Badge,Col,Spinner} from "react-bootstrap";
 import styled from "styled-components";
 import * as Icon from "react-bootstrap-icons";
@@ -6,8 +6,12 @@ import Select from 'react-select'
 import {Link,useParams,useLocation,useHistory} from "react-router-dom"
 import useClient from "../../../api/client";
 import createEnvironment from "../../../api/Environment/createEnvironment";
-import {toast} from "react-toastify";
+import {toast,ToastContainer} from "react-toastify";
 import {AwsRegionsSelect as AwsRegion} from "../../../components/AwsRegions/AwsRegionSelect";
+
+const PageStyled= styled.div`
+height: 100vh;
+`
 
 const FormStyled=styled.div`
 border: 1px lightgrey solid;
@@ -39,6 +43,7 @@ const NewEnvironmentForm= (props)=>{
         type : options[0]
     });
 
+
     const submitForm=async ()=>{
         console.log(formData);
         let res =await client.mutate(createEnvironment({
@@ -60,8 +65,10 @@ const NewEnvironmentForm= (props)=>{
         }
 
     }
-    const handleInputChange=((e)=>setFormData({...formData, [e.target.name]: e.target.value}))
-    return <Container>
+    const handleInputChange=((e)=>setFormData({...formData, [e.target.name]: e.target.value}));
+
+    return <PageStyled>
+    <Container>
         <Row>
             <Col xs={1}>
                 <Link
@@ -69,10 +76,31 @@ const NewEnvironmentForm= (props)=>{
                     to={{
                         state : location.state,
                         pathname:`/organization/${params.uri}/environments`}}
-                ><Icon.ChevronLeft size={36}/></Link>
+                ><Icon.ChevronLeft size={28}/></Link>
             </Col>
             <Col xs={11}>
-                <h3>Link your AWS Account to Organization <b className={"text-primary"}>{location.state.label}</b></h3>
+                <h3>Link Environment <b className={`text-primary text-capitalize`}>{formData.label}</b> </h3>
+                <code>aws://{formData.AwsAccountId}:{formData.region&&formData.region.value}</code>
+            </Col>
+        </Row>
+        <Row className={`mt-3`}>
+            <Col xs={12}>
+                <div className="alert alert-info" role="alert">
+                    Before linking an AWS Account and region to datahub, please make sure:
+                    <ul>
+                        <li> You have bootsraped your account using the <a href={`https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html#getting_started_install`}> aws cdk cli  </a>
+                            <ul>
+                                <li>
+                            <code>
+                                cdk bootstrap --trust aws://ACCOUNTID:region
+                            </code>
+                                </li>
+                            </ul>
+                        </li>
+                        <li> You have created an IAM Role called datahubPivotRole on your account </li>
+                    </ul>
+
+                </div>
             </Col>
         </Row>
         <FormStyled className={`mt-0`}>
@@ -130,6 +158,7 @@ const NewEnvironmentForm= (props)=>{
             </Row>
         </FormStyled>
     </Container>
+    </PageStyled>
 }
 
 

@@ -13,7 +13,8 @@ import getSqlPipeline from "../../api/SqlPipeline/getSqlPipeline";
 import SqlPipelineOverview from "./SqlPipelineOverview";
 import SqlPipelineStack from "./SqlPipelineStack";
 import CodeBrowser from "./CodeBrowser/CodeBrowser";
-
+import SqlPipelineRunList from "./Runs/SqlPipelineRunsList";
+import SqlPipelineBuildList from "./Builds/SqlPipelineBuildsList";
 
 
 const FullScreen = styled.div`
@@ -111,10 +112,18 @@ const SqlPipelineAdmin = (props)=>{
                         </Tab>
 
                         <Tab eventKey="Builds" title="Builds">
-                            <h1>Builds</h1>
+                            <If condition={key=="Builds"}>
+                                <Then>
+                                    <SqlPipelineBuildList sqlPipeline={sqlPipeline}/>
+                                </Then>
+                            </If>
                         </Tab>
                         <Tab eventKey="Executions" title="Executions">
-                            <h1>Executions</h1>
+                            <If condition={key=="Executions"}>
+                                <Then>
+                                    <SqlPipelineRunList sqlPipeline={sqlPipeline}/>
+                                </Then>
+                            </If>
                         </Tab>
 
                     </Tabs>

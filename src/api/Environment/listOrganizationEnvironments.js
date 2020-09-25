@@ -30,7 +30,11 @@ const listOrganizationEnvironments= ({organizationUri, filter})=>{
                             roleCreated
                             environmentType
                             AwsAccountId
+                            quicksight_enabled
                             userRoleInEnvironment
+                            stack{
+                                status
+                            }
                         }
                     }
 

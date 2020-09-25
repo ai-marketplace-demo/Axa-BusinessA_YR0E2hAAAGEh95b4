@@ -27,6 +27,9 @@ const searchSqlPipelines= (filter)=>{
                             label
                             name
                         }
+                        stack{
+                            status
+                        }
                         
                     }
                 }

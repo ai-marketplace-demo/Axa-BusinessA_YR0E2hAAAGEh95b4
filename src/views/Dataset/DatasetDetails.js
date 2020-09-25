@@ -134,8 +134,14 @@ const DatasetDetails= (props)=>{
                             </CopyToClipboard>
                         </Zoom>
                     </Col>
-
-
+                </Row>
+                <Row>
+                    <Col xs={3}>
+                        <b>Cloudformation Stack Status</b>
+                    </Col>
+                    <Col xs={6}>
+                        <Badge pill> {props.dataset.stack.status}</Badge>
+                    </Col>
                 </Row>
                 <Row>
                     <Col xs={3}>

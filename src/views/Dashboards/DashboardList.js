@@ -9,6 +9,7 @@ import useClient from "../../api/client";
 import searchDashboards from "../../api/Dashboard/searchDashboards";
 import {toast} from "react-toastify";
 import DashboardListItem from "./DashboardListItem";
+import DashboardsEnvironmentList from "./EnvironmentList";
 
 const Styled=styled.div`
 height:100vh;
@@ -18,6 +19,7 @@ height:100vh;
 const DashboardList = function(){
     const client = useClient();
 
+    const [environmentsDisplayed,setEnvironmentsDisplayed] = useState(false);
     const [dashboards,setDashboards] =useState({
         count:  0,
         page : 1,
@@ -26,17 +28,21 @@ const DashboardList = function(){
         hasPrevious : false,
         nodes:[]
     })
+    const [ready,setReady] = useState(false);
+    const displayEnvironments=()=>{
+        setEnvironmentsDisplayed(true)
+    }
 
     const fetchItems= async()=>{
         const response = await client.query(
             searchDashboards({})
         )
         if (!response.errors){
-            toast(`Restrieved ${response.data.searchDashboards.count} dashboards`);
             setDashboards(response.data.searchDashboards);
         }else {
-            toast(`Received ${response.errors[0].message}`);
+            toast(`Could not retrieved dashboards, received ${response.errors[0].message}`);
         }
+        setReady(true);
     }
 
     useEffect(()=>{
@@ -47,23 +53,32 @@ const DashboardList = function(){
     return <Styled>
         <Container className={""}>
             <Row>
-                <Col xs={3}>
+                <Col xs={6}>
                     <h3> <Icon.ClipboardData/> My Dashboards</h3>
                 </Col>
-                <Col xs={7}>
+                <Col xs={2}/>
+                <Col xs={2} className={`mt-2`}>
+                    <MainActionButton onClick={displayEnvironments}>
+                        <Link to={`/newdashboard`}>
+                            Import
+                        </Link>
+                    </MainActionButton>
+                </Col>
+
+                <Col xs={2} className={`mt-2`}>
+                    <MainActionButton onClick={displayEnvironments}>
+                            Start Session
+                    </MainActionButton>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={6}>
                     <Row className={`mt-2`}>
                         <Col xs={4}><i>Found {dashboards.count} results</i></Col>
                         <Col className={`pt-1 text-right`} xs={2}><Icon.ChevronLeft onClick={()=>{}}/></Col>
                         <Col className={` text-center`} xs={4}>Page {dashboards.page}/{dashboards.pages}</Col>
                         <Col className={`pt-1 text-left`} xs={2}><Icon.ChevronRight onClick={()=>{}}/></Col>
                     </Row>
-                </Col>
-                <Col xs={1} className={`mt-2`}>
-                    <MainActionButton>
-                        <Link to={"/newdashboard"}>
-                            Create
-                        </Link>
-                    </MainActionButton>
                 </Col>
             </Row>
             <Row className={"mt-3"}>
@@ -72,23 +87,39 @@ const DashboardList = function(){
                 </Col>
 
             </Row>
+            <If condition={environmentsDisplayed}>
+                <Then>
+                    <DashboardsEnvironmentList onClose={()=>{setEnvironmentsDisplayed(false)}}/>
+                </Then>
+            </If>
 
             <Row className={`mt-3`}>
-                <If condition={dashboards.count}>
+                <If condition={!ready}>
                     <Then>
-                        {
-                            dashboards.nodes.map((dashboard)=>{
-                                return <Col xs={4}>
-                                    <DashboardListItem dashboard={dashboard}/>
-                                </Col>
-                            })
-                        }
+                        <Col xs={12}>
+                            <Spinner variant={`primary`} animation={`border`} size={`sm`}/>
+                        </Col>
+
                     </Then>
                     <Else>
-                        <div></div>
-                    </Else>
+                        <If condition={dashboards.count}>
+                            <Then>
+                                {
+                                    dashboards.nodes.map((dashboard)=>{
+                                        return <Col xs={4}>
+                                            <DashboardListItem dashboard={dashboard}/>
+                                        </Col>
+                                    })
+                                }
+                            </Then>
+                            <Else>
+                                <div></div>
+                            </Else>
 
+                        </If>
+                    </Else>
                 </If>
+
 
             </Row>
         </Container>

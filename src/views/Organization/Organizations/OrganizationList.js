@@ -108,16 +108,8 @@ const OrganizationList = (props)=>{
     return <Styled>
         <Container>
         <Row>
-            <Col xs={3}>
+            <Col xs={10}>
                 <h3> <Icon.House/> My Organizations</h3>
-            </Col>
-            <Col xs={2}><i>Found <b>{organizations.count}</b> results</i></Col>
-            <Col xs={4}>
-                <Row>
-                    <Col className={`text-right pt-2`}><Icon.ChevronLeft onClick={previousPage}/></Col>
-                    <Col className={`text-center`}>Page {organizations.page}/{organizations.pages}</Col>
-                    <Col className={`text-left pt-2`}><Icon.ChevronRight onClick={nextPage}/></Col>
-                </Row>
             </Col>
             <Col className={`mb-1 text-right`} xs={2}>
                     <MainActionButton>
@@ -128,10 +120,21 @@ const OrganizationList = (props)=>{
             </Col>
         </Row>
         <Row className={`mt-2`}>
-            <Col xs={12} className={``}>
+            <Col xs={12}>
+                <Row>
+                    <Col xs={2}><i>Found <b>{organizations.count}</b> results</i></Col>
+                    <Col xs={4}>
+                        <Row>
+                            <Col className={`text-right pt-2`}><Icon.ChevronLeft onClick={previousPage}/></Col>
+                            <Col className={`text-center`}>Page {organizations.page}/{organizations.pages}</Col>
+                            <Col className={`text-left pt-2`}><Icon.ChevronRight onClick={nextPage}/></Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </Col>
+            <Col xs={12} className={`mt-1`}>
                 <input className={`form-control`} onKeyDown={handleKeyDown} onChange={handleChange} value={search} style={{width:"100%"}} placeholder={"search"}/>
             </Col>
-
         </Row>
         {
             (!ready)?(
