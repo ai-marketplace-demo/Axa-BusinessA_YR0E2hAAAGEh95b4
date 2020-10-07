@@ -23,7 +23,7 @@ text-align: center;
 background-color: salmon;
 `
 const Card=styled.div`
-height: 27ch;
+height: 29ch;
 margin-top: 6px;
 border-radius: 4px;
 background-color: white;
@@ -45,23 +45,23 @@ const OrganizationEnvironmentListItem=(props)=>{
     const organization = props.organization ;
     const canEdit = ['Owner','Admin'].indexOf(environment.userRoleInEnvironment)!=-1
 
+    const onDisplayArchiveModal=()=>{
+        props.onDisplayArchiveModal&&props.onDisplayArchiveModal(environment)
+    }
+
     return <Card>
         <Row>
 
             <Col xs={2}>
                 <Avatar round={true} size={28} value={environment.label[0].toUpperCase()}/>
             </Col>
-            <Col xs={6}>
+            <Col xs={8}>
                 <Link to={`/playground/${environment.environmentUri}`}>
                     <b className={`text-capitalize`}>{environment.label}</b>
                 </Link>
             </Col>
             <Col xs={2}>
-                <If condition={environment.quicksight_enabled}>
-                    <Then>
-                        <Icon.Star color={`yellow`}/>
-                    </Then>
-                </If>
+                <Icon.Archive onClick={onDisplayArchiveModal} size={16} color={`red`}/>
             </Col>
         </Row>
         <Row className={`mt-2`}>

@@ -26,6 +26,7 @@ const listOrganizationEnvironments= ({organizationUri, filter})=>{
                             EnvironmentDefaultIAMRoleName
                             SamlGroupName
                             created
+                            deleted
                             validated
                             roleCreated
                             environmentType

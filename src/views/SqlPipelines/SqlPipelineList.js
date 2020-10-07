@@ -18,6 +18,7 @@ height:100vh;
 const SqlPipelineList = function(){
     const client = useClient();
 
+    const [loading, setLoading] = useState(false);
     const [sqlPipelines,setSqlPipelines] =useState({
         count:  0,
         page : 1,
@@ -42,18 +43,33 @@ const SqlPipelineList = function(){
         }
     }
 
+
+    const nextPage=()=>{
+        if (sqlPipelines.hasNext){
+            setReady(false);
+            setSqlPipelines({...sqlPipelines, page:sqlPipelines.page+1});
+        }
+    }
+
+    const prevPage=()=>{
+        if (sqlPipelines.hasPrevious){
+            setReady(false);
+            setSqlPipelines({...sqlPipelines, page:sqlPipelines.page-1});
+        }
+    }
+
     useEffect(()=>{
         if (client){
             fetchItems();
         }
-    },[client])
+    },[client, sqlPipelines.page])
 
 
     return <Styled>
         <Container className={""}>
             <Row>
                 <Col xs={8}>
-                    <h3> <Icon.ArrowRepeat/> My SQL Pipelines</h3>
+                    <h3> <Icon.Gear/> My Data Pipelines</h3>
                 </Col>
 
                 <Col xs={1} className={`mt-2`}>
@@ -66,6 +82,18 @@ const SqlPipelineList = function(){
             </Row>
             <Row className={"mt-3"}>
                 <Col xs={12}>
+                    <Row>
+                        <Col xs={7}>
+                            <Row className={`mt-2`}>
+                                <Col xs={4}><i>Found {sqlPipelines.count} results</i></Col>
+                                <Col className={`pt-1 text-right`} xs={2}><Icon.ChevronLeft onClick={prevPage}/></Col>
+                                <Col className={` text-center`} xs={4}>Page {sqlPipelines.page}/{sqlPipelines.pages}</Col>
+                                <Col className={`pt-1 text-left`} xs={2}><Icon.ChevronRight onClick={nextPage}/></Col>
+                            </Row>
+                        </Col>
+                    </Row>
+                </Col>
+                <Col className={`mt-2`} xs={12}>
                     <input
                         className={"form-control"}
                         name={'search'}
@@ -73,18 +101,7 @@ const SqlPipelineList = function(){
                         onKeyDown={()=>{fetchItems()}}
                         onChange={(e)=>{setTerm(e.target.value)}} placeholder={"search your sqlPipelines"} style={{width:'100%'}}/>
                 </Col>
-                <Col xs={12}>
-                    <Row>
-                        <Col xs={7}>
-                            <Row className={`mt-2`}>
-                                <Col xs={4}><i>Found {sqlPipelines.count} results</i></Col>
-                                <Col className={`pt-1 text-right`} xs={2}><Icon.ChevronLeft onClick={()=>{}}/></Col>
-                                <Col className={` text-center`} xs={4}>Page {sqlPipelines.page}/{sqlPipelines.pages}</Col>
-                                <Col className={`pt-1 text-left`} xs={2}><Icon.ChevronRight onClick={()=>{}}/></Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                </Col>
+
 
             </Row>
 
@@ -93,7 +110,7 @@ const SqlPipelineList = function(){
                     <Then>
                         {
                             sqlPipelines.nodes.map((sqlPipeline)=>{
-                                return <Col xs={4}>
+                                return <Col xs={6}>
                                     <SqlPipelineListItem sqlPipeline={sqlPipeline}/>
                                 </Col>
                             })

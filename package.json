@@ -20,6 +20,7 @@
     "aws-amplify-react": "^4.1.16",
     "bootstrap": "^4.4.1",
     "bootstrap-icons": "^1.0.0-alpha5",
+    "bootswatch": "^4.5.2",
     "copy-to-clipboard": "^3.3.1",
     "cssnano": "^4.1.10",
     "dayjs": "^1.8.23",
@@ -49,6 +50,7 @@
     "react-easy-edit": "^1.9.0",
     "react-focus-lock": "^2.2.1",
     "react-full-screen": "^0.3.1",
+    "react-icons": "^3.11.0",
     "react-if": "^3.4.3",
     "react-kawaii": "^0.16.0",
     "react-markdown": "^4.3.1",
@@ -89,9 +91,9 @@
     "sass": "^1.26.2"
   },
   "scripts": {
-    "start": "GENERATE_SOURCEMAP=true HTTPS=true PORT=1234 REACT_APP_STAGE=dev react-scripts start",
-    "start:mushhz": "GENERATE_SOURCEMAP=true HTTPS=true PORT=1234 REACT_APP_STAGE=mushhz react-scripts start",
+    "start": "GENERATE_SOURCEMAP=true HOST='127.0.0.1' HTTPS=true  PORT=1234 REACT_APP_STAGE=dev react-scripts start",
     "__start": "GENERATE_SOURCEMAP=true PORT=1234 REACT_APP_STAGE=dev react-scripts start",
+    "start:mushhz": "GENERATE_SOURCEMAP=true HTTPS=true PORT=1234 REACT_APP_STAGE=mushhz react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "build:staging": "GENERATE_SOURCEMAP=false REACT_APP_STAGE=staging npm run build",

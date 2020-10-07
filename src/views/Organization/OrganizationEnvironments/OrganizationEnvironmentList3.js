@@ -1,5 +1,6 @@
 import React ,{useState,useEffect} from "react";
 import {Container, Table,Row, Badge,Col,Spinner} from "react-bootstrap";
+import {If, Then , Else} from "react-if";
 import styled from "styled-components";
 import * as Icon from "react-bootstrap-icons";
 import Select from 'react-select'
@@ -8,6 +9,7 @@ import {Link,useParams,useLocation} from "react-router-dom"
 import OrganizationEnvironmentListItem from "./OrganizationEnvironmentListItem3";
 import useClient from "../../../api/client";
 import listOrganizationEnvironments from "../../../api/Environment/listOrganizationEnvironments";
+import archiveEnvironment from "../../../api/Environment/archiveEnvironment";
 import {toast} from "react-toastify";
 import listOrganizations from "../../../api/Organization/listOrganizations";
 import dayjs from "dayjs"
@@ -44,22 +46,52 @@ const OrganizationEnvironmentList=(props)=>{
         canLink=true;
     }
 
+    const [displayArchiveModal, setDisplayArchiveModal] = useState(false);
+    const [targetEnv, setTargetEnv] = useState(false);
+
+
+
+    const onDisplayArchiveModal = (env)=>{
+        setTargetEnv(env);
+        setDisplayArchiveModal(true);
+    }
+
+    const archiveEnv=async ()=>{
+        const response= await client.mutate(archiveEnvironment(targetEnv.environmentUri));
+        if (!response.errors){
+            toast(`Successfully archived environment ${targetEnv.name}(${targetEnv.environmentUri})`);
+            fetchItems();
+        }else {
+            toast(`Could not archive environment ${targetEnv.environmentUri}. Received ${response.errors[0].message}`)
+        }
+        setTargetEnv(null);
+        setDisplayArchiveModal(false);
+    }
+
+
     const fetchItems = async ()=>{
         console.log("fetchItems search = ", search)
         const response = await client
             .query(listOrganizationEnvironments({
                 organizationUri:organization.organizationUri,
                 filter:{
-                    term :search,
-                    page:  envs.page,
-                    roles:[],
-                    pageSize: envs.pageSize,
+                    term : search,
+                    page : envs.page,
+                    pageSize:envs.pageSize,
+                    displayArchived:false,
+                    roles:[
+                        'Owner',
+                        'Admin',
+                        'Invited',
+                        'DatasetCreator'
+                    ],
                     sort: Object.keys(sortCriterias).map((k)=>{ return {field:k, direction: sortCriterias[k]}})
                 }
-            }));
+            }))
         console.log("response = ", response);
         if (!response.errors){
             setEnvironments(response.data.getOrganization.environments)
+            setReady(true);
         }else {
             toast.error(`Failed to refresh environments, received ${response.errors[0].message}`)
         }
@@ -83,28 +115,7 @@ const OrganizationEnvironmentList=(props)=>{
 
     useEffect(()=>{
         if (client){
-            client
-                .query(listOrganizationEnvironments({
-                    organizationUri:organization.organizationUri,
-                    filter:{
-                        term : search,
-                        page : envs.page,
-                        pageSize:envs.pageSize,
-                        roles:[
-                            'Owner',
-                            'Admin',
-                            'Invited',
-                            'DatasetCreator'
-                        ],
-                        sort: Object.keys(sortCriterias).map((k)=>{ return {field:k, direction: sortCriterias[k]}})
-                    }
-                }))
-                .then((res)=>{
-                    console.log("environments = ",res.data.getOrganization.environments);
-                    setEnvironments(res.data.getOrganization.environments);
-                    setReady(true);
-                })
-
+            fetchItems();
         }
     },[client,envs.page]);
 
@@ -122,18 +133,9 @@ const OrganizationEnvironmentList=(props)=>{
     return <Styled>
     <Container>
         <Row>
-            <Col xs={1}>
-                <Row>
-                    <Col className={"text-left "} xs={12}>
-                        <Link style={{color:"black"}} to={`/organizations`}>
-                            <Icon.ChevronLeft className={`pt-2`} size={36}/></Link>
-                    </Col>
-                </Row>
-            </Col>
             <Col xs={10}>
-                <h3>   <Icon.Cloud size={32}/> Environments in Organization <b className={"text-primary"}>{location.state.label.toUpperCase()}</b></h3>
+                <h3>   <Icon.Cloud size={32}/> Environments in Organization <b className={"text-primary"}><Link to={`/organizations`}>{location.state.label.toUpperCase()}</Link></b></h3>
             </Col>
-
         </Row>
         <Row className={`mt-4`}>
 
@@ -155,7 +157,7 @@ const OrganizationEnvironmentList=(props)=>{
                                 to={{
                                     state: location.state,
                                     pathname:`/newenvironment/${params.uri}`
-                                }}><Icon.Plus size={18}/> Link</Link>
+                                }}>Link</Link>
                             </MainButtonAction>
                     ):(
                         <div></div>
@@ -166,34 +168,66 @@ const OrganizationEnvironmentList=(props)=>{
                 <input className={`form-control`} onKeyDown={handleKeyDown} onChange={handleInputChange} value={search} placeholder={'search environments'} style={{width:"100%"}}/>
             </Col>
         </Row>
+        <Row>
+            <Col className={``} xs={12}>
+                <If condition={displayArchiveModal}>
+                    <Then>
+                        <div  className={`border mt-2 mb-2 alert alert-secondary`}>
+                            <Row className={``}>
+                                <Col xs={8}>
+                                    Archive Environment <b>{targetEnv&&targetEnv.name}({targetEnv&&targetEnv.environmentUri})</b>
+                                </Col>
+                                <Col xs={4}>
+                                    <div className={`btn-group`}>
+                                        <div onClick={archiveEnv} className={`btn btn-sm btn-warning`}>Archive</div>
+                                        <div className={`pl-2 btn btn-sm  btn-primary`} onClick={()=>{setDisplayArchiveModal(false); setTargetEnv(null)}}>Cancel</div>
+                                    </div>
+                                </Col>
+                                <Col xs={12}>
+                                    Archiving will archive all child resources associated with the environment
+                                </Col>
+                            </Row>
+                        </div>
+                    </Then>
+                </If>
+            </Col>
+        </Row>
 
         <Row className={"mt-2"}>
-                {
-                    (!ready)?(
+            <If condition={!ready}>
+                <Then>
+                    <Col xs={12}>
                         <Spinner variant="primary" animation="border" role="status">
                             <span className="sr-only">Loading...</span>
                         </Spinner>
-                    ):(
-
-                        (envs.count)?(
-                            envs.nodes.map((env)=>{
-
-                                return <Col xs={4}>
+                    </Col>
+                </Then>
+                <Else>
+                    <If condition={envs.nodes.length}>
+                        <Then>
+                            {
+                                envs.nodes.map((env)=>{
+                                    return <Col xs={4}>
                                         <OrganizationEnvironmentListItem
+                                            onDisplayArchiveModal={onDisplayArchiveModal}
                                             key={env.environmentUri}
                                             environment={env}
                                             organization={location.state}
                                         />
-                                </Col>
-                            })
-                        ):(
+                                    </Col>
+                                })
+                            }
+
+                        </Then>
+                        <Else>
                             <Col xs={12}>
                                 <p><i>No Environments found (or accessible to you) in this organization</i></p>
                             </Col>
+                        </Else>
+                    </If>
 
-                        )
-                    )
-                }
+                </Else>
+            </If>
         </Row>
     </Container>
     </Styled>

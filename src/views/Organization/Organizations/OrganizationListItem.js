@@ -50,6 +50,10 @@ const OrganizationListItem= (props)=>{
     }
     let canEdit=['Owner','Admin'].indexOf(org.userRoleInOrganization)!=-1
 
+
+    const openArchiveOrganizationModal= ()=>{
+        props.openArchiveOrganizationModal&&props.openArchiveOrganizationModal(org);
+    }
     return <Col className="" xs={4}>
         <OrganizationStyled color={`${canGo?"white":"ghostwhite"}`}>
 
@@ -58,11 +62,11 @@ const OrganizationListItem= (props)=>{
                 <Col xs={2}>
                     <Avatar className={`mr-3`} size={28} round={true} name={org.label}/>
                 </Col>
-                <Col xs={8}>
-                    <h6 className={"ml-2"}>{org.label.toUpperCase()}</h6>
+                <Col xs={7}>
+                    <h6 className={"ml-2"}><b>{org.label.toUpperCase()}</b></h6>
                 </Col>
 
-                <Col xs={2}>
+                <Col xs={1}>
                     <If condition={canEdit}>
                         <Then>
                             <Link
@@ -71,6 +75,15 @@ const OrganizationListItem= (props)=>{
                                     state:{organization:org},
                                     pathname:`/editorganization/${org.organizationUri}`
                                 }}><Icon.Pen/></Link>
+                        </Then>
+                    </If>
+                </Col>
+                <Col xs={1}>
+                    <If condition={canEdit}>
+                        <Then>
+                            <Link to={"#"}>
+                                <Icon.Archive  onClick={openArchiveOrganizationModal}className={`text-danger`}/>
+                            </Link>
                         </Then>
                     </If>
                 </Col>

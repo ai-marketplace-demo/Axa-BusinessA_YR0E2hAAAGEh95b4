@@ -10,6 +10,7 @@ import useClient from "../../api/client";
 import {toast} from "react-toastify";
 import dayjs from "dayjs";
 import getSqlPipeline from "../../api/SqlPipeline/getSqlPipeline";
+import getSqlPipelineCredsLinux from "../../api/SqlPipeline/getSqlPipelineCredsLinux";
 import SqlPipelineOverview from "./SqlPipelineOverview";
 import SqlPipelineStack from "./SqlPipelineStack";
 import CodeBrowser from "./CodeBrowser/CodeBrowser";
@@ -33,7 +34,10 @@ const SqlPipelineAdmin = (props)=>{
     const params = useParams();
     const [ready,setReady]= useState(false);
     const [key, setKey] = useState("Overview");
-    const [sqlPipeline, setSqlPipeline] = useState({})
+    const [sqlPipeline, setSqlPipeline] = useState({});
+    const [displayGitInstructions, setDisplayGitInstructions] = useState(false);
+    const [creds, setCreds] = useState("");
+    const [isLoadingCreds, setIsLoadingCreds]= useState(false);
     useEffect(()=>{
         if (client){
             client
@@ -54,10 +58,29 @@ const SqlPipelineAdmin = (props)=>{
 
     },[client]);
 
-    const OverviewTitle=()=>{
-
+    const getExports=(c)=>{
+        const tmp_credentials = JSON.parse(c);
+        return [
+            `export AWS_ACCESS_KEY_ID="${tmp_credentials.AWS_ACCESS_KEY_ID}"`,
+            `export AWS_SECRET_ACCESS_KEY="${tmp_credentials.AWS_SECRET_ACCESS_KEY}"`,
+            `export AWS_SESSION_TOKEN="${tmp_credentials.AWS_SESSION_TOKEN}"`,
+            `git clone codecommit::${sqlPipeline.environment.region}://${sqlPipeline.repo}`
+        ]
     }
-    if (!sqlPipeline.sqlPipelineUri){
+
+    const getAwsCreds=async()=>{
+        setIsLoadingCreds(true)
+        const response = await client.query(getSqlPipelineCredsLinux(sqlPipeline.sqlPipelineUri));
+        if (!response.errors){
+            setCreds(response.data.getSqlPipelineCredsLinux);
+            setIsLoadingCreds(false);
+            setDisplayGitInstructions(true);
+        }
+    }
+
+
+
+    if (!ready){
         return <Spinner variant={`primary`} border={`grow`}/>
     }
 
@@ -65,12 +88,12 @@ const SqlPipelineAdmin = (props)=>{
         <Container>
             <Row className={"m-0 border-top border-bottom"}>
                 <Col className="pt-3" xs={1}>
-                    <Icon.ArrowRepeat size={32}/>
+                    <Icon.Gear size={32}/>
                 </Col>
                 <Col className={"border-right pt-1"} xs={8}>
                     <Row className={"m-0"}>
                         <Col xs={8}>
-                            <h4>SQL Pipeline <b className={`text-primary`}>{sqlPipeline.label}</b></h4>
+                            <h4>Data Pipeline <b className={`text-primary`}>{sqlPipeline.label}</b></h4>
                         </Col>
                     </Row>
                     <Row>
@@ -92,6 +115,42 @@ const SqlPipelineAdmin = (props)=>{
                     </Col>
                 </Col>
 
+            </Row>
+            <Row>
+                <Col xs={12}>
+                    <If condition={displayGitInstructions}>
+                        <Then>
+                                <Row>
+                                    <Col xs={10}/>
+                                    <Col xs={2}>
+                                        <div onClick={()=>{setDisplayGitInstructions(false)}}>close</div>
+                                    </Col>
+                                </Row>
+                                <Row className={`text-dark`}>
+                                    <Col xs={10}>
+                                        {creds&&getExports(creds).map((l)=>{
+                                            return <Row><Col xs={12}><div style={{fontFamily:'Courier New',fontSize:'8px'}}>{l}</div></Col></Row>
+                                        })}
+                                    </Col>
+                                </Row>
+                        </Then>
+                        <Else>
+                            <Row>
+
+                                <Col xs={12}>
+                                    <If condition={isLoadingCreds}>
+                                        <Then>
+                                            <Spinner className={`mt-2`} animation={`border`} size={`sm`} variant={`primary`}/>
+                                        </Then>
+                                        <Else>
+                                            <div className={`mt-2 text-primary`} onClick={()=>{getAwsCreds()}}> See git instructions</div>
+                                        </Else>
+                                    </If>
+                                </Col>
+                            </Row>
+                        </Else>
+                    </If>
+                </Col>
             </Row>
 
             <Row className={`mt-4`}>

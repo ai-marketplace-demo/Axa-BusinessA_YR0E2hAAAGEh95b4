@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Container, Row, Col, Badge, Spinner} from "react-bootstrap";
+import * as Icon from "react-bootstrap-icons";
 import BootstrapTable from 'react-bootstrap-table-next';
 import useClient from "../../../api/client";
 import getSqlPipelineRuns from "../../../api/SqlPipeline/getSqlPipelineRuns";
@@ -56,7 +57,7 @@ const SqlPipelineRunList=(props)=>{
         return <Container>
             <Row className={`mt-2 ml-2`}>
                 <Col xs={12}>
-                    <Spinner variant={`primary`} animation={`border`}/>
+                    <Spinner size={`sm`} variant={`primary`} animation={`border`}/>
                 </Col>
             </Row>
         </Container>
@@ -66,6 +67,14 @@ const SqlPipelineRunList=(props)=>{
         <Row>
             <Col xs={12}>
                 <p> Found {count} job(s)</p>
+            </Col>
+        </Row>
+        <Row>
+            <Col className={`mt-3 mb-3`} xs={4}>
+                <div className={`btn btn-primary rounded`}><Icon.Play/> Run Pipeline</div>
+            </Col>
+            <Col className={`mt-3 mb-3`}  xs={4}>
+
             </Col>
         </Row>
         <Row>

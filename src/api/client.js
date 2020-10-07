@@ -22,13 +22,21 @@ const useClient=()=>{
     let [token, setToken] = useState();
 
     const fetchAuthToken = async()=>{
+        console.log(".........................................")
+        console.log(".................fetchAuthToken ........................")
+        console.log(".................fetchAuthToken ........................")
+        console.log(".................fetchAuthToken ........................")
+        console.log(".................fetchAuthToken ........................")
         if (!token){
             let session = await Auth.currentSession();
+            //const user =  await Auth.currentAuthenticatedUser();
+            //console.log("user = ", user);
+            console.log("SESSION = ",session)
+
             const t = await session.getIdToken().getJwtToken();
-            console.log("got token", t);
+            console.log("t = ", t);
             const httpLink = new HttpLink({
                 uri: config.apiGateway.URL,
-
             });
             const authLink = new ApolloLink((operation, forward) => {
                 operation.setContext({
@@ -40,7 +48,7 @@ const useClient=()=>{
                         AccessKeyId: 'none',
                         SecretKey: 'none',
                         username: 'moshirm@amazon.fr', //this is for local development only
-                        //username: 'jeff', //this is for local development only
+                        //username: 'jeff',
                         //groups: 'a,n' //this is for local development only
                     }
                 });

@@ -6,6 +6,8 @@ import Select from 'react-select'
 import {Link,useParams,useLocation,useHistory} from "react-router-dom"
 import useClient from "../../../api/client";
 import createEnvironment from "../../../api/Environment/createEnvironment";
+import checkEnvironment from "../../../api/Environment/verifyEnvironment";
+import getTrustAccount from "../../../api/Environment/getTrustAccount";
 import {toast,ToastContainer} from "react-toastify";
 import {AwsRegionsSelect as AwsRegion} from "../../../components/AwsRegions/AwsRegionSelect";
 
@@ -39,13 +41,38 @@ const NewEnvironmentForm= (props)=>{
         description : '',
         SamlGroupName:'',
         AwsAccountId: '727430407563',
-        region : null,
+        region : {value:'eu-west-1', label:'Europe (Ireland)'},
         type : options[0]
     });
 
+    let [trustAwsAccountId, setTrustAwsAccountId] = useState("111111111111");
 
+    const getTrustAwsAccountId = async()=>{
+        const response = await client.query(getTrustAccount());
+        if (!response.errors){
+            setTrustAwsAccountId(response.data.getTrustAccount);
+        }else {
+            toast(`Could not retrieve trust account`);
+        }
+    }
+
+    const checkEnv= async()=>{
+        const EnvironmentInput={AwsAccountId: formData.AwsAccountId, region:formData.region.value};
+        const response = await client.query(checkEnvironment(EnvironmentInput));
+        if (!response.errors){
+            //toast(`Aws account and region have been validated. (${response.data.checkEnvironment})`)
+            return response.data.checkEnvironment;
+        }else {
+            toast(`aws://${formData.AwsAccountId}:${formData.region} was not correctly bootstrapped`)
+            return null;
+        }
+    }
     const submitForm=async ()=>{
         console.log(formData);
+        let preCheck = await checkEnv();
+        if (!preCheck){
+            return
+        }
         let res =await client.mutate(createEnvironment({
             organizationUri:params.uri,
             label : formData.label,
@@ -67,6 +94,12 @@ const NewEnvironmentForm= (props)=>{
     }
     const handleInputChange=((e)=>setFormData({...formData, [e.target.name]: e.target.value}));
 
+    useEffect(()=>{
+        if (client){
+            getTrustAwsAccountId();
+        }
+    },[client])
+
     return <PageStyled>
     <Container>
         <Row>
@@ -80,26 +113,21 @@ const NewEnvironmentForm= (props)=>{
             </Col>
             <Col xs={11}>
                 <h3>Link Environment <b className={`text-primary text-capitalize`}>{formData.label}</b> </h3>
-                <code>aws://{formData.AwsAccountId}:{formData.region&&formData.region.value}</code>
             </Col>
         </Row>
         <Row className={`mt-3`}>
             <Col xs={12}>
-                <div className="alert alert-info" role="alert">
+                <div className="alert alert-primary" role="alert">
                     Before linking an AWS Account and region to datahub, please make sure:
-                    <ul>
-                        <li> You have bootsraped your account using the <a href={`https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html#getting_started_install`}> aws cdk cli  </a>
-                            <ul>
-                                <li>
-                            <code>
-                                cdk bootstrap --trust aws://ACCOUNTID:region
-                            </code>
-                                </li>
-                            </ul>
-                        </li>
-                        <li> You have created an IAM Role called datahubPivotRole on your account </li>
-                    </ul>
-
+                    <p><b> 1. You have bootsraped your account using the <a href={`https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html#getting_started_install`}> aws cdk cli  </a></b></p>
+                    <code>
+                        cdk bootstrap  --trust {trustAwsAccountId} -c @aws-cdk/core:newStyleStackSynthesis=true --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess aws://{formData.AwsAccountId}/{formData.region.value}
+                    </code>
+                    <p><b>
+                        2. You have created an IAM Role called datahubPivotRole on your account
+                    </b>
+                    </p>
+                    <p> The role must trus the account <code>{trustAwsAccountId}</code></p>
                 </div>
             </Col>
         </Row>

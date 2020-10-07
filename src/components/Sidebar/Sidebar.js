@@ -7,6 +7,11 @@ import styled from "styled-components";
 import {Link} from "react-router-dom";
 import useClient from "../../api/client";
 import getUserRoleInTenant from "../../api/Tenant/getUserRoleInTenant";
+import * as FcIcon  from 'react-icons/fc';
+import * as MdIcon  from 'react-icons/md';
+import * as GiIcon  from 'react-icons/gi';
+import * as HiIcon  from 'react-icons/hi';
+
 
 const SidebarStyled = styled.div`
 a{
@@ -65,23 +70,15 @@ const Sidebar = (props) => {
                     </Col>
                 </Row>
 
-                <Hoverable color={"black"}>
-                    <Row className={"mt-1"}>
-                        <Col className="" xs={1}>
-                            <Icon.Cloud/>
-                        </Col>
-                        <Col>
-                            <Link className={"pt-4 "} to={"/home"}><h6>Home</h6></Link>
-                        </Col>
-                    </Row>
-                </Hoverable>
+
+
                 <Hoverable color={"black"}>
                     <Row className={"sidebarlink"}>
                         <Col xs={1}>
                             <Icon.Search/>
                         </Col>
                         <Col>
-                            <Link className={""} to={"/catalog"}><h6>Catalog</h6></Link>
+                            <Link className={""} to={"/catalog"}><h6>Data Catalog</h6></Link>
                         </Col>
                     </Row>
                 </Hoverable>
@@ -95,26 +92,18 @@ const Sidebar = (props) => {
                         </Col>
                     </Row>
                 </Hoverable>
+                {/**
                 <Hoverable color={"black"}>
                     <Row className={"sidebarlink"}>
                         <Col xs={1}>
                             <Icon.FileCode/>
                         </Col>
                         <Col>
-                            <Link className={""} to={"/projects"}><h6>My Projects</h6></Link>
+                            <Link className={""} to={"/projects"}><h6>Projects</h6></Link>
                         </Col>
                     </Row>
                 </Hoverable>
-                <Hoverable color={"black"}>
-                    <Row className={"sidebarlink"}>
-                        <Col xs={1}>
-                            <Icon.Cloud/>
-                        </Col>
-                        <Col>
-                            <Link className={""} to={"/environments"}><h6>My Environments</h6></Link>
-                        </Col>
-                    </Row>
-                </Hoverable>
+                 **/}
 
                 {/**
                 <Hoverable color={"black"}>
@@ -136,7 +125,7 @@ const Sidebar = (props) => {
                             <Icon.People/>
                         </Col>
                         <Col>
-                            <Link className={""} to={"/teams"}><h6>My Teams</h6></Link>
+                            <Link className={""} to={"/teams"}><h6>Teams</h6></Link>
                         </Col>
                     </Row>
                 </Hoverable>
@@ -144,10 +133,20 @@ const Sidebar = (props) => {
                 <Hoverable color={"black"}>
                     <Row className={"sidebarlink"}>
                         <Col xs={1}>
-                            <Icon.ArrowRepeat/>
+                            <Icon.Gear/>
                         </Col>
                         <Col>
                             <Link className={""} to={"/sqlpipelines"}><h6>My Data Pipelines</h6></Link>
+                        </Col>
+                    </Row>
+                </Hoverable>
+                <Hoverable color={"black"}>
+                    <Row className={"sidebarlink"}>
+                        <Col xs={1}>
+                            <Icon.Layers/>
+                        </Col>
+                        <Col>
+                            <Link className={""} to={"/mlpipelines"}><h6>My ML Pipelines</h6></Link>
                         </Col>
                     </Row>
                 </Hoverable>
@@ -155,13 +154,14 @@ const Sidebar = (props) => {
                 <Hoverable color={"black"}>
                     <Row className={"sidebarlink"}>
                         <Col xs={1}>
-                            <Icon.ClipboardData/>
+                            <MdIcon.MdShowChart/>
                         </Col>
                         <Col>
                             <Link className={""} to={"/dashboards"}><h6>My Dashboards</h6></Link>
                         </Col>
                     </Row>
                 </Hoverable>
+
 
                 <Hoverable color={"black"}>
                     <Row className={"sidebarlink"}>
@@ -173,6 +173,30 @@ const Sidebar = (props) => {
                         </Col>
                     </Row>
                 </Hoverable>
+
+                <Hoverable color={"black"}>
+                    <Row className={"sidebarlink"}>
+                        <Col xs={1}>
+                            <Icon.Cloud/>
+                        </Col>
+                        <Col>
+                            <Link className={""} to={"/environments"}><h6>My Environments</h6></Link>
+                        </Col>
+                    </Row>
+                </Hoverable>
+
+                <Hoverable color={"black"}>
+                    <Row className={"mt-1"}>
+                        <Col className="" xs={1}>
+                            <Icon.List/>
+                        </Col>
+                        <Col>
+                            <Link className={"pt-4 "} to={"/home"}><h6>My Recent Activities</h6></Link>
+                        </Col>
+                    </Row>
+                </Hoverable>
+
+
                 <If condition={isTenantAdmin}>
                     <Then>
                         <Hoverable color={"black"}>

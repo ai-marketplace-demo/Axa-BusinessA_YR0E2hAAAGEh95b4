@@ -47,7 +47,7 @@ const SqlPipelineListItem = (props)=>{
             <Col xs={8}>
                 <Link to={`/sqlpipeline/${props.sqlPipeline.sqlPipelineUri}`}>
                     <p>
-                        <Avatar className={`mr-1`} size={32} round={true} name={props.sqlPipeline.label}/> <b className={"text-capitalize"}>{props.sqlPipeline.label.slice(0,10)}</b>
+                        <Avatar className={`mr-1`} size={32} round={true} name={props.sqlPipeline.label}/> <b className={"text-capitalize"}>{props.sqlPipeline.label}</b>
                     </p>
                 </Link>
             </Col>
@@ -76,6 +76,10 @@ const SqlPipelineListItem = (props)=>{
             <Col xs={4}><Icon.House></Icon.House></Col>
             <Col xs={8}>
                 <small> {props.sqlPipeline.organization.label}</small>
+            </Col>
+            <Col xs={4}><Icon.Gear/></Col>
+            <Col xs={8}>
+                <small> {props.sqlPipeline.stack.status}</small>
             </Col>
 
         </Row>

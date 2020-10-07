@@ -60,11 +60,13 @@ const DatasetList = (props)=>{
 
     const nextPage=()=>{
         if (datasets.hasNext){
+            setReady(false);
             setDatasets({...datasets, page:datasets.page+1})
         }
     }
     const previouPage =()=>{
         if (datasets.hasPrevious){
+            setReady(false);
             setDatasets({...datasets, page:datasets.page-1})
         }
     }
