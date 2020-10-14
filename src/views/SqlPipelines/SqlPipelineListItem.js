@@ -10,6 +10,7 @@ import {BrowserRouter, Route,Link, Switch} from "react-router-dom";
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Avatar from "react-avatar";
+import UserProfileLink from "../Profile/UserProfileLink";
 dayjs.extend(relativeTime)
 
 const Styled=styled.div`
@@ -18,7 +19,7 @@ transition: transform 0.3s ease-in-out;
   transform: translateY(-5px);
   box-shadow: 0px 3px 2px lightgrey;
 }
-height:15rem;
+height:18rem;
 margin-top: 7px;
 padding: 1em;
 border : 1px solid gainsboro;
@@ -34,6 +35,10 @@ a:hover, a:link, a:visited{
 }
 }
 `;
+
+const Footer = styled.div`
+height: 3ch;
+`
 
 
 
@@ -67,11 +72,13 @@ const SqlPipelineListItem = (props)=>{
             </Col>
             <Col xs={4}><Icon.PersonCheck></Icon.PersonCheck></Col>
             <Col xs={8}>
-                <small>{props.sqlPipeline.userRoleInSqlPipeline} </small>
+                <small>{props.sqlPipeline.userRoleForPipeline} </small>
             </Col>
-            <Col xs={4}><Icon.Flag></Icon.Flag></Col>
+            <Col xs={4}><Icon.Cloud></Icon.Cloud></Col>
             <Col xs={8}>
-                <small>{props.sqlPipeline.region} </small>
+                    <Link style={{color: `blue`}} to={`/environment/${props.sqlPipeline.environment.environmentUri}`}>
+                        <small>{props.sqlPipeline.environment.label}</small>
+                    </Link>
             </Col>
             <Col xs={4}><Icon.House></Icon.House></Col>
             <Col xs={8}>
@@ -82,17 +89,21 @@ const SqlPipelineListItem = (props)=>{
                 <small> {props.sqlPipeline.stack.status}</small>
             </Col>
 
+            <Col xs={10}>
+                <small>Created by <UserProfileLink username={props.sqlPipeline.owner}/> {dayjs(props.sqlPipeline.created).fromNow()}</small>
+            </Col>
         </Row>
-
-        <Row className={`mt-2 border-top`}>
-            {
-                props.sqlPipeline.tags.map((tag)=>{
-                    return <Col className={`ml-1 mt-1 pr-2`} xs={3}>
-                        <Badge className={`ml-1`} variant={`secondary`}  >{tag}</Badge>
-                    </Col>
-                })
-            }
-        </Row>
+        <Footer>
+            <Row className={`mt-2 border-top`}>
+                {
+                    props.sqlPipeline.tags.map((tag)=>{
+                        return <Col className={`ml-1 mt-1 pr-2`} xs={3}>
+                            <Badge className={`ml-1`} variant={`secondary`}  >{tag}</Badge>
+                        </Col>
+                    })
+                }
+            </Row>
+        </Footer>
         <Row>
             <div style={{height:`200px`}}/>
         </Row>

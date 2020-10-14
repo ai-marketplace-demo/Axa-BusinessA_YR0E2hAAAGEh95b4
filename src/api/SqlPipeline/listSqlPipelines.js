@@ -27,6 +27,11 @@ const searchSqlPipelines= (filter)=>{
                             label
                             name
                         }
+                        environment{
+                            environmentUri
+                            label
+                        }
+                        userRoleForPipeline
                         stack{
                             status
                         }
