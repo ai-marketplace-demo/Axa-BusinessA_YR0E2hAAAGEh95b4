@@ -140,6 +140,8 @@ const Sidebar = (props) => {
                         </Col>
                     </Row>
                 </Hoverable>
+
+                {/**
                 <Hoverable color={"black"}>
                     <Row className={"sidebarlink"}>
                         <Col xs={1}>
@@ -150,7 +152,9 @@ const Sidebar = (props) => {
                         </Col>
                     </Row>
                 </Hoverable>
+                 **/}
 
+                {/**
                 <Hoverable color={"black"}>
                     <Row className={"sidebarlink"}>
                         <Col xs={1}>
@@ -161,6 +165,7 @@ const Sidebar = (props) => {
                         </Col>
                     </Row>
                 </Hoverable>
+                 **/}
 
 
                 <Hoverable color={"black"}>

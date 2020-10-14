@@ -106,7 +106,7 @@ const DashboardList = function(){
                             <Then>
                                 {
                                     dashboards.nodes.map((dashboard)=>{
-                                        return <Col xs={4}>
+                                        return <Col xs={6}>
                                             <DashboardListItem dashboard={dashboard}/>
                                         </Col>
                                     })

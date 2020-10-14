@@ -10,6 +10,7 @@ import {BrowserRouter, Route,Link, Switch} from "react-router-dom";
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Avatar from "react-avatar";
+import UserProfileLink from "../Profile/UserProfileLink";
 dayjs.extend(relativeTime)
 
 const Styled=styled.div`
@@ -47,7 +48,7 @@ const DashboardListItem = (props)=>{
             <Col xs={8}>
                 <Link to={`/dashboardadmin/${props.dashboard.dashboardUri}/overview`}>
                     <p>
-                        <Avatar className={`mr-1`} size={32} round={true} name={props.dashboard.label}/> <b className={"text-capitalize"}>{props.dashboard.label.slice(0,10)}</b>
+                        <Avatar className={`mr-1`} size={32} round={true} name={props.dashboard.label}/> <b className={"text-capitalize"}>{props.dashboard.label}</b>
                     </p>
                 </Link>
             </Col>
@@ -57,6 +58,10 @@ const DashboardListItem = (props)=>{
         </Row>
 
         <Row className={`mt-1`}>
+            <Col xs={4}><Icon.PersonCheck></Icon.PersonCheck></Col>
+            <Col xs={8}>
+                <Badge variant={`primary`} pill>{props.dashboard.userRoleForDashboard} </Badge>
+            </Col>
             <Col xs={4}><Icon.Person></Icon.Person></Col>
             <Col xs={8}>
                 <small>{props.dashboard.owner} </small>
@@ -65,19 +70,25 @@ const DashboardListItem = (props)=>{
             <Col xs={8}>
                 <small>{props.dashboard.SamlGroupName} </small>
             </Col>
-            <Col xs={4}><Icon.PersonCheck></Icon.PersonCheck></Col>
-            <Col xs={8}>
-                <small>{props.dashboard.userRoleInDashboard} </small>
-            </Col>
-            <Col xs={4}><Icon.Flag></Icon.Flag></Col>
-            <Col xs={8}>
-                <small>{props.dashboard.region} </small>
-            </Col>
             <Col xs={4}><Icon.House></Icon.House></Col>
             <Col xs={8}>
                 <small> {props.dashboard.organization.label}</small>
             </Col>
+            <Col xs={4}><Icon.Cloud></Icon.Cloud></Col>
+            <Col xs={8}>
+                <small>{props.dashboard.environment.label}({props.dashboard.environment.AwsAccountId}:{props.dashboard.environment.region}) </small>
+            </Col>
 
+        </Row>
+        <Row>
+            <Col xs={6}>
+                <small>Created by <UserProfileLink username={props.dashboard.owner}/> </small>
+            </Col>
+            <Col xs={6}>
+                <small>
+                    {dayjs(props.dashboard.created).fromNow()}
+                </small>
+            </Col>
         </Row>
 
         <Row className={`mt-2 border-top`}>
