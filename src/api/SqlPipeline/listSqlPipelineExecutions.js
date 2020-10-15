@@ -7,8 +7,8 @@ const listSqlPipelineExecutions= ({sqlPipelineUri, stage})=>{
             stage: stage
         },
         query:gql`
-            query ListSqlPipelineExecutions($sqlPipelineUri:String!){
-                ListSqlPipelineExecutions(sqlPipelineUri:$sqlPipelineUri, stage:$stage){
+            query ListSqlPipelineExecutions($sqlPipelineUri:String!,$stage:String){
+                listSqlPipelineExecutions(sqlPipelineUri:$sqlPipelineUri, stage:$stage){
                     count
                     page
                     pages

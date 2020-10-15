@@ -4,29 +4,63 @@ import * as Icon from "react-bootstrap-icons";
 import BootstrapTable from 'react-bootstrap-table-next';
 import useClient from "../../../api/client";
 import getSqlPipelineRuns from "../../../api/SqlPipeline/getSqlPipelineRuns";
+import listSqlPipelineExecutions from "../../../api/SqlPipeline/listSqlPipelineExecutions";
 import {toast} from "react-toastify";
+import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime';
+import {Case, Default, Switch} from "react-if";
+dayjs.extend(relativeTime)
 
 const SqlPipelineRunList=(props)=>{
+
+
+    const dateFormatter= (cell, row, rowIndex)=>{
+        return <div>{dayjs(cell).fromNow()}</div>
+    }
+
+
+    const statusRenderer= (cell, row, rowIndex)=>{
+        return <h6><Switch>
+            <Case condition={cell=="SUCCEEDED"}>
+                <Badge variant={`success`}>{cell}</Badge>
+            </Case>
+            <Case condition={cell=="FAILED"}>
+                <Badge variant={`warning`}>{cell}</Badge>
+            </Case>
+            <Case condition={cell=="RUNNING"}>
+                <div>  <Badge variant={`primary`}>{cell}</Badge> <Spinner size={`sm`} animation={`border`} variant={`primary`}/></div>
+            </Case>
+            <Default>
+                <Badge variant={`danger`}>{cell}</Badge>
+            </Default>
+        </Switch>
+        </h6>
+    }
 
     const columns = [
 
         {
-            dataField: 'JobName',
+            dataField: 'name',
             //headerStyle: {width: '12ch'},
-            text: 'JobName'
-
+            text: 'name'
         },
         {
-            dataField: 'StartedOn',
-            text: 'StartedOn'
+            dataField: 'status',
+            //headerStyle: {width: '12ch'},
+            text: 'status',
+            formatter: statusRenderer
         },
         {
-            dataField: 'CompletedOn',
-            text: 'CompletedOn',
+            dataField: 'startDate',
+            //headerStyle: {width: '12ch'},
+            text: 'Started',
+            formatter: dateFormatter
         },
         {
-            dataField: 'JobRunState',
-            text: 'JobRunState',
+            dataField: 'stopDate',
+            //headerStyle: {width: '12ch'},
+            text: 'Completed',
+            formatter: dateFormatter
         }
     ];
 
@@ -36,11 +70,14 @@ const SqlPipelineRunList=(props)=>{
     const [count, setCount] = useState(-1);
     const [ready,setReady] = useState(false);
     const fetchItems=async ()=>{
-        const response = await client.query(getSqlPipelineRuns(sqlPipeline.sqlPipelineUri));
+        const response = await client.query(listSqlPipelineExecutions ({
+            sqlPipelineUri: sqlPipeline.sqlPipelineUri,
+            stage:"prod"
+        }));
         console.log("SqlPipelineRunList.fetchItems",response)
         if (!response.errors){
-            setRuns(response.data.getSqlPipeline.runs);
-            setCount(response.data.getSqlPipeline.runs.length);
+            setRuns(response.data.listSqlPipelineExecutions.nodes);
+            setCount(response.data.listSqlPipelineExecutions.count);
         }else {
             toast.warn(`Could not retrieved job runs, received ${response.errors[0].message}`);
         }
@@ -66,7 +103,7 @@ const SqlPipelineRunList=(props)=>{
     return <Container>
         <Row>
             <Col xs={12}>
-                <p> Found {count} job(s)</p>
+                <p> Found {count} execution(s)</p>
             </Col>
         </Row>
         <Row>

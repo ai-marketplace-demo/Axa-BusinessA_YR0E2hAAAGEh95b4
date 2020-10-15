@@ -120,6 +120,7 @@ const EnvironmentListItem=(props)=>{
         </Row>
         <Row>
             <Col xs={12}>
+
                 <small> {dayjs(environment.created).fromNow()}</small>
             </Col>
 

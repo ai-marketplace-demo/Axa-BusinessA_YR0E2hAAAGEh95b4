@@ -7,10 +7,10 @@ import styled from "styled-components";
 import ActionButton from "../../components/ActionButton/ActionButton";
 import { Sparklines,SparklinesBars } from 'react-sparklines';
 import {BrowserRouter, Route,Link, Switch} from "react-router-dom";
-import dayjs from "dayjs"
-import relativeTime from 'dayjs/plugin/relativeTime';
 import Avatar from "react-avatar";
 import UserProfileLink from "../Profile/UserProfileLink";
+import dayjs from "dayjs"
+import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime)
 
 const Styled=styled.div`
