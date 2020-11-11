@@ -231,7 +231,7 @@ const RedshiftClusterListItem = (props)=> {
                         {(cluster.port &&
                             <SpanZoomer>
                                 <CopyToClipboard text={`${cluster.port}`}>
-                                    <Icon.Clipboard onClick={()=>{copy('Endpoint')}} className={`ml-2`}/>
+                                    <Icon.Clipboard onClick={()=>{copy('Port')}} className={`ml-2`}/>
                                 </CopyToClipboard>
                             </SpanZoomer>
                         )}
