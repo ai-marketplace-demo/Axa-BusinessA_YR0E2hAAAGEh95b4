@@ -11,7 +11,6 @@ import styled from "styled-components";
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Avatar from "react-avatar";
-import './style.css';
 import useClient from "../../api/client";
 import {If, Then} from "react-if";
 import {CopyToClipboard} from "react-copy-to-clipboard";
