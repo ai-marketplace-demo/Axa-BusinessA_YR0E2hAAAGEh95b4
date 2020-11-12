@@ -67,7 +67,7 @@ const Datashopper= (props)=>{
     }
 
     const actionFormatter=(cell, row)=>{
-        return <div onClick={()=>{linkDataset(row.datasetUri)}} className={`btn btn-primary btn-sm `}>Link</div>
+        return <div onClick={()=>{linkDataset(row)}} className={`btn btn-primary btn-sm `}>Link</div>
     }
 
     const columns=[
@@ -104,15 +104,17 @@ const Datashopper= (props)=>{
     ];
 
 
-    const linkDataset=async (datasetUri)=>{
+    const linkDataset=async (dataset)=>{
+        toast(`Linking dataset ${dataset.label} to cluster ${cluster.label}`);
         const res = await client.mutate(addDatasetToCluster({
             clusterUri,
-            datasetUri
+            datasetUri: dataset.datasetUri
         }));
         if (!res.errors){
-            await fetchItems()
+            await fetchItems();
+            toast.success(`Dataset ${dataset.label} linked to cluster ${cluster.label}`);
         }else{
-            toast.warning(`Could not ling dataset to Cluster, received ${res.errors[0].message}`)
+            toast.warning(`Could not link dataset to cluster, ${res.errors[0].message}`)
         }
     };
 

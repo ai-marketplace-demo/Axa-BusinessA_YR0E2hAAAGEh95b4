@@ -80,18 +80,18 @@ const RedshiftClusterDatasets= (props)=>{
     const envFormatter=(cell, row)=>{
         return <Link to={`/playground/${row.environment.environmentUri}`}>{row.environment.name}</Link>
 
-    }
+    };
 
     const datasetLinkFormatter=(cell, row)=>{
         return <p>
             <Link to={`/organization/${row.organization.organizationUri}/dashboard`}>{row.organization.name}</Link> /
             <Link to={`/dataset/${row.datasetUri}/overview`}>{row.name}</Link>
         </p>
-    }
+    };
 
     const actionFormatter=(cell, row)=>{
-        return <div onClick={()=>{unlinkDataset(row.datasetUri)}} className={`btn btn-secondary btn-sm `}>Unlink</div>
-    }
+        return <div onClick={()=>{unlinkDataset(row)}} className={`btn btn-secondary btn-sm `}>Unlink</div>
+    };
 
     const columns=[
         {
@@ -134,36 +134,37 @@ const RedshiftClusterDatasets= (props)=>{
 
     const handleKeyDown = async (e)=>{
         if (e.key === 'Enter') {
-            setDatasets({...datasets,page:1})
+            setDatasets({...datasets,page:1});
             await fetchItems()
         }
-    }
+    };
     const nextPage=()=>{
         if(datasets.hasNext){
             setDatasets({...datasets,page:datasets.page+1})
         }
-    }
+    };
     const prevPage=()=>{
         if(datasets.hasPrevious){
             setDatasets({...datasets,page:datasets.page-1})
         }
 
-    }
+    };
 
-    const unlinkDataset=async (datasetUri)=>{
-        toast(`Trying to unlink dataset ${datasetUri} from project ${clusterUri}`)
-
+    const unlinkDataset=async (dataset)=>{
+        toast(`Unlinking dataset ${dataset.label} from cluster ${cluster.label}`);
+        const datasetUri = dataset.datasetUri;
         const res = await client.mutate(removeDatasetFromCluster({
             clusterUri,
             datasetUri
         }));
         if (!res.errors){
-            toast(`Unlinked dataset ${datasetUri} from project `)
+            toast.success(`Dataset ${dataset.label} unlinked from cluster ${cluster.label}`);
             await fetchItems()
         }else{
-            toast.warn(`Could not unlink dataset from project, received ${res.errors[0].message}`)
+            toast.warn(`Could not unlink dataset ${dataset.label} 
+            from cluster ${cluster.label}, ${res.errors[0].message}`)
         }
-    }
+    };
 
     const fetchItems=async ()=>{
         const response= await  client

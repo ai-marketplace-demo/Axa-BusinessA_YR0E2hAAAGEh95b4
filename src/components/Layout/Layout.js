@@ -44,7 +44,6 @@ import EnvironmentList from "../../views/Environment/EnvironmentList";
 import DashboardList from "../../views/Dashboards/DashboardList";
 import NewDashboardForm from "../../views/Dashboards/NewDashboardForm";
 import DashboardAdmin from "../../views/Dashboards/DashboardAdmin";
-import styled from "styled-components";
 import { ToastContainer, toast,Slide } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -53,8 +52,13 @@ import ValidateShareObject from "../../views/DataAccessRequest/ValidateShareAcce
 import SqlPipelineList from "../../views/SqlPipelines/SqlPipelineList";
 import NewSqlPipelineForm from "../../views/SqlPipelines/NewSqlPipelineForm";
 import SqlPipelineAdmin from "../../views/SqlPipelines/SqlPipelineAdmin";
+import NewRedshiftCluster from "../../views/RedshiftClusters/NewCluster";
+import RedshiftClusterList from "../../views/RedshiftClusters/ClusterList";
+import RedshiftClusterView from "../../views/RedshiftClusters/ClusterView";
+import Datashopper from "../../views/Project/ProjectDatasets/Datashopper";
 
 const Layout = (props) => {
+
     let [sidebarState, setSidebarState] = useState(true);
     let toggle = () => {
         setSidebarState(!sidebarState);
@@ -221,6 +225,16 @@ const Layout = (props) => {
                                 </Route>
                                 <Route path={`/table/:datasetUri/:tableUri`}>
                                     <TableExplorer/>
+                                </Route>
+
+                                <Route path={`/redshiftclusters`}>
+                                    <RedshiftClusterList/>
+                                </Route>
+                                <Route path={`/newredshiftcluster`}>
+                                    <NewRedshiftCluster/>
+                                </Route>
+                                <Route path={`/redshiftcluster/:uri`}>
+                                    <RedshiftClusterView/>
                                 </Route>
                                 <Route path={`/`}>
                                    <Home/>

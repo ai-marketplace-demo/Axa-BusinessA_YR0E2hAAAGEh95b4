@@ -34,8 +34,8 @@ const NewEnvironmentForm= (props)=>{
         label : 'myenv',
         description : '',
         SamlGroupName:'',
-        AwsAccountId: '727430407563',
-        region : null,
+        AwsAccountId: '273936262510',
+        region : "eu-west-1",
         type : options[0]
     });
 

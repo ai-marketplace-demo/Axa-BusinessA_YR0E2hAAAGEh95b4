@@ -9,6 +9,7 @@ import {toast} from "react-toastify";
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime";
 import {Link} from "react-router-dom";
+import LinkSpan from "../../components/Link/LinkSpan";
 dayjs.extend(relativeTime);
 
 
@@ -355,7 +356,44 @@ const ClusterDetails= (props)=>{
                         </Row>
                     </Card.Body>
                 </Card>
-
+                <Card className={"mt-4"}>
+                    <Card.Header>
+                        <b>CloudFormation</b>
+                    </Card.Header>
+                    <Card.Body>
+                        <Row className={"mt-2"}>
+                            <Col xs={4} className={"ml-3 border-right"}>
+                                <Row>
+                                    <InfoSpan>Stack Status</InfoSpan>
+                                </Row>
+                                <Row>
+                                    <Badge variant={`${statusColor(cluster.CFNStackStatus)} text-uppercase`} pill>{cluster.CFNStackStatus}</Badge>
+                                </Row>
+                            </Col>
+                            <Col xs={4} className={"ml-3 border-right"}>
+                                <Row>
+                                    <InfoSpan>Stack Name</InfoSpan>
+                                </Row>
+                                <Row>
+                                    <LinkSpan>
+                                        <b>{cluster.CFNStackName}</b>
+                                    </LinkSpan>
+                                </Row>
+                            </Col>
+                            <Col xs={2} className={"ml-3"}>
+                                <Row>
+                                    <InfoSpan>Stack ARN</InfoSpan>
+                                </Row>
+                                <Row>
+                                    <LinkSpan>
+                                        <b>{cluster.CFNStackArn}</b>
+                                    </LinkSpan>
+                                </Row>
+                            </Col>
+                        </Row>
+                    </Card.Body>
+                </Card>
+            <Row className={"mt-4"}/>
             </div>
         ))}
     </Container></DetailStyled>

@@ -1,5 +1,5 @@
 import React ,{useState, useEffect} from "react";
-import {Row, Col, Badge, Spinner, Button} from "react-bootstrap";
+import {Row, Col, Badge, Spinner, Button, Modal} from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import {
     faSyncAlt, faGlobeEurope, faNetworkWired, faPlayCircle, faPauseCircle,
@@ -22,6 +22,8 @@ import deleteRedshiftCluster from  "../../api/RedshiftCluster/deleteCluster";
 import getClusterConsoleAccess from "../../api/RedshiftCluster/getClusterConsoleAccess";
 import SpanZoomer from "../../components/Zoomer/SpanZoomer";
 import {Link, useHistory} from "react-router-dom";
+import UserProfileLink from "../Profile/UserProfileLink";
+import LinkSpan from "../../components/Link/LinkSpan";
 dayjs.extend(relativeTime);
 
 const Styled=styled.div`
@@ -30,7 +32,7 @@ transition: transform 0.3s ease-in-out;
   transform: translateY(-5px);
   box-shadow: 0px 3px 2px lightgrey;
 }
-height:19rem;
+height:18.7rem;
 margin-top: 7px;
 padding: 1em;
 border : 1px solid gainsboro;
@@ -53,12 +55,7 @@ transition: transform 0.2s ease-in-out;
   }
 `;
 
-const LinkSpan=styled.span`
-font-weight: 400;
-color: #007bff;
-text-decoration: none;
-cursor: pointer;
-`;
+
 
 
 
@@ -71,6 +68,8 @@ const RedshiftClusterListItem = (props)=> {
     const [isStartingCluster, setIsStartingCluster] = useState(false);
     const [isStoppingCluster, setIsStoppingCluster] = useState(false);
     const [isDeletingCluster, setIsDeletingCluster] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
     const copy=(field)=>{
         toast(`Copied ${field} to clipboard`,{hideProgressBar:true});
     };
@@ -164,167 +163,25 @@ const RedshiftClusterListItem = (props)=> {
         return color;
     };
 
+    const openDeleteModal = () => {
+        setShowDeleteModal(true);
+    };
+
+    const closeDeleteModal = () => {
+        setShowDeleteModal(false);
+    };
+
     useEffect(()=>{},[client, props.cluster]);
 
-    return <Styled>
-        <Row className={'mb-3 border-bottom'}>
-            <Col xs={9}>
-                <span style={{ color: '#545b64', marginLeft: '3px' }}>
-                    <Link to={`/organization/${cluster.organization.organizationUri}`}>
-                        <FontAwesomeIcon icon={faHome} style={{ color: '#545b64' }}/> <b style={{ color: '#545b64' }} className={`text-capitalize`}>{cluster.organization.label}</b>
-                    </Link>
-                </span>
-            </Col>
-            <Col xs={3}>
-                <span style={{ color: '#545b64', marginLeft: '3px' }}>
-                    <Link to={`/playground/${cluster.environment.environmentUri}`}>
-                        <FontAwesomeIcon icon={faCloud} style={{ color: '#545b64' }}/> <b style={{ color: '#545b64' }} className={`text-capitalize`}>{cluster.environment.label}</b>
-                    </Link>
-                </span>
-            </Col>
-        </Row>
-        <Row>
-            <Col xs={12}>
-                <p>
-                    <Link to={`/redshiftcluster/${cluster.clusterUri}`}>
-                        <Avatar className={`mr-1`} size={32} round={true} name={cluster.label}/> <b className={"text-capitalize"}>{cluster.label}</b>
-                    </Link>
-                </p>
-            </Col>
-        </Row>
 
-        <Row className={`mt-1`}>
+    return <Styled>
+        <Row className={``}>
             <Col xs={9}>
-                <Row>
-                    <Col xs={12}>
-                        <FontAwesomeIcon icon={faIdCard} style={{ color: '#545b64' }}/> <span style={{ color: '#545b64', marginLeft: '3px' }}>Identifier : </span>
-                        <LinkSpan onClick={generateRedirectUrl}>{cluster.name}</LinkSpan>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <FontAwesomeIcon icon={faAws} style={{ color: '#545b64' }}/> <span style={{ color: '#545b64', marginLeft: '3px' }}>Account : </span><span>{cluster.AwsAccountId}</span>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <FontAwesomeIcon icon={faGlobeEurope} style={{ color: '#545b64' }}/> <span style={{ color: '#545b64', marginLeft: '6px' }}>Region : </span><span>{cluster.region}</span>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <FontAwesomeIcon icon={faNetworkWired} style={{ color: '#545b64' }}/> <span style={{ color: '#545b64', marginLeft: '3px' }}>Endpoint : </span>
-                        <span>{!cluster.endpoint ?  ' -' : cluster.endpoint}</span>
-                        {(cluster.endpoint &&
-                            <SpanZoomer>
-                                <CopyToClipboard text={`${cluster.endpoint}`}>
-                                    <Icon.Clipboard onClick={()=>{copy('Endpoint')}} className={`ml-2`}/>
-                                </CopyToClipboard>
-                            </SpanZoomer>
-                        )}
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <FontAwesomeIcon icon={faNetworkWired} style={{ color: '#545b64' }}/> <span style={{ color: '#545b64', marginLeft: '3px' }}>Port : </span>
-                        <span>{`${cluster.port}`|| ' -'}</span>
-                        {(cluster.port &&
-                            <SpanZoomer>
-                                <CopyToClipboard text={`${cluster.port}`}>
-                                    <Icon.Clipboard onClick={()=>{copy('Port')}} className={`ml-2`}/>
-                                </CopyToClipboard>
-                            </SpanZoomer>
-                        )}
-                    </Col>
-                </Row>
-            </Col>
-            <Col xs={3}>
-                <Row OnClick={''}>
-                    <Col className={`border-bottom mb-2`} xs={8}>
-                        <CardAction
-                            type="button"
-                            onClick={generateRedirectUrl}>
-                            <If condition={isLoadingConsoleUrl}>
-                                <Then>
-                                    <span style={{ marginRight: '3px'}}><Spinner size={`sm`} variant={`primary`} animation={`grow`}/></span>
-                                </Then>
-                            </If>
-                            <FontAwesomeIcon icon={faAws} style={{ color: '#545b64', marginTop: '5px'}} size="sm"/>
-                                <span style={{ color: '#545b64', marginLeft: '7px' }}>
-                                    <b>Console</b>
-                                </span>
-                        </CardAction>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col  className={`border-bottom mb-2`} xs={8}>
-                        <CardAction
-                            type="button"
-                            onClick={goToClusterDatasets}>
-                            <FontAwesomeIcon icon={faFolderPlus} style={{ color: '#545b64', marginTop: '5px'}}/>
-                            <span style={{ color: '#545b64', marginLeft: '5px'}}><b>Datasets</b></span>
-                        </CardAction>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col  className={`border-bottom mb-2`} xs={8}>
-                        <CardAction
-                            type="button"
-                            onClick={goToClusterCreds}>
-                            <FontAwesomeIcon icon={faKey} style={{ color: '#545b64', marginTop: '5px'}}/>
-                            <span style={{ color: '#545b64', marginLeft: '5px'}}><b>Credentials</b></span>
-                        </CardAction>
-                    </Col>
-                </Row>
-                {/*<Row>
-                    <Col  className={`border-bottom mb-2`} xs={8}>
-                        <CardAction
-                            type="button"
-                            onClick={startCluster}>
-                            <If condition={isStartingCluster}>
-                                <Then>
-                                    <span style={{ marginRight: '3px'}}><Spinner size={`sm`} variant={`primary`} animation={`grow`}/></span>
-                                </Then>
-                            </If>
-                            <FontAwesomeIcon icon={faPlayCircle} style={{ color: '#545b64', marginTop: '5px'}}/> <span style={{ color: '#545b64', marginLeft: '5px'}}><b>Resume</b></span>
-                        </CardAction>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col className={`border-bottom mb-2`} xs={8}>
-                        <CardAction
-                            type="button"
-                            onClick={stopCluster}>
-                            <If condition={isStoppingCluster}>
-                                <Then>
-                                    <span style={{ marginRight: '1px'}}><Spinner size={`sm`} variant={`primary`} animation={`grow`}/></span>
-                                </Then>
-                            </If>
-                            <FontAwesomeIcon icon={faPauseCircle} style={{ color: '#545b64', marginTop: '5px'}}/> <span style={{ color: '#545b64', marginLeft: '5px'}}><b>Pause</b></span>
-                        </CardAction>
-                    </Col>
-                </Row>*/}
-                <Row>
-                    <Col  className={`border-bottom mb-2`} xs={8}>
-                        <CardAction
-                            type="button"
-                            onClick={deleteCluster}>
-                            <If condition={isDeletingCluster}>
-                                <Then>
-                                    <span style={{ marginRight: '8px'}}><Spinner size={`sm`} variant={`primary`} animation={`grow`}/></span>
-                                </Then>
-                            </If>
-                        <FontAwesomeIcon icon={faTrashAlt} style={{ color: '#545b64', marginTop: '5px'}}/> <span style={{ color: '#545b64', marginLeft: '5px'}}><b>Delete</b></span>
-                        </CardAction>
-                    </Col>
-                </Row>
-            </Col>
-        </Row>
-        <Row className={`border-top mt-3`}>
-            <Col xs={9}>
-                <FontAwesomeIcon icon={faUserCog} style={{ color: '#545b64', marginTop: '5px'}}/>
-                <span style={{ color: '#545b64', marginLeft: '5px', marginRight: '5px'}}><b>Permission</b></span>
-                <Badge pill variant={`primary`} className={`text-uppercase`}> {cluster.userRoleForCluster}</Badge>
+                <Link to={`/redshiftcluster/${props.cluster.clusterUri}`}>
+                    <p>
+                        <Avatar className={`mr-1`} size={32} round={true} name={props.cluster.label}/> <b className={"text-capitalize"}>{props.cluster.label}</b>
+                    </p>
+                </Link>
             </Col>
             <Col xs={3}>
                 <CardAction
@@ -332,20 +189,123 @@ const RedshiftClusterListItem = (props)=> {
                     onClick={getRedshiftCluster}>
                     <If condition={isLoadingCluster}>
                         <Then>
-                            <span style={{ marginRight: '1px'}}><Spinner size={`sm`} variant={`primary`} animation={`grow`}/></span>
+                            <span style={{ marginRight: '1px', marginTop: '.5rem!important'}}>
+                                <Spinner size={`sm`} variant={`primary`} animation={`grow`}/>
+                            </span>
                         </Then>
                     </If>
-                    <FontAwesomeIcon icon={faSyncAlt} style={{ color: '#545b64', marginTop: '5px'}}/>
-                    <span style={{ color: '#545b64', marginLeft: '5px', marginRight: '5px'}}><b>Status</b></span>
                     <Badge pill variant={statusColor(cluster.status)} className={`text-uppercase`}> {cluster.status}</Badge>
                 </CardAction>
-
             </Col>
         </Row>
-
-
+        <Row>
+            <Col xs={12}>
+                Created by <UserProfileLink username={props.cluster.owner}/> {dayjs(props.cluster.created).fromNow()}
+            </Col>
+        </Row>
+        <Row>
+            <Col xs={1}>
+                <Icon.People size={22}/>
+            </Col>
+            <Col xs={8}>
+                <Link className={`text-primary`} to={`/organization/${cluster.organization.organizationUri}`}>
+                    {props.cluster.organization.name}
+                </Link>
+            </Col>
+        </Row>
+        <Row>
+            <Col xs={1}>
+                <Icon.Cloud size={22}/>
+            </Col>
+            <Col xs={8}>
+                <Link className={`text-primary`} to={`/playground/${cluster.environment.environmentUri}`}>
+                    {props.cluster.environment.name}
+                </Link>
+            </Col>
+        </Row>
+        <Row>
+            <Col xs={1}>
+                <Icon.PersonCheck size={22}/>
+            </Col>
+            <Col xs={4}>
+                <Badge pill variant={`primary`} className={`mt-1 text-uppercase`}>
+                    {cluster.userRoleForCluster}
+                </Badge>
+            </Col>
+        </Row>
+        <Row className={`mt-1`}>
+            <Col xs={1}>
+                <Icon.Link size={22}/>
+            </Col>
+            <Col xs={11}>
+                <LinkSpan onClick={generateRedirectUrl}>{cluster.name}</LinkSpan>
+            </Col>
+        </Row>
+        <Row className={`mt-1`}>
+            <Col xs={1} className={`mt-1`}>
+                <FontAwesomeIcon icon={faNetworkWired}/>
+            </Col>
+            <Col xs={11}>
+                <span>{!cluster.endpoint ?  ' -' : cluster.endpoint}</span>
+                {(cluster.endpoint &&
+                    <SpanZoomer>
+                        <CopyToClipboard text={`${cluster.endpoint}`}>
+                            <Icon.Clipboard onClick={()=>{copy('Endpoint')}} className={`ml-2`}/>
+                        </CopyToClipboard>
+                    </SpanZoomer>
+                )}
+            </Col>
+        </Row>
+        <Row className={`mt-2 border-top mb-2 justify-content-center`}>
+            <span className={`mt-2 mr-2`}>
+                <If condition={isLoadingConsoleUrl}>
+                    <Then>
+                        <Spinner size={`sm`} variant={`primary`} animation={`grow`}/>
+                    </Then>
+                </If>
+                <Button style={{ fontSize: '0.7rem' }} variant={'secondary'} className={'rounded-pill'} onClick={()=>generateRedirectUrl()}>
+                    <b><FontAwesomeIcon icon={faAws}/> Console</b>
+                </Button>
+            </span>
+            <span className={`mt-2 mr-2`}>
+                <Button style={{ fontSize: '0.7rem' }} variant={'primary'} className={'rounded-pill'} onClick={()=> goToClusterDatasets()}>
+                    <b><FontAwesomeIcon icon={faFolderPlus}/> Datasets</b>
+                </Button>
+            </span>
+            <span className={`mt-2 mr-2`}>
+                <Button style={{ fontSize: '0.7rem' }} variant={'info'} className={'rounded-pill'} onClick={()=> goToClusterCreds()}>
+                    <b><FontAwesomeIcon icon={faKey}/> Credentials</b>
+                </Button>
+            </span>
+            <span className={`mt-2`}>
+                <If condition={isDeletingCluster}>
+                    <Then>
+                        <Spinner size={`sm`} variant={`primary`} animation={`grow`}/>
+                    </Then>
+                </If>
+                <Button style={{ fontSize: '0.7rem' }} variant={'danger'} className={'rounded-pill'} onClick={()=>openDeleteModal()}>
+                    <b><Icon.Trash/> Delete</b>
+                </Button>
+            </span>
+        </Row>
+        <Modal show={showDeleteModal} onHide={closeDeleteModal}>
+            <Modal.Header closeButton>
+                <Modal.Title>Delete Redshift Cluster</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Confirm Amazon Redshift cluster <b><i>{cluster.label}</i></b> deletion ?</Modal.Body>
+            <Modal.Footer>
+                <Button variant="outline-secondary" className={'rounded-pill'} onClick={closeDeleteModal}>
+                    Close
+                </Button>
+                <Button variant="outline-danger" className={'rounded-pill'} onClick={deleteCluster}>
+                    Delete
+                </Button>
+            </Modal.Footer>
+        </Modal>
     </Styled>
+
 };
 
-export default RedshiftClusterListItem
+
+export default RedshiftClusterListItem;
 

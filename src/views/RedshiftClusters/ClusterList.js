@@ -126,7 +126,7 @@ const RedshiftClusterList = function(){
                     <Then>
                         {
                             clusters.nodes.map((cluster)=>{
-                                return <Col xs={12}>
+                                return <Col xs={6}>
                                     <RedshiftClusterListItem cluster={cluster} reloadClusters={fetchItems}/>
                                 </Col>
                             })
