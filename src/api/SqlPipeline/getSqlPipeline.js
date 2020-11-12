@@ -33,6 +33,7 @@ const getSqlPipeline= (sqlPipelineUri)=>{
                         status
                         stackid
                         link
+                        outputs
                         
                     }
                 }

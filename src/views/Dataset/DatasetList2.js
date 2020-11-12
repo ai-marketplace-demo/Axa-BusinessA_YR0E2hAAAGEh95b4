@@ -1,15 +1,14 @@
 import React, {useState,useEffect} from "react";
 import {Container,Spinner,Table, Row, Col, ListGroupItem, ListGroup} from "react-bootstrap";
-import Tile from "../../components/Tile/Tile";
-import MainActionButton from "../../components/MainActionButton/MainButton";
+import {If, Then, Else} from "react-if";
 import * as Icon from "react-bootstrap-icons";
-import DatasetListItem from "./DatasetListItem2";
-import {Link,useLocation,useParams,useHistory} from "react-router-dom";
+import DatasetListItem from "./DatasetListItem";
+import {Link} from "react-router-dom";
 import styled from "styled-components";
 import {toast} from "react-toastify";
 import useClient from "../../api/client";
 import listDatasets from "../../api/Dataset/listDatasets";
-
+import Pager from "../../components/Pager/Pager";
 
 const Styled=styled.div`
 height:100vh;
@@ -60,11 +59,13 @@ const DatasetList = (props)=>{
 
     const nextPage=()=>{
         if (datasets.hasNext){
+            setReady(false);
             setDatasets({...datasets, page:datasets.page+1})
         }
     }
     const previouPage =()=>{
         if (datasets.hasPrevious){
+            setReady(false);
             setDatasets({...datasets, page:datasets.page-1})
         }
     }
@@ -94,19 +95,36 @@ const DatasetList = (props)=>{
     },[client, datasets.page]);
 
     return <Styled>
-        <Container className={""}>
+        <Container fluid className={"mt-4"}>
             <Row>
-                <Col xs={3}>
+                <Col xs={8}>
                     <h3> <Icon.Folder/> My Datasets </h3>
                 </Col>
-                <Col xs={7}>
-                    <Row className={`mt-2`}>
-                        <Col xs={4}><i>Found {datasets.count} results</i></Col>
-                        <Col className={`pt-1 text-right`} xs={2}><Icon.ChevronLeft onClick={previouPage}/></Col>
-                        <Col className={` text-center`} xs={4}>Page {datasets.page}/{datasets.pages}</Col>
-                        <Col className={`pt-1 text-left`} xs={2}><Icon.ChevronRight onClick={nextPage}/></Col>
-                    </Row>
+                <Col xs={2}/>
+                <Col xs={2}>
+                    <Link to={"/newdataset"}>
+                        <div style={{width:'100%'}}className={`rounded-pill btn btn-info`}>
+                            Create Dataset
+                        </div>
+                    </Link>
                 </Col>
+            </Row>
+
+            <Pager
+                page={datasets.page}
+                pages={datasets.pages}
+                count={datasets.count}
+                next={nextPage}
+                prev={previouPage}
+                onKeyDown={handleKeyDown}
+                onChange={handleInputChange}
+        />
+        {/**
+            <Row>
+                <Col xs={8}>
+                    <h3> <Icon.Folder/> My Datasets </h3>
+                </Col>
+
                 <Col xs={1} className={`mt-2`}>
                     <MainActionButton>
                         <Link to={"/newdataset"}>
@@ -116,29 +134,41 @@ const DatasetList = (props)=>{
                 </Col>
             </Row>
             <Row className={"mt-3"}>
+                <Col className={`ml-1`} xs={4}><i> Found {datasets.count} results</i></Col>
+                <Col className={`pt-1 text-right`} xs={2}><Icon.ChevronLeft onClick={previouPage}/></Col>
+                <Col className={` text-center`} xs={4}>Page {datasets.page}/{datasets.pages}</Col>
+                <Col className={`pt-1 text-left`} xs={2}><Icon.ChevronRight onClick={nextPage}/></Col>
                 <Col xs={12}>
                     <input className={"form-control"} name={'search'} value={search} onKeyDown={handleKeyDown} onChange={handleInputChange} placeholder={"search your datasets"} style={{width:'100%'}}/>
                 </Col>
-
-
             </Row>
+         **/}
             <Row className={"mt-4"}>
+                <If condition={!ready}>
+                    <Then>
+                        <Col xs={12}>
+                            <Spinner variant={"primary"} animation="border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </Spinner>
+                        </Col>
+                    </Then>
+                    <Else>
+                        {
+                            datasets.nodes.map((dataset)=>{
+                                return <Col xs={4}><DatasetListItem  key={dataset.datasetUri} dataset={dataset}/></Col>
+
+                            })
+                        }
+                    </Else>
+                </If>
                 {
                     (!ready)?(
                         <Col>
-                        <Spinner variant={"primary"} animation="border" role="status">
-                            <span className="sr-only">Loading...</span>
-                        </Spinner>
                         </Col>
                     ):(
-                        <Col className={`bg-white`} xs={`11`}>
+                        <Col className={`bg-white`} xs={`12`}>
                             <Row>
-                            {
-                                datasets.nodes.map((dataset)=>{
-                                    return <Col xs={6}><DatasetListItem  key={dataset.datasetUri} dataset={dataset}/></Col>
 
-                                })
-                            }
                             </Row>
                         </Col>
                     )

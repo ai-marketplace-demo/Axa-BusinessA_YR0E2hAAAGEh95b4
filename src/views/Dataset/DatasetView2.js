@@ -39,6 +39,7 @@ import  EditDatasetQualityRule from "./DatasetQualityRules/EditDatasetQualityRul
 import SqlPipelineOverview from "../SqlPipelines/SqlPipelineOverview";
 import DatasetShareeList from "./DatasetSharing/DatasetShareeList";
 
+import DmblViewer from "./DbmlDoc/DatasetDbmlViewer";
 
 const _FullScreen=styled.div`
 position : fixed;

@@ -15,6 +15,9 @@ const listDatasetStorageLocations= (datasetUri)=>{
                                 locationUri
                                 created
                                 S3Prefix
+                                name
+                                description
+                                created
                                 userRoleForStorageLocation
                             }
                         }

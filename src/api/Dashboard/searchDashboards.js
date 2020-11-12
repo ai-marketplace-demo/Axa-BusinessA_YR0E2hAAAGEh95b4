@@ -22,10 +22,18 @@ const searchDashboards= (filter)=>{
                         label
                         created
                         tags
+                        userRoleForDashboard
                         organization{
                             organizationUri
                             label
                             name
+                        }
+                        environment{
+                            environmentUri
+                            name
+                            label
+                            AwsAccountId
+                            region
                         }
                         
                     }

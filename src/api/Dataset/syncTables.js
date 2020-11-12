@@ -12,6 +12,8 @@ const syncTables=(datasetUri)=>{
                 {
                     tableUri
                     GlueTableName
+                    description
+                    
                     name
                     label
                     dataset{

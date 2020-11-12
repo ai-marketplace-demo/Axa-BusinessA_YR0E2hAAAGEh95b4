@@ -130,7 +130,7 @@ const NewSqlPipelineForm= (_props)=>{
     return <Container>
         <Row>
             <Col xs={4}>
-                <h4> <Icon.BarChartLine xs={48}/> Create New SqlPipeline</h4>
+                <h4> <Icon.ArrowRepeat xs={48}/> Create New SqlPipeline</h4>
             </Col>
             <Col xs={8}>
                 {(isSubmitting)?(

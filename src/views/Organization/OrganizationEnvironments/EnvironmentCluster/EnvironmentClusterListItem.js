@@ -4,7 +4,7 @@ import styled from "styled-components";
 import * as Icon from "react-bootstrap-icons";
 import Select from 'react-select'
 import {Link,useParams,useLocation} from "react-router-dom"
-import OrganizationEnvironmentListItem from "../OrganizationEnvironmentListItem";
+//import OrganizationEnvironmentListItem from "../OrganizationEnvironmentListItem";
 
 
 

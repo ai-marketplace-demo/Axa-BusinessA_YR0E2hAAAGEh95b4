@@ -11,11 +11,29 @@ import {toast} from "react-toastify";
 import SqlPipelineListItem from "./SqlPipelineListItem";
 import dayjs from "dayjs";
 import getSqlPipeline from "../../api/SqlPipeline/getSqlPipeline";
+import getSqlPipelineDag from "../../api/SqlPipeline/getSqlPipelineDag";
 
 
 const SqlPipelineOverview = (props)=>{
     const sqlPipeline = props.sqlPipeline;
+    const client = useClient()
+    const [dag , setDag] = useState(null);
 
+    const fetchDag = async()=>{
+        const response = await client.query(getSqlPipelineDag(sqlPipeline.sqlPipelineUri));
+        if (!response.errors){
+            setDag(response.data.getSqlPipelineDag)
+        }else {
+            toast(`Could not retrieve dag, received error ${response.errors[0].message}`)
+        }
+    }
+
+
+    useEffect(()=>{
+        if (client){
+            //fetchDag();
+        }
+    })
     return <Container className={`mt-4`}>
 
         <Row >
@@ -75,6 +93,17 @@ const SqlPipelineOverview = (props)=>{
                 <a href={`https://${sqlPipeline.environment&&sqlPipeline.environment.region}.console.aws.amazon.com/codesuite/codecommit/repositories/${sqlPipeline.repo}/browse?region=${sqlPipeline.environment&&sqlPipeline.environment.region}`} target={`_blank`}>
                     CodeCommit
                 </a>
+            </Col>
+        </Row>
+        <Row>
+            <Col xs={12}>
+                <If condition={dag}>
+                    <Then>
+                        <code>
+                            {/**dag**/}
+                        </code>
+                    </Then>
+                </If>
             </Col>
         </Row>
 

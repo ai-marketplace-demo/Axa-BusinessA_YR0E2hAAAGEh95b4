@@ -20,11 +20,17 @@ const listEnvironments = ({filter})=>{
                         label
                         AwsAccountId
                         region
+                        created
                         owner
                         SamlGroupName
                         EnvironmentDefaultIAMRoleName
+                        stack{
+                            status
+                        }
                         organization{
                             organizationUri
+                            name
+                            label
                         }
                     }
 

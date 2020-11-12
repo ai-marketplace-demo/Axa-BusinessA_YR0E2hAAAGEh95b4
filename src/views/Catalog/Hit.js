@@ -110,12 +110,7 @@ const Hit = (props)=>{
                                     <Icon.Folder size={12}/> {hit.statistics.locations} locations
                                 </Col>
                             </Row>
-                            <Row className={`mt-1`}>
-                                <Col xs={1}/>
-                                <Col xs={6}>
-                                    <Icon.Play size={12}/> {hit.statistics.locations} used
-                                </Col>
-                            </Row>
+
 
 
 
@@ -157,9 +152,9 @@ const Hit = (props)=>{
                                             dataset : hit
                                         }}
                                         to={{
-                                            pathname:`/dataset/${hit.datasetUri}/newshareobject`
+                                            pathname:`/dataset/${hit.datasetUri}/shares`
                                         }}>
-                                        <div  className={"btn btn-sm bg-white border "}>
+                                        <div  style={{width: "7rem"}} className={"btn btn-sm btn-primary border rounded-pill"}>
                                          Get It
                                         </div>
 

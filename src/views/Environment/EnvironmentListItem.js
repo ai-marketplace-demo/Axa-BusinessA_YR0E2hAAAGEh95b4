@@ -2,7 +2,7 @@ import React ,{useState,useEffect} from "react";
 import {Container, Table,Row, Badge,Col,Spinner} from "react-bootstrap";
 import styled from "styled-components";
 import Avatar from "react-avatar"
-import {If,Then,Else} from "react-if";
+import {If,Then,Else,Case,When,Default,Switch} from "react-if";
 import * as Icon from "react-bootstrap-icons";
 import Select from 'react-select'
 import Tag from "../../components/Tag/Tag";
@@ -10,6 +10,8 @@ import UserProfileLink from "../../views/Profile/UserProfileLink";
 import {Link,useParams,useLocation} from "react-router-dom"
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
+import BasicCard from "../../components/Card/BasicCard";
+import StackStatusBadge  from "../../components/StackStatusBadge/StackStatusBadge"
 dayjs.extend(relativeTime)
 
 
@@ -23,7 +25,7 @@ text-align: center;
 background-color: salmon;
 `
 const Card=styled.div`
-height: 24ch;
+height: 27ch;
 margin-top: 6px;
 border-radius: 4px;
 background-color: white;
@@ -38,6 +40,73 @@ transition: transform 0.3s ease-in-out;
 `
 
 
+const Header = (props)=>{
+    const environment = props.environment;
+    return <Row>
+        <Col xs={6}>
+            <Link to={`/playground/${environment.environmentUri}`}>
+                <b className={`text-capitalize`}>{environment.label}</b>
+            </Link>
+        </Col>
+    </Row>
+}
+
+const Body = (props)=>{
+    const environment = props.environment;
+    return <div className={`mt-3`}>
+        <Row className={``}>
+            <Col xs={2}>
+                <Icon.House/>
+            </Col>
+            <Col xs={10}>
+                <div style={{fontSize:'12px'}}> {environment.organization.label}</div>
+            </Col>
+
+        </Row>
+        <Row className={`mt-2`}>
+            <Col xs={2}>
+                <Icon.Cloud/>
+            </Col>
+            <Col xs={10}>
+                <small><code>{environment.AwsAccountId}({environment.region})</code></small>
+            </Col>
+
+        </Row>
+        <Row className={`mt-2`}>
+            <Col xs={2}>
+                <Icon.People/>
+            </Col>
+            <Col xs={10}>
+                <div style={{fontSize:'12px'}}> {environment.SamlGroupName}</div>
+            </Col>
+        </Row>
+        <Row className={`mt-2`}>
+            <Col xs={2}>
+                <Icon.PersonCheck/>
+            </Col>
+            <Col xs={10}>
+                <small>{environment.userRoleInEnvironment}</small>
+            </Col>
+        </Row>
+        <Row className={`mt-2`}>
+            <Col xs={2}>
+                <Icon.ShieldLock/>
+            </Col>
+            <Col xs={10}>
+                <div style={{fontSize:'12px'}}> {environment.EnvironmentDefaultIAMRoleName}</div>
+            </Col>
+        </Row>
+        <Row className={`mt-2`}>
+            <Col xs={2}>
+                <Icon.Gear/>
+            </Col>
+            <Col xs={10}>
+                <StackStatusBadge status={environment.stack.status}/>
+            </Col>
+
+        </Row>
+    </div>
+}
 
 const EnvironmentListItem=(props)=>{
     const location = useLocation();
@@ -45,6 +114,19 @@ const EnvironmentListItem=(props)=>{
     const canLink = false;
 
 
+    const header=  <Header {...props}/>
+    const body =  <Body {...props}/>
+
+
+    return <BasicCard
+        label={environment.label}
+        owner={environment.owner}
+        created={environment.created}
+        description={environment.description}
+        header={header}
+        body={body}
+        tags={environment.tags||[]}
+    />
     return <Card>
         <Row>
 
@@ -90,6 +172,27 @@ const EnvironmentListItem=(props)=>{
                 <div style={{fontSize:'12px'}}> {environment.EnvironmentDefaultIAMRoleName}</div>
             </Col>
         </Row>
+        <Row className={`mt-2`}>
+            <Col xs={2}>
+                <Icon.Gear/>
+            </Col>
+            <Col xs={10}>
+                <Col xs={1}>
+                     <Switch>
+                     <Case condition={environment.stack.status=="CREATE_COMPLETE"}>
+                         <Badge pill variant={`success`}>{environment.stack.status}</Badge>
+                     </Case>
+                     <Case condition={environment.stack.status=="IN_PROGRESS"}>
+                         <Spinner variant={`primary`} size={`sm`}/>
+                     </Case>
+                     <Default>
+                         <Badge pill variant={`warning`}>{environment.stack.status}</Badge>
+                     </Default>
+                     </Switch>
+                </Col>
+
+            </Col>
+        </Row>
 
 
         <Row className={`mt-2`}>
@@ -99,6 +202,7 @@ const EnvironmentListItem=(props)=>{
         </Row>
         <Row>
             <Col xs={12}>
+
                 <small> {dayjs(environment.created).fromNow()}</small>
             </Col>
 

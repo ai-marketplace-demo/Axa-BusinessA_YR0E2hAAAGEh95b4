@@ -1,5 +1,6 @@
 import React ,{useState,useEffect} from "react";
 import {Container, Row, Badge,Col,Spinner} from "react-bootstrap";
+import {If, Then,Else} from "react-if";
 import styled from "styled-components";
 import * as Icon from "react-bootstrap-icons";
 import MainActionButton from "../../../components/MainActionButton/MainButton";
@@ -8,11 +9,12 @@ import {Link} from "react-router-dom"
 import useClient from "../../../api/client";
 import OrganizationListItem from "./OrganizationListItem";
 import listOrganizations from "../../../api/Organization/listOrganizations"
+import archiveOrganization from "../../../api/Organization/archiveOrganization";
+import Pager from "../../../components/Pager/Pager";
+import BasicCard from "../../../components/Card/BasicCard";
 
 
-const Styled=styled.div`
-height:100vh;
-`
+
 
 const OrganizationList = (props)=>{
     let client = useClient();
@@ -27,10 +29,29 @@ const OrganizationList = (props)=>{
     });
     let [ready, setReady] = useState(false);
     let [search, setSearch] = useState('');
+    let [displayArchiveModal, setDisplayArchiveModal] = useState(false);
+    let [targetOrg, setTargetOrg] = useState(null);
     let [sortCriteria, setSortCriteria] = useState([{field:'created', direction:'desc'},{field:'label', direction: 'asc'}]);
     let [sortCriterias, setSortCriterias] = useState({label :'asc',created:'desc'});
 
 
+    const openArchiveOrganizationModal=(org)=>{
+        setTargetOrg(org);
+        setDisplayArchiveModal(true);
+    }
+
+
+    const archiveOrg = async ()=>{
+        const response = await client.mutate(archiveOrganization(targetOrg.organizationUri));
+        if (!response.errors){
+            toast(`Archived organization ${targetOrg.name}(${targetOrg.organizationUri})`);
+        }else {
+            toast(`Could not archive organization ${targetOrg.name}(${targetOrg.organizationUri}), received ${response.errors[0].message}`);
+        }
+        setDisplayArchiveModal(false);
+        setTargetOrg(null);
+        fetchItems();
+    }
 
     const fetchItems=async ()=>{
         const query =listOrganizations({
@@ -56,24 +77,6 @@ const OrganizationList = (props)=>{
         await fetchItems()
     }
 
-    const __handleKeyDown = async (e)=>{
-        if (e.key === 'Enter') {
-            const response = await client
-                .query(
-                    listOrganizations({
-                        term:search,
-                        sort:Object.keys(sortCriterias).map((k)=>{ return {field:k, direction:sortCriterias[k]}}),
-                        roles:['Admin','Owner','Member']})
-                );
-            if (!response.errors){
-                setOrganizations(response.data.listOrganizations)
-            }else {
-                toast.error(`Failed to refresh organizations, received ${response.errors[0].message}`)
-            }
-        }
-
-    }
-
     const handleKeyDown = async (e)=>{
         if (e.key === 'Enter') {
             await fetchItems()
@@ -86,6 +89,7 @@ const OrganizationList = (props)=>{
 
     const nextPage=async ()=>{
         if (organizations.hasNext){
+            setReady(false);
             setOrganizations({...organizations,page:organizations.page+1})
         }
        //await fetchItems()
@@ -94,6 +98,7 @@ const OrganizationList = (props)=>{
 
     const previousPage=async ()=>{
         if (organizations.hasPrevious){
+            setReady(false);
             setOrganizations({...organizations,page:organizations.page-1});
         }
     }
@@ -105,64 +110,91 @@ const OrganizationList = (props)=>{
     },[client, organizations.page])
 
 
-    return <Styled>
-        <Container>
+    return <Container fluid className={"mt-4"}>
         <Row>
-            <Col xs={3}>
+            <Col xs={10}>
                 <h3> <Icon.House/> My Organizations</h3>
             </Col>
-            <Col xs={2}><i>Found <b>{organizations.count}</b> results</i></Col>
-            <Col xs={4}>
-                <Row>
-                    <Col className={`text-right pt-2`}><Icon.ChevronLeft onClick={previousPage}/></Col>
-                    <Col className={`text-center`}>Page {organizations.page}/{organizations.pages}</Col>
-                    <Col className={`text-left pt-2`}><Icon.ChevronRight onClick={nextPage}/></Col>
-                </Row>
-            </Col>
             <Col className={`mb-1 text-right`} xs={2}>
-                    <MainActionButton>
-                        <Link to={"/neworganization"}>
-                            Create
-                        </Link>
-                    </MainActionButton>
+                <Link to={`neworganization`}>
+                    <div className={`rounded-pill btn btn-info`}>
+                        <b>Create Org</b>
+                    </div>
+                </Link>
             </Col>
         </Row>
         <Row className={`mt-2`}>
-            <Col xs={12} className={``}>
-                <input className={`form-control`} onKeyDown={handleKeyDown} onChange={handleChange} value={search} style={{width:"100%"}} placeholder={"search"}/>
+            <Col xs={12}>
+                <Pager
+                    label={`organization(s)`}
+                    count={organizations.count}
+                    page={organizations.page}
+                    pages={organizations.pages}
+                    next={nextPage}
+                    previous={previousPage}
+                    onKeyDown={handleKeyDown}
+                    onChange={handleChange}
+                />
             </Col>
-
         </Row>
-        {
-            (!ready)?(
-                <Spinner variant="primary" animation="border" role="status">
-                    <span className="sr-only">Loading...</span>
-                </Spinner>
-            ):(
-                <div>
-
-                    <Row className={"mt-3"}>
-                        {
-                            (!organizations.count)?(
-                                <Col xs={12}>
-                                    <i>No Organization found.</i>
+        <Row>
+            <Col className={``} xs={12}>
+                <If condition={displayArchiveModal}>
+                    <Then>
+                        <div  className={`mt-2 mb-2 alert alert-secondary`}>
+                            <Row>
+                                <Col xs={6}>
+                                    Archive Organization <b>{targetOrg&&targetOrg.name}({targetOrg&&targetOrg.organizationUri})</b>
                                 </Col>
+                                <Col xs={6}>
+                                    <div className={`btn-group`}>
+                                        <div onClick={archiveOrg} className={`btn btn-sm btn-danger`}>Archive</div>
+                                        <div className={`pl-2 btn btn-sm  btn-primary`} onClick={()=>{setDisplayArchiveModal(false); setTargetOrg(null)}}>Cancel</div>
+                                    </div>
+                                </Col>
+                                <Col xs={12}>
+                                    Archiving will archive all child resources associated with the organization
+                                </Col>
+                            </Row>
+                        </div>
+                    </Then>
+                </If>
+            </Col>
+        </Row>
+        <Row  className={`mt-2`}>
+            <If condition={!ready}>
+                <Then>
+                    <Col xs={12}>
+                        <Spinner variant="primary" animation="border" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </Spinner>
+                    </Col>
+                </Then>
+                <Else>
+                    <If condition={organizations.count}>
+                        <Then>
+                            {
 
-                            ):(
                                 organizations.nodes.map((org)=>{
-                                    return <OrganizationListItem key={org.organizationUri} organization={org}/>
+                                    return <Col fluid className={`mt-4`} xs={4}>
+                                            <OrganizationListItem openArchiveOrganizationModal={openArchiveOrganizationModal} key={org.organizationUri} organization={org}/>
+                                    </Col>
                                 })
-                            )
-                        }
+                            }
+                        </Then>
+                        <Else>
+                            <Col xs={12}>
+                                <i>No Organization found.</i>
+                            </Col>
+                        </Else>
+                    </If>
+                </Else>
+            </If>
+        </Row>
 
-                    </Row>
-                </div>
-
-            )
-        }
 
     </Container>
-    </Styled>
+
 
 
 }
