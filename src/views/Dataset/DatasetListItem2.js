@@ -12,6 +12,7 @@ import {BrowserRouter, Route,Link, Switch} from "react-router-dom";
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
 import UserProfile from "../Profile/UserProfile";
+import BasicCard from "../../components/Card/BasicCard";
 dayjs.extend(relativeTime)
 
 

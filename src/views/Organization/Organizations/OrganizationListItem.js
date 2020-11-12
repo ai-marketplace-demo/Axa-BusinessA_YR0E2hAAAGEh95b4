@@ -9,6 +9,7 @@ import * as Icon from "react-bootstrap-icons";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
+import BasicCard from "../../../components/Card/BasicCard"
 dayjs.extend(relativeTime);
 
 const OrganizationStyled = styled.div`
@@ -42,7 +43,7 @@ const OrganizationFooter=styled.div`
 height:6ch;
 `
 
-const OrganizationListItem= (props)=>{
+const __OrganizationListItem= (props)=>{
     const org = props.organization;
     let canGo = true;
     if (org.userRoleInOrganization == 'NotMember'){
@@ -159,6 +160,118 @@ const OrganizationListItem= (props)=>{
 
     </Col>
 
+}
+
+
+
+const Header = (props)=>{
+    const org = props.org;
+    const canEdit =props.canEdit;
+    return <Row>
+        <Col xs={8}>
+            <b>{org.label.toUpperCase()}</b>
+        </Col>
+        <Col xs={1}>
+            <If condition={canEdit}>
+                <Then>
+                    <Link
+                        className="text-black"
+                        to={{
+                            state:{organization:org},
+                            pathname:`/editorganization/${org.organizationUri}`
+                        }}><Icon.Pen colors={`black`} size={12}/></Link>
+                </Then>
+            </If>
+        </Col>
+        <Col xs={1}>
+            <If condition={canEdit}>
+                <Then>
+                    <Link to={"#"}>
+                        <Icon.Archive size={12} onClick={props.openArchiveOrganizationModal}/>
+                    </Link>
+                </Then>
+            </If>
+        </Col>
+    </Row>
+}
+
+
+const Body=(props)=>{
+    const org = props.org;
+    return <div>
+
+        <Row className={`mt-3`}>
+            <Col className={`pt-1`} xs={2}>
+                <Icon.InfoCircle/>
+            </Col>
+            <Col xs={4}>
+                <Link to={{state:org,pathname:`/organization/${org.organizationUri}/dashboard`}}>
+                    <small>About</small>
+                </Link>
+            </Col>
+
+        </Row>
+
+
+        <Row>
+            <Col xs={2}>
+                <Icon.PersonCheck/>
+            </Col>
+            <Col xs={4}>
+                <Badge pill variant={`primary`}>{org.userRoleInOrganization}</Badge>
+            </Col>
+        </Row>
+        <Row>
+            <Col className={`pt-1`} xs={2}>
+                <Icon.Cloud/>
+            </Col>
+            <Col xs={4}>
+                <Link to={{state:org,pathname:`/organization/${org.organizationUri}/environments`}}>
+                    <small>Environments({org.stats&&org.stats.environments})</small>
+                </Link>
+            </Col>
+        </Row>
+        <Row>
+            <Col xs={2}>
+                <Icon.People className={`pt-1`} ></Icon.People>
+            </Col>
+
+            <Col  xs={4}>
+                <small>{org.SamlGroupName}</small>
+            </Col>
+        </Row>
+    </div>
+
+}
+
+const OrganizationListItem= (props)=>{
+    const org = props.organization;
+    let canGo = true;
+    if (org.userRoleInOrganization == 'NotMember'){
+        canGo=false;
+    }
+    let canEdit=['Owner','Admin'].indexOf(org.userRoleInOrganization)!=-1;
+    const openArchiveOrganizationModal= ()=>{
+        props.openArchiveOrganizationModal&&props.openArchiveOrganizationModal(org);
+    }
+
+
+
+    const header=<Header org={props.organization} canEdit={canEdit} openArchiveOrganizationModal={openArchiveOrganizationModal}/>
+    const body= <Body org={props.organization}/>
+
+    return <BasicCard
+        topics={["a","b","x"]}
+        height={`43ch`}
+        label={org.label.toUpperCase()}
+        description={org.description}
+        tags={org.tags}
+        header={header}
+        body={body}
+        owner={org.owner}
+        created={org.created}
+        header={header}
+    />
 }
 
 export default OrganizationListItem;

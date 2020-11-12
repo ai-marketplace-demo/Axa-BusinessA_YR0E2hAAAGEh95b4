@@ -11,11 +11,14 @@ import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import Steps from "../../components/Steps/Steps";
 import useClient from "../../api/client";
+import useGroups from "../../api/useGroups";
+import SelectGroup from "../../components/SelectGroup/SelectGroup";
 import createDataset from "../../api/Dataset/createDataset";
 import listOrganizationEnvironments from "../../api/Environment/listOrganizationEnvironments";
 import listOrganizations from "../../api/Organization/listOrganizations";
 import {AwsRegionsSelect, getRegionLabel}  from "../../components/AwsRegions/AwsRegionSelect";
 import TopicSelect from "../../components/Topic/TopicSelect";
+
 
 const Background=styled.div`
 margin-top: -0px;
@@ -72,6 +75,8 @@ const NewDatasetForm = (_props)=>{
         Details:{}
     });
     const client  = useClient();
+    const groups = useGroups();
+
 
 
     let [formData, setFormData]=useState({
@@ -79,7 +84,7 @@ const NewDatasetForm = (_props)=>{
         region :{},
         description:'dataset description',
         topics:[],
-        SamlAdminGroupName: '',
+        SamlAdminGroupName: {label:'',value:''},
         language:Languages[0],
         owner:'',
         stewards:[],
@@ -168,7 +173,7 @@ const NewDatasetForm = (_props)=>{
                 tags:tags,
                 //region : env.region,//formData.region.value,
                 owner:formData.owner,
-                SamlAdminGroupName: formData.SamlAdminGroupName,
+                SamlAdminGroupName: formData.SamlAdminGroupName.value,
                 businessOwnerEmail : formData.owner,
                 businessOwnerDelegationEmails : formData.stewards ?formData.stewards.map((s)=>{return s.value}):[],
                 description:formData.description,
@@ -256,13 +261,28 @@ const NewDatasetForm = (_props)=>{
                     <Row className={"mt-2"}>
                         <Col xs={2}><b>Admin Group</b></Col>
                         <Col xs={10}>
+                            {/**
                             <input
                                 className={`form-control`}
                                 name={"SamlAdminGroupName"}
                                 value={formData.SamlAdminGroupName}
                                 onChange={handleChange}
                                 style={{width:'100%'}}
-                                placeholder={"Dataset admin group name"}/>
+                                placeholder={"Dataset admin group name"}/>**/}
+
+
+                                <SelectGroup
+                                    value={formData.SamlAdminGroupName}
+                                    onChange={(opt)=>{setFormData({...formData, SamlAdminGroupName:opt})}}
+                                />
+                            {/**
+                                <Select
+                                    value={formData.SamlAdminGroupName}
+                                    onChange={(opt)=>{setFormData({...formData, SamlAdminGroupName:opt})}}
+
+                                    options={(groups&&groups||[]).map((g)=>{return {label : g, value: g}})}
+                                />
+                             **/}
                         </Col>
                     </Row>
 

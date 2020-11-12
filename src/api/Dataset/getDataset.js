@@ -12,6 +12,7 @@ const getDataset= (datasetUri)=>{
                         owner
                         description
                         label
+                        name
                         region
                         created
                         userRoleForDataset

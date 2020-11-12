@@ -8,62 +8,32 @@ import Select from 'react-select'
 import Tag from "../../../components/Tag/Tag";
 import UserProfileLink from "../../../views/Profile/UserProfileLink";
 import {Link,useParams,useLocation} from "react-router-dom"
+import BasicCard from "../../../components/Card/BasicCard";
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime)
 
 
 
-const Circle=styled.div`
-border-radius: 50%;
-padding-top: 0.2ch;
-width:3ch;
-height:3ch;
-text-align: center;
-background-color: salmon;
-`
-const Card=styled.div`
-height: 29ch;
-margin-top: 6px;
-border-radius: 4px;
-background-color: white;
-border : 1px solid lightgrey;
-padding: 16px;
-transition: transform 0.3s ease-in-out;
-&:hover{
-  transform: translateY(-5px);
-  box-shadow: 0px 1px 2px 2px whitesmoke;
-  
+
+const Header=(props)=>{
+    const environment= props.environment;
+    return <Row>
+        <Col xs={8}>
+            <Link to={`/playground/${environment.environmentUri}`}>
+                <b className={`text-capitalize`}>{environment.label}</b>
+            </Link>
+        </Col>
+        <Col xs={2}>
+            <Icon.Archive onClick={props.onDisplayArchiveModal} size={12} />
+        </Col>
+    </Row>
 }
-`
 
 
-
-const OrganizationEnvironmentListItem=(props)=>{
-    const location = useLocation();
-    const environment = props.environment
-    const organization = props.organization ;
-    const canEdit = ['Owner','Admin'].indexOf(environment.userRoleInEnvironment)!=-1
-
-    const onDisplayArchiveModal=()=>{
-        props.onDisplayArchiveModal&&props.onDisplayArchiveModal(environment)
-    }
-
-    return <Card>
-        <Row>
-
-            <Col xs={2}>
-                <Avatar round={true} size={28} value={environment.label[0].toUpperCase()}/>
-            </Col>
-            <Col xs={8}>
-                <Link to={`/playground/${environment.environmentUri}`}>
-                    <b className={`text-capitalize`}>{environment.label}</b>
-                </Link>
-            </Col>
-            <Col xs={2}>
-                <Icon.Archive onClick={onDisplayArchiveModal} size={16} color={`red`}/>
-            </Col>
-        </Row>
+const Body=(props)=>{
+    const environment=props.environment;
+    return <div>
         <Row className={`mt-2`}>
             <Col xs={2}>
                 <Icon.Cloud/>
@@ -86,7 +56,7 @@ const OrganizationEnvironmentListItem=(props)=>{
                 <Icon.PersonCheck/>
             </Col>
             <Col xs={10}>
-                <small>{environment.userRoleInEnvironment}</small>
+                <Badge pill variant={`primary`}><small>{environment.userRoleInEnvironment}</small></Badge>
             </Col>
         </Row>
         <Row className={`mt-2`}>
@@ -105,7 +75,7 @@ const OrganizationEnvironmentListItem=(props)=>{
             <Col xs={10}>
                 <Switch>
                     <Case condition={environment.stack.status=="CREATE_COMPLETE"}>
-                        <Badge variant={"success"} pill>{environment.stack.status}</Badge>
+                        <Badge variant={"success"} pill><small>{environment.stack.status}</small></Badge>
                     </Case>
                     <Case condition={environment.stack.status=="CREATE_IN_PROGRESS" || environment.stack.status=="STARTING"}>
                         <Spinner variant={`primary`} animation={`border`} size={`sm`}/>
@@ -117,20 +87,32 @@ const OrganizationEnvironmentListItem=(props)=>{
             </Col>
         </Row>
 
+    </div>
+}
 
-        <Row className={`mt-2`}>
-            <Col xs={12}>
-                <small> Created by <UserProfileLink username={environment.owner}/> </small>
-            </Col>
-        </Row>
-        <Row>
-            <Col xs={12}>
-                <small> {dayjs(environment.created).fromNow()}</small>
-            </Col>
+const OrganizationEnvironmentListItem=(props)=>{
+    const location = useLocation();
+    const environment = props.environment
+    const organization = props.organization ;
+    const canEdit = ['Owner','Admin'].indexOf(environment.userRoleInEnvironment)!=-1
 
-        </Row>
+    const onDisplayArchiveModal=()=>{
+        props.onDisplayArchiveModal&&props.onDisplayArchiveModal(environment)
+    }
 
-    </Card>
+
+    const header=<Header environment={environment} onDisplayArchiveModal={onDisplayArchiveModal}/>
+    const body=<Body environment={environment}/>
+    return <BasicCard
+        label={environment.label}
+        tags={environment.tags||[]}
+        owner={environment.owner}
+        header={header}
+        body={body}
+        created={environment.created}
+        description={environment.description}
+        />
+
 }
 
 

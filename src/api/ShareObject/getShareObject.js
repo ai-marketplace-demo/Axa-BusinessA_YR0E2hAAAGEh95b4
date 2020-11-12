@@ -1,6 +1,6 @@
 import { gql } from "apollo-boost";
 
-const getShareObject=({shareUri, filter})=>{
+const getShareObject=({shareUri,filter})=>{
     return {
         variables:{
             shareUri:shareUri,
@@ -38,7 +38,13 @@ const getShareObject=({shareUri, filter})=>{
                         itemType
                         itemName
                         status
+                        action
                     }
+                }
+                dataset{
+                    datasetUri
+                    datasetName
+                    businessOwnerEmail
                 }
 
             }

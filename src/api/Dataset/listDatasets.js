@@ -29,6 +29,11 @@ const listDatasets= ({filter})=>{
                             organizationUri
                             label
                         }
+                        environment{
+                            label
+                            AwsAccountId
+                            region
+                        }
                         statistics{
                             #contributors
                             tables

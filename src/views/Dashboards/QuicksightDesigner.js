@@ -2,7 +2,7 @@ import React,{useEffect,useState} from "react";
 import {Row, Col, Spinner, Container} from "react-bootstrap";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import * as Icon from "react-bootstrap-icons";
-import {useParams, useHistory} from "react-router";
+import {Link,useParams, useHistory} from "react-router-dom";
 import {If , Then, Case, Else} from "react-if";
 import getAuthorSession from "../../api/Dashboard/getDashboardAuthorSession";
 import getReaderSession  from "../../api/Dashboard/getDashboardReaderSession";
@@ -13,6 +13,7 @@ const QuickSightEmbedding = require("amazon-quicksight-embedding-sdk");
 
 const Embedded=(props)=>{
     const dashboardRef = React.createRef();
+
     const embed = () => {
         const options = {
             url: props.sessionUrl,
@@ -23,8 +24,9 @@ const Embedded=(props)=>{
             locale: "en-US",
             footerPaddingEnabled: true
         };
-        QuickSightEmbedding.embedDashboard(options);
+        const dashboard = QuickSightEmbedding.embedDashboard(options);
     };
+
     useEffect(()=>{
         embed();
     })
@@ -36,64 +38,69 @@ const Embedded=(props)=>{
 
 
 const QuicksightDesigner =(props)=>{
-    const[sessionUrl, setSessionUrl] = useState();
-    const client = useClient();
-    const params = useParams();
-    const handle = useFullScreenHandle();
+    //const [sessionUrl, setSessionUrl] = useState(null);
+    const [dashboardRef,setDashboardRef]= useState(React.createRef());
+    //const [dashboardRefEmpty= React.createRef();
+    const [rendered, setRendered]= useState(false);
 
-    const [fs,setFs] = useState(false)
-
-    const fetchUrl= async ()=>{
-        //toast.info(`Retrieving session url for dashboard ${params.uri}`);
-        const response = await client.query(getReaderSession(params.uri));
-        if (!response.errors){
-            //toast.info(response.data.getReaderSession);
-            setSessionUrl(response.data.getReaderSession);
-        }else {
-            toast.error(`Failed to retrieve session url, received ${response.errors[0].message}`);
+    const embed = () => {
+        if (!rendered){
+            setRendered(true);
+            const options = {
+                url: props.sessionUrl,
+                container: dashboardRef.current,
+                scrolling: "no",
+                //height: "700px",
+                height: "AutoFit",
+                maximize:true,
+                //loadingHeight: "700px",
+                //width: "100%",
+                locale: "en-US",
+                footerPaddingEnabled: true
+            };
+            const dashboard = QuickSightEmbedding.embedDashboard(options);
         }
 
-    }
-    React.useEffect(() => {
-        if (client){
-            fetchUrl();
+    };
+
+    useEffect(()=>{
+        if (props.sessionUrl){
+            embed();
         }
-    },[client]);
+    })
 
-    if (!sessionUrl){
-        return <Spinner className={`mt-4`} variant={`primary`} animation={`border`}> </Spinner>
-    }
-
-    return <FullScreen style={{backgroundColor:'white'}} handle={handle}>
-        <Container className={`bg-white`}>
-            <Row className={`mt-4`}>
-                <Col xs={10}></Col>
-                <Col xs={2}>
-                    <If condition={!fs}>
-                        <Then>
-                            <Icon.Fullscreen onClick={()=>{
-                                setFs(true);
-                                handle.enter()
-                            }}/>
-                        </Then>
-                        <Else>
-                            <Icon.FullscreenExit onClick={()=>{
-                                setFs(false);
-                                handle.exit()
-                            }}/>
-
-                        </Else>
-                    </If>
+    if (!props.sessionUrl){
+        return <Container className={`mt-3s`}>
+            <Row>
+                <Col>
+                    <Spinner variant={`secondary`} animation={`border`} size={`sm`}/>
                 </Col>
             </Row>
-        <Row className={`mt-4`}>
-            <Col className={`bg-white`} xs={12}>
-                <Embedded sessionUrl={sessionUrl}/>
-                {/**<a target={`_blank`} href={sessionUrl}>Quicksight Session</a>**/}
-            </Col>
-        </Row>
+        </Container>
+    }
+
+    return <Container  className={`bg-white`} >
+        <If condition={!props.sessionUrl}>
+            <Then>
+
+            </Then>
+            <Else>
+
+                <Row className={`mt-4`}>
+                    <Col className={`bg-white`} xs={12}>
+                        {/**
+                         <Embedded sessionUrl={props.sessionUrl}/>
+                         **/}
+                        <a target={`_blank`} href={props.sessionUrl}>
+                            View In Quicksight
+                        </a>
+                         <Col xs={12} ref={dashboardRef}/>
+                    </Col>
+                </Row>
+            </Else>
+        </If>
+
     </Container>
-    </FullScreen>
 }
 
 export default QuicksightDesigner;

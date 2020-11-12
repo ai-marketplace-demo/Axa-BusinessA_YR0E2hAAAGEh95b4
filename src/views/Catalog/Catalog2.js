@@ -9,14 +9,14 @@ import FacetGroups from "./FacetGroups";
 import Hits from "./Hits";
 import useClient from "../../api/client";
 import searchDatasets from "../../api/Catalog/searchDatasets";
-
+import Pager from "../../components/Pager/Pager";
 
 
 
 const Catalog = ()=>{
 
     let client =useClient();
-    let [hits,setHits]= useState({page:1,pageSize:5, count:0, hasNext:false, hasPrevious:false, nodes:[]})
+    let [hits,setHits]= useState({page:1,pageSize:5, pages:1,count:0, hasNext:false, hasPrevious:false, nodes:[]})
     let [facets, setFacets]= useState({});
     let [search, setSearch] = useState();
     let [filters, setFilters]=useState({})
@@ -123,10 +123,11 @@ const Catalog = ()=>{
     },[client,hits.page]);
 
     return <Container>
-        <Row>
-            <Col xs={4}>
-                <h3>Data Catalog</h3>
+        <Row className={`mt-4`}>
+            <Col xs={8}>
+                <h3> <Icon.FolderSymlink/> Data Catalog </h3>
             </Col>
+            {/**
             <Col xs={8} className={`mt-2 text-right`}>
                 <Row>
                     <Col xs={3}><i>Found {hits.count} results</i></Col>
@@ -135,7 +136,22 @@ const Catalog = ()=>{
                     <Col onClick={nextPage} className={`text-center`}  xs={1}><Icon.ChevronRight/></Col>
                 </Row>
             </Col>
+             **/}
         </Row>
+        <Row>
+            <Col xs={12}>
+                <Pager
+                    page={hits.page}
+                    pages={hits.pages}
+                    count={hits.count}
+                    next={nextPage}
+                    prev={previousPage}
+                    onKeyDown={handleKeyDown}
+                    onChange={handleInputChange}
+                />
+            </Col>
+        </Row>
+        {/**
         <Row className={`mt-2`}>
             <Col xs={11}>
                 <input
@@ -146,6 +162,7 @@ const Catalog = ()=>{
                     style={{width:'100%'}}  placeholder={`Search all datasets`}/>
             </Col>
         </Row>
+         **/}
         {(loading)?(
             <Row className={`mt-3`}>
                 <Col xs={3}>
@@ -185,7 +202,7 @@ const Catalog = ()=>{
                             </Col>
                         </Row>
                     </Col>
-                    <Col className={``} xs={8}>
+                    <Col className={``} xs={9}>
                         <Hits hits={hits}/>
                     </Col>
                 </Row>

@@ -89,7 +89,7 @@ const EditOrganizationForm = (props)=>{
                         <div onClick={onSubmit} className={"btn btn-success"}>
                             Save
                         </div>
-                        <div className={"btn btn-secondary"}>
+                        <div className={"btn btn-info"}>
                             <Link className="text-white" to={"/organizations"}> Cancel</Link>
                         </div>
 

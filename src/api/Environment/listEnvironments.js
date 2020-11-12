@@ -30,6 +30,7 @@ const listEnvironments = ({filter})=>{
                         organization{
                             organizationUri
                             name
+                            label
                         }
                     }
 

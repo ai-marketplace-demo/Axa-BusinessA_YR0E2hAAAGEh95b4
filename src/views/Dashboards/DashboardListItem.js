@@ -11,6 +11,7 @@ import Avatar from "react-avatar";
 import UserProfileLink from "../Profile/UserProfileLink";
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
+import BasicCard from "../../components/Card/BasicCard";
 dayjs.extend(relativeTime)
 
 const Styled=styled.div`
@@ -37,12 +38,56 @@ a:hover, a:link, a:visited{
 `;
 
 
+const Header=(props)=>{
+    return  <Link to={`/dashboardadmin/${props.dashboard.dashboardUri}/overview`}>
+        <div><b>{props.dashboard.label}</b></div>
+    </Link>
+}
 
 
+const Body =(props)=>{
+    return <Row className={`mt-3`}>
+        <Col xs={4}><Icon.PersonCheck></Icon.PersonCheck></Col>
+        <Col xs={8}>
+            <Badge variant={`primary`} pill>{props.dashboard.userRoleForDashboard} </Badge>
+        </Col>
+        <Col xs={4}><Icon.Person></Icon.Person></Col>
+        <Col xs={8}>
+            <small>{props.dashboard.owner} </small>
+        </Col>
+        <Col xs={4}><Icon.People></Icon.People></Col>
+        <Col xs={8}>
+            <small>{props.dashboard.SamlGroupName} </small>
+        </Col>
+        <Col xs={4}><Icon.House></Icon.House></Col>
+        <Col xs={8}>
+            <small> {props.dashboard.organization.label}</small>
+        </Col>
+        <Col xs={4}><Icon.Cloud></Icon.Cloud></Col>
+        <Col xs={8}>
+            <small>{props.dashboard.environment.label}({props.dashboard.environment.AwsAccountId}:{props.dashboard.environment.region}) </small>
+        </Col>
+
+    </Row>
+}
 
 
 
 const DashboardListItem = (props)=>{
+
+
+    const header=<Header {...props}/>
+    const body=<Body {...props}/>
+    return <BasicCard
+        header={header}
+        body={body}
+        label={props.dashboard.label}
+        owner={props.dashboard.owner}
+        created={props.dashboard.created}
+        tags={props.dashboard.tags||[]}
+        description={props.dashboard.description}
+    />
+
     return <Styled>
         <Row className={``}>
             <Col xs={8}>

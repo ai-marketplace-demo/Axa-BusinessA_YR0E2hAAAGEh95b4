@@ -1,5 +1,6 @@
 import React ,{useState,useEffect} from "react";
 import {Container, Table,Row, Badge,Col,Spinner} from "react-bootstrap";
+import {If, Then , Else} from "react-if";
 import styled from "styled-components";
 import * as Icon from "react-bootstrap-icons";
 import MainButtonAction from "../../components/MainActionButton/MainButton";
@@ -10,6 +11,7 @@ import listEnvironments from "../../api/Environment/listEnvironments";
 import {toast} from "react-toastify";
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
+import Pager from "../../components/Pager/Pager";
 dayjs.extend(relativeTime)
 
 const Styled=styled.div`
@@ -31,7 +33,7 @@ const EnvironmentList=(props)=>{
         page:1,
         hasNext:false,
         hasPrevious:false,
-        pageSize:3,
+        pageSize:10,
         pages:0
     });
     let canLink=false;
@@ -39,7 +41,7 @@ const EnvironmentList=(props)=>{
     let [sortCriterias, setSortCriterias]=useState({label:'asc',created:'desc'});
 
     const fetchItems = async ()=>{
-        console.log("fetchItems search = ", search)
+        setReady(false);
         const response = await client
             .query(listEnvironments({
                 filter:{
@@ -51,10 +53,10 @@ const EnvironmentList=(props)=>{
             }));
         if (!response.errors){
             setEnvironments(response.data.listEnvironments);
-            setReady(true)
         }else {
             toast.error(`Failed to refresh environments, received ${response.errors[0].message}`)
         }
+        setReady(true);
     }
 
     const handleInputChange = async (event)=>{
@@ -89,15 +91,26 @@ const EnvironmentList=(props)=>{
         }
     }
     return <Styled>
-        <Container>
+        <Container fluid className={`mt-4`}>
             <Row>
-
                 <Col xs={10}>
                     <h3>   <Icon.Cloud size={32}/> My Environments </h3>
                 </Col>
-
             </Row>
             <Row className={`mt-4`}>
+                <Col xs={12}>
+                    <Pager
+                        label={`environment(s)`}
+                        count={envs.count}
+                        page={envs.page}
+                        pages={envs.pages}
+                        next={nextPage}
+                        previous={prevPage}
+                        onKeyDown={handleKeyDown}
+                        onChange={handleInputChange}
+                    />
+                </Col>
+                {/**
 
                 <Col xs={3}><i>Found <b>{envs.count}</b> results</i></Col>
                 <Col xs={4}>
@@ -112,35 +125,42 @@ const EnvironmentList=(props)=>{
                 <Col className={`mt-1`} xs={12}>
                     <input className={`form-control`} onKeyDown={handleKeyDown} onChange={handleInputChange} value={search} placeholder={'search environments'} style={{width:"100%"}}/>
                 </Col>
+                 **/}
             </Row>
 
             <Row className={"mt-2"}>
-                {
-                    (!ready)?(
+                <If condition={!ready}>
+                    <Then>
+                        <Col xs={12}>
                         <Spinner variant="primary" animation="border" role="status">
                             <span className="sr-only">Loading...</span>
                         </Spinner>
-                    ):(
-
-                        (envs.count)?(
-                            envs.nodes.map((env)=>{
-
-                                return <Col xs={4}>
-                                    <EnvironmentListItem
-                                        key={env.environmentUri}
-                                        environment={env}
-                                        organization={location.state}
-                                    />
+                        </Col>
+                    </Then>
+                    <Else>
+                        <If condition={envs.count}>
+                            <Then>
+                                {
+                                    envs.nodes.map((env)=>{
+                                        return <Col xs={4}>
+                                            <EnvironmentListItem
+                                                key={env.environmentUri}
+                                                environment={env}
+                                                organization={location.state}
+                                            />
+                                        </Col>
+                                    })
+                                }
+                            </Then>
+                            <Else>
+                                <Col xs={12}>
+                                    <p><i>No Environments found (or accessible to you) in this organization</i></p>
                                 </Col>
-                            })
-                        ):(
-                            <Col xs={12}>
-                                <p><i>No Environments found (or accessible to you) in this organization</i></p>
-                            </Col>
+                            </Else>
+                        </If>
+                    </Else>
+                </If>
 
-                        )
-                    )
-                }
             </Row>
         </Container>
     </Styled>

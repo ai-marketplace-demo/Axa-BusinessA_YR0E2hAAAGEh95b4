@@ -10,12 +10,11 @@ import useClient from "../../../api/client";
 import OrganizationListItem from "./OrganizationListItem";
 import listOrganizations from "../../../api/Organization/listOrganizations"
 import archiveOrganization from "../../../api/Organization/archiveOrganization";
+import Pager from "../../../components/Pager/Pager";
+import BasicCard from "../../../components/Card/BasicCard";
 
 
 
-const Styled=styled.div`
-height:100vh;
-`
 
 const OrganizationList = (props)=>{
     let client = useClient();
@@ -78,24 +77,6 @@ const OrganizationList = (props)=>{
         await fetchItems()
     }
 
-    const __handleKeyDown = async (e)=>{
-        if (e.key === 'Enter') {
-            const response = await client
-                .query(
-                    listOrganizations({
-                        term:search,
-                        sort:Object.keys(sortCriterias).map((k)=>{ return {field:k, direction:sortCriterias[k]}}),
-                        roles:['Admin','Owner','Member']})
-                );
-            if (!response.errors){
-                setOrganizations(response.data.listOrganizations)
-            }else {
-                toast.error(`Failed to refresh organizations, received ${response.errors[0].message}`)
-            }
-        }
-
-    }
-
     const handleKeyDown = async (e)=>{
         if (e.key === 'Enter') {
             await fetchItems()
@@ -129,35 +110,31 @@ const OrganizationList = (props)=>{
     },[client, organizations.page])
 
 
-    return <Styled>
-        <Container>
+    return <Container fluid className={"mt-4"}>
         <Row>
             <Col xs={10}>
                 <h3> <Icon.House/> My Organizations</h3>
             </Col>
             <Col className={`mb-1 text-right`} xs={2}>
-                    <MainActionButton>
-                        <Link to={"/neworganization"}>
-                            Create
-                        </Link>
-                    </MainActionButton>
+                <Link to={`neworganization`}>
+                    <div className={`rounded-pill btn btn-info`}>
+                        <b>Create Org</b>
+                    </div>
+                </Link>
             </Col>
         </Row>
         <Row className={`mt-2`}>
             <Col xs={12}>
-                <Row>
-                    <Col xs={2}><i>Found <b>{organizations.count}</b> results</i></Col>
-                    <Col xs={4}>
-                        <Row>
-                            <Col className={`text-right pt-2`}><Icon.ChevronLeft onClick={previousPage}/></Col>
-                            <Col className={`text-center`}>Page {organizations.page}/{organizations.pages}</Col>
-                            <Col className={`text-left pt-2`}><Icon.ChevronRight onClick={nextPage}/></Col>
-                        </Row>
-                    </Col>
-                </Row>
-            </Col>
-            <Col xs={12} className={`mt-1`}>
-                <input className={`form-control`} onKeyDown={handleKeyDown} onChange={handleChange} value={search} style={{width:"100%"}} placeholder={"search"}/>
+                <Pager
+                    label={`organization(s)`}
+                    count={organizations.count}
+                    page={organizations.page}
+                    pages={organizations.pages}
+                    next={nextPage}
+                    previous={previousPage}
+                    onKeyDown={handleKeyDown}
+                    onChange={handleChange}
+                />
             </Col>
         </Row>
         <Row>
@@ -184,7 +161,7 @@ const OrganizationList = (props)=>{
                 </If>
             </Col>
         </Row>
-        <Row className={`mt-2`}>
+        <Row  className={`mt-2`}>
             <If condition={!ready}>
                 <Then>
                     <Col xs={12}>
@@ -197,8 +174,11 @@ const OrganizationList = (props)=>{
                     <If condition={organizations.count}>
                         <Then>
                             {
+
                                 organizations.nodes.map((org)=>{
-                                    return <OrganizationListItem openArchiveOrganizationModal={openArchiveOrganizationModal} key={org.organizationUri} organization={org}/>
+                                    return <Col fluid className={`mt-4`} xs={4}>
+                                            <OrganizationListItem openArchiveOrganizationModal={openArchiveOrganizationModal} key={org.organizationUri} organization={org}/>
+                                    </Col>
                                 })
                             }
                         </Then>
@@ -214,7 +194,7 @@ const OrganizationList = (props)=>{
 
 
     </Container>
-    </Styled>
+
 
 
 }

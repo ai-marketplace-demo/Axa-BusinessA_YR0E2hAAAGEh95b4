@@ -85,8 +85,8 @@ const SqlPipelineAdmin = (props)=>{
     }
 
     return <FullScreen>
-        <Container>
-            <Row className={"m-0 border-top border-bottom"}>
+        <Container fluid className={`mt-3`}>
+            <Row className={"m-0 border bg-white "}>
                 <Col className="pt-3" xs={1}>
                     <Icon.Gear size={32}/>
                 </Col>

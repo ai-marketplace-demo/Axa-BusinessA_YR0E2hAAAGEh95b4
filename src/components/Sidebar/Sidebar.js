@@ -11,6 +11,7 @@ import * as FcIcon  from 'react-icons/fc';
 import * as MdIcon  from 'react-icons/md';
 import * as GiIcon  from 'react-icons/gi';
 import * as HiIcon  from 'react-icons/hi';
+import {AmplifySignOut} from "@aws-amplify/ui-react";
 
 
 const SidebarStyled = styled.div`
@@ -65,11 +66,21 @@ const Sidebar = (props) => {
                     <Col xs={9}/>
                     <Col xs={2} className={""}>
                         <Zoom color={"black"}>
-                            <Icon.ArrowBarLeft size={28} onClick={props.close}/>
+                            <Icon.X size={28} onClick={props.close}/>
                         </Zoom>
                     </Col>
                 </Row>
 
+
+                <Hoverable color={"black"}>
+                    <Row className={"sidebarlink"}>
+                        <Col xs={1}>
+                        </Col>
+                        <Col>
+                            <Link className={""} to={"/getstarted"}><h6>Get Started</h6></Link>
+                        </Col>
+                    </Row>
+                </Hoverable>
 
 
                 <Hoverable color={"black"}>
@@ -154,7 +165,7 @@ const Sidebar = (props) => {
                 </Hoverable>
                  **/}
 
-                {/**
+
                 <Hoverable color={"black"}>
                     <Row className={"sidebarlink"}>
                         <Col xs={1}>
@@ -165,7 +176,6 @@ const Sidebar = (props) => {
                         </Col>
                     </Row>
                 </Hoverable>
-                 **/}
 
 
                 <Hoverable color={"black"}>

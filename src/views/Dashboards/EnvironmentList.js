@@ -32,7 +32,7 @@ const SessionLink= (props)=>{
             <Spinner size={`sm`} variant={`primary`} animation={`grow`}/>
         </Case>
         <Case condition={status=='ready'}>
-            <a href={sessionUrl} target={`_blank`}>Open session</a>
+            <a onClick={props.closeAll&&props.closeAll} href={sessionUrl} target={`_blank`}>Open session</a>
         </Case>
         <Default>
             <div className={`warning`}>Failed</div>
@@ -121,7 +121,7 @@ const DashboardsEnvironmentList = (props)=>{
                                     {env.region}
                                 </td>
                                 <td>
-                                    <SessionLink environmentUri={env.environmentUri}/>
+                                    <SessionLink closeAll={props.onClose} environmentUri={env.environmentUri}/>
                                 </td>
                             </tr>
                         })

@@ -12,6 +12,7 @@ import {toast} from "react-toastify";
 import styled from "styled-components";
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
+import Pager from "../../components/Pager/Pager";
 dayjs.extend(relativeTime)
 
 
@@ -60,10 +61,10 @@ const Home = ()=>{
         }
     },[client,logs.ready, logs.page])
 
-    return <Container>
+    return <Container fluid className={`mt-3`}>
         <Row>
             <Col xs={12}>
-                <h3><Icon.House/> Recent Activities</h3>
+                <h3> Recent Activities</h3>
             </Col>
         </Row>
 
@@ -81,7 +82,7 @@ const Home = ()=>{
                         </Row>
                     </Col>
                     <Col xs={12}>
-                        <input placeholder={`search resources or actions`}style={{width :'100%'}} className={`form-control`}/>
+                        <input placeholder={`search resources or actions`}style={{width :'100%'}} className={`rounded-pill form-control`}/>
                     </Col>
 
                     <Col className={`mt-3`} xs={12}>

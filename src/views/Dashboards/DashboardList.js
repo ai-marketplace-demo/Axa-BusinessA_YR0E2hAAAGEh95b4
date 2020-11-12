@@ -2,6 +2,7 @@ import React ,{useEffect,useState} from "react";
 import {Col, Row, Container, Spinner} from "react-bootstrap";
 import {If, Then, Else} from "react-if";
 import * as Icon from  "react-bootstrap-icons";
+import * as MdIcon  from 'react-icons/md';
 import styled from "styled-components";
 import MainActionButton from "../../components/MainActionButton/MainButton";
 import {Link} from "react-router-dom";
@@ -10,6 +11,7 @@ import searchDashboards from "../../api/Dashboard/searchDashboards";
 import {toast} from "react-toastify";
 import DashboardListItem from "./DashboardListItem";
 import DashboardsEnvironmentList from "./EnvironmentList";
+import Pager from "../../components/Pager/Pager";
 
 const Styled=styled.div`
 height:100vh;
@@ -49,28 +51,42 @@ const DashboardList = function(){
         if (client){
             fetchItems();
         }
-    },[client,dashboards.page])
+    },[client]);
+
+
     return <Styled>
-        <Container className={""}>
+        <Container fluid className={"mt-4"}>
+
             <Row>
                 <Col xs={6}>
-                    <h3> <Icon.ClipboardData/> My Dashboards</h3>
+                    <h3> <MdIcon.MdShowChart/> My Dashboards</h3>
                 </Col>
                 <Col xs={2}/>
                 <Col xs={2} className={`mt-2`}>
-                    <MainActionButton onClick={displayEnvironments}>
                         <Link to={`/newdashboard`}>
-                            Import
+                            <div className={`btn btn-info rounded-pill`}> Import</div>
                         </Link>
-                    </MainActionButton>
                 </Col>
 
                 <Col xs={2} className={`mt-2`}>
-                    <MainActionButton onClick={displayEnvironments}>
-                            Start Session
-                    </MainActionButton>
+                    <div onClick={displayEnvironments} className={`btn btn-primary rounded-pill`}> Start Session </div>
                 </Col>
             </Row>
+            <Row>
+                <Col xs={12}>
+                    <Pager
+                        label={`dashboard(s)`}
+                        count={dashboards.count}
+                        page={dashboards.page}
+                        pages={dashboards.pages}
+                        next={()=>{}}
+                        previous={()=>{}}
+                        onKeyDown={()=>{}}
+                        onChange={()=>{}}
+                    />
+                </Col>
+            </Row>
+            {/**
             <Row>
                 <Col xs={6}>
                     <Row className={`mt-2`}>
@@ -87,6 +103,7 @@ const DashboardList = function(){
                 </Col>
 
             </Row>
+             **/}
             <If condition={environmentsDisplayed}>
                 <Then>
                     <DashboardsEnvironmentList onClose={()=>{setEnvironmentsDisplayed(false)}}/>
@@ -102,11 +119,11 @@ const DashboardList = function(){
 
                     </Then>
                     <Else>
-                        <If condition={dashboards.count}>
+                        <If condition={dashboards.count>0}>
                             <Then>
                                 {
                                     dashboards.nodes.map((dashboard)=>{
-                                        return <Col xs={6}>
+                                        return <Col xs={4}>
                                             <DashboardListItem dashboard={dashboard}/>
                                         </Col>
                                     })

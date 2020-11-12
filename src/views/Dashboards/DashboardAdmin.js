@@ -1,8 +1,9 @@
 import React ,{useEffect,useState} from "react";
 import {Col, Row, Container, Spinner,Tabs,Tab} from "react-bootstrap";
-import {If, Then, Else} from "react-if";
+import {If, Then, Else,Switch, Case, Default} from "react-if";
 import {useParams, useHistory} from "react-router";
 import * as Icon from  "react-bootstrap-icons";
+import * as MdIcon  from 'react-icons/md';
 import styled from "styled-components";
 import MainActionButton from "../../components/MainActionButton/MainButton";
 import {Link} from "react-router-dom";
@@ -15,6 +16,9 @@ import getDashboard from "../../api/Dashboard/getDashboard";
 import EnvironmentOverview from "../EnvironmentPlayground/EnvironmentOverview";
 import QuicksightDesigner from "./QuicksightDesigner";
 import DashboardOverview from "./DashboardOverview";
+import DashboardShares from "./DashboardShares";
+import RoutedTabs from "../../components/Tabs/Tabs";
+import getReaderSession from "../../api/Dashboard/getDashboardReaderSession";
 
 
 const FullScreen = styled.div`
@@ -33,35 +37,58 @@ const DashboardAdmin = (props)=>{
     const params = useParams();
     const [ready,setReady]= useState(false);
     const [key, setKey] = useState("Overview");
-    const [dashboard, setDashboard] = useState({})
-    useEffect(()=>{
-        if (client){
-            client
-                .query(getDashboard(params.uri))
-                .then((res)=>{
-                    if (!res.errors){
-                        setDashboard(res.data.getDashboard);
-                        setReady(true);
-                    }else {
-                        toast.error(`Could not retrieve dashboard, received ${res.errors[0].message}`,{hideProgressBar:true})
-                    }
-                })
-                .catch((err)=>{
-                    toast.error(`Unexpected error${err.message}`,{hideProgressBar:true})
+    const [dashboard, setDashboard] = useState({
+        readerUrl : null
+    });
+    const [sessionUrl, setSessionUrl] = useState(null);
 
-                })
+    const tabs=[
+        "overview",
+        "display",
+        "share"
+    ];
+
+    const fetchReaderSessionUrl= async ()=>{
+        if (!sessionUrl){
+            toast.info(`Retrieving session url for dashboard ${params.uri}`);
+            const response = await client.query(getReaderSession(params.uri));
+            toast.info("Got url");
+            console.log("Received",response);
+            if (!response.errors){
+
+                setSessionUrl(response.data.getReaderSession);
+
+            }else {
+                toast.error(`Failed to retrieve session url`)//, received ${response.errors[0].message}`);
+            }
+        }
+        setReady(true);
+    }
+
+    const fetchDashboard = async()=>{
+        const response = await client.query(getDashboard(params.uri));
+        if (!response.errors){
+            setDashboard(response.data.getDashboard);
+        }else {
+            toast.error(`Unexpected error${response.errors[0].message}`,{hideProgressBar:true})
         }
 
+    }
+
+    useEffect(()=>{
+        if (client){
+            fetchDashboard();
+            fetchReaderSessionUrl();
+        }
     },[client]);
 
-    const OverviewTitle=()=>{
 
-    }
-    return <FullScreen>
-        <Container>
-            <Row className={"m-0 border-top border-bottom"}>
+
+
+    return <Container fluid className={`mt-3`}>
+            <Row className={"m-0 border"}>
                 <Col className="pt-3" xs={1}>
-                    <Icon.ClipboardData size={32}/>
+                    <MdIcon.MdShowChart size={32}/>
                 </Col>
                 <Col className={"border-right pt-1"} xs={8}>
                     <Row className={"m-0"}>
@@ -82,39 +109,34 @@ const DashboardAdmin = (props)=>{
                 </Col>
 
             </Row>
-
-            <Row className={`mt-4`}>
+            <Row className={`mt-3`}>
                 <Col xs={12}>
-                    <Tabs
-                        activeKey={key}
-                        onSelect={(k) => setKey(k)}
-                    >
-                        <Tab eventKey="Overview" title={'Overview'}>
-                            <If condition={key=='Overview'}>
-                                <Then>
-                                    <DashboardOverview dashboard={dashboard}/>
-                                </Then>
-                            </If>
-                        </Tab>
-
-                        <Tab eventKey="Design" title="View">
-                            <If condition={key=="Design"}>
-                                <Then>
-                                    <QuicksightDesigner/>
-                                </Then>
-                            </If>
-                        </Tab>
-                        <Tab eventKey="Shares" title="Shares">
-                            <h1>Shares</h1>
-                        </Tab>
-
-                    </Tabs>
-
+                    <RoutedTabs tabs={tabs}/>
                 </Col>
             </Row>
 
+            <Row>
+                <Col xs={12}>
+                    <Switch>
+                        <Case condition={params.tab=="display"}>
+                            <QuicksightDesigner
+                                dashboard={dashboard}
+                                sessionUrl={sessionUrl}
+                                //fetchUrl={fetchReaderSessionUrl}
+                            />
+                        </Case>
+                        <Case condition={params.tab=="share"}>
+                            <DashboardShares
+                                dashboard={dashboard}
+                            />
+                        </Case>
+                        <Default>
+                            <DashboardOverview dashboard={dashboard}/>
+                        </Default>
+                    </Switch>
+                </Col>
+            </Row>
         </Container>
-    </FullScreen>
 }
 
 

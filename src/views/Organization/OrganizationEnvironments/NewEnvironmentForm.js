@@ -21,7 +21,7 @@ height:19em;
 border-radius: 0px Opx 5px 5px;
 border-left: 7px solid lightblue;
 padding: 3em;
-width:70%;
+width:100%;
 box-shadow: 0px 1px 0px 1px lightyellow;
 `
 
@@ -115,9 +115,9 @@ const NewEnvironmentForm= (props)=>{
                 <h3>Link Environment <b className={`text-primary text-capitalize`}>{formData.label}</b> </h3>
             </Col>
         </Row>
-        <Row className={`mt-3`}>
+        <Row className={`mt-3 p-3`}>
             <Col xs={12}>
-                <div className="alert alert-primary" role="alert">
+                <div className="bg-light p-3" role="alert">
                     Before linking an AWS Account and region to datahub, please make sure:
                     <p><b> 1. You have bootsraped your account using the <a href={`https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html#getting_started_install`}> aws cdk cli  </a></b></p>
                     <code>

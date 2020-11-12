@@ -37,8 +37,8 @@ const GetStarted = ()=>{
 
 
 
-    return <Container>
-        <Row>
+    return <Container fluid>
+        <Row className={`mt-5`}>
             <Col xs={12}>
                 <h3>Get started on datahub</h3>
             </Col>

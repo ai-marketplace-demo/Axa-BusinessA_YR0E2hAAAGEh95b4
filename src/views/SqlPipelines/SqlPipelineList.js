@@ -9,6 +9,7 @@ import useClient from "../../api/client";
 import listSqlPipelines from "../../api/SqlPipeline/listSqlPipelines";
 import {toast} from "react-toastify";
 import SqlPipelineListItem from "./SqlPipelineListItem";
+import Pager from "../../components/Pager/Pager";
 
 const Styled=styled.div`
 height:100vh;
@@ -66,20 +67,35 @@ const SqlPipelineList = function(){
 
 
     return <Styled>
-        <Container className={""}>
+        <Container fluid className={"mt-4"}>
             <Row>
                 <Col xs={8}>
                     <h3> <Icon.Gear/> My Data Pipelines</h3>
                 </Col>
-
-                <Col xs={1} className={`mt-2`}>
-                    <MainActionButton>
-                        <Link to={"/newsqlPipeline"}>
-                            Create
-                        </Link>
-                    </MainActionButton>
+                <Col xs={2}/>
+                <Col className={`mb-1 text-right`} xs={2}>
+                    <Link to={"/newsqlPipeline"}>
+                        <div className={`rounded-pill btn btn-info`}>
+                            <b>  Create Pipeline</b>
+                        </div>
+                    </Link>
                 </Col>
             </Row>
+            <Row>
+                <Col xs={12}>
+                    <Pager
+                        label={`pipelines(s)`}
+                        page={sqlPipelines.page}
+                        pages={sqlPipelines.pages}
+                        count={sqlPipelines.count}
+                        next={nextPage}
+                        previous={prevPage}
+                        onKeyDown={()=>{fetchItems()}}
+                        onChange={(e)=>{setTerm(e.target.value)}}
+                    />
+                </Col>
+            </Row>
+            {/**
             <Row className={"mt-3"}>
                 <Col xs={12}>
                     <Row>
@@ -104,13 +120,14 @@ const SqlPipelineList = function(){
 
 
             </Row>
+             **/}
 
             <Row className={`mt-3`}>
                 <If condition={ready}>
                     <Then>
                         {
                             sqlPipelines.nodes.map((sqlPipeline)=>{
-                                return <Col xs={6}>
+                                return <Col xs={4}>
                                     <SqlPipelineListItem sqlPipeline={sqlPipeline}/>
                                 </Col>
                             })

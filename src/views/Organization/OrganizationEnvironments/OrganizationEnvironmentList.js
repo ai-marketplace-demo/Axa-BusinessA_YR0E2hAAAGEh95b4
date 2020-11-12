@@ -5,13 +5,15 @@ import styled from "styled-components";
 import * as Icon from "react-bootstrap-icons";
 import Select from 'react-select'
 import MainButtonAction from "../../../components/MainActionButton/MainButton";
-import {Link,useParams,useLocation} from "react-router-dom"
-import OrganizationEnvironmentListItem from "./OrganizationEnvironmentListItem3";
+import {Link,useParams,useLocation} from "react-router-dom";
+import OrganizationEnvironmentListItem from "./OrganizationEnvironmentListItem";
 import useClient from "../../../api/client";
 import listOrganizationEnvironments from "../../../api/Environment/listOrganizationEnvironments";
 import archiveEnvironment from "../../../api/Environment/archiveEnvironment";
 import {toast} from "react-toastify";
 import listOrganizations from "../../../api/Organization/listOrganizations";
+import Pager from "../../../components/Pager/Pager";
+
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime)
@@ -130,14 +132,36 @@ const OrganizationEnvironmentList=(props)=>{
             setEnvironments({...envs, page:envs.page-1})
         }
     }
-    return <Styled>
-    <Container>
+    return <Container fluid className={`mt-4`}>
         <Row>
             <Col xs={10}>
                 <h3>   <Icon.Cloud size={32}/> Environments in Organization <b className={"text-primary"}><Link to={`/organizations`}>{location.state.label.toUpperCase()}</Link></b></h3>
             </Col>
+            <Col xs={2}>
+                <Link  to={{
+                    state: location.state,
+                    pathname:`/newenvironment/${params.uri}`
+                }}>
+                    <div className={`rounded-pill btn btn-info`}>
+                        Link Environment
+                    </div>
+                </Link>
+            </Col>
         </Row>
         <Row className={`mt-4`}>
+            <Col xs={12}>
+                <Pager
+                    label={"environment(s)"}
+                    page={envs.page}
+                    pages={envs.pages}
+                    next={nextPage}
+                    count={envs.count}
+                    previous={prevPage}
+                    onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
+                />
+            </Col>
+            {/**
 
             <Col xs={3}><i>Found <b>{envs.count}</b> results</i></Col>
             <Col xs={4}>
@@ -167,8 +191,9 @@ const OrganizationEnvironmentList=(props)=>{
             <Col xs={12}>
                 <input className={`form-control`} onKeyDown={handleKeyDown} onChange={handleInputChange} value={search} placeholder={'search environments'} style={{width:"100%"}}/>
             </Col>
+             **/}
         </Row>
-        <Row>
+        <Row className={`mt-3`}>
             <Col className={``} xs={12}>
                 <If condition={displayArchiveModal}>
                     <Then>
@@ -230,7 +255,6 @@ const OrganizationEnvironmentList=(props)=>{
             </If>
         </Row>
     </Container>
-    </Styled>
 }
 
 

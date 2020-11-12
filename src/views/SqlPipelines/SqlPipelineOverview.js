@@ -31,7 +31,7 @@ const SqlPipelineOverview = (props)=>{
 
     useEffect(()=>{
         if (client){
-            fetchDag();
+            //fetchDag();
         }
     })
     return <Container className={`mt-4`}>
