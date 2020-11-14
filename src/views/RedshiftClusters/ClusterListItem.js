@@ -32,7 +32,7 @@ transition: transform 0.3s ease-in-out;
   transform: translateY(-5px);
   box-shadow: 0px 3px 2px lightgrey;
 }
-height:18.7rem;
+height:17.5rem;
 margin-top: 7px;
 padding: 1em;
 border : 1px solid gainsboro;
@@ -263,17 +263,17 @@ const RedshiftClusterListItem = (props)=> {
                         <Spinner size={`sm`} variant={`primary`} animation={`grow`}/>
                     </Then>
                 </If>
-                <Button style={{ fontSize: '0.7rem' }} variant={'secondary'} className={'rounded-pill'} onClick={()=>generateRedirectUrl()}>
+                <Button style={{ fontSize: '0.5rem' }} variant={'secondary'} className={'rounded-pill'} onClick={()=>generateRedirectUrl()}>
                     <b><FontAwesomeIcon icon={faAws}/> Console</b>
                 </Button>
             </span>
             <span className={`mt-2 mr-2`}>
-                <Button style={{ fontSize: '0.7rem' }} variant={'primary'} className={'rounded-pill'} onClick={()=> goToClusterDatasets()}>
+                <Button style={{ fontSize: '0.5rem' }} variant={'primary'} className={'rounded-pill'} onClick={()=> goToClusterDatasets()}>
                     <b><FontAwesomeIcon icon={faFolderPlus}/> Datasets</b>
                 </Button>
             </span>
             <span className={`mt-2 mr-2`}>
-                <Button style={{ fontSize: '0.7rem' }} variant={'info'} className={'rounded-pill'} onClick={()=> goToClusterCreds()}>
+                <Button style={{ fontSize: '0.5rem' }} variant={'info'} className={'rounded-pill'} onClick={()=> goToClusterCreds()}>
                     <b><FontAwesomeIcon icon={faKey}/> Credentials</b>
                 </Button>
             </span>
@@ -283,7 +283,7 @@ const RedshiftClusterListItem = (props)=> {
                         <Spinner size={`sm`} variant={`primary`} animation={`grow`}/>
                     </Then>
                 </If>
-                <Button style={{ fontSize: '0.7rem' }} variant={'danger'} className={'rounded-pill'} onClick={()=>openDeleteModal()}>
+                <Button style={{ fontSize: '0.5rem' }} variant={'danger'} className={'rounded-pill'} onClick={()=>openDeleteModal()}>
                     <b><Icon.Trash/> Delete</b>
                 </Button>
             </span>

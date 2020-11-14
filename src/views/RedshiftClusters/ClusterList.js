@@ -87,7 +87,7 @@ const RedshiftClusterList = function(){
         <Container className={""}>
             <Row>
                 <Col xs={4}>
-                    <h3> <Icon.Server/> My Redshift Clusters</h3>
+                    <h3> <Icon.Server/> My Data Warehouses</h3>
                 </Col>
                 <Col xs={6}>
                     <Row>
@@ -126,7 +126,7 @@ const RedshiftClusterList = function(){
                     <Then>
                         {
                             clusters.nodes.map((cluster)=>{
-                                return <Col xs={6}>
+                                return <Col xs={5}>
                                     <RedshiftClusterListItem cluster={cluster} reloadClusters={fetchItems}/>
                                 </Col>
                             })

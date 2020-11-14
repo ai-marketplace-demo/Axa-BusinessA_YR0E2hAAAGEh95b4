@@ -65,9 +65,9 @@ const ClusterCredentials = (props)=>{
                                 </Row>
                                 <Row>
                                     <span>
-                                        <SpanZoomer>
+                                        <SpanZoomer className={'mr-2'}>
                                             <CopyToClipboard text={`${cluster.endpoint}:${cluster.port}/${cluster.databaseName}`}>
-                                                <Button variant={'link'} onClick={()=>{copy('Endpoint')}}><Icon.Clipboard  className={`mr-1`}/></Button>
+                                                <Icon.Clipboard onClick={()=>{copy('Endpoint')}}/>
                                             </CopyToClipboard>
                                         </SpanZoomer>
                                         <b>{`${cluster.endpoint}:${cluster.port}/${cluster.databaseName}`}</b>
@@ -82,9 +82,9 @@ const ClusterCredentials = (props)=>{
                                 </Row>
                                 <Row>
                                     <span>
-                                        <SpanZoomer>
+                                        <SpanZoomer className={'mr-2'}>
                                             <CopyToClipboard text={`jdbc:redshift://${cluster.endpoint || '-'}:${cluster.port}/${cluster.databaseName}`}>
-                                                <Button variant={'link'} onClick={()=>{copy('JDBC')}}><Icon.Clipboard  className={`mr-1`}/></Button>
+                                                <Icon.Clipboard  className={`mr-1`} onClick={()=>{copy('JDBC')}}/>
                                             </CopyToClipboard>
                                         </SpanZoomer>
                                         <b>{`jdbc:redshift://${cluster.endpoint || '-'}:${cluster.port}/${cluster.databaseName}`|| '-'}</b>
@@ -99,9 +99,9 @@ const ClusterCredentials = (props)=>{
                                 </Row>
                                 <Row>
                                     <span>
-                                        <SpanZoomer>
+                                        <SpanZoomer className={'mr-2'}>
                                             <CopyToClipboard text={`Driver={Amazon Redshift (x64)}; Server=${cluster.endpoint || '-'}; Database=${cluster.databaseName}`}>
-                                                <Button variant={'link'} onClick={()=>{copy('ODBC')}}><Icon.Clipboard  className={`mr-1`}/></Button>
+                                                <Icon.Clipboard  className={`mr-1`} onClick={()=>{copy('ODBC')}} />
                                             </CopyToClipboard>
                                         </SpanZoomer>
                                         <b>{`Driver={Amazon Redshift (x64)}; Server=${cluster.endpoint || '-'}; Database=${cluster.databaseName}`}</b>
@@ -116,9 +116,9 @@ const ClusterCredentials = (props)=>{
                                 </Row>
                                 <Row>
                                     <b>
-                                        <SpanZoomer>
+                                        <SpanZoomer className={'mr-2'}>
                                             <CopyToClipboard text={cluster.databaseName}>
-                                                <Button variant={'link'} onClick={()=>{copy('Database')}}><Icon.Clipboard  className={`mr-1`}/></Button>
+                                                <Icon.Clipboard  className={`mr-1`} onClick={()=>{copy('Database')}}/>
                                             </CopyToClipboard>
                                         </SpanZoomer>
                                         {cluster.databaseName}
@@ -133,9 +133,9 @@ const ClusterCredentials = (props)=>{
                                 </Row>
                                 <Row>
                                     <b>
-                                        <SpanZoomer>
+                                        <SpanZoomer className={'mr-2'}>
                                             <CopyToClipboard text={cluster.databaseUser}>
-                                                <Button variant={'link'} onClick={()=>{copy('Username')}}><Icon.Clipboard  className={`mr-1`}/></Button>
+                                                <Icon.Clipboard  className={`mr-1`} onClick={()=>{copy('Username')}}/>
                                             </CopyToClipboard>
                                         </SpanZoomer>
                                         {cluster.databaseUser}
@@ -150,9 +150,9 @@ const ClusterCredentials = (props)=>{
                                 </Row>
                                 <Row>
                                     <b>
-                                        <SpanZoomer>
+                                        <SpanZoomer className={'mr-2'}>
                                             <CopyToClipboard text={clusterCreds.password}>
-                                                <Button variant={'link'} onClick={()=>{copy('Password')}}><Icon.Clipboard  className={`mr-1`}/></Button>
+                                                <Icon.Clipboard  className={`mr-1`} onClick={()=>{copy('Password')}}/>
                                             </CopyToClipboard>
                                         </SpanZoomer>
                                         {clusterCreds.password}

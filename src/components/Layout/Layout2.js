@@ -4,7 +4,6 @@ import SidebarStyled from "./SidebarStyled";
 import MainStyled from "./MainStyled";
 import Sidebar from "../Sidebar/Sidebar";
 import * as MdIcon  from 'react-icons/md';
-import * as ImIcon  from 'react-icons/im';
 import * as SiIcon from "react-icons/si";
 
 import Header from "../Header/Header";
@@ -66,6 +65,9 @@ import NotebookList from "../../views/Notebook/NotebookList";
 import QueryTool from "../../views/XP/QueryEditor";
 import {Slide, ToastContainer} from "react-toastify";
 import NotebookForm from "../../views/Notebook/NotebookForm";
+import RedshiftClusterList from "../../views/RedshiftClusters/ClusterList";
+import NewRedshiftCluster from "../../views/RedshiftClusters/NewCluster";
+import RedshiftClusterView from "../../views/RedshiftClusters/ClusterView";
 
 const Hoverable=styled.div`
 &:hover{
@@ -112,7 +114,7 @@ const Layout = (props) => {
                             </Col>
                         </Row>
 
-                        <Row className={``} style={{marginTop:'27%'}}>
+                        <Row className={``} style={{marginTop:'10%'}}>
                             <Col className={` mt-1 mb-1`}xs={12}>
                                 <b className={`text-capitalized`}>Catalog</b>
                             </Col>
@@ -122,6 +124,7 @@ const Layout = (props) => {
                                 <b>Contribute</b>
                             </Col>
                             <SidebarLink icon={<Icon.Folder />}to={"/datasets"} label={"Datasets"}/>
+                            <SidebarLink icon={<Icon.Server/>}to={"/redshiftclusters"} label={"Data Warehouses"}/>
                             <SidebarLink icon={<Icon.Gear />}to={"/sqlpipelines"} label={"Pipelines"}/>
                             <Col className={`mt-1 mb-1`}xs={12}>
                                 <b>Play with data</b>
@@ -165,13 +168,13 @@ const Layout = (props) => {
                             pauseOnHover/>
                     </Col>
                 </Row>
-                <Row>
-                    <Col style={{height:"4ch"}} className={``}xs={12}>
+                <Row style={{marginTop:'1.43%'}}>
+                    <Col style={{height:"4ch"}} className={`mb-4`}xs={12}>
                       <Header/>
                     </Col>
                 </Row>
                 <Row>
-                    <Col className={`bg-white`} xs={12}>
+                    <Col className={`bg-white mt-4`} xs={12}>
                             <Switch>
                                 <Route exact path={`/xp`}>
                                     <XP/>
@@ -325,6 +328,15 @@ const Layout = (props) => {
                                 </Route>
                                 <Route path={`/table/:datasetUri/:tableUri`}>
                                     <TableExplorer/>
+                                </Route>
+                                <Route path={`/redshiftclusters`}>
+                                    <RedshiftClusterList/>
+                                </Route>
+                                <Route path={`/newredshiftcluster`}>
+                                    <NewRedshiftCluster/>
+                                </Route>
+                                <Route path={`/redshiftcluster/:uri`}>
+                                    <RedshiftClusterView/>
                                 </Route>
                                 <Route path={`/`}>
                                     <Home/>

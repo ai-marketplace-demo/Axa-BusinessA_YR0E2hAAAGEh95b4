@@ -136,7 +136,7 @@ const NewRedshiftCluster= (props)=>{
         }));
         setSubmitting(false);
         if (!response.errors){
-            toast(`Created New ML Pipeline`,{
+            toast(`Created new Amazon Redshift cluster`,{
                 hideProgressBar:true,
                 onClose:()=>{history.goBack()}
             })
