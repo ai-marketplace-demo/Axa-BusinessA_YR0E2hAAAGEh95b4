@@ -67,6 +67,7 @@ import {Slide, ToastContainer} from "react-toastify";
 import NotebookForm from "../../views/Notebook/NotebookForm";
 import RedshiftClusterList from "../../views/RedshiftClusters/ClusterList";
 import NewRedshiftCluster from "../../views/RedshiftClusters/NewCluster";
+import ImportRedshiftCluster from "../../views/RedshiftClusters/ImportCluster";
 import RedshiftClusterView from "../../views/RedshiftClusters/ClusterView";
 
 const Hoverable=styled.div`
@@ -124,7 +125,7 @@ const Layout = (props) => {
                                 <b>Contribute</b>
                             </Col>
                             <SidebarLink icon={<Icon.Folder />}to={"/datasets"} label={"Datasets"}/>
-                            <SidebarLink icon={<Icon.Server/>}to={"/redshiftclusters"} label={"Data Warehouses"}/>
+                            <SidebarLink icon={<Icon.Server/>}to={"/redshiftclusters"} label={"Warehouses"}/>
                             <SidebarLink icon={<Icon.Gear />}to={"/sqlpipelines"} label={"Pipelines"}/>
                             <Col className={`mt-1 mb-1`}xs={12}>
                                 <b>Play with data</b>
@@ -334,6 +335,9 @@ const Layout = (props) => {
                                 </Route>
                                 <Route path={`/newredshiftcluster`}>
                                     <NewRedshiftCluster/>
+                                </Route>
+                                <Route path={`/importredshiftcluster`}>
+                                    <ImportRedshiftCluster/>
                                 </Route>
                                 <Route path={`/redshiftcluster/:uri`}>
                                     <RedshiftClusterView/>

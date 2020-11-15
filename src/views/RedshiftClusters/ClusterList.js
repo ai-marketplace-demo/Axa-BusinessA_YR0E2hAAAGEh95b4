@@ -9,6 +9,7 @@ import useClient from "../../api/client";
 import {toast} from "react-toastify";
 import searchRedshiftClusters from "../../api/RedshiftCluster/searchClusters";
 import RedshiftClusterListItem from "./ClusterListItem";
+import Pager from "../../components/Pager/Pager";
 
 const Styled=styled.div`
 height:100vh;
@@ -55,6 +56,7 @@ const RedshiftClusterList = function(){
     };
 
     const fetchItems= async()=>{
+        setReady(false);
         const response = await client.query(
             searchRedshiftClusters({
                     term,
@@ -75,73 +77,71 @@ const RedshiftClusterList = function(){
             fetchItems();
         }
     },[client, clusters.page]);
-    if (!ready) {
-        return <Col>
-            <Spinner variant={"primary"} animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-            </Spinner>
-        </Col>
 
-    }
     return <Styled>
-        <Container className={""}>
+        <Container fluid className={"mt-4"}>
+
             <Row>
-                <Col xs={4}>
-                    <h3> <Icon.Server/> My Data Warehouses</h3>
-                </Col>
                 <Col xs={6}>
-                    <Row>
-                        <Col xs={4}><i>Found {clusters.count} results</i></Col>
-                        <Col xs={6}>
-                            <Row>
-                                <Col className={`pt-2 text-right`} onClick={prevPage} xs={1}>
-                                    <Icon.ChevronLeft/>
-                                </Col>
-                                <Col className={`text-center`} xs={5}>
-                                    Page {clusters.page}/{clusters.pages}
-                                </Col>
-                                <Col className={`pt-2 text-left`}  onClick={nextPage} xs={1}>
-                                    <Icon.ChevronRight/>
-                                </Col>
-                            </Row>
+                    <h3> <Icon.Server/><span className={'ml-1'}>Warehouses</span></h3>
+                </Col>
+                <Col xs={2}/>
+                <Col xs={2} className={`mt-2`}>
+                    <Link to={`/importredshiftcluster`}>
+                        <div className={`btn btn-info rounded-pill`}>Import</div>
+                    </Link>
+                </Col>
+
+                <Col xs={2} className={`mt-2`}>
+                    <Link to={`/newredshiftcluster`}>
+                        <div className={`btn btn-primary rounded-pill`}>Create</div>
+                    </Link>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={12}>
+                    <Pager
+                        label={`clusters(s)`}
+                        count={clusters.count}
+                        page={clusters.page}
+                        pages={clusters.pages}
+                        next={nextPage}
+                        previous={prevPage}
+                        onKeyDown={(e)=> {handleKeyDown(e)}}
+                        onChange={(e)=>{handleInputChange(e)}}
+                    />
+                </Col>
+            </Row>
+            <If condition={!ready}>
+                <Then>
+                    <Row className={`mt-3`}>
+                        <Col xs={12}>
+                            <Spinner variant={`primary`} animation={`border`} />
                         </Col>
                     </Row>
-                </Col>
-                <Col xs={1} className={`mt-2`}>
-                    <MainActionButton>
-                        <Link to={"/newredshiftcluster"}>
-                            Create
-                        </Link>
-                    </MainActionButton>
-                </Col>
-            </Row>
-            <Row className={"mt-3"}>
-                <Col className={`pt-2`} xs={12}>
-                    <input className={`form-control`} onKeyDown={handleKeyDown} value={term} onChange={handleInputChange} style={{width:"100%"}}/>
-                </Col>
-            </Row>
-
-            <Row className={`mt-3`}>
-                <If condition={clusters.count}>
-                    <Then>
-                        {
-                            clusters.nodes.map((cluster)=>{
-                                return <Col xs={5}>
-                                    <RedshiftClusterListItem cluster={cluster} reloadClusters={fetchItems}/>
+                </Then>
+                <Else>
+                    <Row className={`mt-3`}>
+                        <If condition={clusters.count}>
+                            <Then>
+                                {
+                                    clusters.nodes.map((cluster)=>{
+                                        return <Col xs={4}>
+                                            <RedshiftClusterListItem cluster={cluster} reloadClusters={fetchItems}/>
+                                        </Col>
+                                    })
+                                }
+                            </Then>
+                            <Else>
+                                <Col xs={12}>
+                                    <i>No Amazon Redshift clusters found. Create a new one <Link to={`/newredshiftcluster`}>Here</Link>
+                                    </i>
                                 </Col>
-                            })
-                        }
-                    </Then>
-                    <Else>
-                        <Col xs={12}>
-                            <i>No Amazon Redshift clusters found. Create a new one <Link to={`/newredshiftcluster`}>Here</Link>
-                            </i>
-                        </Col>
-                    </Else>
-
-                </If>
-
-            </Row>
+                            </Else>
+                        </If>
+                    </Row>
+                </Else>
+            </If>
         </Container>
     </Styled>
 

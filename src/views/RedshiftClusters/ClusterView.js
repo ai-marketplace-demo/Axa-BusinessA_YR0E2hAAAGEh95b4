@@ -42,14 +42,6 @@ const RedshiftClusterView  = (props)=> {
     let history = useHistory();
     let [cluster, setCluster] = useState();
     let [ready, setReady] = useState(false);
-    let [consoleUrl,setConsoleUrl]=useState();
-    let [isLoadingConsoleUrl,setIsLoadingConsoleUrl] = useState(false);
-    let [interval, setInterval] = useState(undefined);
-    let [timeout, setTimeout] = useState(undefined);
-    let [isLoadingCluster, setIsLoadingCluster] = useState(false);
-    let [isStartingCluster, setIsStartingCluster] = useState(false);
-    let [isStoppingCluster, setIsStoppingCluster] = useState(false);
-    let [isDeletingCluster, setIsDeletingCluster] = useState(false);
 
     let [key, setKey] = useState('clusterDetails');
 
@@ -74,51 +66,50 @@ const RedshiftClusterView  = (props)=> {
 
     }, [client]);
 
-    const getReshiftCluster = () => {
+    const getReshiftCluster = (clusterUri) => {
         client
-            .query(getCluster(params.uri))
+            .query(getCluster(clusterUri))
             .then((response) => {
                 setCluster({...response.data.getRedshiftCluster});
                 setReady(true);
                 console.log("cluster = ", cluster);
             }).catch((e) => {
-                toast(`Could not retrieve cluster details , received ${e.message}`)
+                toast.error(`Could not retrieve cluster details , received ${e.message}`)
             });
     };
 
     const startCluster = async ()=>{
-        setIsStartingCluster(true);
+        toast(`Resuming cluster ${cluster.name}`);
         const response = await client.mutate(resumeRedshiftCluster(cluster.clusterUri));
         if (response.errors){
             toast.error(`Could not Resume Cluster ${cluster.name}, ${response.errors[0].message}`,{hideProgressBar:true})
         }
         else{
             toast.success(`Cluster ${cluster.name} is resuming`);
+            await getReshiftCluster(cluster.clusterUri);
         }
-        setIsStartingCluster(false);
     };
 
     const stopCluster = async ()=>{
-        setIsStoppingCluster(true);
+        toast(`Pausing cluster ${cluster.name}`);
         const response = await client.mutate(pauseRedshiftCluster(cluster.clusterUri));
         if (response.errors){
             toast.error(`Could not Pause Cluster, ${response.errors[0].message}`,{hideProgressBar:true})
         }
         else{
             toast.success(`Cluster ${cluster.name} is pausing`);
+            await getReshiftCluster(cluster.clusterUri);
         }
-        setIsStoppingCluster(false);
     };
 
     const deleteCluster = async ()=>{
-        setIsDeletingCluster(true);
+        toast(`Deleting cluster ${cluster.name}`);
         const response = await client.mutate(deleteRedshiftCluster(cluster.clusterUri));
         if (response.errors){
             toast.error(`Could not Delete cluster, ${response.errors[0].message}`,{hideProgressBar:true})
         }
         else{
             toast(`Deleting Cluster ${cluster.name}`);
-            setIsDeletingCluster(false);
             history.push(`/redshiftclusters`);
         }
     };
@@ -135,18 +126,18 @@ const RedshiftClusterView  = (props)=> {
             });
     };
 
-    const handleActionButtons = (key) => {
+    const handleActionButtons = async (key) => {
         if(key === 'consoleAccess') {
-            generateRedirectUrl();
+            await generateRedirectUrl();
         }
         else if(key === 'resume'){
-            startCluster().then(getReshiftCluster());
+            await startCluster();
         }
         else if(key === 'pause'){
-            stopCluster().then(getReshiftCluster());
+            await stopCluster();
         }
         else if(key === 'delete'){
-            deleteCluster();
+            await deleteCluster();
 
         }
     };

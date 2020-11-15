@@ -109,7 +109,7 @@ const Sidebar = (props) => {
                             <Icon.Server/>
                         </Col>
                         <Col>
-                            <Link className={""} to={"/redshiftclusters"}><h6>Data Warehouses</h6></Link>
+                            <Link className={""} to={"/redshiftclusters"}><h6>Warehouses</h6></Link>
                         </Col>
                     </Row>
                 </Hoverable>

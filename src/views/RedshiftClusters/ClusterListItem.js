@@ -12,7 +12,7 @@ import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Avatar from "react-avatar";
 import useClient from "../../api/client";
-import {If, Then} from "react-if";
+import {Else, If, Then} from "react-if";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import {toast} from "react-toastify";
 import getCluster from "../../api/RedshiftCluster/getCluster";
@@ -24,6 +24,10 @@ import SpanZoomer from "../../components/Zoomer/SpanZoomer";
 import {Link, useHistory} from "react-router-dom";
 import UserProfileLink from "../Profile/UserProfileLink";
 import LinkSpan from "../../components/Link/LinkSpan";
+import getSagemakerNotebookPresignedUrl from "../../api/SagemakerNotebook/getSagemakerNotebookPresignedUrl";
+import stopSagemakerNotebook from "../../api/SagemakerNotebook/stopNotebookInstance";
+import startSagemakerNotebook from "../../api/SagemakerNotebook/startNotebookInstance";
+import ActionCard from "../../components/Card/ActionCard";
 dayjs.extend(relativeTime);
 
 const Styled=styled.div`
@@ -54,82 +58,83 @@ transition: transform 0.2s ease-in-out;
    transform: translateY(-3px);
   }
 `;
-
+const TruncatedSpan=styled.span`
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+`;
 
 
 
 
 const RedshiftClusterListItem = (props)=> {
     const client = useClient();
-    let [consoleUrl, setConsoleUrl]=useState();
+    let [consoleUrl, setConsoleUrl] = useState();
     let history = useHistory();
-    let [isLoadingConsoleUrl,setIsLoadingConsoleUrl] = useState(false);
+    let [isLoadingConsoleUrl, setIsLoadingConsoleUrl] = useState(false);
     const [isLoadingCluster, setIsLoadingCluster] = useState(false);
     const [isStartingCluster, setIsStartingCluster] = useState(false);
     const [isStoppingCluster, setIsStoppingCluster] = useState(false);
     const [isDeletingCluster, setIsDeletingCluster] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    const copy=(field)=>{
-        toast(`Copied ${field} to clipboard`,{hideProgressBar:true});
+    const copy = (field) => {
+        toast(`Copied ${field} to clipboard`, {hideProgressBar: true});
     };
     const [cluster, setCluster] = useState(props.cluster);
-    const getRedshiftCluster = async ()=>{
+    const getRedshiftCluster = async () => {
         setIsLoadingCluster(true);
         const response = await client.query(getCluster(cluster.clusterUri));
-        if (!response.errors){
+        if (!response.errors) {
             setCluster(response.data.getRedshiftCluster);
             toast(`Reloaded cluster ${cluster.name} data from account ${cluster.AwsAccountId}`);
-        }else{
-            toast.error(`Could not retrieve Cluster, ${response.errors[0].message}`,{hideProgressBar:true})
+        } else {
+            toast.error(`Could not retrieve Cluster, ${response.errors[0].message}`, {hideProgressBar: true})
         }
         setIsLoadingCluster(false);
     };
 
-    const startCluster = async ()=>{
+    const startCluster = async () => {
         setIsStartingCluster(true);
         const response = await client.mutate(resumeRedshiftCluster(cluster.clusterUri));
-        if (response.errors){
-            toast.error(`Could not Resume Cluster, ${response.errors[0].message}`,{hideProgressBar:true})
-        }
-        else{
+        if (response.errors) {
+            toast.error(`Could not Resume Cluster, ${response.errors[0].message}`, {hideProgressBar: true})
+        } else {
             toast(`Resuming Cluster ${cluster.name}`);
         }
         setIsStartingCluster(false);
     };
 
-    const stopCluster = async ()=>{
+    const stopCluster = async () => {
         setIsStoppingCluster(true);
         const response = await client.mutate(pauseRedshiftCluster(cluster.clusterUri));
-        if (response.errors){
-            toast.error(`Could not Pause Cluster, ${response.errors[0].message}`,{hideProgressBar:true})
-        }
-        else{
+        if (response.errors) {
+            toast.error(`Could not Pause Cluster, ${response.errors[0].message}`, {hideProgressBar: true})
+        } else {
             toast(`Pausing Cluster ${cluster.name}`);
         }
         setIsStoppingCluster(false);
     };
 
-    const deleteCluster = async ()=>{
+    const deleteCluster = async () => {
         setIsDeletingCluster(true);
         const response = await client.mutate(deleteRedshiftCluster(cluster.clusterUri));
-        if (response.errors){
-            toast.error(`Could not Delete cluster, ${response.errors[0].message}`,{hideProgressBar:true})
-        }
-        else{
+        if (response.errors) {
+            toast.error(`Could not Delete cluster, ${response.errors[0].message}`, {hideProgressBar: true})
+        } else {
             toast(`Deleting Cluster ${cluster.name}`);
             props.reloadClusters();
         }
         setIsDeletingCluster(false);
     };
 
-    const generateRedirectUrl =async ()=>{
+    const generateRedirectUrl = async () => {
         setIsLoadingConsoleUrl(true);
         const response = await client.query(getClusterConsoleAccess(cluster.clusterUri));
 
-        if (!response.errors){
+        if (!response.errors) {
             window.open(response.data.getRedshiftClusterConsoleAccess, '_blank');
-        }else{
+        } else {
             toast(`Could not retrieve URL , received ${response.errors[0].message}`)
         }
         setIsLoadingConsoleUrl(false);
@@ -171,10 +176,196 @@ const RedshiftClusterListItem = (props)=> {
         setShowDeleteModal(false);
     };
 
-    useEffect(()=>{},[client, props.cluster]);
+    useEffect(() => {
+    }, [client, props.cluster]);
 
+    const Body = (cluster) => {
+        return <div className={`mt-3`}>
+            <Row>
+                <Col xs={2}>
+                    <Icon.PersonCheck size={18}/>
+                </Col>
+                <Col xs={8}>
+                    <Badge pill className={`text-white bg-primary`}>
+                        Creator
+                    </Badge>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={2}>
+                    <Icon.House size={18}/>
+                </Col>
+                <Col xs={8}>
+                    <Link className={`text-primary`} to={`/organization/${cluster.organization.organizationUri}`}>
+                        <small>{cluster.organization.name}</small>
+                    </Link>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={2}>
+                    <Icon.Cloud size={18}/>
+                </Col>
+                <Col xs={8}>
+                    <Link className={`text-primary`} to={`/playground/${cluster.environment.environmentUri}`}>
+                        <small>{cluster.environment.name}({cluster.AwsAccountId})</small>
+                    </Link>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={2}>
+                    <Icon.Map size={18}/>
+                </Col>
+                <Col xs={8}>
+                    <small>{cluster.region}</small>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={2}>
+                    <Icon.ToggleOn size={18}/>
+                </Col>
+                <Col xs={10}>
+                    <CardAction
+                        type="button"
+                        onClick={getRedshiftCluster}>
+                        <If condition={isLoadingCluster}>
+                            <Then>
+                            <span style={{ marginRight: '1px', marginTop: '.5rem!important'}}>
+                                <Spinner size={`sm`} variant={`primary`} animation={`grow`}/>
+                            </span>
+                            </Then>
+                        </If>
+                        <Badge pill variant={statusColor(cluster.status)} className={`text-uppercase`}> {cluster.status}</Badge>
+                    </CardAction>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={2} className={'mt-1'}>
+                    <FontAwesomeIcon icon={faNetworkWired}/>
+                </Col>
+                <Col xs={8}>
+                    <small>{!cluster.endpoint ?  ' -' : cluster.endpoint}</small>
+                </Col>
+                <Col xs={2}>
+                    {(cluster.endpoint &&
+                        <SpanZoomer>
+                            <CopyToClipboard text={`${cluster.endpoint}`}>
+                                <Icon.Clipboard onClick={()=>{copy('Endpoint')}} className={'mt-2'}/>
+                            </CopyToClipboard>
+                        </SpanZoomer>
+                    )}
+                </Col>
+            </Row>
+        </div>;
 
-    return <Styled>
+    };
+    const Header = (cluster) => {
+        return <Row>
+            <Col xs={8}>
+                <Link to={`/redshiftcluster/${cluster.clusterUri}`}>
+                    <b className={"text-capitalize"}>{cluster.label}</b>
+                </Link>
+            </Col>
+            <If condition={cluster.imported}>
+                <Then>
+                    <Col xs={3}>
+                        <CardAction
+                            type="button"
+                            onClick={getRedshiftCluster}>
+                            <If condition={isLoadingCluster}>
+                                <Then>
+                                    <Spinner size={`sm`} variant={`primary`} animation={`grow`}/>
+                                </Then>
+                            </If>
+                            <Badge pill variant={'primary'} className={`text-uppercase`}>Imported</Badge>
+                        </CardAction>
+                    </Col>
+                </Then>
+            </If>
+        </Row>
+    };
+    const Actions = (cluster) => {
+        return <div>
+            <Row className={`mt-2`}>
+                <Col xs={12}>
+                    <Row>
+                        <Col xs={1}/>
+                        <Col xs={5}>
+                            <div style={{ fontSize: '0.5rem' }} className={`btn btn-secondary rounded-pill btn-sm`}
+                                 onClick={()=>generateRedirectUrl()}>
+                                <If condition={isLoadingConsoleUrl}>
+                                    <Then>
+                                        <Spinner size={`sm`} variant={`primary`} animation={`grow`}/>
+                                    </Then>
+                                </If>
+                                <b><FontAwesomeIcon icon={faAws}/> Console</b>
+                            </div>
+                        </Col>
+                        <Col xs={5}>
+                            <div style={{ fontSize: '0.5rem' }} className={`btn btn-success rounded-pill btn-sm`}
+                                 onClick={goToClusterDatasets}>
+                                <b><FontAwesomeIcon icon={faFolderPlus}/> Datasets</b>
+                            </div>
+                        </Col>
+                        <Col xs={1}/>
+                    </Row>
+                </Col>
+            </Row>
+            <Row className={`mt-2`}>
+                <Col xs={12}>
+                    <Row>
+                        <Col xs={1}/>
+                        <Col xs={5}>
+                            <div style={{ fontSize: '0.5rem' }} className={`btn btn-dark rounded-pill btn-sm`}
+                                 onClick={()=>goToClusterCreds()}>
+                                <b><FontAwesomeIcon icon={faKey}/> Credentials</b>
+                            </div>
+                        </Col>
+                        <Col xs={5}>
+                            <div style={{ fontSize: '0.5rem' }} className={`btn btn-outline-danger rounded-pill btn-sm`}
+                                 onClick={openDeleteModal}>
+                                <If condition={isDeletingCluster}>
+                                    <Then>
+                                        <Spinner size={`sm`} variant={`primary`} animation={`grow`}/>
+                                    </Then>
+                                </If>
+                                <b><FontAwesomeIcon icon={faTrashAlt}/> Delete</b>
+                            </div>
+                        </Col>
+                        <Col xs={1}/>
+                    </Row>
+                </Col>
+            </Row>
+            <Modal show={showDeleteModal} onHide={closeDeleteModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Delete Redshift Cluster</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Confirm Amazon Redshift cluster <b><i>{cluster.label}</i></b> deletion ?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="outline-secondary" className={'rounded-pill'} onClick={closeDeleteModal}>
+                        Close
+                    </Button>
+                    <Button variant="outline-danger" className={'rounded-pill'} onClick={deleteCluster}>
+                        Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </div>
+    };
+    const actions = <Actions {...cluster}/>;
+    const body=<Body {...cluster}/>;
+    const header = <Header  {...cluster}/>;
+    return <ActionCard
+        label={cluster.label}
+        owner={cluster.owner}
+        created={cluster.created}
+        description={cluster.description}
+        body={body}
+        header={header}
+        actions={actions}
+        tags={cluster.tags || []}
+    />
+};
+    /*return <Styled>
         <Row className={``}>
             <Col xs={9}>
                 <Link to={`/redshiftcluster/${props.cluster.clusterUri}`}>
@@ -305,7 +496,7 @@ const RedshiftClusterListItem = (props)=> {
     </Styled>
 
 };
-
+*/
 
 export default RedshiftClusterListItem;
 

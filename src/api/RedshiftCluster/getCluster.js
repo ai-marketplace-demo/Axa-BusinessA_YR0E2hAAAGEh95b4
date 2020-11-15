@@ -44,6 +44,7 @@ const getCluster= (clusterUri)=>{
                      securityGroupIds
                      userRoleForCluster
                      userRoleInEnvironment
+                     imported
                     organization{
                         organizationUri
                         label

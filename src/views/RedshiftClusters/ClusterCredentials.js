@@ -1,5 +1,5 @@
-import React,{useState,useEffect} from "react";
-import {Container, Spinner, Button, Form, Card, Row, Col} from "react-bootstrap";
+import React, {useState, useEffect, Component} from "react";
+import {Container, Spinner, Button, Form, Card, Row, Col, Table} from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import styled from "styled-components"
 import useClient from "../../api/client";
@@ -9,6 +9,9 @@ import dayjs from "dayjs"
 import SpanZoomer from "../../components/Zoomer/SpanZoomer";
 import relativeTime from "dayjs/plugin/relativeTime";
 import getRedshiftClusterDatabaseCredentials from "../../api/RedshiftCluster/getClusterDatabaseCredentials";
+import searchRedshiftClusters from "../../api/RedshiftCluster/searchClusters";
+import * as PropTypes from "prop-types";
+import FormSection from "../../components/FormSection/FormSection";
 dayjs.extend(relativeTime);
 
 
@@ -25,6 +28,130 @@ white-space:nowrap;
  overflow:hidden;
  text-overflow:ellipsis;
 `;
+class ClusterCredentialsSection extends Component {
+    render() {
+        return <Row className={`mt-2`}>
+            <Col xs={12}>
+                <Table   hover size="sm">
+                    <tbody>
+                    <tr class="d-flex">
+                        <td className={`text-capitalize col-3`}>
+                            Endpoint
+                        </td>
+                        <td class="col-8">
+                            <TruncatedSpan>
+                                {`${this.props.cluster.endpoint || "-"}:${this.props.cluster.port}/${this.props.cluster.databaseName}` || "-"}
+                            </TruncatedSpan>
+                        </td>
+                        <td className="col-1">
+                            <SpanZoomer>
+                                <CopyToClipboard
+                                    text={`${this.props.cluster.endpoint || "-"}:${this.props.cluster.port}/${this.props.cluster.databaseName}`}>
+                                    <Icon.Clipboard onClick={this.props.onClick} className={`mr-1`}/>
+                                </CopyToClipboard>
+                            </SpanZoomer>
+                        </td>
+                    </tr>
+                    <tr class="d-flex">
+                        <td className={`text-capitalize col-3`}>
+                            JDBC
+                        </td>
+                        <td className="col-8">
+                            {`jdbc:redshift://${this.props.cluster.endpoint || "-"}:${this.props.cluster.port}/${this.props.cluster.databaseName}`}
+                        </td>
+                        <td className="col-1">
+                            <SpanZoomer>
+                                <CopyToClipboard
+                                    text= {`jdbc:redshift://${this.props.cluster.endpoint || "-"}:${this.props.cluster.port}/${this.props.cluster.databaseName}`}>
+                                    <Icon.Clipboard onClick={this.props.onClick1} className={`mr-1`}/>
+                                </CopyToClipboard>
+                            </SpanZoomer>
+                        </td>
+                    </tr>
+                    <tr class="d-flex">
+                        <td className={`text-capitalize col-3`}>
+                            ODBC
+                        </td>
+                        <td className="col-8">
+                            {`Driver={Amazon Redshift (x64)}; Server=${this.props.cluster.endpoint || "-"}; Database=${this.props.cluster.databaseName}`}
+                        </td>
+                        <td className="col-1">
+                            <SpanZoomer>
+                                <CopyToClipboard
+                                    text={`Driver={Amazon Redshift (x64)}; Server=${this.props.cluster.endpoint || "-"}; Database=${this.props.cluster.databaseName}`}>
+                                    <Icon.Clipboard onClick={this.props.onClick2} className={`mr-1`}/>
+                                </CopyToClipboard>
+                            </SpanZoomer>
+                        </td>
+                    </tr>
+                    <tr class="d-flex">
+                        <td className={`text-capitalize col-3`}>
+                            Database
+                        </td>
+                        <td className="col-8">
+                            {this.props.cluster.databaseName || '-'}
+                        </td>
+                        <td className="col-1">
+                            <SpanZoomer>
+                                <CopyToClipboard
+                                    text={this.props.cluster.databaseName || '-'}
+                                >
+                                    <Icon.Clipboard onClick={this.props.onClick3} className={`mr-1`}/>
+                                </CopyToClipboard>
+                            </SpanZoomer>
+                        </td>
+                    </tr>
+                    <tr class="d-flex">
+                        <td className={`text-capitalize col-3`}>
+                             User
+                        </td>
+                        <td className="col-8">
+                            {this.props.cluster.databaseUser || '-'}
+                        </td>
+                        <td className="col-1">
+                            <SpanZoomer>
+                                <CopyToClipboard
+                                    text={this.props.cluster.databaseUser}
+                                >
+                                    <Icon.Clipboard onClick={this.props.onClick4} className={`mr-1`}/>
+                                </CopyToClipboard>
+                            </SpanZoomer>
+                        </td>
+                    </tr>
+                    <tr class="d-flex">
+                        <td className={`text-capitalize col-3`}>
+                            Password
+                        </td>
+                        <td className="col-8">
+                            {this.props.clusterCreds.password || '-'}
+                        </td>
+                        <td className="col-1">
+                            <SpanZoomer>
+                                <CopyToClipboard
+                                    text={this.props.clusterCreds.password}
+                                >
+                                    <Icon.Clipboard onClick={this.props.onClick5} className={`mr-1`}/>
+                                </CopyToClipboard>
+                            </SpanZoomer>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </Table>
+            </Col>
+        </Row>
+    }
+}
+
+ClusterCredentialsSection.propTypes = {
+    cluster: PropTypes.any,
+    onClick: PropTypes.func,
+    onClick1: PropTypes.func,
+    onClick2: PropTypes.func,
+    onClick3: PropTypes.func,
+    onClick4: PropTypes.func,
+    onClick5: PropTypes.func,
+};
 
 const ClusterCredentials = (props)=>{
     let client = useClient();
@@ -36,132 +163,41 @@ const ClusterCredentials = (props)=>{
     let cluster = props.cluster;
     useEffect(() => {
         if (client && cluster) {
-            client
-                .query(getRedshiftClusterDatabaseCredentials(cluster.clusterUri))
-                .then((response) => {
-                    setClusterCreds({...response.data.getRedshiftClusterDatabaseCredentials});
-                    console.log("cluster creds = ", clusterCreds);
-                }).catch((e) => {
-                toast(`Could not retrieve cluster details , received ${e.message}`)
-            });
+            getCreds();
         }
     }, [client]);
 
-
+    const getCreds= async()=> {
+        const response = await client.query(
+            getRedshiftClusterDatabaseCredentials(cluster.clusterUri)
+        );
+        if (!response.errors) {
+            setClusterCreds({...response.data.getRedshiftClusterDatabaseCredentials});
+            console.log("cluster credentials = ", clusterCreds);
+        } else {
+            toast.error(`Could not retrieve cluster credentials ,${response.errors[0].message}`);
+        }
+    };
+    const connection=<ClusterCredentialsSection cluster={cluster} clusterCreds={clusterCreds} onClick={() => {
+        copy('Endpoint')
+    }} onClick1={() => {
+        copy('JDBC')
+    }} onClick2={() => {
+        copy('ODBC')
+    }} onClick3={() => {
+        copy('Database')
+    }} onClick4={() => {
+        copy('User')
+    }} onClick5={() => {
+        copy('Password')
+    }}
+    />;
     return<DetailStyled> <Container>
         {(!cluster ?(
             <Spinner animation="grow" size="sm" />
         ):(
             <div>
-                <Card className={"mt-4"}>
-                    <Card.Header>
-                        <b>[d]atahub Database</b>
-                    </Card.Header>
-                    <Card.Body>
-                        <Row className={"mt-2"}>
-                            <Col xs={12} className={'ml-2'}>
-                                <Row>
-                                    <InfoSpan>Endpoint</InfoSpan>
-                                </Row>
-                                <Row>
-                                    <span>
-                                        <SpanZoomer className={'mr-2'}>
-                                            <CopyToClipboard text={`${cluster.endpoint}:${cluster.port}/${cluster.databaseName}`}>
-                                                <Icon.Clipboard onClick={()=>{copy('Endpoint')}}/>
-                                            </CopyToClipboard>
-                                        </SpanZoomer>
-                                        <b>{`${cluster.endpoint}:${cluster.port}/${cluster.databaseName}`}</b>
-                                    </span>
-                                </Row>
-                            </Col>
-                        </Row>
-                        <Row className={"mt-4"}>
-                            <Col xs={12} className={'ml-2'}>
-                                <Row>
-                                    <InfoSpan>JDBC URL</InfoSpan>
-                                </Row>
-                                <Row>
-                                    <span>
-                                        <SpanZoomer className={'mr-2'}>
-                                            <CopyToClipboard text={`jdbc:redshift://${cluster.endpoint || '-'}:${cluster.port}/${cluster.databaseName}`}>
-                                                <Icon.Clipboard  className={`mr-1`} onClick={()=>{copy('JDBC')}}/>
-                                            </CopyToClipboard>
-                                        </SpanZoomer>
-                                        <b>{`jdbc:redshift://${cluster.endpoint || '-'}:${cluster.port}/${cluster.databaseName}`|| '-'}</b>
-                                    </span>
-                                </Row>
-                            </Col>
-                        </Row>
-                        <Row className={"mt-4"}>
-                            <Col xs={12} className={'ml-2'}>
-                                <Row>
-                                    <InfoSpan>ODBC URL</InfoSpan>
-                                </Row>
-                                <Row>
-                                    <span>
-                                        <SpanZoomer className={'mr-2'}>
-                                            <CopyToClipboard text={`Driver={Amazon Redshift (x64)}; Server=${cluster.endpoint || '-'}; Database=${cluster.databaseName}`}>
-                                                <Icon.Clipboard  className={`mr-1`} onClick={()=>{copy('ODBC')}} />
-                                            </CopyToClipboard>
-                                        </SpanZoomer>
-                                        <b>{`Driver={Amazon Redshift (x64)}; Server=${cluster.endpoint || '-'}; Database=${cluster.databaseName}`}</b>
-                                    </span>
-                                </Row>
-                            </Col>
-                        </Row>
-                        <Row className={"mt-4"}>
-                            <Col xs={12} className={'ml-2'}>
-                                <Row>
-                                    <InfoSpan>Database</InfoSpan>
-                                </Row>
-                                <Row>
-                                    <b>
-                                        <SpanZoomer className={'mr-2'}>
-                                            <CopyToClipboard text={cluster.databaseName}>
-                                                <Icon.Clipboard  className={`mr-1`} onClick={()=>{copy('Database')}}/>
-                                            </CopyToClipboard>
-                                        </SpanZoomer>
-                                        {cluster.databaseName}
-                                    </b>
-                                </Row>
-                            </Col>
-                        </Row>
-                        <Row className={"mt-4"}>
-                            <Col xs={12} className={'ml-2'}>
-                                <Row>
-                                    <InfoSpan>Username</InfoSpan>
-                                </Row>
-                                <Row>
-                                    <b>
-                                        <SpanZoomer className={'mr-2'}>
-                                            <CopyToClipboard text={cluster.databaseUser}>
-                                                <Icon.Clipboard  className={`mr-1`} onClick={()=>{copy('Username')}}/>
-                                            </CopyToClipboard>
-                                        </SpanZoomer>
-                                        {cluster.databaseUser}
-                                    </b>
-                                </Row>
-                            </Col>
-                        </Row>
-                        <Row className={"mt-4"}>
-                            <Col xs={12} className={'ml-2'}>
-                                <Row>
-                                    <InfoSpan>Password</InfoSpan>
-                                </Row>
-                                <Row>
-                                    <b>
-                                        <SpanZoomer className={'mr-2'}>
-                                            <CopyToClipboard text={clusterCreds.password}>
-                                                <Icon.Clipboard  className={`mr-1`} onClick={()=>{copy('Password')}}/>
-                                            </CopyToClipboard>
-                                        </SpanZoomer>
-                                        {clusterCreds.password}
-                                    </b>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </Card.Body>
-                </Card>
+                <FormSection section={`Datahub Database`} content={connection} open={true}/>
             </div>
         ))}
     </Container></DetailStyled>
