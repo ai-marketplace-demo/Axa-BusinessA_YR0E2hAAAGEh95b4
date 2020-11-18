@@ -3,14 +3,14 @@ import Amplify, { Auth } from 'aws-amplify';
 import config from './config';
 import { AmplifyAuthenticator, withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 import {BrowserRouter as Router} from "react-router-dom";
-import Layout from "./components/Layout/Layout2";
+import Layout from "./components/Layout/Layout3";
 import {createGlobalStyle} from "styled-components";
 import {Container, Row, Col, Dropdown} from "react-bootstrap";
 import styled from "styled-components";
 import 'react-toastify/dist/ReactToastify.css';
 require("bootstrap/dist/css/bootstrap.min.css");
 require("bootstrap/dist/js/bootstrap.min");
-require("bootswatch/dist/lumen/bootstrap.css");
+require("bootswatch/dist/lux/bootstrap.css");
 
 
 const GlobalStyles = createGlobalStyle`

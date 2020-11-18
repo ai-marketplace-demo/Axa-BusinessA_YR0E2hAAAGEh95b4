@@ -99,33 +99,7 @@ const GetStarted = ()=>{
                 </Tile>
 
             </Col>
-           <Col xs={3}>
-                <Tile>
-                    <Row>
-                        <Col xs={12}>
-                            <Backpack size={58} mood="excited" color="#FFD882" />
-                        </Col>
-                        <Col xs={8}>
-                            <p className={`mt-2 text-left`}><b>Create a Project</b></p>
-                        </Col>
-                        <Col xs={12}>
-                            <b>Projects</b> are the place where you can use the <b className={"text-warning"}>AWS</b>  cloud to
-                            mix and match datasets that you own or that were shared
 
-                        </Col>
-                        <Col xs={12}>
-                            <Link to={`/newproject`}>
-                                start
-                            </Link>
-                        </Col>
-
-                    </Row>
-                    <Row>
-                    </Row>
-
-                </Tile>
-
-            </Col>
             <Col xs={3}>
                 <Tile>
                     <Row>
@@ -143,6 +117,33 @@ const GetStarted = ()=>{
                         </Col>
                         <Col xs={12}>
                             <Link to={`/catalog`}>
+                                start
+                            </Link>
+                        </Col>
+
+                    </Row>
+                    <Row>
+                    </Row>
+
+                </Tile>
+
+            </Col>
+            <Col xs={3}>
+                <Tile>
+                    <Row>
+                        <Col xs={12}>
+                            <Backpack size={58} mood="excited" color="#FFD882" />
+                        </Col>
+                        <Col xs={8}>
+                            <p className={`mt-2 text-left`}><b>Play with data!</b></p>
+                        </Col>
+                        <Col xs={12}>
+                            <b>Blueprints</b> are the place where you can use the <b className={"text-warning"}>AWS</b>  cloud to
+                            mix and match datasets that you own or that were shared
+
+                        </Col>
+                        <Col xs={12}>
+                            <Link to={`/newproject`}>
                                 start
                             </Link>
                         </Col>

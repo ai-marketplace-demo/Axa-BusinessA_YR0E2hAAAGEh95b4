@@ -86,15 +86,16 @@ const RedshiftClusterList = function(){
                     <h3> <Icon.Server/><span className={'ml-1'}>Warehouses</span></h3>
                 </Col>
                 <Col xs={2}/>
+
                 <Col xs={2} className={`mt-2`}>
                     <Link to={`/importredshiftcluster`}>
-                        <div className={`btn btn-info rounded-pill`}>Import</div>
+                        <div style={{width:'100%'}} className={`rounded-pill btn-sm btn btn-primary`}>Import</div>
                     </Link>
                 </Col>
 
                 <Col xs={2} className={`mt-2`}>
                     <Link to={`/newredshiftcluster`}>
-                        <div className={`btn btn-primary rounded-pill`}>Create</div>
+                        <div style={{width:'100%'}} className={`btn btn-sm btn-info rounded-pill`}>Create</div>
                     </Link>
                 </Col>
             </Row>

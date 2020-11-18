@@ -75,8 +75,8 @@ const SqlPipelineList = function(){
                 <Col xs={2}/>
                 <Col className={`mb-1 text-right`} xs={2}>
                     <Link to={"/newsqlPipeline"}>
-                        <div className={`rounded-pill btn btn-info`}>
-                            <b>  Create Pipeline</b>
+                        <div className={`rounded-pill btn btn-sm btn-info`}>
+                            <b>  Create </b>
                         </div>
                     </Link>
                 </Col>

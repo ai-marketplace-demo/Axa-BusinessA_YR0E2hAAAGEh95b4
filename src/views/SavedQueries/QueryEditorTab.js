@@ -19,6 +19,8 @@ const QueryEditorTab = (props)=>{
     const [reloading, setReloading] = useState(false);
     const [running, setIsRunning]= useState(false);
     const [isEditorReady, setIsEditorReady] = useState(false);
+    const [op, setOp] = useState(false);
+    const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false);
     const valueGetter = useRef();
 
     const [savedQuery, setSavedQuery] = useState(query.queries.count&&query.queries.nodes[0]||null);
@@ -28,6 +30,7 @@ const QueryEditorTab = (props)=>{
     }
 
     const executeQuery = async()=>{
+        setOp(true);
         setIsRunning(true);
         const response = await client.query(runSavedQuery({
             savedQueryUri:savedQuery.savedQueryUri,
@@ -42,7 +45,7 @@ const QueryEditorTab = (props)=>{
             toast(`Could not execute query, received ${response.errors[0].message}`);
         }
         setIsRunning(false);
-
+        setOp(false);
     }
 
     const fetchQuery = async()=>{
@@ -65,6 +68,7 @@ const QueryEditorTab = (props)=>{
     }
 
     const updateThisQuery=async ()=>{
+        setOp(true);
         if (savedQuery){
             const response = await client.mutate(updateSavedQuery({
                 queryUri : savedQuery.savedQueryUri,
@@ -80,10 +84,11 @@ const QueryEditorTab = (props)=>{
                 fetchQuery()
             }
         }
-
+        setOp(false);
     }
 
     const removeThisQuery = async()=>{
+        setOp(true);
         const response = await client.mutate(removeSavedQuery(savedQuery.savedQueryUri));
         if (!response.errors){
             toast("Deleted query");
@@ -93,10 +98,11 @@ const QueryEditorTab = (props)=>{
         }else {
             toast(`Could not delete query, received ${response.errors[0].message}`)
         }
-
+        setOp(false);
     }
 
     const moveUp = async ()=>{
+        setOp(true);
         const queryItem = savedQuery;
 
         setQuery({...query,queries:{...query.queries, nodes:query.queries.nodes.map((q)=>{
@@ -112,10 +118,13 @@ const QueryEditorTab = (props)=>{
                 queryOrder : queryItem.queryOrder-1
             }
         }))
-        await  fetchQuery()
+        await  fetchQuery();
+        setOp(false);
+
     }
 
     const moveDown = async ()=>{
+        setOp(true);
         const queryItem = savedQuery;
 
         setQuery({...query,queries:{...query.queries, nodes:query.queries.nodes.map((q)=>{
@@ -131,12 +140,23 @@ const QueryEditorTab = (props)=>{
                 queryOrder : queryItem.queryOrder+1
             }
         }))
-        await  fetchQuery()
+        await  fetchQuery();
+        setOp(false);
+
     }
 
     return <Container className={`mt-4`} fluid>
         <Row>
-            <Col xs={9}/>
+
+
+            <Col xs={7}/>
+            <Col xs={2}>
+                <If condition={op}>
+                    <Then>
+                        <Spinner variant={`primary`} size={`sm`} animation={`border`}/>
+                    </Then>
+                </If>
+            </Col>
 
             <Col xs={2}>
                 <div onClick={props.createQuery&&props.createQuery} style={{width:'100%'}} className={`btn btn-sm btn-primary rounded-pill`}>
@@ -146,66 +166,83 @@ const QueryEditorTab = (props)=>{
         </Row>
         <Row className={`mt-2`}>
 
-            <Col style={{backgroundColor:''}}  xs={3}>
-                <Row>
-                    <Col xs={12}>
-                        <If condition={reloading}>
-                            <Spinner variant={`secondary`} animation={`border`} size={`sm`}/>
-                        </If>
-                    </Col>
-                </Row>
-                {((query&&query.queries&&query.queries.nodes)||[]).sort((e1,e2)=>{return e1.queryOrder>e2.queryOrder}).map((queryItem, index)=>{
-                    return <Col className={`mt-2`}>
-                        <Row key={queryItem.savedQueryUri}>
-                            <Col xs={6}>
-                                <Icon.FileCode/> <b onClick={()=>{setSavedQuery({...queryItem})}}>{queryItem.label}</b>
-                            </Col>
-                            {/**
+            <If condition={!leftPanelCollapsed}>
+                <Then>
+                    <Col className={`border-right`} xs={3}>
+                        <Row>
+                            <Col xs={10}></Col>
                             <Col xs={1}>
-                                <Badge variant={`primary`} pill><small>{queryItem.queryOrder}</small></Badge>
+                                <Icon.ChevronLeft onClick={()=>{setLeftPanelCollapsed(true)}}/>
                             </Col>
-                             **/}
                         </Row>
+                        <Row>
+                            <Col xs={12}>
+                                <If condition={reloading}>
+                                    <Spinner variant={`secondary`} animation={`border`} size={`sm`}/>
+                                </If>
+                            </Col>
+                        </Row>
+                        {((query&&query.queries&&query.queries.nodes)||[]).sort((e1,e2)=>{return e1.queryOrder>e2.queryOrder}).map((queryItem, index)=>{
+                            return <Col className={`mt-2`}>
+                                <Row key={queryItem.savedQueryUri}>
+                                    <Col xs={12}>
+                                        <Icon.FileCode/> <b onClick={()=>{setSavedQuery({...queryItem})}}>{queryItem.label}</b>
+                                    </Col>
+                                    {/**
+                                     <Col xs={1}>
+                                     <Badge variant={`primary`} pill><small>{queryItem.queryOrder}</small></Badge>
+                                     </Col>
+                                     **/}
+                                </Row>
 
+                            </Col>
+                        })}
                     </Col>
-                })}
-            </Col>
+                </Then>
+                <Else>
+                    <Col className={`border-right`} xs={1}>
+                        <Icon.ChevronRight onClick={()=>{setLeftPanelCollapsed(false)}}/>
+                    </Col>
+                </Else>
+            </If>
 
-            <Col xs={9}>
+            <Col xs={leftPanelCollapsed?11:9}>
                 <Row className={`mt-3 pt-4 border-top `} style={{backgroundColor:''}}>
 
 
                     <Col xs={2}>
-                        <div onClick={updateThisQuery} style={{width:'100%'}} className={`btn btn-sm btn-info rounded-pill`}>
+                        <button type="button" disabled ={op} onClick={updateThisQuery} style={{width:'100%'}} className={`btn btn-sm btn-info rounded-pill`}>
                             Save
-                        </div>
+                        </button>
                     </Col>
                     <Col xs={2}>
-                        <div onClick={executeQuery} style={{width:'100%'}} className={`btn btn-sm btn-success rounded-pill`}>
+                        <button
+
+                            disabled={op} onClick={executeQuery}
+                            style={{width:'100%'}}
+                            className={`btn btn-sm btn-success rounded-pill`}>
                             Run
-                        </div>
+                        </button>
                     </Col>
 
                     <Col xs={2}>
-                        <div onClick={removeThisQuery} style={{width:'100%'}} className={`btn btn-sm btn-danger rounded-pill`}>
+                        <button
+                            data-tip="Remove this query from the workflow"
+                            disabled={op} onClick={removeThisQuery} style={{width:'100%'}} className={`btn btn-sm btn-danger rounded-pill`}>
                             Delete
-                        </div>
+                        </button>
                     </Col>
                     <Col xs={1} className={`border-right`}/>
 
                     <Col xs={2}>
-                        <div style={{width:'100%'}} className={``}>
-                            <Icon.XCircle color={`red`} data-tip="Drop Query"/>
-                            <ReactTooltip place="right" type="info" effect="solid"/>
-                        </div>
+                        <button disabled={op} type={`button`} onClick={moveUp} style={{width:'100%'}} className={`btn btn-sm btn-secondary rounded-pill`}>
+                            Move Up
+                        </button>
                     </Col>
-
-                    <Col xs={1}>
-                        <div onClick={moveUp} >
-                            <Icon.ArrowUpCircle color={`black`} data-tip="Move query up"/>
-                            <ReactTooltip place="right" type="info" effect="solid"/>
-
-                        </div>
+                    <Col xs={2}>
+                        <button disabled={op} type={`button`} onClick={moveDown} style={{width:'100%'}} className={`btn btn-sm btn-secondary rounded-pill`}>
+                            Move Down
+                        </button>
                     </Col>
 
 
@@ -216,23 +253,30 @@ const QueryEditorTab = (props)=>{
                 <If condition={savedQuery}>
                     <Then>
                         <Row className={`mt-2`}>
-                            <Col xs={4}>
+                            <Col xs={2}>
                                 <b>Label</b>
                             </Col>
-                            <Col xs={12}>
+                            <Col xs={10}>
                                 <input
+                                    data-tip="Query Name"
                                     onChange={(e)=>{setSavedQuery({...savedQuery, label:e.target.value})}}
                                     value={savedQuery&&savedQuery.label}
-                                    className={`form-control rounded-pill`}/>
+                                    className={`form-control `}/>
+                                <ReactTooltip place="right" type="info" effect="solid"/>
                             </Col>
-                            <Col xs={4}>
+                        </Row>
+
+                        <Row className={`mt-1`}>
+                            <Col xs={2}>
                                 <b>Description</b>
                             </Col>
-                            <Col xs={12}>
+                            <Col xs={10}>
                                 <input
+                                    data-tip="Description of this query"
                                     onChange={(e)=>{setSavedQuery({...savedQuery, description:e.target.value})}}
                                     value={savedQuery&&savedQuery.description}
-                                    className={`form-control rounded-pill`}/>
+                                    className={`form-control `}/>
+                                <ReactTooltip place="right" type="info" effect="solid"/>
                             </Col>
                             <Col className={`mt-4`} xs={12}>
                                 <If condition={query.queries.count}>

@@ -11,6 +11,7 @@ const getScheduledQuery = (scheduledQueryUri)=>{
                     scheduledQueryUri
                     name
                     label
+                    cronexpr
                     description
                     owner
                     created
@@ -24,6 +25,7 @@ const getScheduledQuery = (scheduledQueryUri)=>{
                             sqlBody
                             description
                             label
+                            name
                             queryOrder
                         }
                     }

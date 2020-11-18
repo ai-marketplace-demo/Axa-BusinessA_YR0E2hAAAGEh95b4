@@ -4,9 +4,10 @@ import SidebarStyled from "./SidebarStyled";
 import MainStyled from "./MainStyled";
 import Sidebar from "../Sidebar/Sidebar";
 import * as MdIcon  from 'react-icons/md';
+import * as ImIcon  from 'react-icons/im';
 import * as SiIcon from "react-icons/si";
 
-import Header from "../Header/Header";
+import Header from "../Header/Header2";
 import {If, Then, Else} from "react-if";
 import {Container, Row, Col} from "react-bootstrap";
 import {BrowserRouter as Router, Switch, Route, useLocation, useParams,Link} from "react-router-dom";
@@ -102,51 +103,79 @@ font-family: Cairo;
 text-align: center;
 font-weight: bolder;
 background-color: lightseagreen;
+
 `
 
+
+
 const Layout = (props) => {
-    const [sidebar, setSidebar] = useState(true);
+    const [sidebar, setSidebar] = useState(false);
+    const [profileMenuDisplayed,setProfileMenuDisplayed] = useState(false)
     const toggle= ()=>{
         setSidebar(!sidebar);
     }
 
-    return <Container fluid>
+    return <Container style={{__backgroundImage:'linear-gradient(to bottom, #f7fbfc 13%, white)'}} className={``} fluid>
         <Router>
-        <Row>
+            {/**
+            <Row style={{width:'100%',zIndex:'999',top:0,position: 'sticky', marginLeft:'0'}} className={` p-0 m-0 bg-white `}>
+                <Col style={{marginLeft:'0'}} className={`m-0`} xs={12}>
+                    <div
 
-            <If condition={sidebar}>
-                <Then>
+                        style={{
+                            display:'flex' ,
+                            //boxShadow:'0px 2px 3px 0px rgba(0, 0, 255, .2)',
+                            //borderRadius:'0px 0px 18px 18px'
+                        }} className={`border-bottom   text-black pt-2 pb-2 `}>
+                        <div style={{width:'5%'}}></div>
+                        <div style={{display:'grid',fontSize:'1.2rem',fontWeight:'bolder',width:'15%'}}className={``}>
+                            <b>[d]atahub</b>
+                            <i style={{fontSize:'0.77777777777rem'}}>simplified cloud analytics</i>
+                        </div>
+                        <div style={{width:'70%'}}></div>
+                        <div
+                            onClick={()=>{setProfileMenuDisplayed(!profileMenuDisplayed)}}
+                            className={`shadow text-white  text-center rounded-pill `}
+                             style={{
+                                 paddingTop:'0.1rem',
+                                 backgroundColor:'teal',
+                                 fontFamily:'Roboto' ,
+                                 fontSize:'1.1rem',
+                                 width:`2rem`,
+                                 height:'2rem'
+                             }}>
+                            m
+                        </div>
 
+                    </div>
+                </Col>
+            </Row>
+             **/}
+             <Header setProfileMenuDisplayed={setProfileMenuDisplayed} profileMenuDisplayed={profileMenuDisplayed}/>
+            <Row style={{backgroundColor:'transparent'}} className={`m-0`}>
+                <If condition={sidebar}>
+                    <Then>
                     <Col style={{
                         zIndex:'1',
-                        boxShadow:'5px 2px 10px 0px rgba(0, 0, 255, .2)',
+                        //boxShadow:'1px -3px 1px 1px rgba(0, 0, 255, .2)',
                         __borderRadius:'0 25% 0 0',
-                        backgroundColor:'white',
+                        //backgroundColor:'white',
                         height:'auto !important',
                         minHeight:"100vh",
                         width:'100%',
+                        backgroundImage:'linear-gradient(to top, #f5f9fa  10%, white 20%)',
+                        //backgroundColor:'white',
                         position:'fixed'
-                    }} className={`border-right`} xs={2}>
-
-                        <Row className={`mt-2`}>
+                    }} className={` m-0 mt-1 border-right`} xs={2}>
+                        <Row className={``}>
                             <Col xs={10}/>
-                            <Col className={``} xs={2}><Icon.ChevronLeft  color={"#d4cdcd"} onClick={toggle}/></Col>
+                            <Col className={``} xs={2}><Icon.ChevronLeft  color={"black"} onClick={toggle}/></Col>
                         </Row>
-                        {/**
-                        <Row>
-                            <Col xs={12}>
-                                <b style={{fontSize:"1.3rem"}} className={`mb-0 `}>[d]atahub</b>
-                            </Col>
-                            <Col className={` mt-0`} xs={12}>
-                                <i>simplified cloud analytics</i>
-                            </Col>
-                        </Row>
-                         **/}
                         <Row className={``} style={{marginTop:'2%'}}>
                             {/**
-                            <Col className={` mt-1 mb-1`}xs={12}>
-                                <b className={`text-capitalize`}>CATALOG</b>
-                            </Col>
+                             <Col className={` mt-1 mb-1`}xs={12}>
+                             <b className={`text-capitalize`}>CATALOG</b>
+                             </Col>
                              **/}
                             <SidebarLink icon={<Icon.Folder2Open />}to={"/es"} label={"Catalog"}/>
                             {/**<SidebarLink icon={<Icon.Chat />}to={"/es"} label={"Ask"}/>**/}
@@ -155,9 +184,9 @@ const Layout = (props) => {
 
                             {/**
 
-                            <Col className={`mt-1 mb-1 `}xs={12}>
-                                <b className={`text-capitalize`}>PLAY</b>
-                            </Col>
+                             <Col className={`mt-1 mb-1 `}xs={12}>
+                             <b className={`text-capitalize`}>PLAY</b>
+                             </Col>
                              **/}
                             <SidebarLink icon={<Icon.Server/>}to={"/redshiftclusters"} label={"Warehouses"}/>
                             <SidebarLink icon={<MdIcon.MdShowChart />}to={"/dashboards"} label={"Dashboards"}/>
@@ -165,9 +194,9 @@ const Layout = (props) => {
                             <SidebarLink icon={<SiIcon.SiJupyter/>}to={"/notebooks"} label={"Notebooks"}/>
                             <SidebarLink icon={<Icon.Gear />}to={"/sqlpipelines"} label={"Pipelines"}/>
                             {/**
-                            <Col className={`mt-1 mb-1`}xs={12}>
-                                <b>COLLABORATE</b>
-                            </Col>
+                             <Col className={`mt-1 mb-1`}xs={12}>
+                             <b>COLLABORATE</b>
+                             </Col>
                              **/}
 
                             <SidebarLink icon={<Icon.House />}to={"/organizations"} label={"Organizations"}/>
@@ -175,81 +204,116 @@ const Layout = (props) => {
                             {/**<SidebarLink icon={<Icon.Journal size={12}/>}to={"/"} label={"Recent Activities"}/>**/}
                             {/**<SidebarLink icon={<Icon.Play/>}to={"/xp"} label={"XP"}/>**/}
                         </Row>
-                    </Col>
-                </Then>
-                <Else>
-                    <div
-                        className={` border-right`}
-                        style={{
-                            zIndex:'1',
-                            boxShadow:'5px 2px 10px 0px rgba(0, 0, 255, .2)',
-                            height:'auto !important',
-                            backgroundColor:'white',
-                            minHeight:"100vh",
-                            position:'fixed',
-                            width:'3%'}}
-                    >
-                        <Row>
-                            <Col className={`ml-1 mt-1`} xs={2}><Icon.ChevronRight  color={'#ced4da'} onClick={toggle}/></Col>
-                        </Row>
 
-                    </div>
-                </Else>
-            </If>
-            <Col className={`border`} style={{ paddingLeft:sidebar?"0%":"3%", width:sidebar?"82%":"100%"}} >
-                <Row  className={"bg-white"}>
-                    <Col xs={12}>
-                        <ToastContainer
-                            transition={Slide}
-                            position="top-center"
-                            autoClose={5000}
-                            hideProgressBar={false}
-                            newestOnTop={false}
-                            closeOnClick
-                            rtl={false}
-                            pauseOnVisibilityChange
-                            draggable
-                            pauseOnHover/>
                     </Col>
-                </Row>
+                    </Then>
+                    <Else>
+                        <div
+                            className={`border-right`}
+                            style={{
+                                zIndex:'1',
+                                //boxShadow:'1px -1px 1px 1px rgba(0, 0, 255, .2)',
+                                height:'auto !important',
+                                //backgroundImage:'linear-gradient(to right, #f5f9fa  3%, white 20%)',
+                                backgroundColor:"white",
+                                minHeight:"100vh",
+                                position:'fixed',
+                                width:'3%'}}
+                        >
+                            <Row>
+                                <Col className={`ml-1 mt-1`} xs={2}><Icon.ChevronRight  color={'black'} onClick={toggle}/></Col>
+                            </Row>
 
-                <Row>
-                    <If condition={sidebar}>
+                        </div>
+                    </Else>
+                </If>
+
+                <Col style={{
+                    height:'auto !important',
+                    minHeight:"100vh",
+                    width: "97%",
+                    backgroundColor:'transparent'
+                }} className={''} xs={12}>
+                    <Row  className={"bg-white"}>
+                        <Col xs={12}>
+                            <ToastContainer
+                                transition={Slide}
+                                position="top-center"
+                                autoClose={5000}
+                                hideProgressBar={false}
+                                newestOnTop={false}
+                                closeOnClick
+                                rtl={false}
+                                pauseOnVisibilityChange
+                                draggable
+                                pauseOnHover/>
+                        </Col>
+                    </Row>
+                    <If condition={profileMenuDisplayed}>
                         <Then>
-                            <Col xs={2}/>
+                            <Row>
+                                <Col xs={10}/>
+                                    <Col xs={2}>
+                                        <div style={{
+                                            backgroundColor:'white',
+                                            zIndex:999,
+                                            height:'100vh',
+                                            __borderRadius:'12px',
+                                            __boxShadow:'-3px 2px 1px lightgrey',
+                                            position: "fixed",
+                                            width: '100%',
+                                            paddingTop:'2%',
+                                            paddingLeft:'2%',
+                                            borderLeft: '1px solid lightgrey'
+                                        }}>
+                                            <Row>
+                                                <Col xs={2}>
+                                                    <Icon.X onClick={()=>{setProfileMenuDisplayed(false)}}/>
+                                                </Col>
+                                                <Col className={`mt-2`} xs={12}>
+                                                    <SidebarLink icon={<Icon.PersonBadge />}to={"/profile"} label={"Profile"}/>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col xs={12}>
+                                                    <SidebarLink icon={<Icon.DoorClosed />}to={"/"} label={"Logout"}/>
+
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col xs={12}>
+                                                    <SidebarLink icon={<Icon.Key />}to={"/"} label={"Api keys"}/>
+
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col xs={12}>
+                                                    <div style={{color:'black',fontWeight:'bolder'}}> My Requests</div>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col xs={12}>
+                                                    <SidebarLink icon={<Icon.ArrowBarRight/>}to={"/"} label={"Outgoing"}/>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col xs={12}>
+                                                    <SidebarLink icon={<Icon.ArrowBarLeft/>}to={"/"} label={"Incoming"}/>
+
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    </Col>
+                            </Row>
                         </Then>
                     </If>
-                    <Col style={{fontColor:"white", background:''}} className={`m-0`} xs={sidebar?10:12}>
-                        <Row className={`ml-1`}>
-                            <Col xs={4}>
-                                <Row>
-                                    <Col xs={12}>
-                                        <b style={{ width:'100%', fontColor:'white',fontSize:"1.3rem"}} className={`text-dark`}>[d]atahub</b>
-                                    </Col>
-                                    <Col className={` mt-0`} xs={12}>
-                                        <i className={`text-dark`}>simplified cloud analytics</i>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col xs={6}>
-
-                            </Col>
-                            <Col className={`pt-2`} xs={2}>
-                               moshirm@amazon.fr
-                            </Col>
-
-                        </Row>
-                            {/** <Header/>**/}
-                    </Col>
-                </Row>
-
-                <Row>
-                    <If condition={sidebar}>
-                        <Then>
-                            <Col xs={2}/>
-                        </Then>
-                    </If>
-                    <Col className={``} xs={sidebar?10:12}>
+                    <Row className={`mr-1`}style={{zIndex:'-1'}}>
+                        <If className={`bg-dark`} condition={sidebar}>
+                            <Then>
+                                <Col xs={2}></Col>
+                            </Then>
+                        </If>
+                        <Col style={{marginLeft:sidebar?"0%":"3%"}}className={``} xs={sidebar?10:12}>
                             <Switch>
                                 <Route exact path={`/xp`}>
                                     <Graph/>
@@ -418,39 +482,11 @@ const Layout = (props) => {
                                 </Route>
 
                             </Switch>
-                    </Col>
-                </Row>
-
-            </Col>
-        </Row>
-        </Router>
-        {/*
-        <Footer>
-            <Row>
-                <Col xs={4}></Col>
-                <Col xs={4}>
-                    <Row>
-                        {
-                            ["Docs","Help","Terms"].map((t, i)=>{
-
-                                return <If key={`Footer${t}${i}ReactKey`}condition={i!=2}>
-                                    <Then>
-                                        <Col className={`text-center `}xs={2}>{t} </Col>
-                                        <Col className={`text-center `}xs={1}> | </Col>
-                                    </Then>
-                                    <Else>
-                                        <Col className={`text-center `}xs={2}>{t} </Col>
-                                    </Else>
-                                </If>
-
-                            })
-                        }
+                        </Col>
                     </Row>
                 </Col>
             </Row>
-
-        </Footer>
-        **/}
+        </Router>
     </Container>
 
 }

@@ -52,7 +52,7 @@ const NotebookList = (props)=>{
             </Col>
             <Col xs={2}>
                 <Link to={`/new-notebook`}>
-                    <div className={`btn btn-primary rounded-pill`}>
+                    <div className={`btn btn-info btn-sm  rounded-pill`}>
                         Create
                     </div>
                 </Link>

@@ -57,7 +57,7 @@ const Body=(props)=>{
         </Row>
         <Row>
             <Col xs={2}>
-                <Icon.Map size={18}/>
+                <Icon.Globe2 size={18}/>
             </Col>
             <Col xs={8}>
                 <small>{props.notebook.environment.region}</small>

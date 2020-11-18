@@ -95,16 +95,16 @@ const DatasetList = (props)=>{
     },[client, datasets.page]);
 
     return <Styled>
-        <Container fluid className={"mt-4"}>
+        <Container fluid className={"mt-2"}>
             <Row>
                 <Col xs={8}>
-                    <h3> <Icon.Folder/> My Datasets </h3>
+                    <h3> <Icon.Folder  /> <b>My Datasets</b> </h3>
                 </Col>
                 <Col xs={2}/>
                 <Col xs={2}>
                     <Link to={"/newdataset"}>
-                        <div style={{width:'100%'}}className={`rounded-pill btn btn-info`}>
-                            Create Dataset
+                        <div style={{width:'100%'}}className={`rounded-pill btn-sm btn btn-info`}>
+                            Create
                         </div>
                     </Link>
                 </Col>

@@ -21,6 +21,7 @@ import useClient from "../../api/client";
 import useToken from "../../api/token";
 
 const FacetStyled = styled.div`
+z-index: 999;
 height: auto !important;
 min-height: 100vh;
 margin-bottom: 20%;
