@@ -49,7 +49,7 @@ const Body =(props)=>{
     return <Row className={`mt-3`}>
         <Col xs={4}><Icon.PersonCheck></Icon.PersonCheck></Col>
         <Col xs={8}>
-            <Badge variant={`primary`} pill>{props.dashboard.userRoleForDashboard} </Badge>
+            <Badge className={`pb-1`} variant={`info`} pill>{props.dashboard.userRoleForDashboard} </Badge>
         </Col>
         <Col xs={4}><Icon.Person></Icon.Person></Col>
         <Col xs={8}>

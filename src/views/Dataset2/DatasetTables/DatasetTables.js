@@ -1,5 +1,5 @@
 import React, {useState,useEffect}  from "react";
-import {Container, Row, Spinner,Col} from "react-bootstrap";
+import {Container, Row, Spinner,Col,Badge} from "react-bootstrap";
 import {If, Then, Else,Switch,Case,Default} from "react-if";
 import * as Icon from "react-bootstrap-icons";
 import ReactMarkdown from 'react-markdown';
@@ -116,7 +116,10 @@ const DatasetTables=(props)=>{
                     tables.nodes.map((t,i)=>{
                         return <Row onClick={()=>{setCurrent(i)}}>
                             <Col xs={1}><Icon.Table size={18}/></Col>
-                            <Col xs={8}><p>{t.GlueTableName}</p></Col>
+                            <Col xs={6}><p>{t.GlueTableName}</p></Col>
+                            <Col xs={2}>
+
+                            </Col>
                         </Row>
                     })
                 }
@@ -124,8 +127,13 @@ const DatasetTables=(props)=>{
             </Col>
             <Col xs={10}>
                 <Row>
-                    <Col xs={12}>
+                    <Col xs={8}>
                         <b style={{fontSize:"3ch"}}>{tables.nodes[current]&&tables.nodes[current].GlueTableName}</b>
+                    </Col>
+                    <Col xs={2}>
+                        <Badge pill variant={`success`}>
+                            {"RAW"}
+                        </Badge>
                     </Col>
                 </Row>
                 <div className={`border-bottom`} style={{display:"flex"}}>

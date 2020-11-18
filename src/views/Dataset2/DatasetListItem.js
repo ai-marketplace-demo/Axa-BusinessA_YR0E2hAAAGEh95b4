@@ -50,7 +50,7 @@ const Body=(props)=>{
                 <Icon.PersonCheck size={18}/>
             </Col>
             <Col xs={8}>
-                <Badge pill className={`text-white bg-primary`}>
+                <Badge pill className={`pb-1 text-white bg-info`}>
                     {props.dataset.userRoleForDataset}
                 </Badge>
             </Col>

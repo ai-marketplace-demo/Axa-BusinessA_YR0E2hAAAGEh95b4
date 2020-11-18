@@ -111,7 +111,7 @@ const Layout = (props) => {
         setSidebar(!sidebar);
     }
 
-    return <Container style={{__backgroundImage:'linear-gradient(to bottom, #f7fbfc 13%, white)'}} className={``} fluid>
+    return <Container style={{backgroundImage:'linear-gradient(to bottom, white 13%, #f7fbfc )'}} className={``} fluid>
         <Router>
             {/**
             <Row style={{width:'100%',zIndex:'999',top:0,position: 'sticky', marginLeft:'0'}} className={` p-0 m-0 bg-white `}>
@@ -162,7 +162,7 @@ const Layout = (props) => {
                         backgroundImage:'linear-gradient(to top, #f5f9fa  10%, white 20%)',
                         //backgroundColor:'white',
                         position:'fixed'
-                    }} className={` m-0 mt-1 border-right`} xs={2}>
+                    }} className={` m-0 mt-1 border-right `} xs={2}>
                         <Row className={``}>
                             <Col xs={10}/>
                             <Col className={``} xs={2}><Icon.ChevronLeft  color={"black"} onClick={toggle}/></Col>
@@ -184,6 +184,7 @@ const Layout = (props) => {
                              <b className={`text-capitalize`}>PLAY</b>
                              </Col>
                              **/}
+
                             <SidebarLink icon={<MdIcon.MdShowChart />}to={"/dashboards"} label={"Dashboards"}/>
                             <SidebarLink icon={<Icon.Terminal/>}to={"/queries"} label={"Queries"}/>
                             <SidebarLink icon={<SiIcon.SiJupyter/>}to={"/notebooks"} label={"Notebooks"}/>
@@ -277,7 +278,7 @@ const Layout = (props) => {
                                             </Row>
                                             <Row>
                                                 <Col xs={12}>
-                                                    <SidebarLink icon={<Icon.Key />}to={"/"} label={"Api keys"}/>
+                                                    <SidebarLink icon={<Icon.Key />}to={"/profile/apikeys"} label={"Api keys"}/>
 
                                                 </Col>
                                             </Row>

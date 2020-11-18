@@ -159,7 +159,7 @@ const QueryEditorTab = (props)=>{
             </Col>
 
             <Col xs={2}>
-                <div onClick={props.createQuery&&props.createQuery} style={{width:'100%'}} className={`btn btn-sm btn-primary rounded-pill`}>
+                <div onClick={props.createQuery&&props.createQuery} style={{width:'100%'}} className={`btn btn-sm btn-info rounded-pill`}>
                     New
                 </div>
             </Col>
@@ -235,13 +235,13 @@ const QueryEditorTab = (props)=>{
                     <Col xs={1} className={`border-right`}/>
 
                     <Col xs={2}>
-                        <button disabled={op} type={`button`} onClick={moveUp} style={{width:'100%'}} className={`btn btn-sm btn-secondary rounded-pill`}>
-                            Move Up
+                        <button disabled={op} type={`button`} onClick={moveUp} style={{width:'100%'}} className={`btn  btn-sm rounded-pill`}>
+                            <Icon.ArrowUpCircle/>
                         </button>
                     </Col>
                     <Col xs={2}>
-                        <button disabled={op} type={`button`} onClick={moveDown} style={{width:'100%'}} className={`btn btn-sm btn-secondary rounded-pill`}>
-                            Move Down
+                        <button disabled={op} type={`button`} onClick={moveDown} style={{width:'100%'}} className={`btn btn-sm rounded-pill`}>
+                            <Icon.ArrowDownCircle/>
                         </button>
                     </Col>
 

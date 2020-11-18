@@ -67,7 +67,7 @@ const Body = (props)=>{
         </Col>
         <Col xs={2}><Icon.PersonCheck></Icon.PersonCheck></Col>
         <Col xs={10}>
-            <Badge pill variant={`primary`}>
+            <Badge className={`pt-1`} pill variant={`info`}>
                 <small>{props.sqlPipeline.userRoleForPipeline} </small>
             </Badge>
         </Col>
