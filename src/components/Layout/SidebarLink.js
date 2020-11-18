@@ -7,14 +7,19 @@ import styled from "styled-components"
 const StyledLink = styled.div`
 font-size: 2ch;
 height:3ch;
-width: 100%;
-margin-left: 9%;
-padding-left: 1ch;
+width: 97%;
+margin-left: 1ch;
+padding-left: 0ch;
 display:inline;
 float:left;
 &:hover{
-  background-color: ghostwhite;
+  #background-color: white;
+  color: #24a8c9 ;
+  padding-left: 1px;
+  border-right: 3px #24a8c9 solid;
+  font-weight: bolder;
 }
+
 `
 
 const IconStyled= styled.div`
@@ -28,12 +33,13 @@ margin-left: 1ch;
 display:inline;
 __text-transform: uppercase;
 font-size: 1.5ch;
-__font-family: "Helvetica";
 a{
     outline: none! important;
     text-decoration: none;
-    color:black;
+    color:inherit;
     width:100%;
+}
+
 }
 
 

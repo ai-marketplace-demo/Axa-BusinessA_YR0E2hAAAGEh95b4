@@ -69,7 +69,7 @@ const QueryList = (props)=>{
             </Col>
             <Col xs={2}>
                 <Link to={`/new-scheduled-query`}>
-                <div onClick={createNewQuery} className={`btn btn-primary rounded-pill`}>
+                <div  className={`btn btn-info btn-sm rounded-pill`}>
                     Create
                 </div>
                 </Link>

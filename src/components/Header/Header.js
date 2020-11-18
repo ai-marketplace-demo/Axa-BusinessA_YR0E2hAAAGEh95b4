@@ -36,16 +36,18 @@ const MenuStyled= styled.div`
   box-shadow: none !important;
   outline: 0 !important;  
 }
-  height: 4ch;
-  transition: all 0.4s ease-in-out;
-  &:hover{
-   background-color: white;
-   outline:0 !important;
-  }
-  &:focus{
-   background-color: white;
-   outline:0 !important;
-  }
+height: 4ch;
+transition: all 0.4s ease-in-out;
+text-transform: lowercase;
+
+&:hover{
+background-color: white;
+outline:0 !important;
+}
+&:focus{
+background-color: white;
+outline:0 !important;
+}
 `
 
 const SearchResultPanel = function (props) {
@@ -273,9 +275,13 @@ const Header = (props) => {
     if (!userInfo) {
         return <div/>
     }
-    return <Container fluid>
-        <Row>
-            <Col className={"pt-1"} xs={5}>
+    return <Container  style={{backgroundColor:'#f0f8fa'}} className={`pt-2`} fluid>
+        <Row className={``}>
+            <Col xs={1}>
+
+            </Col>
+
+            <Col className={""} xs={5}>
                 <Search placeholder={'search anything'}
                         reset={() => {
                             setDisplaySearchResults(false)
@@ -284,11 +290,11 @@ const Header = (props) => {
                         submit={refreshSearch}/>
             </Col>
             <Col xs={4}/>
-            <Col xs={2} className={" pl-4 pt-1 text-4xl"}>
+            <Col xs={2} className={""}>
                 <MenuStyled>
                     <Dropdown variant={`white`}>
-                        <Dropdown.Toggle className={``} variant="white" id="dropdown-basic">
-                            {userInfo.email}
+                        <Dropdown.Toggle className={``} variant="">
+                            <div >{userInfo.email}</div>
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu style={{width:`100%`}}>
@@ -319,6 +325,17 @@ const Header = (props) => {
 
     </Container>
 };
+
+
+const __Header= (props)=>{
+    return <Container>
+        <Row>
+            <Col xs={12} className={`p-3 bg-primary`}>
+                moshirm@amazon.fr
+            </Col>
+        </Row>
+    </Container>
+}
 
 
 export default Header;

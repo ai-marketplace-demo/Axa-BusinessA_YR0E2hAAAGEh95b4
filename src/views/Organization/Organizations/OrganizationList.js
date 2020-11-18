@@ -117,7 +117,7 @@ const OrganizationList = (props)=>{
             </Col>
             <Col className={`mb-1 text-right`} xs={2}>
                 <Link to={`neworganization`}>
-                    <div className={`rounded-pill btn btn-info`}>
+                    <div className={`rounded-pill btn-sm btn btn-info`}>
                         <b>Create Org</b>
                     </div>
                 </Link>

@@ -36,7 +36,7 @@ const Body=(props)=>{
         </Row>
         <Row>
             <Col xs={2}>
-                <Icon.Map size={18}/>
+                <Icon.Globe size={18}/>
             </Col>
             <Col xs={8}>
                 <small>{props.query.environment.region}</small>

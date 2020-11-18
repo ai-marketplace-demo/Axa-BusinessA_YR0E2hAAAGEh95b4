@@ -31,6 +31,7 @@ const Pager = (props)=>{
         <Row className={`mt-1`}>
             <Col xs={12}>
                 <input
+
                     onKeyDown={props.onKeyDown||defaultCallback}
                     onChange={props.onChange||defaultCallback}
                     className={"rounded-pill form-control"} name={'search'}

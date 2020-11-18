@@ -64,12 +64,12 @@ const DashboardList = function(){
                 <Col xs={2}/>
                 <Col xs={2} className={`mt-2`}>
                         <Link to={`/newdashboard`}>
-                            <div className={`btn btn-info rounded-pill`}> Import</div>
+                            <div className={`btn btn-info btn-sm rounded-pill`}> Import</div>
                         </Link>
                 </Col>
 
                 <Col xs={2} className={`mt-2`}>
-                    <div onClick={displayEnvironments} className={`btn btn-primary rounded-pill`}> Start Session </div>
+                    <div onClick={displayEnvironments} className={`btn btn-success btn-sm rounded-pill`}> Start Session </div>
                 </Col>
             </Row>
             <Row>

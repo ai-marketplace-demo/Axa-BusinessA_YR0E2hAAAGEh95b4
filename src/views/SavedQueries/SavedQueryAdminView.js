@@ -18,6 +18,7 @@ import getScheduledQuery from "../../api/SavedQuery/getScheduledQuery";
 import createSavedQuery from "../../api/SavedQuery/createSavedQuery";
 import QueryOverviewTab from "./QueryOverviewTab";
 import QueryEditorTab from "./QueryEditorTab";
+import QuerySchedulerTab from "./QuerySchedulerTab";
 import HumandReadableDate from "../../components/HumanReadableDate/HumanReadableDate";
 
 
@@ -121,7 +122,7 @@ const QueryAdmin = (props)=>{
                         </If>
                     </Case>
                     <Case condition={params.tab=="schedule"}>
-                        <div>Schedule</div>
+                       <QuerySchedulerTab query={query}/>
                     </Case>
                     <Default>
                         {params.tab}
