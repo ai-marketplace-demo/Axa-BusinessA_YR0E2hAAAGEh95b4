@@ -103,6 +103,16 @@ const Sidebar = (props) => {
                         </Col>
                     </Row>
                 </Hoverable>
+                <Hoverable color={"black"}>
+                    <Row className={"sidebarlink"}>
+                        <Col xs={1}>
+                            <Icon.Server/>
+                        </Col>
+                        <Col>
+                            <Link className={""} to={"/redshiftclusters"}><h6>Warehouses</h6></Link>
+                        </Col>
+                    </Row>
+                </Hoverable>
                 {/**
                 <Hoverable color={"black"}>
                     <Row className={"sidebarlink"}>
@@ -177,6 +187,17 @@ const Sidebar = (props) => {
                     </Row>
                 </Hoverable>
 
+
+                <Hoverable color={"black"}>
+                    <Row className={"sidebarlink"}>
+                        <Col xs={1}>
+                            <Icon.Server/>
+                        </Col>
+                        <Col>
+                            <Link className={""} to={"/redshiftclusters"}><h6>My Redshift Clusters</h6></Link>
+                        </Col>
+                    </Row>
+                </Hoverable>
 
                 <Hoverable color={"black"}>
                     <Row className={"sidebarlink"}>

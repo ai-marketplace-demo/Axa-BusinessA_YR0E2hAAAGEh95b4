@@ -4,7 +4,6 @@ import SidebarStyled from "./SidebarStyled";
 import MainStyled from "./MainStyled";
 import Sidebar from "../Sidebar/Sidebar";
 import * as MdIcon  from 'react-icons/md';
-import * as ImIcon  from 'react-icons/im';
 import * as SiIcon from "react-icons/si";
 
 import Header from "../Header/Header";
@@ -67,6 +66,10 @@ import NotebookList from "../../views/Notebook/NotebookList";
 import QueryTool from "../../views/XP/QueryEditor";
 import {Slide, ToastContainer} from "react-toastify";
 import NotebookForm from "../../views/Notebook/NotebookForm";
+import RedshiftClusterList from "../../views/RedshiftClusters/ClusterList";
+import NewRedshiftCluster from "../../views/RedshiftClusters/NewCluster";
+import ImportRedshiftCluster from "../../views/RedshiftClusters/ImportCluster";
+import RedshiftClusterView from "../../views/RedshiftClusters/ClusterView";
 
 const Hoverable=styled.div`
 &:hover{
@@ -156,6 +159,7 @@ const Layout = (props) => {
                                 <b className={`text-capitalize`}>PLAY</b>
                             </Col>
                              **/}
+                            <SidebarLink icon={<Icon.Server/>}to={"/redshiftclusters"} label={"Warehouses"}/>
                             <SidebarLink icon={<MdIcon.MdShowChart />}to={"/dashboards"} label={"Dashboards"}/>
                             <SidebarLink icon={<Icon.Terminal/>}to={"/queries"} label={"Queries"}/>
                             <SidebarLink icon={<SiIcon.SiJupyter/>}to={"/notebooks"} label={"Notebooks"}/>
@@ -396,6 +400,18 @@ const Layout = (props) => {
                                 </Route>
                                 <Route path={`/table/:datasetUri/:tableUri`}>
                                     <TableExplorer/>
+                                </Route>
+                                <Route path={`/redshiftclusters`}>
+                                    <RedshiftClusterList/>
+                                </Route>
+                                <Route path={`/newredshiftcluster`}>
+                                    <NewRedshiftCluster/>
+                                </Route>
+                                <Route path={`/importredshiftcluster`}>
+                                    <ImportRedshiftCluster/>
+                                </Route>
+                                <Route path={`/redshiftcluster/:uri`}>
+                                    <RedshiftClusterView/>
                                 </Route>
                                 <Route path={`/`}>
                                     <Home/>
