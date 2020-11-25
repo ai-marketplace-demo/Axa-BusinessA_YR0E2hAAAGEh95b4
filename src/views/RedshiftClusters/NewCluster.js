@@ -17,7 +17,7 @@ import listOrganizations from "../../api/Organization/listOrganizations";
 
 
 const Background=styled.div`
-margin-top: -0px;
+margin-top: 3%;
 margin-right: 5px;
 z-index: 10;
 border-radius: 0px;
@@ -160,20 +160,14 @@ const NewRedshiftCluster= (props)=>{
     };
 
 
-    return <Container>
+    return <Container fluid className={`mt-3`}>
         <Row>
             <Col xs={1}>
-                <Link
-                    to={{
-                        pathname: `/redshiftclusters`
-                    }}
-                    style={{color: 'black'}}>
-                    <Icon.ChevronLeft size={32}/>
-                </Link>
+
             </Col>
             <Col xs={10}>
 
-                <h4>New Amazon Redshift Cluster</h4>
+                <h4>New Amazon Redshift Cluster <b className={`text-info`}>{formData.label}</b></h4>
             </Col>
             <Col xs={12}>
                 <If condition={submitting}>
@@ -204,7 +198,7 @@ const NewRedshiftCluster= (props)=>{
 
                     <Form onSubmit={handleSubmit} className="mx-auto">
                         {console.log(values)}
-                        <Row>
+                        <Row className={`mt-3`}>
                             <Col xs={2}><b>Settings</b></Col>
                             <Col xs={10}>
                                 <Row>
@@ -394,10 +388,20 @@ const NewRedshiftCluster= (props)=>{
                         <Row className={"mt-4"}>
                             <Col xs={3}><b></b>
 
-                                <Button variant="success" type="submit" disabled={isSubmitting}>
+                                <Button className="btn-sm btn-success" type="submit" disabled={isSubmitting}>
                                     <b>Create</b>
                                 </Button>
                             </Col>
+                            <Col xs={3}>
+
+                                <Link to={"/redshiftclusters"}>
+                                <div className="btn btn-sm btn-secondary" type="submit" disabled={isSubmitting}>
+                                    <b>Cancel</b>
+                                </div>
+                                </Link>
+
+                            </Col>
+
                         </Row>
                     </Form>
                 )}

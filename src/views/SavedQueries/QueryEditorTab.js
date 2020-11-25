@@ -10,6 +10,7 @@ import removeSavedQuery from "../../api/SavedQuery/removeSavedQuery";
 import getScheduledQuery from "../../api/SavedQuery/getScheduledQuery";
 import ReactTooltip from 'react-tooltip';
 import runSavedQuery from "../../api/SavedQuery/runSavedQuery";
+import deployScheduledQuery from "../../api/SavedQuery/deployScheduledQuery";
 import ResultTable from "./ResultTable";
 
 const QueryEditorTab = (props)=>{
@@ -149,7 +150,7 @@ const QueryEditorTab = (props)=>{
         <Row>
 
 
-            <Col xs={7}/>
+            <Col xs={5}/>
             <Col xs={2}>
                 <If condition={op}>
                     <Then>
@@ -158,6 +159,11 @@ const QueryEditorTab = (props)=>{
                 </If>
             </Col>
 
+            <Col xs={2}>
+                <div onClick={props.createQuery&&props.createQuery} style={{width:'100%'}} className={`btn btn-sm btn-info rounded-pill`}>
+                    Deploy
+                </div>
+            </Col>
             <Col xs={2}>
                 <div onClick={props.createQuery&&props.createQuery} style={{width:'100%'}} className={`btn btn-sm btn-info rounded-pill`}>
                     New

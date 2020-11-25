@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useEffect} from "react";
 import {Link,useLocation} from "react-router-dom";
 import styled from "styled-components"
 
@@ -11,6 +11,7 @@ width: 97%;
 margin-left: 1ch;
 padding-left: 0ch;
 display:inline;
+border-right: ${props=>props.location&&props.location.pathname.indexOf(props.to)!=-1?"3px #24a8c9 solid;":""};
 float:left;
 &:hover{
   #background-color: white;
@@ -46,8 +47,9 @@ a{
 `
 
 const SidebarLink = (props)=>{
-
-    return <StyledLink>
+    const location=useLocation();
+    useEffect(()=>{},[location]);
+    return <StyledLink  onClick={props.onClick||function(){}} to={props.to} location={location}>
         <IconStyled>{props.icon}</IconStyled>
         <LinkStyled><Link to={props.to}>{props.label}</Link></LinkStyled>
     </StyledLink>

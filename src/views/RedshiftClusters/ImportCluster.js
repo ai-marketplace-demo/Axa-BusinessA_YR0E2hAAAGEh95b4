@@ -3,6 +3,7 @@ import {Container, Row, Col, Spinner, Form, Button} from "react-bootstrap";
 import {Link, useHistory} from "react-router-dom";
 import styled from "styled-components";
 import * as Icon from "react-bootstrap-icons";
+import * as FiIcon from "react-icons/fi";
 import useClient from "../../api/client";
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -18,7 +19,7 @@ import listOrganizations from "../../api/Organization/listOrganizations";
 
 
 const Background=styled.div`
-margin-top: -0px;
+margin-top: 4%;
 margin-right: 5px;
 z-index: 10;
 border-radius: 0px;
@@ -113,18 +114,12 @@ const ImportCluster= (props)=>{
         }
     };
 
-    return <Container>
+    return <Container fluid className={`mt-3`}>
         <Row>
             <Col xs={12}>
                 <h4>
-                    <Link
-                        to={{
-                            pathname: `/redshiftclusters`
-                        }}
-                        style={{color: 'black'}}>
-                        <Icon.ChevronLeft size={32}/>
-                    </Link>
-                    <Icon.Server xs={48} className={'ml-3'}/>
+
+                    <FiIcon.FiBox xs={48} className={'ml-3'}/>
                     <span className={'ml-2'}>Import Amazon Redshift Cluster</span>
                 </h4>
             </Col>
@@ -220,10 +215,18 @@ const ImportCluster= (props)=>{
 
                         <Row className={"mt-4"}>
                             <Col xs={3}><b></b>
-
-                                <Button variant="success" type="submit" disabled={submitting}>
+                                <Button className="btn-success btn-sm" type="submit" disabled={submitting}>
                                     <b>Create</b>
                                 </Button>
+                            </Col>
+                            <Col xs={3}>
+
+                                <Link to={"/redshiftclusters"}>
+                                    <div className="btn btn-sm btn-secondary" type="submit" disabled={submitting}>
+                                        <b>Cancel</b>
+                                    </div>
+                                </Link>
+
                             </Col>
                         </Row>
                     </Form>

@@ -171,8 +171,8 @@ const DatasetUpload = (props)=>{
         </Row>
         <Row className={`mt-2`}>
             <Col xs={2}>
-                <div onClick={onFormSubmit} className={`btn btn-sm btn-primary rounded-pill`}>
-                    Save
+                <div onClick={onFormSubmit} className={`btn btn-sm btn-success rounded-pill`}>
+                    Upload
                 </div>
             </Col>
         </Row>

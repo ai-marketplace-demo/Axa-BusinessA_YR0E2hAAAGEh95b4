@@ -54,7 +54,7 @@ const DatasetShareList = (props)=>{
     return <Container fluid>
         <Row>
             <Col xs={2}>
-                <div onClick={()=>{setMode("form")}} className={`btn btn-sm btn-primary rounded-pill`}>
+                <div onClick={()=>{setMode("form")}} className={`btn btn-sm btn-info rounded-pill`}>
                     Create Share
                 </div>
             </Col>

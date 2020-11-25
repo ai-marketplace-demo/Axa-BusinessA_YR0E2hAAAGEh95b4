@@ -6,6 +6,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import * as MdIcon  from 'react-icons/md';
 import * as ImIcon  from 'react-icons/im';
 import * as SiIcon from "react-icons/si";
+import * as FiIcon from "react-icons/fi";
 
 import Header from "../Header/Header2";
 import {If, Then, Else} from "react-if";
@@ -67,6 +68,12 @@ import NotebookList from "../../views/Notebook/NotebookList";
 import QueryTool from "../../views/XP/QueryEditor";
 import {Slide, ToastContainer} from "react-toastify";
 import NotebookForm from "../../views/Notebook/NotebookForm";
+import RedshiftClusterList from "../../views/RedshiftClusters/ClusterList";
+import NewRedshiftCluster from "../../views/RedshiftClusters/NewCluster";
+import ImportRedshiftCluster from "../../views/RedshiftClusters/ImportCluster";
+import RedshiftClusterView from "../../views/RedshiftClusters/ClusterView";
+import useAuth from "../../hooks/useAuth";
+import {Auth} from "aws-amplify";
 
 const Hoverable=styled.div`
 &:hover{
@@ -105,107 +112,86 @@ background-color: lightseagreen;
 
 
 const Layout = (props) => {
-    const [sidebar, setSidebar] = useState(false);
-    const [profileMenuDisplayed,setProfileMenuDisplayed] = useState(false)
+    const location=useLocation();
+    const [sidebar, setSidebar] = useState(true);
+    const [profileMenuDisplayed,setProfileMenuDisplayed] = useState(false);
+    let auth = useAuth();
+
+    const signOut = async () => {
+        try {
+            await Auth.signOut()
+        } catch (error) {
+            console.log('error signing out: ', error);
+        }
+    }
+
     const toggle= ()=>{
         setSidebar(!sidebar);
     }
 
-    return <Container style={{backgroundImage:'linear-gradient(to bottom, white 13%, #f7fbfc )'}} className={``} fluid>
+    return <Container
+        style={{__height:'auto !important',__backgroundImage:'linear-gradient(to bottom, #f7fbfc 13%, white 13% )'}}
+        className={``} fluid
+    >
         <Router>
-            {/**
-            <Row style={{width:'100%',zIndex:'999',top:0,position: 'sticky', marginLeft:'0'}} className={` p-0 m-0 bg-white `}>
-                <Col style={{marginLeft:'0'}} className={`m-0`} xs={12}>
-                    <div
-
-                        style={{
-                            display:'flex' ,
-                            //boxShadow:'0px 2px 3px 0px rgba(0, 0, 255, .2)',
-                            //borderRadius:'0px 0px 18px 18px'
-                        }} className={`border-bottom   text-black pt-2 pb-2 `}>
-                        <div style={{width:'5%'}}></div>
-                        <div style={{display:'grid',fontSize:'1.2rem',fontWeight:'bolder',width:'15%'}}className={``}>
-                            <b>[d]atahub</b>
-                            <i style={{fontSize:'0.77777777777rem'}}>simplified cloud analytics</i>
-                        </div>
-                        <div style={{width:'70%'}}></div>
-                        <div
-                            onClick={()=>{setProfileMenuDisplayed(!profileMenuDisplayed)}}
-                            className={`shadow text-white  text-center rounded-pill `}
-                             style={{
-                                 paddingTop:'0.1rem',
-                                 backgroundColor:'teal',
-                                 fontFamily:'Roboto' ,
-                                 fontSize:'1.1rem',
-                                 width:`2rem`,
-                                 height:'2rem'
-                             }}>
-                            m
-                        </div>
-
-                    </div>
-                </Col>
-            </Row>
-             **/}
              <Header setProfileMenuDisplayed={setProfileMenuDisplayed} profileMenuDisplayed={profileMenuDisplayed}/>
             <Row style={{backgroundColor:'transparent'}} className={`m-0`}>
                 <If condition={sidebar}>
                     <Then>
-                    <Col style={{
-                        zIndex:'1',
-                        //boxShadow:'1px -3px 1px 1px rgba(0, 0, 255, .2)',
-                        __borderRadius:'0 25% 0 0',
-                        //backgroundColor:'white',
-                        height:'auto !important',
-                        minHeight:"100vh",
-                        width:'100%',
-                        backgroundImage:'linear-gradient(to top, #f5f9fa  10%, white 20%)',
-                        //backgroundColor:'white',
-                        position:'fixed'
-                    }} className={` m-0 mt-1 border-right `} xs={2}>
-                        <Row className={``}>
-                            <Col xs={10}/>
-                            <Col className={``} xs={2}><Icon.ChevronLeft  color={"black"} onClick={toggle}/></Col>
-                        </Row>
-                        <Row className={``} style={{marginTop:'2%'}}>
-                            {/**
-                             <Col className={` mt-1 mb-1`}xs={12}>
-                             <b className={`text-capitalize`}>CATALOG</b>
-                             </Col>
-                             **/}
-                            <SidebarLink icon={<Icon.Folder2Open />}to={"/es"} label={"Catalog"}/>
-                            {/**<SidebarLink icon={<Icon.Chat />}to={"/es"} label={"Ask"}/>**/}
+                        <Col style={{
+                            zIndex:'1',
+                            //boxShadow:'1px -3px 1px 1px rgba(0, 0, 255, .2)',
+                            __borderRadius:'0 25% 0 0',
+                            //backgroundColor:'white',
+                            height:'auto !important',
+                            minHeight:"100vh",
+                            width:'100%',
+                            backgroundImage:'linear-gradient(to top, #f5f9fa  10%, white 20%)',
+                            //backgroundColor:'white',
+                            position:'fixed'
+                        }} className={` m-0 mt-1 border-right `} xs={2}>
+                            <Row className={``}>
+                                <Col xs={10}/>
+                                <Col xs={2}><Icon.ChevronLeft  color={"black"} onClick={toggle}/></Col>
+                            </Row>
+                            <Row className={``} style={{marginTop:'2%'}}>
+                                <SidebarLink icon={<Icon.Folder2Open />}to={"/es"} label={"Discover"}/>
+                                {/**<SidebarLink icon={<Icon.Chat />}to={"/es"} label={"Ask"}/>**/}
 
-                            <SidebarLink icon={<Icon.FolderPlus />}to={"/datasets"} label={"Contribute"}/>
+                                <SidebarLink icon={<Icon.FolderPlus />}to={"/datasets"} label={"Contribute"}/>
+                            </Row>
+                            <Row className={``} style={{marginTop:'3%'}}>
 
-                            {/**
+                                {/**
 
-                             <Col className={`mt-1 mb-1 `}xs={12}>
-                             <b className={`text-capitalize`}>PLAY</b>
-                             </Col>
-                             **/}
+                                 <Col className={`mt-1 mb-1 `}xs={12}>
+                                 <b className={`text-capitalize`}>PLAY</b>
+                                 </Col>
+                                 **/}
 
-                            <SidebarLink icon={<MdIcon.MdShowChart />}to={"/dashboards"} label={"Dashboards"}/>
-                            <SidebarLink icon={<Icon.Terminal/>}to={"/queries"} label={"Queries"}/>
-                            <SidebarLink icon={<SiIcon.SiJupyter/>}to={"/notebooks"} label={"Notebooks"}/>
-                            <SidebarLink icon={<Icon.Gear />}to={"/sqlpipelines"} label={"Pipelines"}/>
-                            {/**
-                             <Col className={`mt-1 mb-1`}xs={12}>
-                             <b>COLLABORATE</b>
-                             </Col>
-                             **/}
 
-                            <SidebarLink icon={<Icon.House />}to={"/organizations"} label={"Organizations"}/>
-                            <SidebarLink icon={<Icon.Cloud />}to={"/environments"} label={"Environments"}/>
-                            {/**<SidebarLink icon={<Icon.Journal size={12}/>}to={"/"} label={"Recent Activities"}/>**/}
-                            {/**<SidebarLink icon={<Icon.Play/>}to={"/xp"} label={"XP"}/>**/}
-                        </Row>
-
-                    </Col>
+                                <SidebarLink  icon={<MdIcon.MdShowChart />}to={"/dashboards"} label={"Dashboards"}/>
+                                <SidebarLink  icon={<Icon.Terminal/>}to={"/queries"} label={"Queries"}/>
+                                <SidebarLink  icon={<SiIcon.SiJupyter/>}to={"/notebooks"} label={"Notebooks"}/>
+                                <SidebarLink  icon={<Icon.Gear />}to={"/sqlpipelines"} label={"Pipelines"}/>
+                                {/**
+                                 <Col className={`mt-1 mb-1`}xs={12}>
+                                 <b>COLLABORATE</b>
+                                 </Col>
+                                 **/}
+                            </Row>
+                            <Row className={``} style={{marginTop:'3%'}}>
+                                <SidebarLink  icon={<Icon.House />}to={"/organizations"} label={"Organizations"}/>
+                                <SidebarLink  icon={<Icon.Cloud />}to={"/environments"} label={"Environments"}/>
+                                <SidebarLink  icon={<FiIcon.FiBox/>}to={"/redshiftclusters"} label={"Warehouses"}/>
+                                {/**<SidebarLink icon={<Icon.Journal size={12}/>}to={"/"} label={"Recent Activities"}/>**/}
+                                {/**<SidebarLink icon={<Icon.Play/>}to={"/xp"} label={"XP"}/>**/}
+                             </Row>
+                        </Col>
                     </Then>
                     <Else>
-                        <div
-                            className={`border-right`}
+                        <Col
+                            className={`mt-1  border-right`}
                             style={{
                                 zIndex:'1',
                                 //boxShadow:'1px -1px 1px 1px rgba(0, 0, 255, .2)',
@@ -214,13 +200,10 @@ const Layout = (props) => {
                                 backgroundColor:"white",
                                 minHeight:"100vh",
                                 position:'fixed',
-                                width:'3%'}}
-                        >
-                            <Row>
-                                <Col className={`ml-1 mt-1`} xs={2}><Icon.ChevronRight  color={'black'} onClick={toggle}/></Col>
-                            </Row>
+                                width:'3%'}}>
 
-                        </div>
+                                <Icon.ChevronRight  color={'black'} onClick={toggle}/>
+                        </Col>
                     </Else>
                 </If>
 
@@ -272,7 +255,7 @@ const Layout = (props) => {
                                             </Row>
                                             <Row>
                                                 <Col xs={12}>
-                                                    <SidebarLink icon={<Icon.DoorClosed />}to={"/"} label={"Logout"}/>
+                                                    <SidebarLink onClick={signOut} icon={<Icon.DoorClosed />}to={"/"} label={"Logout"}/>
 
                                                 </Col>
                                             </Row>
@@ -460,6 +443,18 @@ const Layout = (props) => {
                                 </Route>
                                 <Route path={`/table/:datasetUri/:tableUri`}>
                                     <TableExplorer/>
+                                </Route>
+                                <Route path={`/redshiftclusters`}>
+                                    <RedshiftClusterList/>
+                                </Route>
+                                <Route path={`/newredshiftcluster`}>
+                                    <NewRedshiftCluster/>
+                                </Route>
+                                <Route path={`/importredshiftcluster`}>
+                                    <ImportRedshiftCluster/>
+                                </Route>
+                                <Route path={`/redshiftcluster/:uri`}>
+                                    <RedshiftClusterView/>
                                 </Route>
                                 <Route path={`/`}>
                                     <Home/>

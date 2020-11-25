@@ -2,6 +2,7 @@ import React ,{useEffect,useState} from "react";
 import {Col, Row, Container, Spinner} from "react-bootstrap";
 import {If, Then, Else} from "react-if";
 import * as Icon from  "react-bootstrap-icons";
+import * as FiIcon from "react-icons/fi";
 import styled from "styled-components";
 import MainActionButton from "../../components/MainActionButton/MainButton";
 import {Link} from "react-router-dom";
@@ -83,19 +84,19 @@ const RedshiftClusterList = function(){
 
             <Row>
                 <Col xs={6}>
-                    <h3> <Icon.Server/><span className={'ml-1'}>Warehouses</span></h3>
+                    <h3> <FiIcon.FiBox/><span className={'ml-1'}>Warehouses</span></h3>
                 </Col>
                 <Col xs={2}/>
 
                 <Col xs={2} className={`mt-2`}>
                     <Link to={`/importredshiftcluster`}>
-                        <div style={{width:'100%'}} className={`rounded-pill btn-sm btn btn-primary`}>Import</div>
+                        <div style={{width:'100%'}} className={`rounded-pill btn-sm btn btn-info`}>Import</div>
                     </Link>
                 </Col>
 
                 <Col xs={2} className={`mt-2`}>
                     <Link to={`/newredshiftcluster`}>
-                        <div style={{width:'100%'}} className={`btn btn-sm btn-info rounded-pill`}>Create</div>
+                        <div style={{width:'100%'}} className={`btn btn-sm btn-success rounded-pill`}>Create</div>
                     </Link>
                 </Col>
             </Row>

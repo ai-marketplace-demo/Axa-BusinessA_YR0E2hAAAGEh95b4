@@ -1,9 +1,33 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Row,Col} from "react-bootstrap";
+import {Auth} from "aws-amplify";
+import useAuth from "../../hooks/useAuth";
 
 
 
 const Header = (props)=>{
+
+    const [userInfo, setUserInfo] = useState(null);
+    let auth = useAuth();
+
+    const signOut = async () => {
+        try {
+            await Auth.signOut()
+        } catch (error) {
+            console.log('error signing out: ', error);
+        }
+    }
+
+
+    const fetchUserInfo = () => {
+        setUserInfo(auth);
+    }
+
+    useEffect(() => {
+        if (!userInfo) {
+            fetchUserInfo();
+        }
+    }, [auth]);
 
 
     return <Row style={{width:'100%',zIndex:'999',top:0,position: 'sticky', marginLeft:'0'}} className={` p-0 m-0 bg-white `}>
@@ -32,7 +56,7 @@ const Header = (props)=>{
                         width:`2rem`,
                         height:'2rem'
                     }}>
-                    m
+                    {userInfo&&userInfo.email[0]}
                 </div>
 
             </div>

@@ -77,18 +77,19 @@ const DatasetSummary = (props)=>{
                     <Then>
                         <Row>
                             <Col xs={6}>
-                                <div className={`btn-sm rounded-pill btn btn-secondary`} onClick={()=>{setIsEditorMode(false)}}>Close</div>
+                                <div className={`btn-sm rounded-pill  btn btn-success`} onClick={saveSummary}>Save</div>
                             </Col>
                             <Col xs={6}>
-                                <div className={`btn-sm rounded-pill  btn btn-primary`} onClick={saveSummary}>Save</div>
+                                <div className={`btn-sm rounded-pill btn btn-secondary`} onClick={()=>{setIsEditorMode(false)}}>Close</div>
                             </Col>
+
                         </Row>
 
                     </Then>
                     <Else>
                         <If condition={canEdit}>
                             <Then>
-                                <div className={`btn btn-sm btn-primary rounded-pill`} onClick={()=>{setIsEditorMode(true)}}><b>Edit</b></div>
+                                <div className={`btn btn-sm btn-info rounded-pill`} onClick={()=>{setIsEditorMode(true)}}><b>Edit</b></div>
                             </Then>
                         </If>
                     </Else>

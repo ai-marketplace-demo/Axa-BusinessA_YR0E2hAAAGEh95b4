@@ -116,13 +116,13 @@ const NewOrganizationForm = (props)=>{
             <Row className={"mt-3"}>
                 <Col xs={3}/>
                 <Col xs={2}>
-                    <div onClick={submitForm} className={"btn btn-primary"}>
+                    <div onClick={submitForm} className={"btn btn-info btn-sm"}>
                         Create
                     </div>
                 </Col>
                 <Col xs={2}>
                     <Link style={{color:"black"}} to={`/organizations`}>
-                        <div className={"btn btn-secondary"}>
+                        <div className={"btn btn-sm btn-secondary"}>
                             Cancel
                         </div>
                     </Link>

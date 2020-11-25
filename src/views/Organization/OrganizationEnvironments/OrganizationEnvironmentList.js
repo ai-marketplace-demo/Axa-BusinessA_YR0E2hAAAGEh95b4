@@ -142,8 +142,8 @@ const OrganizationEnvironmentList=(props)=>{
                     state: location.state,
                     pathname:`/newenvironment/${params.uri}`
                 }}>
-                    <div className={`rounded-pill btn btn-info`}>
-                        Link Environment
+                    <div className={`rounded-pill btn-sm btn btn-info`}>
+                        Link
                     </div>
                 </Link>
             </Col>

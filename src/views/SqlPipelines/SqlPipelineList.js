@@ -67,7 +67,7 @@ const SqlPipelineList = function(){
 
 
     return <Styled>
-        <Container fluid className={"mt-4"}>
+        <Container fluid className={"bg-transparent mt-4"}>
             <Row>
                 <Col xs={8}>
                     <h3> <Icon.Gear/> My Data Pipelines</h3>

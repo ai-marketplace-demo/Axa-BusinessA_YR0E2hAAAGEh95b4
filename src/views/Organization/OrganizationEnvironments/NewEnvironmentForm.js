@@ -1,5 +1,6 @@
 import React ,{useState,useEffect} from "react";
 import {Container, Table,Row, Badge,Col,Spinner} from "react-bootstrap";
+import {If, Then, Else} from "react-if";
 import styled from "styled-components";
 import * as Icon from "react-bootstrap-icons";
 import Select from 'react-select'
@@ -17,10 +18,11 @@ height: 100vh;
 
 const FormStyled=styled.div`
 border: 1px lightgrey solid;
-height:19em;
+height:23em;
 border-radius: 0px Opx 5px 5px;
 border-left: 7px solid lightblue;
 padding: 3em;
+margin-bottom: 12%;
 width:100%;
 box-shadow: 0px 1px 0px 1px lightyellow;
 `
@@ -31,6 +33,7 @@ const NewEnvironmentForm= (props)=>{
     let history = useHistory();
     let client = useClient();
     let [ready, setReady] = useState(false);
+    let [isSubmitting, setIsSubmitting] = useState(false);
 
     const options = [
         { value: 'Data', label: 'Data' },
@@ -68,7 +71,7 @@ const NewEnvironmentForm= (props)=>{
         }
     }
     const submitForm=async ()=>{
-        console.log(formData);
+        setIsSubmitting(true);
         let preCheck = await checkEnv();
         if (!preCheck){
             return
@@ -90,6 +93,8 @@ const NewEnvironmentForm= (props)=>{
         }else {
             toast.warn("Something went wrong");
         }
+        setIsSubmitting(false);
+
 
     }
     const handleInputChange=((e)=>setFormData({...formData, [e.target.name]: e.target.value}));
@@ -103,18 +108,11 @@ const NewEnvironmentForm= (props)=>{
     return <PageStyled>
     <Container>
         <Row>
-            <Col xs={1}>
-                <Link
-                    style={{color:"black"}}
-                    to={{
-                        state : location.state,
-                        pathname:`/organization/${params.uri}/environments`}}
-                ><Icon.ChevronLeft size={28}/></Link>
-            </Col>
             <Col xs={11}>
                 <h3>Link Environment <b className={`text-primary text-capitalize`}>{formData.label}</b> </h3>
             </Col>
         </Row>
+
         <Row className={`mt-3 p-3`}>
             <Col xs={12}>
                 <div className="bg-light p-3" role="alert">
@@ -132,6 +130,15 @@ const NewEnvironmentForm= (props)=>{
             </Col>
         </Row>
         <FormStyled className={`mt-0`}>
+            <If condition={isSubmitting}>
+                <Then>
+                    <Row>
+                        <Col xs={2}>
+                            <Spinner variant={`primary`} animation={`border`}/>
+                        </Col>
+                    </Row>
+                </Then>
+            </If>
 
             <Row className={``}>
                 <Col className="pt-2" xs={3}><h6><b>Name</b></h6></Col>
@@ -179,9 +186,41 @@ const NewEnvironmentForm= (props)=>{
             <Row className={"mt-3"}>
                 <Col xs={3}/>
                 <Col xs={2}>
-                    <div onClick={submitForm} className={"btn btn-primary"}>
-                        Link
-                    </div>
+                    <If condition={!isSubmitting}>
+                        <Then>
+                            <div onClick={submitForm} className={"btn btn-sm btn-success"}>
+                                Submit
+                            </div>
+                        </Then>
+                        <Else>
+                            <div className={"btn disabled btn-sm btn-success"}>
+                                Submit
+                            </div>
+                        </Else>
+                    </If>
+                </Col>
+                <Col xs={2}>
+                    <If condition={!isSubmitting}>
+                        <Then>
+                            <Link
+
+                                to={{
+                                    state : location.state,
+                                    pathname:`/organization/${params.uri}/environments`}}
+                            >
+                                <div className={"btn btn-sm btn-secondary"}>
+                                    Cancel
+                                </div>
+
+                            </Link>
+                        </Then>
+                        <Else>
+                            <div className={"btn disabled btn-sm btn-secondary"}>
+                                Cancel
+                            </div>
+                        </Else>
+                    </If>
+
                 </Col>
             </Row>
         </FormStyled>
