@@ -14,7 +14,7 @@ a{
  outline: 0;
 }
 `
-const RoutableTabs=(props)=>{
+const _RoutableTabs=(props)=>{
     const params=useParams();
     const current = params.tab;
     return <Row>
@@ -27,12 +27,12 @@ const RoutableTabs=(props)=>{
                     return <If condition={tab==current}>
                         <Then>
                             <li className="nav-item">
-                                <div className="nav-link active text-primary text-capitalize"><b>{tab}</b></div>
+                                <div className="nav-link active text-info  text-capitalize"><b>{tab}</b></div>
                             </li>
                         </Then>
                         <Else>
                             <li className="nav-item">
-                                <Link to ={tab} className="text-dark text-capitalize nav-link" >{tab}</Link>
+                                <Link to ={tab} className="text-secondary text-capitalize nav-link" >{tab}</Link>
                             </li>
                         </Else>
                     </If>
@@ -40,6 +40,60 @@ const RoutableTabs=(props)=>{
                 })
             }
             </ul>
+        </Col>
+    </Row>
+}
+
+const RoutableTabs=(props)=>{
+    const params=useParams();
+    const current = params.tab;
+    return <Row>
+        <Col xs={12}>
+            <div style={{marginBottom:'1em',marginTop:'1em'}}>
+                {
+                    props.tabs.map((tab)=>{
+                        return <If condition={tab==current}>
+                            <Then>
+                                <div
+                                    className={` text-capitalize`}
+                                    style={{
+                                        borderLeft:'1px solid lightgrey',
+                                        borderBottom:'none!',
+                                        //height:'2rem',
+                                        borderTop:'1px solid lightgrey',
+                                        borderRadius:'5px 5px 0px 0px',
+                                        paddingTop:'0.5rem',
+                                        borderRight:'1px solid lightgrey',
+                                        width:'110',
+                                        textAlign:'center',
+                                        fontWeight:'bold',
+                                        fontSize:'1rem',
+                                        color :'black',
+                                        display:'inline-block'
+                                    }}>
+                                        {tab}
+                                    </div>
+                            </Then>
+                            <Else>
+                                <Link to ={tab}>
+                                <div
+                                    className={`text-capitalize`}
+                                    style={{
+                                        borderBottom:'1px solid lightgrey',
+                                        textAlign:'center',
+                                        color:'grey',
+                                        fontSize:'1rem',
+                                        width:'100',
+                                        display:'inline-block'}}>
+                                    {tab}
+                                </div>
+                                </Link>
+                            </Else>
+                        </If>
+
+                    })
+                }
+            </div>
         </Col>
     </Row>
 }

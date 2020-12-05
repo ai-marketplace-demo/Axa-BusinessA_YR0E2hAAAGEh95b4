@@ -54,6 +54,7 @@ const DatasetTables=(props)=>{
         }
         setLoadingTables(false);
     }
+
     const fetchTables=async ()=>{
         setLoading(true);
         const response=await client.query(listDatasetTables({datasetUri:props.dataset.datasetUri}));
@@ -83,6 +84,16 @@ const DatasetTables=(props)=>{
         </Container>
     }
     return <Container className={`mt-4`} fluid>
+        <If condition={loading}>
+            <Then>
+                <Row>
+                    <Col xs={2}>
+                        <Spinner variant={`info`} animation={`border`} size={`sm`}/>
+                    </Col>
+                </Row>
+            </Then>
+        </If>
+
         <Row>
             <Col xs={2}>
                 {/**
@@ -115,7 +126,7 @@ const DatasetTables=(props)=>{
                 {
                     tables.nodes.map((t,i)=>{
                         return <Row onClick={()=>{setCurrent(i)}}>
-                            <Col xs={1}><Icon.Table size={18}/></Col>
+                                {/**<Col xs={1}><Icon.Table size={18}/></Col>**/}
                             <Col xs={6}><p>{t.GlueTableName}</p></Col>
                             <Col xs={2}>
 

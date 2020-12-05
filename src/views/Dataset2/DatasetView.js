@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Container, Spinner,Row,Col,Tabs,Tab} from "react-bootstrap";
+import Loader from 'react-loader-spinner'
 import * as Icon from "react-bootstrap-icons";
 import {If,Then,Else, Switch, Case,Default} from "react-if";
 import useClient from "../../api/client";
@@ -46,13 +47,26 @@ const DatasetAdminView = (props)=>{
         return <Container>
             <Row>
                 <Col xs={4}>
-                    <Spinner variant={`primary`} animation={`border`}/>
+                    <Spinner variant={`info`} animation={`border`}/>
+
                 </Col>
             </Row>
         </Container>
     }
-    return <Container fluid>
-        <Row className={"mt-3  bg-white border "}>
+    return <Container
+        style={{
+            marginTop:'1rem',
+            borderTop:'1px lightgrey solid',
+            borderLeft:'1px lightgrey solid',
+            borderRight:'1px lightgrey solid',
+            borderTopLeftRadius:'12px ',
+            borderTopRightRadius:'12px ',
+            boxShadow:' 0px -5px 5px  #f7f7f7',
+            //backgroundColor:'#f7f7f7',
+        }}
+        fluid>
+        <Row
+             className={"mt-3    "}>
             <Col className="pt-4" xs={1}>
                 <Icon.Folder size={32}/>
             </Col>

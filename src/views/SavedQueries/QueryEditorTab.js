@@ -146,6 +146,18 @@ const QueryEditorTab = (props)=>{
 
     }
 
+    const deploy= async()=>{
+        setOp(true);
+        const response = await client.mutate(deployScheduledQuery(props.query.scheduledQueryUri));
+        if (!response.errors){
+            toast(`Deployed query`)
+        }else {
+            toast(`Could not deploy query, received ${response.errors[0].message}`);
+        }
+        setOp(false);
+
+    }
+
     return <Container className={`mt-4`} fluid>
         <Row>
 
@@ -160,7 +172,7 @@ const QueryEditorTab = (props)=>{
             </Col>
 
             <Col xs={2}>
-                <div onClick={props.createQuery&&props.createQuery} style={{width:'100%'}} className={`btn btn-sm btn-info rounded-pill`}>
+                <div onClick={deploy} style={{width:'100%'}} className={`btn btn-sm btn-success rounded-pill`}>
                     Deploy
                 </div>
             </Col>

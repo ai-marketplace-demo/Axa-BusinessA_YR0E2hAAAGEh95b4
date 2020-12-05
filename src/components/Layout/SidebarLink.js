@@ -8,6 +8,7 @@ const StyledLink = styled.div`
 font-size: 2ch;
 height:3ch;
 width: 97%;
+color: black;
 margin-left: 1ch;
 padding-left: 0ch;
 display:inline;

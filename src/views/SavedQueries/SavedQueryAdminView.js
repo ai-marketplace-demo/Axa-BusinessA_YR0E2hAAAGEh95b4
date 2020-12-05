@@ -19,6 +19,7 @@ import createSavedQuery from "../../api/SavedQuery/createSavedQuery";
 import QueryOverviewTab from "./QueryOverviewTab";
 import QueryEditorTab from "./QueryEditorTab";
 import QuerySchedulerTab from "./QuerySchedulerTab";
+import QueryRunTab from "./QueryRunTab";
 import HumandReadableDate from "../../components/HumanReadableDate/HumanReadableDate";
 
 
@@ -72,7 +73,7 @@ const QueryAdmin = (props)=>{
         }
     },[client])
 
-    const tabs= ["overview","queries","schedule"]
+    const tabs= ["overview","queries","schedule","run"]
 
 
     return <Container className={`mt-4`} fluid>
@@ -123,6 +124,13 @@ const QueryAdmin = (props)=>{
                     </Case>
                     <Case condition={params.tab=="schedule"}>
                        <QuerySchedulerTab query={query}/>
+                    </Case>
+                    <Case condition={params.tab=="run"}>
+                        <If condition={ready}>
+                            <Then>
+                                <QueryRunTab client={client} query={query}/>
+                            </Then>
+                        </If>
                     </Case>
                     <Default>
                         {params.tab}
