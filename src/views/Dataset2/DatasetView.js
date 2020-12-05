@@ -54,7 +54,7 @@ const DatasetAdminView = (props)=>{
         </Container>
     }
     return <Container
-        style={{
+        __style={{
             marginTop:'1rem',
             borderTop:'1px lightgrey solid',
             borderLeft:'1px lightgrey solid',

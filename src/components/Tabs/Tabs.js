@@ -49,7 +49,7 @@ const RoutableTabs=(props)=>{
     const current = params.tab;
     return <Row>
         <Col xs={12}>
-            <div style={{marginBottom:'1em',marginTop:'1em'}}>
+            <div style={{borderBottom:'1px solid lightgrey', marginBottom:'1em',marginTop:'1em'}}>
                 {
                     props.tabs.map((tab)=>{
                         return <If condition={tab==current}>
@@ -58,11 +58,12 @@ const RoutableTabs=(props)=>{
                                     className={` text-capitalize`}
                                     style={{
                                         borderLeft:'1px solid lightgrey',
-                                        borderBottom:'none!',
+                                       //borderBottom:'none!',
                                         //height:'2rem',
                                         borderTop:'1px solid lightgrey',
                                         borderRadius:'5px 5px 0px 0px',
                                         paddingTop:'0.5rem',
+                                        borderBottom:'2px solid white',
                                         borderRight:'1px solid lightgrey',
                                         width:'110',
                                         textAlign:'center',
