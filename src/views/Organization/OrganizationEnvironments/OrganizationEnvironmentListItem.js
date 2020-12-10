@@ -56,7 +56,7 @@ const Body=(props)=>{
                 <Icon.PersonCheck/>
             </Col>
             <Col xs={10}>
-                <Badge pill variant={`primary`}><small>{environment.userRoleInEnvironment}</small></Badge>
+                <Badge pill variant={`info`}><small>{environment.userRoleInEnvironment}</small></Badge>
             </Col>
         </Row>
         <Row className={`mt-2`}>
@@ -78,7 +78,7 @@ const Body=(props)=>{
                         <Badge variant={"success"} pill><small>{environment.stack.status}</small></Badge>
                     </Case>
                     <Case condition={environment.stack.status=="CREATE_IN_PROGRESS" || environment.stack.status=="STARTING"}>
-                        <Spinner variant={`primary`} animation={`border`} size={`sm`}/>
+                        <Spinner variant={`info`} animation={`border`} size={`sm`}/>
                     </Case>
                     <Default>
                         <Badge variant={"warning"} pill>{environment.stack.status}</Badge>

@@ -5,7 +5,9 @@ import styled from "styled-components";
 import UserProfileLink from "../../views/Profile/UserProfileLink";
 import ColoredCircle from "../ColoredCircle/ColoredCircle";
 import TagPill  from "../TagPill/TagPill";
+import * as FiIcon from "react-icons/fi";
 import dayjs from "dayjs";
+
 import * as Icon from "react-bootstrap-icons";
 
 
@@ -55,7 +57,7 @@ const ActionCard = (props)=>{
         <Header>
             <Row fluid>
                 {/**<Col xs={2}><Circle className={`text-white bg-info`}><b>{props.label[0]}</b></Circle></Col>**/}
-                <Col xs={1}><Icon.Server size={22}/></Col>
+                <Col xs={1}><FiIcon.FiBox size={22}/></Col>
                 <Col xs={10}>
                     {props.header}
                 </Col>

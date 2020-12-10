@@ -59,62 +59,62 @@ const DatasetSummary = (props)=>{
 
     if (!ready){
         return <Container fluid>
-        <Row>
-            <Col xs={12}>
-                <Spinner variant={`primary`} animation={`border`} size={`sm`}/>
-            </Col>
-        </Row>
+            <Row>
+                <Col xs={12}>
+                    <Spinner variant={`info`} animation={`border`} size={`sm`}/>
+                </Col>
+            </Row>
         </Container>
     }
 
     return <EditorStyled>
         <Container>
-        <Row>
+            <Row>
 
-            <Col xs={10}/>
-            <Col xs={2}>
-                <If condition={isEditorMode}>
-                    <Then>
-                        <Row>
-                            <Col xs={6}>
-                                <div className={`btn-sm rounded-pill  btn btn-success`} onClick={saveSummary}>Save</div>
-                            </Col>
-                            <Col xs={6}>
-                                <div className={`btn-sm rounded-pill btn btn-secondary`} onClick={()=>{setIsEditorMode(false)}}>Close</div>
-                            </Col>
+                <Col xs={10}/>
+                <Col xs={2}>
+                    <If condition={isEditorMode}>
+                        <Then>
+                            <Row>
+                                <Col xs={6}>
+                                    <div className={`btn-sm rounded-pill  btn btn-success`} onClick={saveSummary}>Save</div>
+                                </Col>
+                                <Col xs={6}>
+                                    <div className={`btn-sm rounded-pill btn btn-secondary`} onClick={()=>{setIsEditorMode(false)}}>Close</div>
+                                </Col>
 
-                        </Row>
+                            </Row>
 
-                    </Then>
-                    <Else>
-                        <If condition={canEdit}>
-                            <Then>
-                                <div className={`btn btn-sm btn-info rounded-pill`} onClick={()=>{setIsEditorMode(true)}}><b>Edit</b></div>
-                            </Then>
-                        </If>
-                    </Else>
-                </If>
-            </Col>
-        </Row>
-        <Row className={`mt-4`}>
-            <Col xs={12}>
-                <If condition={isEditorMode}>
-                    <Then>
-                        <EditorStyled>
-                            <SimpleMDE
-                                value={content}
-                                onChange={handleChange}
-                            />
-                        </EditorStyled>
-                    </Then>
-                    <Else>
-                        <ReactMarkdown source={content} />
-                    </Else>
-                </If>
-            </Col>
-        </Row>
+                        </Then>
+                        <Else>
+                            <If condition={canEdit}>
+                                <Then>
+                                    <div className={`btn btn-sm btn-info rounded-pill`} onClick={()=>{setIsEditorMode(true)}}><b>Edit</b></div>
+                                </Then>
+                            </If>
+                        </Else>
+                    </If>
+                </Col>
+            </Row>
+            <Row className={`mt-4`}>
+                <Col xs={12}>
+                    <If condition={isEditorMode}>
+                        <Then>
+                            <EditorStyled>
+                                <SimpleMDE
+                                    value={content}
+                                    onChange={handleChange}
+                                />
+                            </EditorStyled>
+                        </Then>
+                        <Else>
+                            <ReactMarkdown source={content} />
+                        </Else>
+                    </If>
+                </Col>
+            </Row>
 
-    </Container>
+        </Container>
     </EditorStyled>
 }
 

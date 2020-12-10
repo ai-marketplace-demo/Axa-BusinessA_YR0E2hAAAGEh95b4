@@ -4,7 +4,8 @@ import {useParams, useLocation, useHistory, Link, Switch, Route} from "react-rou
 import useClient from "../../api/client";
 import getCluster from "../../api/RedshiftCluster/getCluster";
 import ClusterDetails from "./ClusterDetails";
-import dayjs from "dayjs"
+import dayjs from "dayjs";
+import Loader from 'react-loaders';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import {Else, If, Then} from "react-if";
 import {toast} from "react-toastify";
@@ -21,7 +22,7 @@ import pauseRedshiftCluster from "../../api/RedshiftCluster/pauseCluster";
 import deleteRedshiftCluster from "../../api/RedshiftCluster/deleteCluster";
 import getClusterConsoleAccess from "../../api/RedshiftCluster/getClusterConsoleAccess";
 import ClusterCredentials from "./ClusterCredentials";
-
+import * as FiIcon from "react-icons/fi";
 
 dayjs.extend(relativeTime);
 
@@ -157,18 +158,26 @@ const RedshiftClusterView  = (props)=> {
         }
     };
 
-    if (!ready) {
-        return <Col>
-            <Spinner variant={"primary"} animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-            </Spinner>
-        </Col>
-
+    if (!ready){
+        return <Container>
+            <Row>
+                <Col style={{marginTop: '24%', marginLeft:'43%'}} xs={4}>
+                    <Loader color={`lightblue`} type="ball-scale-multiple" />
+                </Col>
+            </Row>
+        </Container>
     }
 
     return <FullScreen>
         <Container>
-            <Row className={`mb-1 pt-4 pb-3 border-top border-bottom`}>
+            <Row
+                style={{
+                    borderBottom:'1px lightgrey solid',
+                    borderRight:'1px lightgrey solid',
+                    borderBottomRightRadius:"23px",
+                    boxShadow:'3px 4px 4px lightgrey',
+                }}
+                className={`mt-2 ml-1 mb-1 pt-4 pb-3 `}>
                 <Col className={`pt-2`} xs={1}>
                     <Link
                         to={{
@@ -179,7 +188,7 @@ const RedshiftClusterView  = (props)=> {
                     </Link>
                 </Col>
                 <Col xs={5} className={`border-right`}>
-                    <h3><Icon.Server size={22}/> Redshift Cluster <b className={`text-primary`}>{cluster.label}</b></h3>
+                    <h3><FiIcon.FiBox size={22}/> Redshift Cluster <b className={`text-primary`}>{cluster.label}</b></h3>
                 </Col>
                 <Col xs={2} className={`pt-2 border-right`}>
                     Role for Cluster : <b className={`text-primary`}>{cluster.userRoleForCluster}</b>

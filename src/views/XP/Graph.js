@@ -2,6 +2,10 @@ import React from "react";
 import {Container, Row,Col} from "react-bootstrap";
 import styled from "styled-components";
 import { ArcherContainer, ArcherElement } from 'react-archer';
+import ReactPlaceholder from 'react-placeholder';
+import 'react-placeholder/lib/reactPlaceholder.css';
+import Loader from 'react-loaders'
+require('loaders.css/loaders.css');
 
 const Front = styled.div`
  position: absolute;
@@ -68,4 +72,49 @@ const Graph = (props)=>{
 }
 
 
-export default Graph;
+
+const DatasetViewSkeleton = (props)=>{
+    return <Container>
+
+        <Row className={"mt-3    "}>
+            <Col xs={1}>
+                <ReactPlaceholder  style={{ width: 50, height: 50 }} showLoadingAnimation={true} type='round' ready={false} color='#E0E0E0'/>
+            </Col>
+            <Col xs={6}>
+                <ReactPlaceholder showLoadingAnimation type='text' ready={false} rows={3} color='#E0E0E0'>
+
+                </ReactPlaceholder>
+            </Col>
+            <Col xs={4}>
+                <ReactPlaceholder showLoadingAnimation type='text' ready={false} rows={2} color='#E0E0E0'>
+
+                </ReactPlaceholder>
+            </Col>
+        </Row>
+        <Row className={"mt-3    "}>
+            <Col xs={12}>
+                <ReactPlaceholder showLoadingAnimation type='text' ready={false} rows={1} color='#E0E0E0'/>
+            </Col>
+            <Col xs={12}>
+                <ReactPlaceholder showLoadingAnimation type='text' ready={false} rows={4} color='#E0E0E0'/>
+            </Col>
+        </Row>
+
+    </Container>
+}
+
+const L = (props)=>{
+    return <Container>
+        <Row>
+            <Col xs={12}>
+                <h1>loader</h1>
+            </Col>
+            <Col xs={12}>
+                <Loader color={`lightblue`} type="ball-scale-multiple" />
+            </Col>
+        </Row>
+    </Container>
+}
+
+
+export default L;

@@ -135,7 +135,7 @@ const OrganizationEnvironmentList=(props)=>{
     return <Container fluid className={`mt-4`}>
         <Row>
             <Col xs={10}>
-                <h3>   <Icon.Cloud size={32}/> Environments in Organization <b className={"text-primary"}><Link to={`/organizations`}>{location.state.label.toUpperCase()}</Link></b></h3>
+                <h3>   <Icon.Cloud size={32}/> Environments in Organization <b className={"text-info"}><Link to={`/organizations`}>{location.state.label.toUpperCase()}</Link></b></h3>
             </Col>
             <Col xs={2}>
                 <Link  to={{

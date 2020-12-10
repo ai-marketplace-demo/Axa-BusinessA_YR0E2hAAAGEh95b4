@@ -60,13 +60,10 @@ const NewOrganizationForm = (props)=>{
         <Row>
             <Col className={`mt-3`} xs={12}>
 
-                    <div className="alert alert-secondary" role="alert">
-                        <div>
-                            <Icon.InfoCircle/>
-                        </div>
+                    <div className="alert text-secondary" role="alert">
+                        <Icon.InfoCircle className={`pr-1`}/>
                         A datahub organization is a high level container that maps to an organizational unit.
-                    Use organizations to isolate data, compute and costs .
-
+                        Use organizations to isolate data, compute and costs .
                 </div>
             </Col>
         </Row>

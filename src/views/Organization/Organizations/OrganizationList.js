@@ -165,7 +165,7 @@ const OrganizationList = (props)=>{
             <If condition={!ready}>
                 <Then>
                     <Col xs={12}>
-                        <Spinner variant="primary" animation="border" role="status">
+                        <Spinner variant="info" animation="border" role="status">
                             <span className="sr-only">Loading...</span>
                         </Spinner>
                     </Col>

@@ -91,7 +91,7 @@ const QueryList = (props)=>{
         </Row>
         <If condition={!ready}>
             <Then>
-                <Spinner variant={`primary`} animation={`border`} />
+                <Spinner variant={`info`} animation={`border`} />
             </Then>
             <Else>
                 <Row className={`mt-3`}>

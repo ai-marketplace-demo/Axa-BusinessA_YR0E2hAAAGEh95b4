@@ -57,19 +57,23 @@ const RoutableTabs=(props)=>{
                                 <div
                                     className={` text-capitalize`}
                                     style={{
+                                        //zIndex:1,
                                         borderLeft:'1px solid lightgrey',
                                        //borderBottom:'none!',
                                         //height:'2rem',
                                         borderTop:'1px solid lightgrey',
                                         borderRadius:'5px 5px 0px 0px',
                                         paddingTop:'0.5rem',
-                                        borderBottom:'2px solid white',
+                                        marginTop:'2px',
+                                        backgroundColor:'white',
+                                        borderBottom:'5px solid white',
+                                        marginBottom:'-4px',
                                         borderRight:'1px solid lightgrey',
                                         width:'110',
                                         textAlign:'center',
                                         fontWeight:'bold',
                                         fontSize:'1rem',
-                                        color :'black',
+                                        color :'#0394fc',
                                         display:'inline-block'
                                     }}>
                                         {tab}
@@ -80,9 +84,9 @@ const RoutableTabs=(props)=>{
                                 <div
                                     className={`text-capitalize`}
                                     style={{
-                                        borderBottom:'1px solid lightgrey',
+                                        //borderBottom:'1px solid lightgrey',
                                         textAlign:'center',
-                                        color:'grey',
+                                        color:'black',
                                         fontSize:'1rem',
                                         width:'100',
                                         display:'inline-block'}}>

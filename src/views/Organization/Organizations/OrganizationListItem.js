@@ -218,7 +218,7 @@ const Body=(props)=>{
                 <Icon.PersonCheck/>
             </Col>
             <Col xs={4}>
-                <Badge pill variant={`primary`}>{org.userRoleInOrganization}</Badge>
+                <Badge pill variant={`info`}>{org.userRoleInOrganization}</Badge>
             </Col>
         </Row>
         <Row>

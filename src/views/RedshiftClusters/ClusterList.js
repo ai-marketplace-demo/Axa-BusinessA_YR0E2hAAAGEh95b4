@@ -118,7 +118,7 @@ const RedshiftClusterList = function(){
                 <Then>
                     <Row className={`mt-3`}>
                         <Col xs={12}>
-                            <Spinner variant={`primary`} animation={`border`} />
+                            <Spinner variant={`info`} animation={`border`} />
                         </Col>
                     </Row>
                 </Then>

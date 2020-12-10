@@ -1,5 +1,6 @@
 import React ,{useEffect,useState} from "react";
 import {Col, Badge,Row, Container, Spinner,Tabs,Tab} from "react-bootstrap";
+import Loader from 'react-loaders';
 import {If, Then, Else} from "react-if";
 import {useParams, useHistory} from "react-router";
 import * as Icon from  "react-bootstrap-icons";
@@ -81,12 +82,25 @@ const SqlPipelineAdmin = (props)=>{
 
 
     if (!ready){
-        return <Spinner variant={`primary`} border={`grow`}/>
+        return <Container className={`mt-2`}>
+            <Row>
+                <Col style={{marginTop: '3%', marginLeft:'3%'}} xs={4}>
+                    <Loader color={`lightblue`} type="ball-scale-multiple" />
+                </Col>
+            </Row>
+        </Container>
     }
 
     return <FullScreen>
         <Container fluid className={`mt-3`}>
-            <Row className={"m-0 border bg-white "}>
+            <Row style={{
+                borderBottom:'1px lightgrey solid',
+                borderRight:'1px lightgrey solid',
+                borderBottomRightRadius:"23px",
+                boxShadow:'3px 4px 4px lightgrey',
+            }}
+                 className={"mt-3    "}>
+
                 <Col className="pt-3" xs={1}>
                     <Icon.Gear size={32}/>
                 </Col>
@@ -111,7 +125,7 @@ const SqlPipelineAdmin = (props)=>{
                         </Col>
                     </Row>
                     <Col xs={12} className={`mt-2`}>
-                        <Badge pill variant={"primary"}>Owner</Badge>
+                        <Badge pill variant={"info"}>Owner</Badge>
                     </Col>
                 </Col>
 

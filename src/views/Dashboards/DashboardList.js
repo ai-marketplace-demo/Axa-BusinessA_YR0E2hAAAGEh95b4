@@ -114,7 +114,7 @@ const DashboardList = function(){
                 <If condition={!ready}>
                     <Then>
                         <Col xs={12}>
-                            <Spinner variant={`primary`} animation={`border`} size={`sm`}/>
+                            <Spinner variant={`info`} animation={`border`} size={`sm`}/>
                         </Col>
 
                     </Then>

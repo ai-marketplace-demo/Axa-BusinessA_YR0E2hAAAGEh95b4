@@ -3,6 +3,8 @@ import {Container, Row, Spinner,Col,Badge} from "react-bootstrap";
 import {If, Then, Else,Switch,Case,Default} from "react-if";
 import * as Icon from "react-bootstrap-icons";
 import ReactMarkdown from 'react-markdown';
+import SimpleMDE from "react-simplemde-editor";
+
 import DatasetTableColumns from "./DatasetTableColumns";
 import DatasetTableDescription from "./DatasetTableDescription";
 import DatasetTablePreview from "./DatasetTablePreview";
@@ -140,12 +142,9 @@ const DatasetTables=(props)=>{
                 <Row>
                     <Col xs={8}>
                         <b style={{fontSize:"3ch"}}>{tables.nodes[current]&&tables.nodes[current].GlueTableName}</b>
+                        {/**<i>{tables.nodes[current]&&tables.nodes[current].tableUri||""}</i>**/}
                     </Col>
-                    <Col xs={2}>
-                        <Badge pill variant={`success`}>
-                            {"RAW"}
-                        </Badge>
-                    </Col>
+
                 </Row>
                 <div className={`border-bottom`} style={{display:"flex"}}>
                     {
@@ -168,7 +167,11 @@ const DatasetTables=(props)=>{
                     <Switch>
                         <Case condition={tab==0}>
                             <Col xs={12}>
-                                <DatasetTableDescription markdown={tables.nodes[current]&&tables.nodes[current].description}/>
+                                <DatasetTableDescription
+                                    client={client}
+                                    dataset={props.dataset}
+                                    table={tables.nodes[current]||{}}
+                                    markdown={tables.nodes[current]&&tables.nodes[current].description}/>
                             </Col>
                         </Case>
                         <Case condition={tab==1}>

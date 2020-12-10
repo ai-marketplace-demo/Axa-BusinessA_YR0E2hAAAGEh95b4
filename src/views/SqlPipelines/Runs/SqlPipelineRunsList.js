@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from "react";
 import {Container, Row, Col, Badge, Spinner} from "react-bootstrap";
+import {If, Then, Else} from "react-if";
 import * as Icon from "react-bootstrap-icons";
 import BootstrapTable from 'react-bootstrap-table-next';
 import useClient from "../../../api/client";
 import getSqlPipelineRuns from "../../../api/SqlPipeline/getSqlPipelineRuns";
 import listSqlPipelineExecutions from "../../../api/SqlPipeline/listSqlPipelineExecutions";
+import startDataProcessingPipeline from "../../../api/SqlPipeline/startPipeline";
 import {toast} from "react-toastify";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -15,7 +17,12 @@ const SqlPipelineRunList=(props)=>{
 
 
     const dateFormatter= (cell, row, rowIndex)=>{
-        return <div>{dayjs(cell).fromNow()}</div>
+        if (cell){
+            return <div>{dayjs(cell).fromNow()}</div>
+        }else {
+            return <div></div>
+        }
+
     }
 
 
@@ -28,7 +35,7 @@ const SqlPipelineRunList=(props)=>{
                 <Badge variant={`warning`}>{cell}</Badge>
             </Case>
             <Case condition={cell=="RUNNING"}>
-                <div>  <Badge variant={`primary`}>{cell}</Badge> <Spinner size={`sm`} animation={`border`} variant={`primary`}/></div>
+                <div>  <Badge variant={`info`}>{cell}</Badge> <Spinner size={`sm`} animation={`border`} variant={`info`}/></div>
             </Case>
             <Default>
                 <Badge variant={`danger`}>{cell}</Badge>
@@ -69,7 +76,9 @@ const SqlPipelineRunList=(props)=>{
     const [runs,setRuns] = useState(null);
     const [count, setCount] = useState(-1);
     const [ready,setReady] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const fetchItems=async ()=>{
+        setReady(false);
         const response = await client.query(listSqlPipelineExecutions ({
             sqlPipelineUri: sqlPipeline.sqlPipelineUri,
             stage:"prod"
@@ -84,36 +93,62 @@ const SqlPipelineRunList=(props)=>{
         setReady(true);
     }
 
+    const runPipeline = async()=>{
+        setIsSubmitting(true);
+        const response= await client.mutate(startDataProcessingPipeline(sqlPipeline.sqlPipelineUri));
+        if (!response.errors){
+            toast(`Started pipeline`);
+        }else {
+            toast(`Could not start pipeline, received ${response.errors[0].message}`)
+        }
+        setIsSubmitting(false);
+
+    }
+
     useEffect(()=>{
         if (client){
             fetchItems()
         }
     },[client])
 
+    /**
     if (!ready){
         return <Container>
             <Row className={`mt-2 ml-2`}>
                 <Col xs={12}>
-                    <Spinner size={`sm`} variant={`primary`} animation={`border`}/>
+                    <Spinner size={`sm`} variant={`info`} animation={`border`}/>
                 </Col>
             </Row>
         </Container>
     }
+     **/
 
     return <Container>
+        <Row>
+            <Col xs={6}/>
+            <Col className={`mt-3 mb-3`} xs={2}>
+                <If condition={!ready}>
+                    <Then>
+                        <Spinner variant={`info`} animation={`border`} size={`sm`}/>
+                    </Then>
+                </If>
+            </Col>
+
+            <Col className={`mt-3 mb-3`} xs={2}>
+                <div disabled={isSubmitting} onClick={runPipeline} className={`btn btn-info btn-sm rounded`}><Icon.Play/> Run Pipeline</div>
+            </Col>
+            <Col className={`mt-3 mb-3`}  xs={1}>
+                <div onClick={fetchItems} className={`btn btn-secondary rounded-pill`}>
+                    <Icon.ArrowClockwise/>
+                </div>
+            </Col>
+        </Row>
         <Row>
             <Col xs={12}>
                 <p> Found {count} execution(s)</p>
             </Col>
         </Row>
-        <Row>
-            <Col className={`mt-3 mb-3`} xs={4}>
-                <div className={`btn btn-primary rounded`}><Icon.Play/> Run Pipeline</div>
-            </Col>
-            <Col className={`mt-3 mb-3`}  xs={4}>
 
-            </Col>
-        </Row>
         <Row>
             <Col xs={12}>
                 <BootstrapTable

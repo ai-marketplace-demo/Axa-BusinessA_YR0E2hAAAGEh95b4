@@ -23,7 +23,7 @@ const DatasetConnect  =(props)=>{
 
                     <tr>
                         <td>
-                            <div onClick={()=>{props.generateRedirectUrl()}}  className={`btn rounded-pill btn-primary`}>
+                            <div onClick={()=>{props.generateRedirectUrl()}}  className={`btn btn-sm rounded-pill btn-success`}>
                                 Console Access
                             </div>
                         </td>
@@ -51,7 +51,7 @@ const DatasetConnect  =(props)=>{
                     </tr>
                     <tr>
                         <td>
-                            <div  onClick={()=>{props.generateSessionCredentials()}} className={`rounded-pill  btn btn-primary`}>
+                            <div  onClick={()=>{props.generateSessionCredentials()}} className={`rounded-pill  btn-sm  btn btn-success`}>
                                 Temporary Credentials
                             </div>
                         </td>
@@ -79,7 +79,7 @@ const DatasetConnect  =(props)=>{
                     </tr>
                 <tr>
                     <td>
-                        <div onClick={()=>{props.generateETLCredentials()}} className={`rounded-pill  btn btn-info`}>
+                        <div onClick={()=>{props.generateETLCredentials()}} className={`btn-sm rounded-pill  btn btn-info`}>
                              Permanent Credentials
                         </div>
                     </td>

@@ -28,6 +28,7 @@ import getSagemakerNotebookPresignedUrl from "../../api/SagemakerNotebook/getSag
 import stopSagemakerNotebook from "../../api/SagemakerNotebook/stopNotebookInstance";
 import startSagemakerNotebook from "../../api/SagemakerNotebook/startNotebookInstance";
 import ActionCard from "../../components/Card/ActionCard";
+import * as FiIcon from "react-icons/fi";
 dayjs.extend(relativeTime);
 
 const Styled=styled.div`
@@ -225,7 +226,7 @@ const RedshiftClusterListItem = (props)=> {
                 </Col>
                 <Col xs={10}>
                     <CardAction
-                        type="button"
+                        //type="button"
                         onClick={getRedshiftCluster}>
                         <If condition={isLoadingCluster}>
                             <Then>
@@ -234,7 +235,7 @@ const RedshiftClusterListItem = (props)=> {
                             </span>
                             </Then>
                         </If>
-                        <Badge pill variant={statusColor(cluster.status)} className={`text-uppercase`}> {cluster.status}</Badge>
+                        <Badge pill variant={`info`} className={`text-uppercase`}> {cluster.status}</Badge>
                     </CardAction>
                 </Col>
             </Row>

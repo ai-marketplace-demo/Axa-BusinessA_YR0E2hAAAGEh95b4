@@ -29,7 +29,7 @@ const SessionLink= (props)=>{
             <Icon.Play onClick={getUrl}/>
         </Case>
         <Case condition={status=='loading'}>
-            <Spinner size={`sm`} variant={`primary`} animation={`grow`}/>
+            <Spinner size={`sm`} variant={`info`} animation={`border`}/>
         </Case>
         <Case condition={status=='ready'}>
             <a onClick={props.closeAll&&props.closeAll} href={sessionUrl} target={`_blank`}>Open session</a>
@@ -80,7 +80,7 @@ const DashboardsEnvironmentList = (props)=>{
 
 
     if (!ready){
-        return <Spinner className={`mt-4`} variant={`primary`} animation={`border`} size={`sm`}/>
+        return <Spinner className={`mt-4`} variant={`info`} animation={`border`} size={`sm`}/>
     }
 
     return <Container>
