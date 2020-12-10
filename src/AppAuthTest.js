@@ -11,24 +11,30 @@ import 'react-toastify/dist/ReactToastify.css';
 require("bootstrap/dist/css/bootstrap.min.css");
 require("bootstrap/dist/js/bootstrap.min");
 require("bootswatch/dist/lux/bootstrap.css");
-
+require('loaders.css/loaders.css')
 
 const GlobalStyles = createGlobalStyle`
 
-    
+  
   body::-webkit-scrollbar {
     width: 0.2rem;
   }
   body::-webkit-scrollbar-track {
-    background: red;
+    background: lightgrey;
   }
   body::-webkit-scrollbar-thumb {
-    background: blue;
+    background: lightgrey;
   }
   
   body {
     font-family: 'Cairo', sans-serif;
+    color: black;
   }
+  p{
+      color: black;
+  }
+  
+
   
   .btn{
     width:100%;

@@ -86,7 +86,13 @@ const DashboardAdmin = (props)=>{
 
 
     return <Container fluid className={`mt-3`}>
-            <Row className={"m-0 border"}>
+            <Row style={{
+                borderBottom:'1px lightgrey solid',
+                borderRight:'1px lightgrey solid',
+                borderBottomRightRadius:"23px",
+                boxShadow:'3px 3px 2px lightgrey',
+            }}
+                              className={"mt-3  pt-2 pb-2  "}>
                 <Col className="pt-3" xs={1}>
                     <MdIcon.MdShowChart size={32}/>
                 </Col>

@@ -24,7 +24,7 @@ background: white;
 overflow: visible;
 width : 100%;
 margin-bottom: ${props=>props.h?"4em":"3em"};
-border : 1px solid #ced4da;
+border : 1px solid #bbc4bb;
 height:auto;
 border-radius : 11px;
 padding: 2ch;
@@ -39,6 +39,8 @@ padding: 2ch;
 const Header=styled.div`
 margin-top: 2%;
 height: 5ch;
+color: black;
+font-weight: bold;
 `
 
 const Body=styled.div`
