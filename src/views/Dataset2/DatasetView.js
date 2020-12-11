@@ -71,7 +71,7 @@ const DatasetAdminView = (props)=>{
                 borderBottom:'1px lightgrey solid',
                 borderRight:'1px lightgrey solid',
                 borderBottomRightRadius:"23px",
-                boxShadow:'3px 2px 4px lightgrey',
+                boxShadow:'3px 3px 2px lightgrey',
             }}
                 className={"mt-3    "}>
                 <Col className="pt-4" xs={1}>
