@@ -30,8 +30,8 @@ const Header = (props)=>{
     }, [auth]);
 
 
-    return <Row style={{width:'100%',zIndex:'999',top:0,position: 'sticky', marginLeft:'0'}} className={` p-0 m-0 bg-white `}>
-        <Col style={{marginLeft:'0'}} className={`m-0`} xs={12}>
+    return <Row style={{backgroundColor:'white',width:'100%',zIndex:'999',top:0,position: 'sticky', margin:'0',padding:'0'}} >
+        <Col style={{padding:'0',margin:'0'}} className={`m-0`} xs={12}>
             <div
 
                 style={{

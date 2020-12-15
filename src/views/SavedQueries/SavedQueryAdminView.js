@@ -79,13 +79,12 @@ const QueryAdmin = (props)=>{
     return <Container className={`mt-4`} fluid>
         <Row style={{
             borderBottom:'1px lightgrey solid',
-            borderRight:'1px lightgrey solid',
-            paddingBottom:'1rem',
-            paddingTop:'1rem',
-            borderBottomRightRadius:"23px",
-            boxShadow:'3px 4px 4px lightgrey',
+            borderRight:'1 solid white',
+            //borderBottomRightRadius:"23px",
+            boxShadow:'0px 7px 2px rgb(0,0,0,0.04)',
         }}
-             className={"mt-3    "}>
+             className={"mt-3   p-2 "}>
+
 
         <Col className={`border-right mt-1 mb-1 ` } xs={6}>
                 <h3><Icon.Terminal/> Query <b className={`text-primary`}>{query.label}</b></h3>

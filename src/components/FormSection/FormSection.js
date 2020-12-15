@@ -8,8 +8,8 @@ import TagPill from "../TagPill/TagPill";
 
 const SectionStyled=styled.div`
 margin-top: 1ch;
-&:sshover{
-  box-shadow: 10px 5px 5px lightgrey;
+&:hover{
+  box-shadow: 4px 5px 2px rgb(0,0,0,0.12);
 }
 `
 
@@ -35,9 +35,9 @@ const FormSection  = (props)=>{
                 </div>
             </Then>
             <Else>
-                <div className={`p-4 rounded bg-white border `}>
+                <div style={{color:'black', fontWeight:'bold'}} className={`p-4 rounded bg-white border `}>
                     <Row>
-                        <Col xs={8}><p className={`text-dark text-capitalize`}><b>{props.section}</b></p></Col>
+                        <Col xs={8}><p className={`text-capitalize`}><b>{props.section}</b></p></Col>
                         <Col className={`text-right`} xs={4}>
                             <div onClick={()=>{setIsDisplayed(true)}}  className={``}><Icon.ChevronDown size={16}/></div>
                         </Col>

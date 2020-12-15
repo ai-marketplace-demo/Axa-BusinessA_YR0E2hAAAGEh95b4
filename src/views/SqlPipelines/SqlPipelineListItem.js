@@ -45,7 +45,7 @@ height: 3ch;
 const Header =(props)=>{
     return <Row>
         <Col xs={12}>
-            <Link to={`/sqlpipeline/${props.sqlPipeline.sqlPipelineUri}`}>
+            <Link to={`/sqlpipeline/${props.sqlPipeline.sqlPipelineUri}/overview`}>
                 <b>{props.sqlPipeline.label}</b>
             </Link>
         </Col>

@@ -11,6 +11,7 @@ const StackStatusBadge = (props)=>{
         warning:"W"
     }
     const statusMap= {
+        'STARTING': status.progress,
         'CREATE_IN_PROGRESS':status.progress,
         'CREATE_FAILED':status.failed,
         'CREATE_COMPLETE':status.complete,
@@ -42,6 +43,11 @@ const StackStatusBadge = (props)=>{
                 {props.status}
             </Badge>
         </Case>
+        <Case condition={cat==status.complete}>
+            <Badge pill variant={`success`}>
+                {props.status}
+            </Badge>
+        </Case>
         <Case condition={cat==status.failed}>
             <Badge pill  variant={`danger`}>
                 <p>{props.status}</p>
@@ -49,12 +55,12 @@ const StackStatusBadge = (props)=>{
         </Case>
         <Case condition={ cat==status.progress}>
             <Row>
-                <Col xs={3}>
+                <Col xs={10}>
                     <Badge pill variant={`primary`}>
                         <p>{props.status}</p>
                     </Badge>
                 </Col>
-                <Col xs={1}>
+                <Col xs={2}>
                     <Spinner size={`sm`} animation={`border`} variant={`primary`}/>
                 </Col>
             </Row>

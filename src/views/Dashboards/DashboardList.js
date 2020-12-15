@@ -15,6 +15,7 @@ import Pager from "../../components/Pager/Pager";
 
 const Styled=styled.div`
 height:100vh;
+background-color: transparent;
 `
 
 
@@ -57,7 +58,7 @@ const DashboardList = function(){
     return <Styled>
         <Container fluid className={"mt-4"}>
 
-            <Row>
+            <Row style={{backgroundColor:'transparent'}}>
                 <Col xs={6}>
                     <h3> <MdIcon.MdShowChart/> My Dashboards</h3>
                 </Col>

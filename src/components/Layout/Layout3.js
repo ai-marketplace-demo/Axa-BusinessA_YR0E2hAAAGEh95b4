@@ -130,29 +130,59 @@ const Layout = (props) => {
     }
 
     return <Container
-        style={{__height:'auto !important',__backgroundImage:'linear-gradient(to bottom, #f7fbfc 13%, white 13% )'}}
+        style={{
+            margin:0,
+            padding:0,
+            height:'auto !important'}}
         className={``} fluid
     >
         <Router>
-             <Header setProfileMenuDisplayed={setProfileMenuDisplayed} profileMenuDisplayed={profileMenuDisplayed}/>
+            <Header setProfileMenuDisplayed={setProfileMenuDisplayed} profileMenuDisplayed={profileMenuDisplayed}/>
             <Row style={{backgroundColor:'transparent'}} className={`m-0`}>
                 <If condition={sidebar}>
                     <Then>
                         <Col style={{
-                            zIndex:'1',
+                            zIndex:'3',
                             //boxShadow:'1px -3px 1px 1px rgba(0, 0, 255, .2)',
                             __borderRadius:'0 25% 0 0',
                             //backgroundColor:'white',
                             height:'auto !important',
                             minHeight:"100vh",
                             width:'100%',
-                            backgroundImage:'linear-gradient(to top, #f5f9fa  10%, white 20%)',
-                            //backgroundColor:'white',
+                            //backgroundImage:'linear-gradient(to top, #f5f9fa  10%, white 20%)',
+                            backgroundColor:'white',
+                            margin:'0',
                             position:'fixed'
-                        }} className={` m-0 mt-1 border-right `} xs={2}>
+                        }} className={` border-right `} xs={2}>
                             <Row className={``}>
                                 <Col xs={10}/>
-                                <Col xs={2}><Icon.ChevronLeft  color={"black"} onClick={toggle}/></Col>
+                                <Col
+                                    style={{
+                                        height:'2rem',
+                                        overflow:"visible",
+                                        width:'2rem',
+                                        //border:'1px solid black',
+                                        //borderRightTopRadius:'7px',
+                                        //borderRight:'1px solid lightgrey',
+                                    }}
+                                    xs={2}>
+                                    <Icon.ChevronLeft
+                                        style={{
+                                            //height:'1rem',
+                                            //width:'1rem',
+                                            padding:'0.2rem',
+                                            position:"absolute",
+                                            top:'0',
+                                            right:'-25%',
+                                            fontSize:'1rem',
+                                            backgroundColor:'white',
+                                            color:'rgb(0,0,0,0.4)',
+                                            marginTop:'2px',
+                                            borderRadius:'50%',
+                                            border:'1px lightgrey solid',
+                                            _boxShadow:'1px 1px 1px rgb(0,0,0,0.3)'
+                                        }}
+                                        onClick={toggle}/></Col>
                             </Row>
                             <Row className={``} style={{marginTop:'2%'}}>
                                 <SidebarLink icon={<Icon.Folder2Open />}to={"/es"} label={"Discover"}/>
@@ -208,11 +238,11 @@ const Layout = (props) => {
                 </If>
 
                 <Col style={{
-                    height:'auto !important',
-                    minHeight:"100vh",
+                    height:' auto !important',
+                    //minHeight:"100vh",
                     width: "97%",
-                    backgroundColor:'transparent'
-                }} className={''} xs={12}>
+                    //backgroundImage:'linear-gradient(to bottom,rgba(2, 0, 213, 0.03)  7%, white  )'
+                }} className={'mt-0'} xs={12}>
                     <Row  className={"bg-white"}>
                         <Col xs={12}>
                             <ToastContainer
@@ -287,12 +317,12 @@ const Layout = (props) => {
                         </Then>
                     </If>
                     <Row className={`mr-1`}style={{zIndex:'-1'}}>
-                        <If className={`bg-dark`} condition={sidebar}>
+                        <If condition={sidebar}>
                             <Then>
                                 <Col xs={2}></Col>
                             </Then>
                         </If>
-                        <Col style={{marginLeft:sidebar?"0%":"3%"}}className={``} xs={sidebar?10:12}>
+                        <Col style={{height:'auto !important',backgroundColor:'transparent',paddingLeft:'2rem',marginLeft:sidebar?"0%":"3%"}} className={``} xs={sidebar?10:12}>
                             <Switch>
                                 <Route exact path={`/xp`}>
                                     <Graph/>
@@ -337,7 +367,7 @@ const Layout = (props) => {
                                 <Route path={`/new-scheduled-query`}>
                                     <QueryForm/>
                                 </Route>
-                                <Route path={`/sqlpipeline/:uri`}>
+                                <Route path={`/sqlpipeline/:uri/:tab?`}>
                                     <SqlPipelineAdmin/>
                                 </Route>
 

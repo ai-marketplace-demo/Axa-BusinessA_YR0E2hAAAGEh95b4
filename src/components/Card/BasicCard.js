@@ -30,7 +30,7 @@ height:auto;
 __border-radius : 11px;
 padding: 2ch;
 &:hover{
-  box-shadow: 0px 6px 4px lightgrey;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.5);
   z-index:999;
 }
 

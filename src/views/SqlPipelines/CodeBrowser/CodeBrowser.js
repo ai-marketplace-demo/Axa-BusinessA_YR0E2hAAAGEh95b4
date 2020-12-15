@@ -182,7 +182,7 @@ const CodeBrowser = (props)=>{
                         </If>
                     </Then>
                     <Else>
-                        <div className={`mt-1 ml-1`}><Spinner variant={`primary`} animation={`border`}/></div>
+                        <div className={`mt-1 ml-1`}><Spinner size={`sm`} variant={`info`} animation={`border`}/></div>
                     </Else>
                 </If>
 

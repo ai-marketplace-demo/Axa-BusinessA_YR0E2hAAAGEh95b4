@@ -281,17 +281,16 @@ const ES = (props) => {
 
 
     if (!token) {
-        return <Spinner variant={`primary`} size={`sm`} animation={`border`}/>
+        return <Spinner variant={`info`}  animation={`border`}/>
     }
     return <FacetStyled>
         <Container fluid className={"mt-4"}>
             <Row>
                 <Col xs={8}>
-                    <h3> <Icon.Folder2Open/> Discover </h3>
+                    <h3> <Icon.Folder2Open/> Data Catalog </h3>
                 </Col>
 
             </Row>
-
             <Row className={`mt-3`}>
                 <Col xs={12}>
 
@@ -305,30 +304,33 @@ const ES = (props) => {
                         transformRequest={transformRequest}
                     >
                         <Row>
-                            <Col xs={12}>
+                            <Col className={`border-0 bg-white`}xs={12}>
                                 <DataSearch
-                                    //autosuggest={false}
-                                    className={`bg-white border-0`}
-                                    innerClass={{input: `form-control bg-white rounded-pill`}}
-                                    componentId="SearchSensor"
+                                    autoSuggest={true}
+                                    innerClass={{input: `border-0 rounded-pill form-control`}}
+                                    className={`bg-white`}
+                                    //title={`Catalog`}
+                                    style={{border:"none",boxShadow:'none'}}
+                                    showIcon={false}
+                                    componentId="Search"
                                     dataField={[
                                         "label",
-                                        "uri",
-                                        "id",
+                                        //"uri",
+                                        //"id",
                                         "name",
-                                        "owner",
+                                        //"owner",
                                         "description",
-                                        "owner",
-                                        "topics",
-                                        "tags",
-                                        "created",
-                                        "updated",
-                                        "region",
-                                        "datahubKind",
-                                        "organizationName",
-                                        "organizationUri",
-                                        "environmentName",
-                                        "environmentUri",
+                                        //"owner",
+                                        //"topics",
+                                        //"tags",
+                                        //"created",
+                                        //"updated",
+                                        //"region",
+                                        //"datahubKind",
+                                        //"organizationName",
+                                        //"organizationUri",
+                                        //"environmentName",
+                                        //"environmentUri",
                                     ]}
                                     placeholder="Search anything"
                                 />

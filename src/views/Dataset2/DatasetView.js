@@ -67,43 +67,43 @@ const DatasetAdminView = (props)=>{
             //backgroundColor:'#f7f7f7',
         }}
         fluid>
-            <Row style={{
-                borderBottom:'1px lightgrey solid',
-                borderRight:'1px lightgrey solid',
-                borderBottomRightRadius:"23px",
-                boxShadow:'3px 3px 2px lightgrey',
-            }}
-                className={"mt-3    "}>
-                <Col className="pt-4" xs={1}>
-                    <Icon.Folder size={32}/>
-                </Col>
-                <Col className={`border-right pt-3`} xs={4}>
-                    <Row>
-                        <h4>{info.label}</h4>
-                    </Row>
-                    <Row>
-                        <p>by <a href={"#"}>{info.owner}</a></p>
-                    </Row>
+        <Row style={{
+            borderBottom:'1px lightgrey solid',
+            borderRight:'1 solid white',
+            //borderBottomRightRadius:"23px",
+            boxShadow:'0px 7px 2px rgb(0,0,0,0.04)',
+        }}
+             className={"mt-3    "}>
+            <Col className="pt-4" xs={1}>
+                <Icon.Folder size={32}/>
+            </Col>
+            <Col className={`border-right pt-3`} xs={4}>
+                <Row>
+                    <h4>{info.label}</h4>
+                </Row>
+                <Row>
+                    <p>by <a href={"#"}>{info.owner}</a></p>
+                </Row>
 
-                </Col>
-                <Col className={`border-right pt-3`} xs={2}>
-                    Role for dataset : <b className={`text-primary`}>{info.userRoleForDataset}</b>
-                </Col>
-            </Row>
-            <Row className={`mt-2`}>
-                <Col xs={12}>
-                    <RoutableTabs
-                        tabs={['overview','summary','details','tables',"folders",'shares',"upload",'integrations']}
-                    />
-                </Col>
-            </Row>
-            <Row className={`mt-1`}>
-                <Col className={`pl-1 `} xs={12}>
+            </Col>
+            <Col className={`border-right pt-3`} xs={2}>
+                Role for dataset : <b className={`text-primary`}>{info.userRoleForDataset}</b>
+            </Col>
+        </Row>
+        <Row className={`mt-2`}>
+            <Col xs={12}>
+                <RoutableTabs
+                    tabs={['overview','summary','details','tables',"folders",'shares',"upload",'integrations']}
+                />
+            </Col>
+        </Row>
+        <Row className={`mt-1`}>
+            <Col className={`pl-1 `} xs={12}>
                 <Switch>
                     <Case condition={params.tab==`tables`}>
                         <If condition={ready}>
                             <Then>
-                               <DatasetTables dataset={info}/>
+                                <DatasetTables dataset={info}/>
                             </Then>
                         </If>
                     </Case>
@@ -142,8 +142,8 @@ const DatasetAdminView = (props)=>{
                         </If>
                     </Default>
                 </Switch>
-                </Col>
-            </Row>
+            </Col>
+        </Row>
     </Container>
 }
 

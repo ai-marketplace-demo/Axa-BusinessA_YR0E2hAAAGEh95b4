@@ -1,7 +1,7 @@
 import React ,{useEffect,useState} from "react";
 import {Col, Badge,Row, Container, Spinner,Tabs,Tab} from "react-bootstrap";
 import Loader from 'react-loaders';
-import {If, Then, Else} from "react-if";
+import {If, Then, Else,Switch,Case,Default} from "react-if";
 import {useParams, useHistory} from "react-router";
 import * as Icon from  "react-bootstrap-icons";
 import styled from "styled-components";
@@ -17,6 +17,7 @@ import SqlPipelineStack from "./SqlPipelineStack";
 import CodeBrowser from "./CodeBrowser/CodeBrowser";
 import SqlPipelineRunList from "./Runs/SqlPipelineRunsList";
 import SqlPipelineBuildList from "./Builds/SqlPipelineBuildsList";
+import RoutedTabs from "../../components/Tabs/Tabs";
 
 
 const FullScreen = styled.div`
@@ -33,6 +34,7 @@ a{
 const SqlPipelineAdmin = (props)=>{
     const client = useClient()
     const params = useParams();
+    const tabs=["overview","code","stack","builds", "executions"];
     const [ready,setReady]= useState(false);
     const [key, setKey] = useState("Overview");
     const [sqlPipeline, setSqlPipeline] = useState({});
@@ -82,9 +84,9 @@ const SqlPipelineAdmin = (props)=>{
 
 
     if (!ready){
-        return <Container className={`mt-2`}>
+        return <Container>
             <Row>
-                <Col style={{marginTop: '3%', marginLeft:'3%'}} xs={4}>
+                <Col style={{marginTop: '18%', marginLeft:'43%'}} xs={4}>
                     <Loader color={`lightblue`} type="ball-scale-multiple" />
                 </Col>
             </Row>
@@ -95,13 +97,15 @@ const SqlPipelineAdmin = (props)=>{
         <Container fluid className={`mt-3`}>
             <Row style={{
                 borderBottom:'1px lightgrey solid',
-                borderRight:'1px lightgrey solid',
-                borderBottomRightRadius:"23px",
-                boxShadow:'3px 4px 4px lightgrey',
+                borderRight:'1 solid white',
+                //borderBottomRightRadius:"23px",
+                boxShadow:'0px 7px 2px rgb(0,0,0,0.04)',
             }}
                  className={"mt-3    "}>
 
-                <Col className="pt-3" xs={1}>
+
+
+            <Col className="pt-3" xs={1}>
                     <Icon.Gear size={32}/>
                 </Col>
                 <Col className={"border-right pt-1"} xs={8}>
@@ -154,7 +158,7 @@ const SqlPipelineAdmin = (props)=>{
                                 <Col xs={12}>
                                     <If condition={isLoadingCreds}>
                                         <Then>
-                                            <Spinner className={`mt-2`} animation={`border`} size={`sm`} variant={`primary`}/>
+                                            <Spinner className={`mt-2`} animation={`border`} size={`sm`} variant={`info`}/>
                                         </Then>
                                         <Else>
                                             <div className={`mt-2 text-primary`} onClick={()=>{getAwsCreds()}}> See git instructions</div>
@@ -168,6 +172,34 @@ const SqlPipelineAdmin = (props)=>{
             </Row>
 
             <Row className={`mt-4`}>
+                <Col xs={12}>
+                    <RoutedTabs
+                    tabs={tabs}/>
+                </Col>
+            </Row>
+            <Row className={`mt-4`}>
+                <Col xs={12}>
+                    <Switch>
+                        <Case condition={params.tab=="code"}>
+                            <CodeBrowser sqlPipeline={sqlPipeline}/>
+                        </Case>
+                        <Case condition={params.tab=="stack"}>
+                            <SqlPipelineStack sqlPipeline={sqlPipeline}/>
+                        </Case>
+                        <Case condition={params.tab=="builds"}>
+                            <SqlPipelineBuildList sqlPipeline={sqlPipeline}/>
+                        </Case>
+                        <Case condition={params.tab=="executions"}>
+                            <SqlPipelineRunList sqlPipeline={sqlPipeline}/>
+                        </Case>
+                        <Default>
+                            <SqlPipelineOverview sqlPipeline={sqlPipeline}/>
+                        </Default>
+                    </Switch>
+                </Col>
+            </Row>
+            {/**
+                <Row className={`mt-4`}>
                 <Col xs={12}>
                     <Tabs
                         activeKey={key}
@@ -203,6 +235,7 @@ const SqlPipelineAdmin = (props)=>{
 
                 </Col>
             </Row>
+            **/}
 
         </Container>
     </FullScreen>

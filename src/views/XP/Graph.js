@@ -104,7 +104,7 @@ const DatasetViewSkeleton = (props)=>{
 }
 
 const L = (props)=>{
-    return <Container>
+    return <Container className={`bg-transparent`}>
         <Row>
             <Col xs={12}>
                 <h1>loader</h1>

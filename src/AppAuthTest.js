@@ -33,7 +33,15 @@ const GlobalStyles = createGlobalStyle`
   p{
       color: black;
   }
-  
+
+.search-field .search-title {
+    font-size: 2rem;
+}
+
+.search-field .search-input {
+    border: none;
+    background-color: #f7f7f9
+}  
 
   
   .btn{

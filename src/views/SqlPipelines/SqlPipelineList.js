@@ -135,7 +135,7 @@ const SqlPipelineList = function(){
                     </Then>
                     <Else>
                         <Col xs={4}>
-                            <Spinner variant={`primary`} animation="border" role="status">
+                            <Spinner variant={`info`} animation="border" role="status">
                                 <span className="sr-only">Loading...</span>
                             </Spinner>
                         </Col>

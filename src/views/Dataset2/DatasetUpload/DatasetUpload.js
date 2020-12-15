@@ -124,7 +124,7 @@ const DatasetUpload = (props)=>{
                 <If condition={isUploading}>
                     <Then>
                         <div className="progress">
-                            <div className="progress-bar"
+                            <div className="progress-bar bg-success"
                             style={{width:`${progress}%`}}>
                                 {progress}%
                             </div>
