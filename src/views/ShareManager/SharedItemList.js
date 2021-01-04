@@ -123,31 +123,12 @@ const ShareItemList= (props)=>{
         <Row>
             <If condition={sharedItems.count}>
                 <Then>
-                    <NextActionDecider
-                        accept={accept}
-                        reject={reject}
-                        submit={submit}
-                        share={props.share}/>
-                    {/**
-                    <If condition={props.share.status=="PendingApproval"&&props.share.userRoleForShareObject=="Approvers"}>
-                        <Then>
-                            <Col xs={2}>
-                                <div className={`rounded-pill btn btn-sm btn-primary`}>
-                                    Approve
-                                </div>
-                            </Col>
-                            <Col xs={2}>
-                                <div className={`rounded-pill btn btn-sm btn-secondary`}>
-                                    Reject
-                                </div>
-                            </Col>
-                        </Then>
-                        <Else>
-                            <Col xs={4}/>
-                        </Else>
-                    </If>
-                    **/}
 
+                        <NextActionDecider
+                            accept={accept}
+                            reject={reject}
+                            submit={submit}
+                            share={props.share}/>
                 </Then>
                 <Else>
                     <Col xs={4}/>
@@ -157,7 +138,7 @@ const ShareItemList= (props)=>{
             <Col xs={1}>
                 <If condition={loading}>
                     <Then>
-                        <Spinner variant={`secondary`} size={`sm`} animation={`border`}/>
+                        <Spinner variant={`info`} size={`sm`} animation={`border`}/>
                     </Then>
                 </If>
             </Col>
@@ -172,7 +153,7 @@ const ShareItemList= (props)=>{
                 <Row>
                 <Col className={`mt-3`} xs={12}>
                     <TableStyled>
-                        <Table size={`sm`} hover>
+                        <Table size={`sm`} >
                         <thead>
                         <tr>
                             <th scope="col">Name</th>

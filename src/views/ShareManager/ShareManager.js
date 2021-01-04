@@ -7,9 +7,11 @@ import useClient from "../../api/client";
 import styled from "styled-components";
 import getShareObject from "../../api/ShareObject/getShareObject";
 import {toast} from "react-toastify";
+import RoutedTabs from "../../components/Tabs/Tabs";
 import General from "./General";
 import SharedItemList from "./SharedItemList";
 import NotSharedItemList from "./NotSharedItemList";
+import Loader from "react-loaders";
 
 const Theme=styled.div`
 a:link, a:visited{
@@ -28,6 +30,7 @@ const ShareManager = (props)=>{
     const [notSharedItems, setNotSharedItems]=useState({count:0, page:1,pages:1,nodes:[]});
     const [tabKey, setTabKey] = useState('general');
 
+    const tabs=["general","current","more"]
 
     const fetchShare=async ()=>{
         const response = await client.query(getShareObject ({shareUri:params.shareUri,filter:{isShared:true}}));
@@ -55,10 +58,10 @@ const ShareManager = (props)=>{
 
 
     if (!share.status){
-        return <Container fluid className={`mt-2`}>
+        return <Container>
             <Row>
-                <Col xs={12}>
-                    <Spinner variant={`primary`} animation={`border`}/>
+                <Col style={{marginTop: '21%', marginLeft:'43%'}} xs={4}>
+                    <Loader color={`lightblue`} type="ball-scale-multiple" />
                 </Col>
             </Row>
         </Container>
@@ -66,8 +69,27 @@ const ShareManager = (props)=>{
 
     return <Container fluid>
 
-
+        <Row style={{
+            borderBottom:'1px lightgrey solid',
+            borderRight:'1 solid white',
+            //borderBottomRightRadius:"23px",
+            boxShadow:'0px 7px 2px rgb(0,0,0,0.04)',
+        }}
+             className={"mt-3    "}>
+            <Col    xs={1}>
+                <Icon.Reply size={32}/>
+            </Col>
+            <Col    xs={10}>
+                <h4>Permissions on <Icon.Folder/> <b className={`text-info`}>{share.dataset.datasetName}</b> </h4>
+                <h4>to <Icon.People/> <b className={`text-info`}>{share.principal.principalName}</b> </h4>
+                <h5>{share.principal.AwsAccountId}:{share.principal.region} <Icon.Cloud/></h5>
+            </Col>
+        </Row>
         <Row className={`mt-4`}>
+            <Col xs={12}>
+                <RoutedTabs tabs={tabs}/>
+            </Col>
+            {/**
             <Col xs={12}>
                 <Theme>
                 <Tabs
@@ -80,22 +102,23 @@ const ShareManager = (props)=>{
                 </Tabs>
                 </Theme>
             </Col>
+             **/}
         </Row>
 
         <Row className={`mt-2`}>
             <Col className={`mt-2`} xs={12}>
                 <Switch>
-                    <Case condition={tabKey=="general"}>
+                    <Case condition={params.tab=="general"}>
                         <If condition={share.dataset}>
                             <Then>
                                 <General share={share}/>
                             </Then>
                         </If>
                     </Case>
-                    <Case condition={tabKey=="current"}>
+                    <Case condition={params.tab=="current"}>
                         <SharedItemList fetch={fetchShare} share={share}/>
                     </Case>
-                    <Case condition={tabKey=="more"}>
+                    <Case condition={params.tab=="more"}>
                         <NotSharedItemList fetch={fetchNotSharedItems} share={share}/>
                     </Case>
                 </Switch>

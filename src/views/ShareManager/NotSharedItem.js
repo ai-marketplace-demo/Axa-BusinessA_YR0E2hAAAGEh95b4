@@ -12,12 +12,12 @@ const NotSharedItem = (props)=>{
                     <If condition={enabled}>
                         <Then>
                             <div onClick={()=>{setEnabled(false);props.add(item)}} style={{width:`4rem`}} className={`btn btn-sm btn-success rounded-pill`}>
-                                <Icon.Reply size={15}/> Add
+                               Add
                             </div>
                         </Then>
                         <Else>
                             <div  disabled={"true"} style={{width:`4rem`}} className={`btn btn-sm btn-success  rounded-pill`}>
-                                <Icon.Reply size={15}/> Add
+                               Add
                             </div>
                         </Else>
                     </If>

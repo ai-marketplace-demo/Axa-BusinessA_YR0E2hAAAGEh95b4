@@ -173,9 +173,9 @@ const RedshiftClusterView  = (props)=> {
             <Row
                 style={{
                     borderBottom:'1px lightgrey solid',
-                    borderRight:'1px lightgrey solid',
-                    borderBottomRightRadius:"23px",
-                    boxShadow:'3px 4px 4px lightgrey',
+                    borderRight:'1 solid white',
+                    //borderBottomRightRadius:"23px",
+                    boxShadow:'0px 7px 2px rgb(0,0,0,0.04)'
                 }}
                 className={`mt-2 ml-1 mb-1 pt-4 pb-3 `}>
                 <Col className={`pt-2`} xs={1}>

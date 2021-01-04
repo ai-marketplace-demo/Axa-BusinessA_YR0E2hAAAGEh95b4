@@ -30,25 +30,30 @@ const NextActionDecider = (props) => {
             <Switch>
                 <Case condition={actions == "PendingApproval"}>
                     <Col xs={2}>
-                        <div onClick={props.accept} className={`rounded-pill btn btn-sm btn-primary`}>
+                        <div onClick={props.accept} className={`rounded-pill  btn-sm btn-success`}>
                             Approve
                         </div>
                     </Col>
                     <Col xs={2}>
-                        <div onClick={props.reject} className={`rounded-pill btn btn-sm btn-secondary`}>
+                        <div onClick={props.reject} className={`rounded-pill btn btn-sm btn-danger`}>
                             Reject
                         </div>
                     </Col>
             </Case>
             <Case condition={actions==`Submit`}>
                 <Col xs={2}>
-                    <div onClick={props.submit} className={`rounded-pill btn btn-sm btn-primary`}>
+                    <div onClick={props.submit} className={`rounded-pill btn btn-sm btn-info`}>
                         Submit
                     </div>
                 </Col>
             </Case>
             <Default>
-                <Col xs={1}>{props.share.status}</Col>
+
+                <Col xs={3}>
+                    <div onClick={props.submit} style={{border:'2px solid lightgrey'}} className={`rounded-pill btn btn-sm bg-white`}>
+                        {props.share.status}
+                    </div>
+                    </Col>
             </Default>
         </Switch>
         </Row>

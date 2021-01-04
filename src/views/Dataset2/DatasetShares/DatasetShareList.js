@@ -62,7 +62,7 @@ const DatasetShareList = (props)=>{
             <Col xs={1}>
                 <If condition={loading}>
                     <Then>
-                        <Spinner variant={`secondary`} animation={`border`} size={`sm`}></Spinner>
+                        <Spinner variant={`info`} animation={`border`} size={`sm`}></Spinner>
                     </Then>
                 </If>
             </Col>

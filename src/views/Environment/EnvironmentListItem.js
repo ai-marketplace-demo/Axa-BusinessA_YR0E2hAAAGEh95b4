@@ -44,7 +44,7 @@ const Header = (props)=>{
     const environment = props.environment;
     return <Row>
         <Col xs={6}>
-            <Link to={`/playground/${environment.environmentUri}`}>
+            <Link to={`/playground/${environment.environmentUri}/details`}>
                 <b className={`text-capitalize`}>{environment.label}</b>
             </Link>
         </Col>

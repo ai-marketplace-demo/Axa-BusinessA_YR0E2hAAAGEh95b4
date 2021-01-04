@@ -86,7 +86,7 @@ const NotShareItemList= (props)=>{
             <Col xs={1}>
                 <If condition={loading}>
                     <Then>
-                        <Spinner variant={`secondary`} size={`sm`} animation={`border`}/>
+                        <Spinner variant={`info`} size={`sm`} animation={`border`}/>
                     </Then>
                 </If>
             </Col>

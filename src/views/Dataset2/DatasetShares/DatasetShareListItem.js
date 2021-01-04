@@ -33,12 +33,12 @@ const DatasetShareListItem = (props)=>{
             {dayjs(share.created).fromNow()}
         </td>
         <td>
-            <Badge className={` bg-white border`} variant={`secondary`} pill>
+            {/**<Badge className={` bg-white border`} variant={`secondary`} pill>**/}
                 <small>{share.status}</small>
-            </Badge>
+            {/**</Badge>**/}
         </td>
         <td>
-            <Link to={`/access-request/${share.shareUri}`}>
+            <Link to={`/access-request/${share.shareUri}/general`}>
                 <div className={`btn rounded-pill btn-sm btn-info`}>
                     Manage
                 </div>

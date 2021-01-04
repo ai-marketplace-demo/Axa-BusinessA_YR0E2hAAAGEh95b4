@@ -117,4 +117,4 @@ const L = (props)=>{
 }
 
 
-export default L;
+export default Graph;

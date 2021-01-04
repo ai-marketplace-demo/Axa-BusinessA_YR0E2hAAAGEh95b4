@@ -108,12 +108,12 @@ const EnvironmentOverview = (props)=>{
                             <b>Session Token</b>
                         </Col>
                         <Col xs={4}>
-                            <div onClick={generateCredentials} style={{width:'100%'}} className={`btn-sm btn btn-primary`}>Generate Temporary Credentials</div>
+                            <div onClick={generateCredentials} style={{width:'100%'}} className={`btn-sm btn btn-info`}>Generate Temporary Credentials</div>
                         </Col>
                         <Col className={`pt-2`} xs={4}>
                             <Switch>
                                 <Case condition={isLoadingCredentials}>
-                                    <Spinner size={`sm`}  animation={`grow`} variant={`primary`}/>
+                                    <Spinner size={`sm`}  animation={`border`} variant={`info`}/>
                                 </Case>
                                 <Case condition={credentials!==null}>
                                     <CopyToClipboard text={credentials}>
@@ -132,12 +132,12 @@ const EnvironmentOverview = (props)=>{
                             <b>Console Access</b>
                         </Col>
                         <Col xs={4}>
-                            <div onClick={generateRedirectUrl} style={{width:'100%'}}  className={`btn-sm btn btn-primary`}>Generate Url</div>
+                            <div onClick={generateRedirectUrl} style={{width:'100%'}}  className={`btn-sm btn btn-info`}>Generate Url</div>
                         </Col>
                         <Col xs={4}>
                             <Switch>
                                 <Case condition={isLoadingConsoleUrl}>
-                                    <Spinner size={`sm`}  variant={`primary`} animation={`grow`}/>
+                                    <Spinner size={`sm`}  variant={`info`} animation={`border`}/>
                                 </Case>
                                 <Case condition={consoleUrl!==null}>
                                     <a target={`_blank`} href ={consoleUrl}>

@@ -30,8 +30,10 @@ const DatasetTables=(props)=>{
 
     const [current,setCurrent]= useState(0);
     const [tab, setTab] = useState(0);
+    const [displayTableList, setDisplayTableList] = useState(true);
     const [loading, setLoading]= useState(true);
     const [loadingTables, setLoadingTables]  = useState(false);
+
     const [mode, setMode]= useState("");
 
     const tabs=["Description","Columns","Preview","Data Quality","Metrics"]
@@ -85,63 +87,67 @@ const DatasetTables=(props)=>{
             </Row>
         </Container>
     }
-    return <Container className={`mt-4`} fluid>
-        <If condition={loading}>
+    return <Container
+        style={{
+            height:'auto !important'
+        }}
+        className={`mt-1`} fluid>
+        <If condition={loading||loadingTables}>
             <Then>
-                <Row>
-                    <Col xs={2}>
-                        <Spinner variant={`info`} animation={`border`} size={`sm`}/>
-                    </Col>
-                </Row>
+                <Col className={`mt-1 mb-1`} xs={2}>
+                    <Spinner variant={`info`} animation={`border`} size={`sm`}/>
+                </Col>
             </Then>
         </If>
 
         <Row>
-            <Col xs={2}>
-                {/**
-                <div onClick={()=>{setMode("form")}} className={`btn btn-sm btn-primary rounded-pill`}>
-                    Create Table
-                </div>
-                 **/}
-            </Col>
-            <Col xs={8}></Col>
-            <Col xs={1}>
-                <If condition={loadingTables}>
-                    <Then>
-                        <Spinner variant={`secondary`} animation={`border`} size={`sm`}/>
-                    </Then>
-                    <Else>
-                        <div/>
-                    </Else>
-                </If>
-            </Col>
-            <Col xs={1}>
-                <div onClick={startSyncTables}className={`btn btn-secondary btn-sm rounded-pill`}>
-                    <Icon.ArrowClockwise/>
-                </div>
-            </Col>
-        </Row>
-
-        <Row>
-            <Col className={`mt-4`} xs={2}>
-
-                {
-                    tables.nodes.map((t,i)=>{
-                        return <Row onClick={()=>{setCurrent(i)}}>
-                                {/**<Col xs={1}><Icon.Table size={18}/></Col>**/}
-                            <Col xs={6}><p>{t.GlueTableName}</p></Col>
-                            <Col xs={2}>
-
+            <If condition={displayTableList}>
+                <Then>
+                    <Col xs={3} style={{minHeight:'100vh',height:'auto !important',backgroundColor:'',zIndex:'555',borderRight:'1px solid lightgrey'}}>
+                        <Row>
+                            <Col xs={4}>
+                                <div onClick={startSyncTables}className={`btn btn-info btn-sm rounded-pill`}>
+                                    <Icon.ArrowClockwise/>
+                                </div>
                             </Col>
-                        </Row>
-                    })
-                }
+                            <Col xs={6}/>
+                            <Col className={`pt-1`} xs={1}>
+                                <Icon.ChevronLeft onClick={()=>{setDisplayTableList(false)}}/>
+                            </Col>
 
-            </Col>
-            <Col xs={10}>
+                            <Col className={`mt-1`} xs={12}>
+
+                                {
+                                    tables.nodes.map((t,i)=>{
+                                        return <Row onClick={()=>{setCurrent(i)}}>
+                                            {/**<Col xs={1}><Icon.Table size={18}/></Col>**/}
+                                            <Col xs={6}><p>{t.GlueTableName}</p></Col>
+                                            <Col xs={2}>
+
+                                            </Col>
+                                        </Row>
+                                    })
+                                }
+                            </Col>
+
+                        </Row>
+                    </Col>
+                </Then>
+                <Else>
+                    <Col xs={1} style={{width:'22%',minHeight:'100vh',height:'auto !important',backgroundColor:'',zIndex:'555',borderRight:'1px solid lightgrey'}}>
+                        <Icon.ChevronRight onClick={()=>{setDisplayTableList(true)}}/>
+                    </Col>
+                </Else>
+            </If>
+
+            <Col style={{   }} xs={displayTableList?9:11}>
                 <Row>
                     <Col xs={8}>
-                        <b style={{fontSize:"3ch"}}>{tables.nodes[current]&&tables.nodes[current].GlueTableName}</b>
+                        <b style={{fontSize:"3ch"}}>
+                            {tables.nodes[current]&&tables.nodes[current].GlueDatabaseName}.
+
+                        </b>
+                        <b className={`text-info`} style={{fontSize:"3ch"}}>{tables.nodes[current]&&tables.nodes[current].GlueTableName}</b>
                         {/**<i>{tables.nodes[current]&&tables.nodes[current].tableUri||""}</i>**/}
                     </Col>
 
@@ -188,6 +194,9 @@ const DatasetTables=(props)=>{
                 </Row>
             </Col>
         </Row>
+
+
+        <Row style={{minHeight:'30rem'}}/>
     </Container>
 }
 

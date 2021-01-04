@@ -9,26 +9,23 @@ const SharedItem = (props)=>{
         <td>{item.itemName}</td>
         <td>{item.itemType}</td>
         <td>
-            <Badge pill className={`border bg-secondary`}>
-                {item.status}
-            </Badge>
+            <code>{item.status}</code>
         </td>
         <td>
-            <Badge pill className={`border bg-secondary`}>
                 {item.action}
-            </Badge>
         </td>
         <td>
             <If condition={item.status!="PendingApproval"}>
                 <Then>
                 <If condition={enabled}>
                     <Then>
-                        <div onClick={()=>{setEnabled(false);props.remove(item)}} style={{width:`4rem`}} className={`btn btn-sm btn-secondary rounded-pill`}>
+                        <div onClick={()=>{setEnabled(false);props.remove(item)}}
+                             className={`btn btn-sm btn-secondary rounded-pill`}>
                             Remove
                         </div>
                     </Then>
                     <Else>
-                        <div style={{width:`4rem`}} className={`btn disabled btn-sm btn-secondary rounded-pill`}>
+                        <div  className={`btn disabled btn-sm btn-secondary rounded-pill`}>
                             Remove
                         </div>
                     </Else>

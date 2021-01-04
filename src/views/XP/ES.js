@@ -312,7 +312,8 @@ const ES = (props) => {
                                     //title={`Catalog`}
                                     style={{border:"none",boxShadow:'none'}}
                                     showIcon={false}
-                                    componentId="Search"
+                                    fuzziness={"AUTO"}
+                                    componentId="SearchSensor"
                                     dataField={[
                                         "label",
                                         //"uri",
@@ -419,7 +420,7 @@ const ES = (props) => {
                                             //showMissing={true}
                                             //showFilter={true}
                                             renderNoResults={() => <p>No Results Found</p>}
-                                            componentId="Region"
+                                            componentId="RegionSensor"
                                             dataField="region"
                                             title="Regions"
                                         />
@@ -429,7 +430,7 @@ const ES = (props) => {
                             <Col xs={9}>
                                 <ReactiveList
                                     react={{
-                                        and: ['Region', 'SearchSensor', 'TagSensor', 'TopicSensor', 'KindSensor'],
+                                        and: ['RegionSensor', 'SearchSensor', 'TagSensor', 'TopicSensor', 'KindSensor'],
                                     }}
                                     infiniteScroll={true}
                                     componentId="SearchResult"
