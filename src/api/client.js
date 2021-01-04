@@ -19,58 +19,6 @@ const defaultOptions = {
     }
 };
 
-const __useClient=()=>{
-    let [client, setClient] = useState(null);
-    let [token, setToken] = useState();
-
-    const fetchAuthToken = async()=>{
-        if (!token){
-            let session = await Auth.currentSession();
-
-            const t = await session.getIdToken().getJwtToken();
-            const httpLink = new HttpLink({
-                uri: config.apiGateway.URL,
-            });
-            const authLink = new ApolloLink((operation, forward) => {
-                operation.setContext({
-                    headers: {
-                        AccessControlAllowOrigin: '*',
-                        AccessControlAllowHeaders: '*',
-                        'access-control-allow-origin': '*',
-                        Authorization: t ? `${t}` : "",
-                        AccessKeyId: 'none',
-                        SecretKey: 'none',
-                        username: 'moshirm@amazon.fr', //this is for local development only
-                        //username: 'jeff',
-                        //groups: 'a,n' //this is for local development only
-                    }
-                });
-                return forward(operation);
-            });
-            const client = new ApolloClient({
-                link: authLink.concat(httpLink),
-                cache: new InMemoryCache(),
-                defaultOptions:defaultOptions
-
-            });
-            client.__token = token;
-            console.log("........................")
-            console.log(client.__token);
-            setToken(t);
-            setClient(client);
-        }
-    };
-
-
-
-    useEffect(()=> {
-        if (!token){
-            fetchAuthToken();
-
-        }
-    },[fetchAuthToken, token]);
-    return client;
-};
 
 const useClient=()=>{
     let [client, setClient] = useState(null);

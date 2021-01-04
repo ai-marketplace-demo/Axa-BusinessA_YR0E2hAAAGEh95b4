@@ -23,6 +23,7 @@ const listDatasetTables= ({datasetUri,filter})=>{
                                 tableUri
                                 created
                                 GlueTableName
+                                GlueDatabaseName
                                 description
                                 stage
                                 userRoleForTable

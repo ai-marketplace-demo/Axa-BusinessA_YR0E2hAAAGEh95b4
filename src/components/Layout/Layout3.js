@@ -11,7 +11,7 @@ import * as FiIcon from "react-icons/fi";
 import Header from "../Header/Header2";
 import {If, Then, Else} from "react-if";
 import {Container, Row, Col} from "react-bootstrap";
-import {BrowserRouter as Router, Switch, Route, useLocation, useParams,Link} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, useLocation,matchPath , useParams,Link} from "react-router-dom";
 import * as Icon from "react-bootstrap-icons";
 import Home from "../../views/Home/Home";
 import Tenant from "../../views/Tenant/TenantView";
@@ -111,6 +111,19 @@ background-color: lightseagreen;
 
 
 
+const HeaderDecider=(props)=>{
+    const location=useLocation();
+    return <If condition={!matchPath(location.pathname, {path:"/:resource/:uri/:tab?", exact:false})}>
+        <Then>
+            {props.header}
+        </Then>
+        <Else>
+
+        </Else>
+
+    </If>
+}
+
 const Layout = (props) => {
     const location=useLocation();
     const [sidebar, setSidebar] = useState(true);
@@ -129,6 +142,7 @@ const Layout = (props) => {
         setSidebar(!sidebar);
     }
 
+    const H = <Header setProfileMenuDisplayed={setProfileMenuDisplayed} profileMenuDisplayed={profileMenuDisplayed}/>;
     return <Container
         style={{
             margin:0,
@@ -137,7 +151,8 @@ const Layout = (props) => {
         className={``} fluid
     >
         <Router>
-            <Header setProfileMenuDisplayed={setProfileMenuDisplayed} profileMenuDisplayed={profileMenuDisplayed}/>
+            {/**<Header setProfileMenuDisplayed={setProfileMenuDisplayed} profileMenuDisplayed={profileMenuDisplayed}/>**/}
+            <HeaderDecider location={location} header={H}/>
             <Row style={{backgroundColor:'transparent'}} className={`m-0`}>
                 <If condition={sidebar}>
                     <Then>
@@ -216,7 +231,7 @@ const Layout = (props) => {
                                 <SidebarLink  icon={<FiIcon.FiBox/>}to={"/redshiftclusters"} label={"Warehouses"}/>
                                 {/**<SidebarLink icon={<Icon.Journal size={12}/>}to={"/"} label={"Recent Activities"}/>**/}
                                 {/**<SidebarLink icon={<Icon.Play/>}to={"/xp"} label={"XP"}/>**/}
-                             </Row>
+                            </Row>
                         </Col>
                     </Then>
                     <Else>
@@ -232,7 +247,7 @@ const Layout = (props) => {
                                 position:'fixed',
                                 width:'3%'}}>
 
-                                <Icon.ChevronRight  color={'black'} onClick={toggle}/>
+                            <Icon.ChevronRight  color={'black'} onClick={toggle}/>
                         </Col>
                     </Else>
                 </If>
@@ -262,57 +277,57 @@ const Layout = (props) => {
                         <Then>
                             <Row>
                                 <Col xs={10}/>
-                                    <Col xs={2}>
-                                        <div style={{
-                                            backgroundColor:'white',
-                                            zIndex:999,
-                                            height:'100vh',
-                                            __borderRadius:'12px',
-                                            __boxShadow:'-3px 2px 1px lightgrey',
-                                            position: "fixed",
-                                            width: '100%',
-                                            paddingTop:'2%',
-                                            paddingLeft:'2%',
-                                            borderLeft: '1px solid lightgrey'
-                                        }}>
-                                            <Row>
-                                                <Col xs={2}>
-                                                    <Icon.X onClick={()=>{setProfileMenuDisplayed(false)}}/>
-                                                </Col>
-                                                <Col className={`mt-2`} xs={12}>
-                                                    <SidebarLink icon={<Icon.PersonBadge />}to={"/profile"} label={"Profile"}/>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={12}>
-                                                    <SidebarLink onClick={signOut} icon={<Icon.DoorClosed />}to={"/"} label={"Logout"}/>
+                                <Col xs={2}>
+                                    <div style={{
+                                        backgroundColor:'white',
+                                        zIndex:999,
+                                        height:'100vh',
+                                        __borderRadius:'12px',
+                                        __boxShadow:'-3px 2px 1px lightgrey',
+                                        position: "fixed",
+                                        width: '100%',
+                                        paddingTop:'2%',
+                                        paddingLeft:'2%',
+                                        borderLeft: '1px solid lightgrey'
+                                    }}>
+                                        <Row>
+                                            <Col xs={2}>
+                                                <Icon.X onClick={()=>{setProfileMenuDisplayed(false)}}/>
+                                            </Col>
+                                            <Col className={`mt-2`} xs={12}>
+                                                <SidebarLink icon={<Icon.PersonBadge />}to={"/profile"} label={"Profile"}/>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col xs={12}>
+                                                <SidebarLink onClick={signOut} icon={<Icon.DoorClosed />}to={"/"} label={"Logout"}/>
 
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={12}>
-                                                    <SidebarLink icon={<Icon.Key />}to={"/profile/apikeys"} label={"Api keys"}/>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col xs={12}>
+                                                <SidebarLink icon={<Icon.Key />}to={"/profile/apikeys"} label={"Api keys"}/>
 
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={12}>
-                                                    <div style={{color:'black',fontWeight:'bolder'}}> My Requests</div>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={12}>
-                                                    <SidebarLink icon={<Icon.ArrowBarRight/>}to={"/"} label={"Outgoing"}/>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={12}>
-                                                    <SidebarLink icon={<Icon.ArrowBarLeft/>}to={"/"} label={"Incoming"}/>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col xs={12}>
+                                                <div style={{color:'black',fontWeight:'bolder'}}> My Requests</div>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col xs={12}>
+                                                <SidebarLink icon={<Icon.ArrowBarRight/>}to={"/"} label={"Outgoing"}/>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col xs={12}>
+                                                <SidebarLink icon={<Icon.ArrowBarLeft/>}to={"/"} label={"Incoming"}/>
 
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                    </Col>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </Col>
                             </Row>
                         </Then>
                     </If>
@@ -333,10 +348,10 @@ const Layout = (props) => {
                                 <Route exact path={`/validate-access-request/:linkid`}>
                                     <ValidateShareObject/>
                                 </Route>
-                                <Route path={"/access-request/:shareUri"}>
+                                <Route path={"/access-request/:shareUri/:tab?"}>
                                     <ShareManager/>
                                 </Route>
-                                <Route path={`/playground/:uri`}>
+                                <Route path={`/playground/:uri/:tab?`}>
                                     <EnvironmentPlayground/>
                                 </Route>
                                 <Route path={`/tenant-administrators`}>
@@ -499,7 +514,6 @@ const Layout = (props) => {
     </Container>
 
 }
-
 
 
 
