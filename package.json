@@ -38,6 +38,8 @@
     "graphql-request": "^1.8.2",
     "handsontable": "^7.4.2",
     "install": "^0.13.0",
+    "jsplumb": "^2.15.5",
+    "jsplumb-react": "^0.0.27",
     "jwt-decode": "^2.2.0",
     "loaders.css": "^0.1.2",
     "markdown-it": "^10.0.0",
