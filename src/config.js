@@ -14,8 +14,11 @@ const conf = {
         USER_POOL_ID: "eu-west-1_u2i6wjYQH",
         APP_CLIENT_ID: "7hibugnidkcp8d85e9b3qf3pa7",
         DOMAIN: "https://datahubdeveuwest1532999248425.auth.eu-west-1.amazoncognito.com",
+        DOMAIN_AMPLIFY: "datahubdeveuwest1532999248425.auth.eu-west-1.amazoncognito.com",
         REDIRECT_URI: 'https://dtj2u9ko04na8.cloudfront.net',
-        SIGNOUT_URL: 'https://www.example.com',
+        // REDIRECT_URI: 'https://127.0.0.1:8080',
+        SIGNOUT_URL: 'https://dtj2u9ko04na8.cloudfront.net',
+        // SIGNOUT_URL: 'https://127.0.0.1:8080',
         TYPE: "token",
         SCOPE: ['email', 'phone', 'openid', 'profile']
     }
