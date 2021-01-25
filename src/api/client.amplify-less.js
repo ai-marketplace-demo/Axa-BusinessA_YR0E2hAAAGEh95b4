@@ -40,9 +40,7 @@ const useClient=()=>{
                         Authorization: t ? `${t}` : "",
                         AccessKeyId: 'none',
                         SecretKey: 'none',
-                        username: 'moshirm@amazon.fr',
-                        //username: 'jeff',
-                        groups: 'a,n' //this is for local development only
+
                     }
                 });
                 return forward(operation);

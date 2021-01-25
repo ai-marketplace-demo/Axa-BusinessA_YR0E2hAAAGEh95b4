@@ -6,7 +6,7 @@ const conf = {
     apiGateway: {
         REGION: "eu-west-1",
         URL: " https://lmc1x2k4ue.execute-api.eu-west-1.amazonaws.com/prod/graphql/api",
-        ESURL: " https://lmc1x2k4ue.execute-api.eu-west-1.amazonaws.com/prod/graphql/api",
+        ESURL: " https://lmc1x2k4ue.execute-api.eu-west-1.amazonaws.com/prod/search/api",
 
     },
     cognito: {
