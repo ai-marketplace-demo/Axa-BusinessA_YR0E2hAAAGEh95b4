@@ -115,7 +115,7 @@
     "sass": "^1.26.2"
   },
   "scripts": {
-    "start": "GENERATE_SOURCEMAP=true HOST='127.0.0.1' HTTPS=true  PORT=1234 REACT_APP_STAGE=dev react-scripts start",
+    "start": "set NODE_OPTIONS=--max_old_space_size=4096 && cross-env GENERATE_SOURCEMAP=true HOST='127.0.0.1' HTTPS=true  PORT=8080 REACT_APP_STAGE=dev react-scripts start",
     "__start": "GENERATE_SOURCEMAP=true PORT=1234 REACT_APP_STAGE=dev react-scripts start",
     "start:mushhz": "GENERATE_SOURCEMAP=true HTTPS=true PORT=1234 REACT_APP_STAGE=mushhz react-scripts start",
     "build": "react-scripts build",
