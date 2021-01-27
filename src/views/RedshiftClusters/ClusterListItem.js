@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
-import Avatar from "react-avatar";
 import useClient from "../../api/client";
 import {Else, If, Then} from "react-if";
 import {CopyToClipboard} from "react-copy-to-clipboard";
@@ -22,13 +21,8 @@ import deleteRedshiftCluster from  "../../api/RedshiftCluster/deleteCluster";
 import getClusterConsoleAccess from "../../api/RedshiftCluster/getClusterConsoleAccess";
 import SpanZoomer from "../../components/Zoomer/SpanZoomer";
 import {Link, useHistory} from "react-router-dom";
-import UserProfileLink from "../Profile/UserProfileLink";
-import LinkSpan from "../../components/Link/LinkSpan";
-import getSagemakerNotebookPresignedUrl from "../../api/SagemakerNotebook/getSagemakerNotebookPresignedUrl";
-import stopSagemakerNotebook from "../../api/SagemakerNotebook/stopNotebookInstance";
-import startSagemakerNotebook from "../../api/SagemakerNotebook/startNotebookInstance";
-import ActionCard from "../../components/Card/ActionCard";
 import * as FiIcon from "react-icons/fi";
+import ActionCard from "../../components/Card/ActionCard";
 dayjs.extend(relativeTime);
 
 const Styled=styled.div`
@@ -352,10 +346,12 @@ const RedshiftClusterListItem = (props)=> {
             </Modal>
         </div>
     };
+    const icon = <FiIcon.FiBox size={22}/>;
     const actions = <Actions {...cluster}/>;
     const body=<Body {...cluster}/>;
     const header = <Header  {...cluster}/>;
     return <ActionCard
+        icon={icon}
         label={cluster.label}
         owner={cluster.owner}
         created={cluster.created}
@@ -366,138 +362,6 @@ const RedshiftClusterListItem = (props)=> {
         tags={cluster.tags || []}
     />
 };
-    /*return <Styled>
-        <Row className={``}>
-            <Col xs={9}>
-                <Link to={`/redshiftcluster/${props.cluster.clusterUri}`}>
-                    <p>
-                        <Avatar className={`mr-1`} size={32} round={true} name={props.cluster.label}/> <b className={"text-capitalize"}>{props.cluster.label}</b>
-                    </p>
-                </Link>
-            </Col>
-            <Col xs={3}>
-                <CardAction
-                    type="button"
-                    onClick={getRedshiftCluster}>
-                    <If condition={isLoadingCluster}>
-                        <Then>
-                            <span style={{ marginRight: '1px', marginTop: '.5rem!important'}}>
-                                <Spinner size={`sm`} variant={`primary`} animation={`grow`}/>
-                            </span>
-                        </Then>
-                    </If>
-                    <Badge pill variant={statusColor(cluster.status)} className={`text-uppercase`}> {cluster.status}</Badge>
-                </CardAction>
-            </Col>
-        </Row>
-        <Row>
-            <Col xs={12}>
-                Created by <UserProfileLink username={props.cluster.owner}/> {dayjs(props.cluster.created).fromNow()}
-            </Col>
-        </Row>
-        <Row>
-            <Col xs={1}>
-                <Icon.People size={22}/>
-            </Col>
-            <Col xs={8}>
-                <Link className={`text-primary`} to={`/organization/${cluster.organization.organizationUri}`}>
-                    {props.cluster.organization.name}
-                </Link>
-            </Col>
-        </Row>
-        <Row>
-            <Col xs={1}>
-                <Icon.Cloud size={22}/>
-            </Col>
-            <Col xs={8}>
-                <Link className={`text-primary`} to={`/playground/${cluster.environment.environmentUri}`}>
-                    {props.cluster.environment.name}
-                </Link>
-            </Col>
-        </Row>
-        <Row>
-            <Col xs={1}>
-                <Icon.PersonCheck size={22}/>
-            </Col>
-            <Col xs={4}>
-                <Badge pill variant={`primary`} className={`mt-1 text-uppercase`}>
-                    {cluster.userRoleForCluster}
-                </Badge>
-            </Col>
-        </Row>
-        <Row className={`mt-1`}>
-            <Col xs={1}>
-                <Icon.Link size={22}/>
-            </Col>
-            <Col xs={11}>
-                <LinkSpan onClick={generateRedirectUrl}>{cluster.name}</LinkSpan>
-            </Col>
-        </Row>
-        <Row className={`mt-1`}>
-            <Col xs={1} className={`mt-1`}>
-                <FontAwesomeIcon icon={faNetworkWired}/>
-            </Col>
-            <Col xs={11}>
-                <span>{!cluster.endpoint ?  ' -' : cluster.endpoint}</span>
-                {(cluster.endpoint &&
-                    <SpanZoomer>
-                        <CopyToClipboard text={`${cluster.endpoint}`}>
-                            <Icon.Clipboard onClick={()=>{copy('Endpoint')}} className={`ml-2`}/>
-                        </CopyToClipboard>
-                    </SpanZoomer>
-                )}
-            </Col>
-        </Row>
-        <Row className={`mt-2 border-top mb-2 justify-content-center`}>
-            <span className={`mt-2 mr-2`}>
-                <If condition={isLoadingConsoleUrl}>
-                    <Then>
-                        <Spinner size={`sm`} variant={`primary`} animation={`grow`}/>
-                    </Then>
-                </If>
-                <Button style={{ fontSize: '0.5rem' }} variant={'secondary'} className={'rounded-pill'} onClick={()=>generateRedirectUrl()}>
-                    <b><FontAwesomeIcon icon={faAws}/> Console</b>
-                </Button>
-            </span>
-            <span className={`mt-2 mr-2`}>
-                <Button style={{ fontSize: '0.5rem' }} variant={'primary'} className={'rounded-pill'} onClick={()=> goToClusterDatasets()}>
-                    <b><FontAwesomeIcon icon={faFolderPlus}/> Datasets</b>
-                </Button>
-            </span>
-            <span className={`mt-2 mr-2`}>
-                <Button style={{ fontSize: '0.5rem' }} variant={'info'} className={'rounded-pill'} onClick={()=> goToClusterCreds()}>
-                    <b><FontAwesomeIcon icon={faKey}/> Credentials</b>
-                </Button>
-            </span>
-            <span className={`mt-2`}>
-                <If condition={isDeletingCluster}>
-                    <Then>
-                        <Spinner size={`sm`} variant={`primary`} animation={`grow`}/>
-                    </Then>
-                </If>
-                <Button style={{ fontSize: '0.5rem' }} variant={'danger'} className={'rounded-pill'} onClick={()=>openDeleteModal()}>
-                    <b><Icon.Trash/> Delete</b>
-                </Button>
-            </span>
-        </Row>
-        <Modal show={showDeleteModal} onHide={closeDeleteModal}>
-            <Modal.Header closeButton>
-                <Modal.Title>Delete Redshift Cluster</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>Confirm Amazon Redshift cluster <b><i>{cluster.label}</i></b> deletion ?</Modal.Body>
-            <Modal.Footer>
-                <Button variant="outline-secondary" className={'rounded-pill'} onClick={closeDeleteModal}>
-                    Close
-                </Button>
-                <Button variant="outline-danger" className={'rounded-pill'} onClick={deleteCluster}>
-                    Delete
-                </Button>
-            </Modal.Footer>
-        </Modal>
-    </Styled>
-
-};
-*/
 
 export default RedshiftClusterListItem;
 

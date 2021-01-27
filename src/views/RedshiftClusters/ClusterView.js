@@ -9,6 +9,7 @@ import Loader from 'react-loaders';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import {Else, If, Then} from "react-if";
 import {toast} from "react-toastify";
+import * as FiIcon from "react-icons/fi";
 import * as Icon from "react-bootstrap-icons";
 import styled from "styled-components";
 import RedshiftClusterDatasets from "./ClusterDatasets/RedshiftClusterDatasets";
@@ -22,7 +23,6 @@ import pauseRedshiftCluster from "../../api/RedshiftCluster/pauseCluster";
 import deleteRedshiftCluster from "../../api/RedshiftCluster/deleteCluster";
 import getClusterConsoleAccess from "../../api/RedshiftCluster/getClusterConsoleAccess";
 import ClusterCredentials from "./ClusterCredentials";
-import * as FiIcon from "react-icons/fi";
 
 dayjs.extend(relativeTime);
 

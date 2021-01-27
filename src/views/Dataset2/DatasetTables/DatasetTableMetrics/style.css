@@ -1,0 +1,68 @@
+.metrics-title{
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.metrics-title span{
+  padding-bottom: 2px;
+  border-bottom: 2px solid #F0F0F0;
+  border-radius: 2px;
+}
+
+.completeness-valid{
+  color:#009e07;
+  margin-right: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display:flex;
+  justify-content: space-between;
+}
+
+.completeness-missing{
+  color:#bc0000;
+  margin-right: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+}
+
+.completeness-valid-title {
+  display: inline-block;
+  margin-right: 10px;
+  min-width: 55px;
+}
+
+.completeness-missing-title {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.completeness-nbrows{
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.metrics-prop{
+  display:inline-block;
+  font-weight: 500;
+  margin-right: 25px;
+  min-width: 100px;
+}
+
+.metrics-string-container div, .metrics-number-container div,.metrics-date-container div{
+  display:flex;
+  justify-content: space-between;
+}
+
+.metrics-prct{
+  font-weight: 600;
+  color: #1e63a9;
+}
+
+.completeness-percent {
+  min-width: 40px;
+  text-align: right;
+}

@@ -1,29 +1,50 @@
 import React ,{useState, useEffect} from "react";
-import {Container,Row, Col, Badge,ListGroupItem,ListGroup,Dropdown,Table,Card} from "react-bootstrap";
+import {
+    Row,
+    Col,
+    Badge,
+    Alert,
+    Modal,
+} from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
-import Zoom from "../../components/Zoomer/Zoom";
-import Tag from "../../components/Tag/Tag";
-import styled from "styled-components";
-import Avatar from "react-avatar";
-import UserProfileLink  from "../../views/Profile/UserProfileLink";
-import ActionButton from "../../components/ActionButton/ActionButton";
-import { Sparklines,SparklinesBars } from 'react-sparklines';
 import {BrowserRouter, Route,Link, Switch} from "react-router-dom";
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
-import UserProfile from "../Profile/UserProfile";
 import BasicCard from "../../components/Card/BasicCard";
-dayjs.extend(relativeTime)
+import {If, Then} from "react-if";
+import deleteDataset from "../../api/Dataset/deleteDataset";
+import archiveDataset from "../../api/Dataset/archiveDataset";
+import {toast} from "react-toastify";
+import useClient from "../../api/client";
+dayjs.extend(relativeTime);
 
 
 
 
 const Header=(props)=>{
     return <Row>
-        <Col xs={10}>
+        <Col xs={9}>
             <Link to={`/dataset/${props.dataset.datasetUri}/overview`}>
                 <b className={"text-capitalize"}>{props.dataset.label}</b>
             </Link>
+        </Col>
+        <Col xs={1}>
+            <If condition={props.canEdit}>
+                <Then>
+                    <Link to={"#"}>
+                        <Icon.Archive  onClick={props.openArchiveModal} className={`text-primary`}/>
+                    </Link>
+                </Then>
+            </If>
+        </Col>
+        <Col xs={1}>
+            <If condition={props.canEdit}>
+                <Then>
+                    <Link to={"#"}>
+                        <Icon.Trash  onClick={props.openDeleteModal} className={`text-danger`}/>
+                    </Link>
+                </Then>
+            </If>
         </Col>
     </Row>
 }
@@ -99,6 +120,7 @@ const Body=(props)=>{
 }
 
 const DatasetListItem = (props)=> {
+    const client = useClient();
     let [regions, setRegions] = useState([
         {label: 'US East (Ohio)', value: 'us-east-2'},
         {label: 'US East (N. Virginia)', value: 'us-east-1'},
@@ -132,25 +154,113 @@ const DatasetListItem = (props)=> {
         visibility: "hidden",
         zIndex: 0
     })
+    let canEdit=['BusinessOwner','Creator',].indexOf(dataset.userRoleForDataset)!=-1;
     const toggle = (state) => {
         console.log("hovered");
         setHovered(state)
     }
+    const [isArchivingDataset, setIsArchivingDataset] = useState(false);
+    const [isDeletingDataset, setIsDeletingDataset] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showArchiveModal, setShowArchiveModal] = useState(false);
+    const openDeleteModal = () => {
+        setShowDeleteModal(true);
+    };
+
+    const closeDeleteModal = () => {
+        setShowDeleteModal(false);
+    };
+    const openArchiveModal = () => {
+        setShowArchiveModal(true);
+    };
+
+    const closeArchiveModal = () => {
+        setShowArchiveModal(false);
+    };
+
+    const removeDataset = async () => {
+        setIsDeletingDataset(true);
+        const response = await client.mutate(deleteDataset(dataset.datasetUri));
+        if (response.errors) {
+            toast.error(`Could not delete dataset, ${response.errors[0].message}`, {hideProgressBar: true})
+        } else {
+            toast(`Deleting dataset ${dataset.label}`);
+            props.reloadDatasets();
+        }
+        setIsDeletingDataset(false);
+    };
+
+    const storeDataset = async () => {
+        setIsArchivingDataset(true);
+        const response = await client.mutate(archiveDataset(dataset.datasetUri));
+        if (response.errors) {
+            toast.error(`Could not archive dataset, ${response.errors[0].message}`, {hideProgressBar: true})
+        } else {
+            toast(`Archiving dataset ${dataset.label}`);
+            props.reloadDatasets();
+        }
+        setIsArchivingDataset(false);
+    };
 
 
-    const header = <Header regions={regions} {...props}/>
-    const body = <Body {...props}/>
+    const header = <Header regions={regions}
+                           canEdit={true}
+                           openDeleteModal={openDeleteModal}
+                           openArchiveModal={openArchiveModal}
+                           {...props}/>;
+    const body = <Body {...props}/>;
 
-    return <BasicCard
-        label={dataset.label}
-        tags={dataset.tags || []}
-        owner={dataset.owner}
-        header={header}
-        body={body}
-        created={dataset.created}
-        description={dataset.description}
-    />
-}
+    return <div>
+        <BasicCard
+            label={dataset.label}
+            tags={dataset.tags || []}
+            owner={dataset.owner}
+            header={header}
+            body={body}
+            created={dataset.created}
+            description={dataset.description}
+        />
+        <Modal show={showArchiveModal} onHide={closeArchiveModal}>
+            <Modal.Header closeButton>
+                <Modal.Title>Archive Dataset</Modal.Title>
+            </Modal.Header>
+            <Modal.Body><b>Archiving Dataset <i>{dataset.label}</i> will not remove AWS resources linked to the dataset on your AWS account.
+                Confirm action ?</b>
+            </Modal.Body>
+            <Modal.Footer>
+                <Row>
+                    <Col xs={6}>
+                        <div className={`btn-group`}>
+                            <div onClick={storeDataset} className={`btn btn-sm btn-warning`}>Archive</div>
+                            <div className={`pl-2 btn btn-sm  btn-primary`} onClick={closeArchiveModal}>Cancel</div>
+                        </div>
+                    </Col>
+                </Row>
+            </Modal.Footer>
+        </Modal>
+        <Modal show={showDeleteModal} onHide={closeDeleteModal}>
+            <Modal.Header closeButton>
+                <Modal.Title>Delete Dataset</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Alert><b>Deleting Dataset <i>{dataset.label}</i> will remove all AWS resources linked to the dataset on your AWS account.
+                    Confirm action ?</b>
+                </Alert>
+            </Modal.Body>
+            <Modal.Footer>
+                <Row>
+                    <Col xs={6}>
+                        <div className={`btn-group`}>
+                            <div onClick={removeDataset} className={`btn btn-sm btn-danger`}>Delete</div>
+                            <div className={`pl-2 btn btn-sm  btn-primary`} onClick={closeDeleteModal}>Cancel</div>
+                        </div>
+                    </Col>
+                </Row>
+            </Modal.Footer>
+        </Modal>
+    </div>
+
+};
 
 export default DatasetListItem;
 

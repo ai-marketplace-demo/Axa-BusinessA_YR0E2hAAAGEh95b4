@@ -155,7 +155,9 @@ const DatasetList = (props)=>{
                     <Else>
                         {
                             datasets.nodes.map((dataset)=>{
-                                return <Col xs={4}><DatasetListItem  key={dataset.datasetUri} dataset={dataset}/></Col>
+                                return <Col xs={4}>
+                                    <DatasetListItem key={dataset.datasetUri} dataset={dataset} reloadDatasets={fetchItems}/>
+                                </Col>
 
                             })
                         }
