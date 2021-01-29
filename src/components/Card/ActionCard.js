@@ -20,15 +20,16 @@ background: white;
 overflow: visible;
 width : 100%;
 margin-bottom: ${props=>props.h?"4em":"3em"};
-border : 1px solid #ced4da;
+__border : 1px solid lightgrey;
+box-shadow: 0 5px 15px rgba(0,0,0,0.4);
 height:auto;
-border-radius : 11px;
+__border-radius : 11px;
 padding: 2ch;
 &:hover{
-  box-shadow: 0px 6px 4px lightgrey;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.5);
   z-index:999;
 }
-`;
+`
 
 const Header=styled.div`
 margin-top: 2%;

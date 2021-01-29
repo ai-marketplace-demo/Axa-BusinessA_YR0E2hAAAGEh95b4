@@ -285,7 +285,7 @@ const RedshiftClusterListItem = (props)=> {
                     <Row>
                         <Col xs={1}/>
                         <Col xs={5}>
-                            <div style={{ fontSize: '0.5rem' }} className={`btn btn-secondary rounded-pill btn-sm`}
+                            <div style={{ fontSize: '0.5rem' }} className={`btn btn-outline-secondary rounded-pill btn-sm`}
                                  onClick={()=>generateRedirectUrl()}>
                                 <If condition={isLoadingConsoleUrl}>
                                     <Then>
