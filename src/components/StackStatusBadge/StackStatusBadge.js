@@ -50,7 +50,7 @@ const StackStatusBadge = (props)=>{
         </Case>
         <Case condition={cat==status.failed}>
             <Badge pill  variant={`danger`}>
-                <p>{props.status}</p>
+                {props.status}
             </Badge>
         </Case>
         <Case condition={ cat==status.progress}>
@@ -68,12 +68,12 @@ const StackStatusBadge = (props)=>{
         </Case>
         <Case condition={cat==status.warning}>
             <Badge pill variant={`warning`}>
-                <p>{props.status}</p>
+                {props.status}
             </Badge>
         </Case>
         <Default>
             <Badge pill  variant={`warning`}>
-                <p>{props.status}</p>
+                {props.status}
             </Badge>
         </Default>
     </Switch>
