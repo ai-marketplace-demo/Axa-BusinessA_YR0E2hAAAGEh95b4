@@ -1,26 +1,19 @@
-import React, {useState, useRef,useEffect} from "react";
-import {Container, Row, Col, Tabs, Tab,Spinner, Badge,Table} from "react-bootstrap";
+import React, {useState,useEffect} from "react";
+import {Container, Row, Col} from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import RoutedTabs from "../../components/Tabs/Tabs";
-import Editor from '@monaco-editor/react';
 import {If, Then, Else, Case, Switch, Default} from "react-if";
 import useClient from "../../api/client";
-import listEnvironments from "../../api/Environment/listEnvironments";
-import getSavedQuery from "../../api/SavedQuery/getSavedQuery";
-import runSavedQuery from "../../api/SavedQuery/runSavedQuery";
-import Select from "react-select";
-import styled from "styled-components";
 import {toast} from "react-toastify";
-import {getRegionLabel} from "../../components/AwsRegions/AwsRegionSelect";
-import {Link, useParams} from "react-router-dom";
-import ResizePanel from "react-resize-panel";
+import {useParams} from "react-router-dom";
 import getScheduledQuery from "../../api/SavedQuery/getScheduledQuery";
 import createSavedQuery from "../../api/SavedQuery/createSavedQuery";
 import QueryOverviewTab from "./QueryOverviewTab";
 import QueryEditorTab from "./QueryEditorTab";
 import QuerySchedulerTab from "./QuerySchedulerTab";
 import QueryRunTab from "./QueryRunTab";
-import HumandReadableDate from "../../components/HumanReadableDate/HumanReadableDate";
+import ItemViewHeader from "../../components/ItemViewHeader/ItemViewHeader";
+import Loader from "react-loaders";
 
 
 const QueryAdmin = (props)=>{
@@ -75,28 +68,26 @@ const QueryAdmin = (props)=>{
 
     const tabs= ["overview","queries","schedule","run"]
 
-
+    if (!ready){
+        return <Container>
+            <Row>
+                <Col style={{marginTop: '24%', marginLeft:'43%'}} xs={4}>
+                    <Loader color={`lightblue`} type="ball-scale-multiple" />
+                </Col>
+            </Row>
+        </Container>
+    }
     return <Container className={`mt-4`} fluid>
-        <Row style={{
-            borderBottom:'1px lightgrey solid',
-            borderRight:'1 solid white',
-            //borderBottomRightRadius:"23px",
-            boxShadow:'0px 7px 2px rgb(0,0,0,0.04)',
-        }}
-             className={"mt-3   p-2 "}>
+        <ItemViewHeader
+            label={query.label}
+            owner={query.owner}
+            role={query.userRoleForScheduledQuery}
+            region={query.environment.region}
+            status={query.stack ? query.stack.status : "Ready"}
+            created={query.created}
+            itemIcon={<Icon.Terminal size={32}/>}
+        />
 
-
-        <Col className={`border-right mt-1 mb-1 ` } xs={6}>
-                <h3><Icon.Terminal/> Query <b className={`text-primary`}>{query.label}</b></h3>
-            </Col>
-            <Col xs={6}>
-
-            </Col>
-            <Col xs={6}>
-                Created  by {query.owner} <HumandReadableDate d={query.created}/>
-            </Col>
-
-        </Row>
         <Row className={`mt-4`}>
             <Col xs={12}>
                 <RoutedTabs tabs={tabs}></RoutedTabs>

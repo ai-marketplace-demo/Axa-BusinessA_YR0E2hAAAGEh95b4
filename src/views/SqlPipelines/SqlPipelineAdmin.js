@@ -1,15 +1,12 @@
 import React ,{useEffect,useState} from "react";
-import {Col, Badge,Row, Container, Spinner,Tabs,Tab} from "react-bootstrap";
+import {Col,Row, Container, Spinner} from "react-bootstrap";
 import Loader from 'react-loaders';
 import {If, Then, Else,Switch,Case,Default} from "react-if";
-import {useParams, useHistory} from "react-router";
+import {useParams} from "react-router";
 import * as Icon from  "react-bootstrap-icons";
 import styled from "styled-components";
-import MainActionButton from "../../components/MainActionButton/MainButton";
-import {Link} from "react-router-dom";
 import useClient from "../../api/client";
 import {toast} from "react-toastify";
-import dayjs from "dayjs";
 import getSqlPipeline from "../../api/SqlPipeline/getSqlPipeline";
 import getSqlPipelineCredsLinux from "../../api/SqlPipeline/getSqlPipelineCredsLinux";
 import SqlPipelineOverview from "./SqlPipelineOverview";
@@ -18,6 +15,7 @@ import CodeBrowser from "./CodeBrowser/CodeBrowser";
 import SqlPipelineRunList from "./Runs/SqlPipelineRunsList";
 import SqlPipelineBuildList from "./Builds/SqlPipelineBuildsList";
 import RoutedTabs from "../../components/Tabs/Tabs";
+import ItemViewHeader from "../../components/ItemViewHeader/ItemViewHeader";
 
 
 const FullScreen = styled.div`
@@ -95,45 +93,15 @@ const SqlPipelineAdmin = (props)=>{
 
     return <FullScreen>
         <Container fluid className={`mt-3`}>
-            <Row style={{
-                borderBottom:'1px lightgrey solid',
-                borderRight:'1 solid white',
-                //borderBottomRightRadius:"23px",
-                boxShadow:'0px 7px 2px rgb(0,0,0,0.04)',
-            }}
-                 className={"mt-3    "}>
-
-
-
-            <Col className="pt-3" xs={1}>
-                    <Icon.Gear size={32}/>
-                </Col>
-                <Col className={"border-right pt-1"} xs={8}>
-                    <Row className={"m-0"}>
-                        <Col xs={8}>
-                            <h4>Data Pipeline <b className={`text-primary`}>{sqlPipeline.label}</b></h4>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xs={8}>
-                            <p>Created by <a href={"#"}>{sqlPipeline.owner}</a> {dayjs(sqlPipeline.created).fromNow()} </p>
-                        </Col>
-
-                    </Row>
-
-                </Col>
-                <Col className={`border-right pt-1`} xs={2}>
-                    <Row>
-                        <Col xs={12}>
-                    Role in SqlPipeline : <b className={`text-primary`}> {sqlPipeline.userRoleInSqlPipeline}</b>
-                        </Col>
-                    </Row>
-                    <Col xs={12} className={`mt-2`}>
-                        <Badge pill variant={"info"}>Owner</Badge>
-                    </Col>
-                </Col>
-
-            </Row>
+            <ItemViewHeader
+                label={sqlPipeline.label}
+                owner={sqlPipeline.owner}
+                role={sqlPipeline.userRoleForPipeline}
+                region={sqlPipeline.environment.region}
+                status={sqlPipeline.stack ? sqlPipeline.stack.status : "NotFound"}
+                created={sqlPipeline.created}
+                itemIcon={<Icon.Gear size={32}/>}
+            />
             <Row>
                 <Col xs={12}>
                     <If condition={displayGitInstructions}>

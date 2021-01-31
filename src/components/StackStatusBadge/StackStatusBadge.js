@@ -55,12 +55,12 @@ const StackStatusBadge = (props)=>{
         </Case>
         <Case condition={ cat==status.progress}>
             <Row>
-                <Col xs={10}>
+                <Col xs={9}>
                     <Badge pill variant={`primary`}>
-                        <p>{props.status}</p>
+                        {props.status}
                     </Badge>
                 </Col>
-                <Col xs={2}>
+                <Col xs={3}>
                     <Spinner size={`sm`} animation={`border`} variant={`primary`}/>
                 </Col>
             </Row>

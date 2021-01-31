@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import {Container, Spinner,Row,Col,Tabs,Tab} from "react-bootstrap";
+import React, {useState, useEffect, Component} from "react";
+import {Container, Spinner, Row, Col, Tabs, Tab, Badge} from "react-bootstrap";
 import Loader from 'react-loaders';
 import * as Icon from "react-bootstrap-icons";
 import {If,Then,Else, Switch, Case,Default} from "react-if";
@@ -14,9 +14,7 @@ import DatasetSummary  from "./DatasetSummary/DatasetSummary";
 import DatasetFolderList  from "./DatasetFolders/DatasetFolderList";
 import DatasetShareList  from "./DatasetShares/DatasetShareList";
 import DatasetUpload  from "./DatasetUpload/DatasetUpload";
-import DatasetViewSkeleton from "./DatasetViewSkeleton";
-import styled from "styled-components";
-
+import ItemViewHeader from "../../components/ItemViewHeader/ItemViewHeader";
 
 
 const DatasetAdminView = (props)=>{
@@ -59,81 +57,67 @@ const DatasetAdminView = (props)=>{
 
     return <Container
         __style={{
-            marginTop:'1rem',
-            borderTop:'1px lightgrey solid',
-            borderLeft:'1px lightgrey solid',
-            borderRight:'1px lightgrey solid',
-            borderTopLeftRadius:'12px ',
-            borderTopRightRadius:'12px ',
+            marginTop: '1rem',
+            borderTop: '1px lightgrey solid',
+            borderLeft: '1px lightgrey solid',
+            borderRight: '1px lightgrey solid',
+            borderTopLeftRadius: '12px ',
+            borderTopRightRadius: '12px ',
             //boxShadow:' 0px -5px 5px  #f7f7f7',
             //backgroundColor:'#f7f7f7',
         }}
         fluid>
-        <Row style={{
-            borderBottom:'1px lightgrey solid',
-            borderRight:'1 solid white',
-            //borderBottomRightRadius:"23px",
-            boxShadow:'0px 7px 2px rgb(0,0,0,0.04)',
-        }}
-             className={"mt-3    "}>
-            <Col className="pt-4" xs={1}>
-                <Icon.Folder size={32}/>
-            </Col>
-            <Col className={`border-right pt-3`} xs={4}>
-                <Row>
-                    <h4>{info.label}</h4>
-                </Row>
-                <Row>
-                    <p>by <a href={"#"}>{info.owner}</a></p>
-                </Row>
-
-            </Col>
-            <Col className={`border-right pt-3`} xs={2}>
-                Role for dataset : <b className={`text-primary`}>{info.userRoleForDataset}</b>
-            </Col>
-        </Row>
+        <ItemViewHeader
+            label={info.label}
+            owner={info.owner}
+            status={info.stack.status}
+            role={info.userRoleForDataset}
+            region={info.region}
+            created={info.created}
+            itemIcon={<Icon.Folder size={32}/>}
+        />
         <Row className={`mt-2`}>
             <Col xs={12}>
                 <RoutableTabs
-                    tabs={['overview','summary','details','tables',"folders",'shares',"upload",'integrations']}
+                    tabs={['overview', 'summary', 'details', 'tables', "folders", 'shares', "upload", 'integrations']}
                 />
             </Col>
         </Row>
         <Row className={`mt-1`}>
             <Col className={`pl-1 `} xs={12}>
                 <Switch>
-                    <Case condition={params.tab==`tables`}>
+                    <Case condition={params.tab == `tables`}>
                         <If condition={ready}>
                             <Then>
                                 <DatasetTables dataset={info}/>
                             </Then>
                         </If>
                     </Case>
-                    <Case condition={params.tab==`folders`}>
+                    <Case condition={params.tab == `folders`}>
                         <DatasetFolderList dataset={info}/>
                     </Case>
-                    <Case condition={params.tab==`shares`}>
+                    <Case condition={params.tab == `shares`}>
                         <DatasetShareList dataset={info}/>
                     </Case>
-                    <Case condition={params.tab==`details`}>
+                    <Case condition={params.tab == `details`}>
                         <If condition={ready}>
                             <Then>
                                 <DatasetDetails dataset={info}/>
                             </Then>
                         </If>
                     </Case>
-                    <Case condition={params.tab==`summary`}>
+                    <Case condition={params.tab == `summary`}>
                         <If condition={ready}>
                             <Then>
                                 <DatasetSummary dataset={info}/>
                             </Then>
                         </If>
                     </Case>
-                    <Case condition={params.tab==`upload`}>
+                    <Case condition={params.tab == `upload`}>
                         <DatasetUpload dataset={info}/>
                     </Case>
 
-                    <Case condition={params.tab==`integrations`}>
+                    <Case condition={params.tab == `integrations`}>
                         <h2>Integrations</h2>
                     </Case>
                     <Default>

@@ -2,23 +2,18 @@ import React ,{useEffect,useState} from "react";
 import {Col, Row, Container, Spinner,Tabs,Tab} from "react-bootstrap";
 import {If, Then, Else,Switch, Case, Default} from "react-if";
 import {useParams, useHistory} from "react-router";
-import * as Icon from  "react-bootstrap-icons";
 import * as MdIcon  from 'react-icons/md';
 import styled from "styled-components";
-import MainActionButton from "../../components/MainActionButton/MainButton";
-import {Link} from "react-router-dom";
 import useClient from "../../api/client";
-import searchDashboards from "../../api/Dashboard/searchDashboards";
 import {toast} from "react-toastify";
-import DashboardListItem from "./DashboardListItem";
-import dayjs from "dayjs";
 import getDashboard from "../../api/Dashboard/getDashboard";
-import EnvironmentOverview from "../EnvironmentPlayground/EnvironmentOverview";
 import QuicksightDesigner from "./QuicksightDesigner";
 import DashboardOverview from "./DashboardOverview";
 import DashboardShares from "./DashboardShares";
 import RoutedTabs from "../../components/Tabs/Tabs";
 import getReaderSession from "../../api/Dashboard/getDashboardReaderSession";
+import ItemViewHeader from "../../components/ItemViewHeader/ItemViewHeader";
+import Loader from "react-loaders";
 
 
 const FullScreen = styled.div`
@@ -62,8 +57,7 @@ const DashboardAdmin = (props)=>{
                 toast.error(`Failed to retrieve session url`)//, received ${response.errors[0].message}`);
             }
         }
-        setReady(true);
-    }
+    };
 
     const fetchDashboard = async()=>{
         const response = await client.query(getDashboard(params.uri));
@@ -72,8 +66,9 @@ const DashboardAdmin = (props)=>{
         }else {
             toast.error(`Unexpected error${response.errors[0].message}`,{hideProgressBar:true})
         }
+        setReady(true);
 
-    }
+    };
 
     useEffect(()=>{
         if (client){
@@ -83,39 +78,25 @@ const DashboardAdmin = (props)=>{
     },[client]);
 
 
-
+    if (!ready){
+        return <Container>
+            <Row>
+                <Col style={{marginTop: '18%', marginLeft:'43%'}} xs={4}>
+                    <Loader color={`lightblue`} type="ball-scale-multiple" />
+                </Col>
+            </Row>
+        </Container>
+    }
 
     return <Container fluid className={`mt-3`}>
-        <Row style={{
-            borderBottom:'1px lightgrey solid',
-            borderRight:'1 solid white',
-            //borderBottomRightRadius:"23px",
-            boxShadow:'0px 7px 2px rgb(0,0,0,0.04)',
-        }}
-             className={"mt-3    "}>
-
-                <Col className="pt-3" xs={1}>
-                    <MdIcon.MdShowChart size={32}/>
-                </Col>
-                <Col className={"border-right pt-1"} xs={8}>
-                    <Row className={"m-0"}>
-                        <Col xs={8}>
-                            <h4>Dashboard <b className={`text-primary`}>{dashboard.label}</b></h4>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xs={8}>
-                            <p>Created by <a href={"#"}>{dashboard.owner}</a> {dayjs(dashboard.created).fromNow()} </p>
-                        </Col>
-
-                    </Row>
-
-                </Col>
-                <Col className={`border-right pt-1`} xs={2}>
-                    Role in Dashboard : <b className={`text-primary`}> {dashboard.userRoleInDashboard}</b>
-                </Col>
-
-            </Row>
+        <ItemViewHeader
+            label={dashboard.label}
+            owner={dashboard.owner}
+            role={dashboard.userRoleForDashboard}
+            region={dashboard.environment.region}
+            created={dashboard.created}
+            itemIcon={<MdIcon.MdShowChart size={32}/>}
+        />
             <Row className={`mt-3`}>
                 <Col xs={12}>
                     <RoutedTabs tabs={tabs}/>

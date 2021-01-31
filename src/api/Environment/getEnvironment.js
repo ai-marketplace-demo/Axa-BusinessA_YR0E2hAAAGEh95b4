@@ -23,6 +23,9 @@ const getEnvironment = ({environmentUri})=>{
                         name
                         userRoleInOrganization
                     }
+                    stack{
+                            status
+                        }
                 }
             }
         `

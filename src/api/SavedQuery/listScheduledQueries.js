@@ -31,6 +31,10 @@ const listScheduledQueries= (filter)=>{
                             organizationUri
                             name
                         }
+                        stack{
+                            status
+                        }
+                        userRoleForScheduledQuery
                     }
                 }
             }

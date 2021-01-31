@@ -68,6 +68,7 @@ import NotebookList from "../../views/Notebook/NotebookList";
 import QueryTool from "../../views/XP/QueryEditor";
 import {Slide, ToastContainer} from "react-toastify";
 import NotebookForm from "../../views/Notebook/NotebookForm";
+import NotebookAdmin from "../../views/Notebook/NotebookAdmin";
 import RedshiftClusterList from "../../views/RedshiftClusters/ClusterList";
 import NewRedshiftCluster from "../../views/RedshiftClusters/NewCluster";
 import ImportRedshiftCluster from "../../views/RedshiftClusters/ImportCluster";
@@ -374,6 +375,9 @@ const Layout = (props) => {
                                 </Route>
                                 <Route path={`/notebooks`}>
                                     <NotebookList/>
+                                </Route>
+                                <Route path={`/notebook/:uri/:tab?`}>
+                                    <NotebookAdmin/>
                                 </Route>
 
                                 <Route path={`/new-notebook`}>

@@ -117,7 +117,7 @@ const Body=(props)=>{
 const Header = (props)=>{
     return <Row>
         <Col xs={8}>
-            <Link to={`/query/${props.notebook.savedQueryUri}/overview`}>
+            <Link to={`/notebook/${props.notebook.notebookUri}/overview`}>
                 <b className={"text-capitalize"}>{props.notebook.label}</b>
             </Link>
         </Col>

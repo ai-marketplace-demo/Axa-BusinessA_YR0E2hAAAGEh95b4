@@ -1,23 +1,37 @@
 import { gql } from "apollo-boost";
 
-const getSavedQuery = (queryUri)=>{
+const getNotebook = (notebookUri)=>{
     return {
         variables:{
-            queryUri:queryUri,
+            notebookUri:notebookUri,
         },
         query:gql`
-            query getSavedQuery ($queryUri:String!){
-                getSavedQuery (queryUri:$queryUri){
-                    savedQueryUri
+            query getSagemakerNotebook ($notebookUri:String!){
+                getSagemakerNotebook (notebookUri:$notebookUri){
+                    notebookUri
                     name
-                    label
-                    description
                     owner
                     description
-                    sqlBody
                     label
                     created
                     tags
+                    NotebookInstanceStatus
+                    userRoleForProjectNotebook
+                    environment{
+                        label
+                        name
+                        environmentUri
+                        AwsAccountId
+                        region
+                    }
+                    organization{
+                        label
+                        name
+                        organizationUri
+                    }
+                    stack{
+                     status
+                    }
                 }
             }
         `
@@ -25,4 +39,4 @@ const getSavedQuery = (queryUri)=>{
 }
 
 
-export default getSavedQuery ;
+export default getNotebook ;

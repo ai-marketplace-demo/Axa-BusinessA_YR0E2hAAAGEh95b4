@@ -10,7 +10,6 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import {Else, If, Then} from "react-if";
 import {toast} from "react-toastify";
 import * as FiIcon from "react-icons/fi";
-import * as Icon from "react-bootstrap-icons";
 import styled from "styled-components";
 import RedshiftClusterDatasets from "./ClusterDatasets/RedshiftClusterDatasets";
 import Datashopper from "./ClusterDatasets/Datashopper";
@@ -23,6 +22,7 @@ import pauseRedshiftCluster from "../../api/RedshiftCluster/pauseCluster";
 import deleteRedshiftCluster from "../../api/RedshiftCluster/deleteCluster";
 import getClusterConsoleAccess from "../../api/RedshiftCluster/getClusterConsoleAccess";
 import ClusterCredentials from "./ClusterCredentials";
+import ItemViewHeader from "../../components/ItemViewHeader/ItemViewHeader";
 
 dayjs.extend(relativeTime);
 
@@ -170,34 +170,15 @@ const RedshiftClusterView  = (props)=> {
 
     return <FullScreen>
         <Container>
-            <Row
-                style={{
-                    borderBottom:'1px lightgrey solid',
-                    borderRight:'1 solid white',
-                    //borderBottomRightRadius:"23px",
-                    boxShadow:'0px 7px 2px rgb(0,0,0,0.04)'
-                }}
-                className={`mt-2 ml-1 mb-1 pt-4 pb-3 `}>
-                <Col className={`pt-2`} xs={1}>
-                    <Link
-                        to={{
-                            pathname: `/redshiftclusters`
-                        }}
-                        style={{color: 'black'}}>
-                        <Icon.ChevronLeft size={32}/>
-                    </Link>
-                </Col>
-                <Col xs={5} className={`border-right`}>
-                    <h3><FiIcon.FiBox size={22}/> Redshift Cluster <b className={`text-primary`}>{cluster.label}</b></h3>
-                </Col>
-                <Col xs={2} className={`pt-2 border-right`}>
-                    Role for Cluster : <b className={`text-primary`}>{cluster.userRoleForCluster}</b>
-
-                </Col>
-                <Col xs={2} className={`pt-2`}>
-                    {cluster.region}
-                </Col>
-            </Row>
+            <ItemViewHeader
+                label={cluster.label}
+                owner={cluster.owner}
+                status={cluster.CFNStackStatus}
+                role={cluster.userRoleForCluster}
+                region={cluster.region}
+                created={cluster.created}
+                itemIcon={<FiIcon.FiBox size={32}/>}
+            />
             <Row>
                 <Col className={`mt-4`} xs={12}>
                     <If condition={cluster.userRoleForCluster === 'Creator' || cluster.userRoleForCluster === 'Admin'}>

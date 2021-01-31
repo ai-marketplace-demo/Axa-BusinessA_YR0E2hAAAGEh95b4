@@ -16,11 +16,19 @@ const getDashboard= (dashboardUri)=>{
                     label
                     created
                     tags
+                    userRoleForDashboard
                     organization{
                         organizationUri
                         label
                         name
                     }
+                    environment{
+                            environmentUri
+                            name
+                            label
+                            AwsAccountId
+                            region
+                        }
                 }
             }
         `

@@ -18,6 +18,7 @@ const getSqlPipeline= (sqlPipelineUri)=>{
                     tags
                     repo
                     cloneUrlHttp
+                    userRoleForPipeline
                     environment{
                         environmentUri
                         AwsAccountId

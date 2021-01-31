@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import {Container, Row, Col, Badge, Spinner, Table} from "react-bootstrap";
+import React from "react";
+import {Row, Col, Badge} from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import BasicCard  from "../../components/Card/BasicCard";
 import {Link} from "react-router-dom";
@@ -14,7 +14,7 @@ const Body=(props)=>{
             </Col>
             <Col xs={8}>
                 <Badge pill className={`text-white bg-primary`}>
-                    Creator
+                    {props.query.userRoleForScheduledQuery}
                 </Badge>
             </Col>
         </Row>

@@ -29,6 +29,16 @@ const getScheduledQuery = (scheduledQueryUri)=>{
                             queryOrder
                         }
                     }
+                    environment{
+                            AwsAccountId
+                            region
+                            name
+                            label
+                        }
+                    stack{
+                            status
+                        }
+                    userRoleForScheduledQuery
                 }
             }
         `
