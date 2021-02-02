@@ -9,6 +9,7 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 import useClient from "../../api/client";
 import generateEnvironmentAccessToken from "../../api/Environment/generateEnvironmentAccessToken";
 import getEnvironmentAssumeRoleUrl from "../../api/Environment/getEnvironmentAssumeRoleUrl";
+import updateEnvironmentStack from "../../api/Environment/updateEnvironmentStack";
 import getDatasetAdminConsoleUrl from "../../api/Dataset/getDatasetAdminConsoleUrl";
 import {toast} from "react-toastify";
 import generateDatasetAccessToken from "../../api/Dataset/generateDatasetAccessToken";
@@ -58,7 +59,17 @@ const EnvironmentOverview = (props)=>{
     const copy=(field)=>{
         toast(`Copied ${field} to clipboard`,{hideProgressBar:true});
     }
-    useEffect(()=>{},[client])
+
+    const updateStack=async ()=>{
+        const response = await client.mutate(updateEnvironmentStack({environmentUri: env.environmentUri}));
+
+        if (!response.errors){
+            toast.success(`CloudFormation Stack update started`)
+        }else{
+            toast(`Could not update CloudFormation Stack, ${response.errors[0].message}`)
+        }
+    };
+    useEffect(()=>{},[client]);
 
     return <Container className={`mt-1`}>
         <Row>
@@ -148,6 +159,17 @@ const EnvironmentOverview = (props)=>{
                                     <div/>
                                 </Default>
                             </Switch>
+                        </Col>
+                    </Row>
+                    <Row className={`mt-2`}>
+                        <Col className={`mt-2 border-bottom`} xs={10}></Col>
+                    </Row>
+                    <Row className={`mt-1`}>
+                        <Col xs={4}>
+                            <b>CloudFormation Stack</b>
+                        </Col>
+                        <Col xs={4}>
+                            <div onClick={updateStack} style={{width:'100%'}}  className={`btn-sm btn btn-info`}>Update Stack</div>
                         </Col>
                     </Row>
 
