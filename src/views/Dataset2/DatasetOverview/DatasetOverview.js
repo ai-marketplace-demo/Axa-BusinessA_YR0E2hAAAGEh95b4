@@ -82,7 +82,7 @@ const DatasetOverview=(props)=>{
                     tags: details.tags,
                     description: details.description,
                     language : details.language.value,
-                    businessOwnerDelegationEmails: details.businessOwnerDelegationEmails.map((s)=>{return s.value}),
+                    businessOwnerDelegationEmails: details.businessOwnerDelegationEmails ? details.businessOwnerDelegationEmails.map((s)=>{return s.value}): [],
                     businessOwnerEmail: details.businessOwnerEmail,
                     confidentiality:details.confidentiality.value,
                     topics: details.topics?details.topics.map((t)=>{return t.value}):[]

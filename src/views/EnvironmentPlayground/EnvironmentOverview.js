@@ -98,7 +98,7 @@ const EnvironmentOverview = (props)=>{
                 </Col>
             </Row>
             <Row>
-                <Col xs={4}><b>Aws</b></Col>
+                <Col xs={4}><b>AWS</b></Col>
                 <Col xs={8}>{env.AwsAccountId}</Col>
             </Row>
             <Row>

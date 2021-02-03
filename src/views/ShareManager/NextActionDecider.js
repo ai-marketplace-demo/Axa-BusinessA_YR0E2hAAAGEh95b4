@@ -1,14 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Container, Table, Spinner, Row, Col, Tabs, Tab, Badge, Dropdown} from "react-bootstrap";
 import {If, Then, Switch, Case, Default, Else} from "react-if";
-import {Link} from "react-router-dom";
-import * as Icon from "react-bootstrap-icons"
-import styled from "styled-components";
-import useClient from "../../api/client";
-import getShareObject from "../../api/ShareObject/getShareObject";
-import SharedItem from "./SharedItem";
-import {toast} from "react-toastify";
-import removeSharedItem from "../../api/ShareObject/removeSharedItem";
 
 
 const NextActionDecider = (props) => {
@@ -48,12 +40,11 @@ const NextActionDecider = (props) => {
                 </Col>
             </Case>
             <Default>
-
                 <Col xs={3}>
                     <div onClick={props.submit} style={{border:'2px solid lightgrey'}} className={`rounded-pill btn btn-sm bg-white`}>
                         {props.share.status}
                     </div>
-                    </Col>
+                </Col>
             </Default>
         </Switch>
         </Row>

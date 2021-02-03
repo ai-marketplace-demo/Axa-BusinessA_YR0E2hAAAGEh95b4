@@ -92,7 +92,7 @@ const DatasetDetails= (props)=>{
 
     return <Container fluid className={`mt-4`}>
         <FormSection section={`Account`} content={account}/>
-        <FormSection section={`Aws Resources`} content={resources}/>
+        <FormSection section={`AWS Resources`} content={resources}/>
         <FormSection section={`Connections & Integrations`} content={connect}/>
     </Container>
 }

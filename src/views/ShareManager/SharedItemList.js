@@ -152,15 +152,13 @@ const ShareItemList= (props)=>{
             <Then>
                 <Row>
                 <Col className={`mt-3`} xs={12}>
-                    <TableStyled>
-                        <Table size={`sm`} >
+                    <Table size={`sm`} >
                         <thead>
                         <tr>
                             <th scope="col">Name</th>
                             <th scope="col">Type</th>
-                            <th scope={"col"}>Status</th>
-                            <th scope={"col"}>Action</th>
-                            <th scope="col"></th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -170,9 +168,7 @@ const ShareItemList= (props)=>{
                             })
                         }
                         </tbody>
-
                     </Table>
-                    </TableStyled>
                 </Col>
             </Row>
             </Then>

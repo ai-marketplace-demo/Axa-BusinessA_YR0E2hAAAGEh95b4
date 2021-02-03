@@ -44,7 +44,7 @@ const EnvironmentConnection= (props)=>{
                 </Col>
             </Row>
             <Row>
-                <Col xs={2}><b>Aws</b></Col>
+                <Col xs={2}><b>AWS</b></Col>
                 <Col xs={2}>{env.AwsAccountId}</Col>
             </Row>
             <Row>

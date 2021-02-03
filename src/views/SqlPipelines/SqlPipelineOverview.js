@@ -53,7 +53,7 @@ const SqlPipelineOverview = (props)=>{
                 <Icon.Cloud/>
             </Col>
             <Col xs={2}>
-                <b>Aws</b>
+                <b>AWS</b>
             </Col>
             <Col xs={8}>
                 {sqlPipeline.environment&&sqlPipeline.environment.AwsAccountId}

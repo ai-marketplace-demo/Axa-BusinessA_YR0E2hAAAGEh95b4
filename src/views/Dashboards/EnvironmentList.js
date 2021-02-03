@@ -99,7 +99,7 @@ const DashboardsEnvironmentList = (props)=>{
                     <tr>
                         <th>Organization</th>
                         <th>Env Name</th>
-                       <th>Aws AccountId</th>
+                       <th>AWS AccountId</th>
                        <th>region</th>
                        <th></th>
                     </tr>

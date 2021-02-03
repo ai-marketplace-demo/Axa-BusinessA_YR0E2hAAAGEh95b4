@@ -105,27 +105,22 @@ const NotShareItemList= (props)=>{
             <If condition={notSharedItems.count}>
                 <Then>
                     <Col className={`mt-3`} xs={12}>
-                        <TableStyled>
-                            <Table size={`sm`} hover>
-                                <thead>
-                                <tr>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col">
-                                        Action
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {
-                                    notSharedItems.nodes.map((item)=>{
-                                        return <NotSharedItem share={props.share} add={addItemToShareObject} item={item}/>
-                                    })
-                                }
-                                </tbody>
-
-                            </Table>
-                        </TableStyled>
+                        <Table size={`sm`} hover>
+                        <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            notSharedItems.nodes.map((item)=>{
+                                return <NotSharedItem share={props.share} add={addItemToShareObject} item={item}/>
+                            })
+                        }
+                        </tbody>
+                    </Table>
                     </Col>
                 </Then>
                 <Else>
