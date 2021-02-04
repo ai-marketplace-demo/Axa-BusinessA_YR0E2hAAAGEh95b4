@@ -151,24 +151,33 @@ const DatasetQualityRulesList = (props)=>{
         <Container>
                     <Row>
                         <Col xs={8}>
-                            <div>
-
-                                <Badge pill variant={`danger`}>
-                                    <span className={'mb-2 mr-1'}><AiIcon.AiOutlineStop/> NON-COMPLIANT</span>
-                                </Badge>
-
-                            </div>
+                            {(rules.count > 0 &&
+                                <div>
+                                {(props.dataset.quality === 'non-compliant' &&
+                                    <Badge pill variant={`danger`}>
+                                        <span className={'mb-2 mr-1 text-uppercase'}><AiIcon.AiOutlineStop/>Non-compliant to quality rules</span>
+                                    </Badge>
+                                )}
+                                {(props.dataset.quality === 'compliant' &&
+                                    <Badge pill variant={`success`}>
+                                        <span className={'mb-2 mr-1 text-uppercase'}><AiIcon.AiOutlineCheckCircle/>compliant to quality rules</span>
+                                    </Badge>
+                                )}
+                                </div>
+                            )}
                         </Col>
                         <Col xs={2}>
                             <div onClick={()=>{setMode("form")}} className={`btn btn-sm btn-info rounded-pill`}>
                                 <AiIcon.AiOutlineFileSearch size={15}/> New Rule
                             </div>
                         </Col>
-                        <Col xs={2}>
-                            <div onClick={startRun} className={`btn btn-sm btn-primary rounded-pill`}>
-                                <VscIcon.VscRunAll size={15}/>Launch Job
-                            </div>
-                        </Col>
+                        {(rules.count > 0 &&
+                            <Col xs={2}>
+                                <div onClick={startRun} className={`btn btn-sm btn-primary rounded-pill`}>
+                                    <VscIcon.VscRunAll size={15}/>Launch Job
+                                </div>
+                            </Col>
+                        )}
                     </Row>
                     <Row className={'mt-3'}>
                         <If condition={rules.count}>

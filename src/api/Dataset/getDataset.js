@@ -45,6 +45,7 @@ const getDataset= (datasetUri)=>{
                             environmentUri
                             label
                         }
+                        quality
                     }
                 }
         `
