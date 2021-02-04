@@ -1,6 +1,6 @@
 import React, {useState,useEffect}  from "react";
 import {Container, Row, Spinner,Col,Badge} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, Route} from "react-router-dom";
 import {If, Then, Else,Switch,Case,Default} from "react-if";
 import * as Icon from "react-bootstrap-icons";
 import ReactMarkdown from 'react-markdown';
@@ -15,6 +15,8 @@ import useClient from "../../../api/client";
 import {toast} from "react-toastify";
 import DatasetTableMetrics from "./DatasetTableMetrics";
 import DatasetTableProfilingRuns from "./DatasetTableProfilingRuns";
+import DatasetQualityRulesList from "../DatasetQualityRules/DatasetQualityRulesList";
+import NewDatasetQualityRule from "../DatasetQualityRules/NewDatasetQualityRule";
 
 
 const DescriptionTab =(props)=>{
@@ -38,7 +40,7 @@ const DatasetTables=(props)=>{
 
     const [mode, setMode]= useState("");
 
-    const tabs=["Description","Columns","Preview","Data Quality","Metrics", "Profiling Runs"];
+    const tabs=["Description","Columns","Preview","Metrics", "Profiling Runs"];
 
     const client = useClient();
     const [tables, setTables] = useState({

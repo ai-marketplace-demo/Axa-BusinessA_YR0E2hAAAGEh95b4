@@ -19,7 +19,9 @@ const listDatasetQualityRules= ({datasetUri,filter})=>{
                         label
                         description
                         created
-                        query                        
+                        query
+                        status
+                        logs                        
                     }
 
                 }

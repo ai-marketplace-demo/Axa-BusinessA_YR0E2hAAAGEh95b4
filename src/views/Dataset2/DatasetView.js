@@ -15,6 +15,7 @@ import DatasetFolderList  from "./DatasetFolders/DatasetFolderList";
 import DatasetShareList  from "./DatasetShares/DatasetShareList";
 import DatasetUpload  from "./DatasetUpload/DatasetUpload";
 import ItemViewHeader from "../../components/ItemViewHeader/ItemViewHeader";
+import DatasetQualityRulesList from "./DatasetQualityRules/DatasetQualityRulesList";
 
 
 const DatasetAdminView = (props)=>{
@@ -79,7 +80,16 @@ const DatasetAdminView = (props)=>{
         <Row className={`mt-2`}>
             <Col xs={12}>
                 <RoutableTabs
-                    tabs={['overview', 'summary', 'details', 'tables', "folders", 'shares', "upload", 'integrations']}
+                    tabs={[
+                        'overview',
+                        'summary',
+                        'details',
+                        'tables',
+                        "folders",
+                        'shares',
+                        "upload",
+                        'Data Quality'
+                    ]}
                 />
             </Col>
         </Row>
@@ -117,8 +127,11 @@ const DatasetAdminView = (props)=>{
                         <DatasetUpload dataset={info}/>
                     </Case>
 
-                    <Case condition={params.tab == `integrations`}>
-                        <h2>Integrations</h2>
+                    <Case condition={params.tab === `Data Quality`}>
+                        <DatasetQualityRulesList
+                            client={client}
+                            dataset={info}
+                        />
                     </Case>
                     <Default>
                         <If condition={ready}>
