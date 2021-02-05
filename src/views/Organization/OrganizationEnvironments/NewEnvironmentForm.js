@@ -125,7 +125,7 @@ const NewEnvironmentForm= (props)=>{
                         2. You have created an IAM Role called datahubPivotRole on your account
                     </b>
                     </p>
-                    <p> The role must trus the account <code>{trustAwsAccountId}</code></p>
+                    <p><b>3. The role must trust the account <code>{trustAwsAccountId}</code></b></p>
                 </div>
             </Col>
         </Row>

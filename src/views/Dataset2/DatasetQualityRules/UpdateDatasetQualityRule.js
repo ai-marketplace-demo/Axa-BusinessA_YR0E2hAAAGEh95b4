@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {toast} from "react-toastify";
 import styled from "styled-components";
 import {Container, Row, Col, Form, Button, Spinner} from "react-bootstrap";
@@ -12,6 +12,7 @@ import * as AiIcon from "react-icons/ai";
 import {useHistory, useParams} from "react-router";
 import getDatasetQualityRule from "../../../api/DatasetQualityRule/getDatasetQualityRule";
 import updateDatasetQualityRule from "../../../api/DatasetQualityRule/updateDatasetQualityRule";
+import Editor from "@monaco-editor/react";
 
 const Background=styled.div`
 margin-top: 3%;
@@ -54,6 +55,12 @@ const UpdateDatasetQualityRule = (props)=>{
         description:'',
         query:''
     });
+    const [isEditorReady, setIsEditorReady] = useState(false);
+    const valueGetter = useRef();
+    function handleEditorDidMount(_valueGetter) {
+        setIsEditorReady(true);
+        valueGetter.current = _valueGetter;
+    }
 
     const fetchRule = async()=>{
         const response=await client.query(getDatasetQualityRule(ruleUri));
@@ -69,18 +76,16 @@ const UpdateDatasetQualityRule = (props)=>{
         label: Yup.string()
             .min(1, "*Query name must have at least 1 character")
             .max(63, "*Query name can't be longer than 63 characters")
-            .required("*Query name is required"),
-        query: Yup.string()
-            .min(1, "*SQL Query must have at least 1 character")
-            .required("*SQL Query is required")
+            .required("*Query name is required")
     });
 
 
     const submitForm=async (formData)=>{
+
         const response = await client.mutate(updateDatasetQualityRule({
             ruleUri:ruleUri,
             input: {
-                query : formData.query,
+                query : valueGetter.current() || 'SELECT 1;',
                 description : formData.description,
                 label : formData.label
             }
@@ -119,88 +124,88 @@ const UpdateDatasetQualityRule = (props)=>{
                 </If>
             </Col>
         </Row>
-            <Background>
-                <Formik
-                    enableReinitialize
-                    initialValues={formData}
-                    validationSchema={validationSchema}
-                    onSubmit={(formData, {setSubmitting, resetForm}) => {
-                        submitForm(formData)
-                    }}
-                >
-                    {/* Callback function containing Formik state and helpers that handle common form actions */}
-                    {( {values,
-                           errors,
-                           touched,
-                           handleChange,
-                           handleBlur,
-                           handleSubmit,
-                           isSubmitting ,
-                           setFieldValue}) => (
+        <Background>
+            <Formik
+                enableReinitialize
+                initialValues={formData}
+                validationSchema={validationSchema}
+                onSubmit={(formData, {setSubmitting, resetForm}) => {
+                    submitForm(formData)
+                }}
+            >
+                {/* Callback function containing Formik state and helpers that handle common form actions */}
+                {( {values,
+                       errors,
+                       touched,
+                       handleChange,
+                       handleBlur,
+                       handleSubmit,
+                       isSubmitting ,
+                       setFieldValue}) => (
 
-                        <Form onSubmit={handleSubmit} className="mx-auto">
-                            {console.log(values)}
-                            <Form.Group controlId="label">
-                                <Form.Label><b>Name</b></Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="label"
-                                    placeholder="Rule name"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.label}
-                                    className={touched.label && errors.label ? "error" : null}
-                                />
-                                {touched.label && errors.label ? (
-                                    <div className="error-message">{errors.label}</div>
-                                ): null}
-                            </Form.Group>
+                    <Form onSubmit={handleSubmit} className="mx-auto">
+                        {console.log(values)}
+                        <Form.Group controlId="label">
+                            <Form.Label><b>Name</b></Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="label"
+                                placeholder="Rule name"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.label}
+                                className={touched.label && errors.label ? "error" : null}
+                            />
+                            {touched.label && errors.label ? (
+                                <div className="error-message">{errors.label}</div>
+                            ): null}
+                        </Form.Group>
 
-                            <Form.Group controlId="description">
-                                <Form.Label><b>Description</b></Form.Label>
-                                <Form.Control as="textarea"
-                                    name="description"
-                                    placeholder="1"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.description}
-                                    className={touched.description && errors.description ? "error" : null}
-                                />
-                            </Form.Group>
+                        <Form.Group controlId="description">
+                            <Form.Label><b>Description</b></Form.Label>
+                            <Form.Control as="textarea"
+                                          name="description"
+                                          placeholder="1"
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.description}
+                                          className={touched.description && errors.description ? "error" : null}
+                            />
+                        </Form.Group>
+                        <Editor value={formData.query||"select * from T"}
+                                options={{minimap:{enabled:false}}}
+                                theme={"hc-black"}
+                                inDiffEditor={false}
+                                height="19rem"
+                                editorDidMount={handleEditorDidMount}
+                                language="sql" />
+                        {touched.query && errors.query ? (
+                            <div className="mt-3 error-message">{errors.query}</div>
+                        ): null}
 
-                            <Form.Group controlId="query">
-                                <Form.Label><b>Query</b></Form.Label>
-                                <Form.Control as="textarea" name="query"
-                                    placeholder="SELECT * FROM 1;"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.query}
-                                    rows={10}
-                                    className={touched.query && errors.query ? "editor bg-dark text-white error" : "editor bg-dark text-white"}
-                                />
-                                {touched.query && errors.query ? (
-                                    <div className="error-message">{errors.query}</div>
-                                ): null}
-                            </Form.Group>
-                            <Row className={`mt-3`}>
-                                <Col xs={2}>
-                                    <Button className="btn-sm btn-success" type="submit" disabled={isSubmitting}>
-                                        <b>Update</b>
-                                    </Button>
-                                </Col>
-                                <Col xs={2}>
-                                    <div onClick={props.close} className={`btn btn-sm btn-secondary`}>
-                                        Cancel
-                                    </div>
-                                </Col>
+                        {touched.query && errors.query ? (
+                            <div className="error-message">{errors.query}</div>
+                        ): null}
 
-                            </Row>
-                        </Form>
+                        <Row className={`mt-3`}>
+                            <Col xs={2}>
+                                <Button className="btn-sm btn-success" type="submit" disabled={isSubmitting}>
+                                    <b>Update</b>
+                                </Button>
+                            </Col>
+                            <Col xs={2}>
+                                <div onClick={props.close} className={`btn btn-sm btn-secondary`}>
+                                    Cancel
+                                </div>
+                            </Col>
 
-                    )}
-                </Formik>
-            </Background>
-        </Container>
+                        </Row>
+                    </Form>
+
+                )}
+            </Formik>
+        </Background>
+    </Container>
 }
 
 
