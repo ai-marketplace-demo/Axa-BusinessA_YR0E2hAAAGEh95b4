@@ -1,14 +1,9 @@
 import React  ,{useState} from "react";
-import {If,Then,Else,Switch, Case,Default} from "react-if";
 import {Container,Badge,Row,Col,Table} from "react-bootstrap";
-import UserProfileLink from "../../Profile/UserProfileLink";
-import Zoom from "../../../components/Zoomer/Zoom";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import * as Icon from "react-bootstrap-icons";
 import StackStatusBadge from "../../../components/StackStatusBadge/StackStatusBadge";
-import dayjs from "dayjs";
-import EasyEdit, {Types} from "react-easy-edit";
-import Creatable from "react-select/creatable/dist/react-select.esm";
+
 
 
 
@@ -39,7 +34,9 @@ const DatasetAwsResources  =(props)=>{
                         <StackStatusBadge status={props.dataset.stack.status}/>
                     </td>
                     <td>
-                        -
+                        <div onClick={()=>{props.updateStack()}} className={`btn btn-sm btn-info rounded-pill`}>
+                            Update
+                        </div>
                     </td>
                 </tr>
                 <tr>

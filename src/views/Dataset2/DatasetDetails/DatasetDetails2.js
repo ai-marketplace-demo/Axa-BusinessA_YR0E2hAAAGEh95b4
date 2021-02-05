@@ -1,13 +1,8 @@
 import React,{useState,useEffect} from "react";
 import {Container, Spinner, Row, Col, Badge} from "react-bootstrap";
-import Zoom from "../../../components/Zoomer/Zoom";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
-import * as Icon from "react-bootstrap-icons";
 import {toast} from "react-toastify";
-import {Link, Router, Switch,Route,useLocation,useHistory,useParams} from "react-router-dom";
-import styled from "styled-components"
 import useClient from "../../../api/client";
-import getDataset from "../../../api/Dataset/getDataset";
+import updateDatasetStack from "../../../api/Dataset/updateDatasetStack";
 import generateDatasetAccessToken from "../../../api/Dataset/generateDatasetAccessToken";
 import getDatasetAdminConsoleUrl from "../../../api/Dataset/getDatasetAdminConsoleUrl";
 import getDatasetETLCredentials from "../../../api/Dataset/getDatasetETLCredentials";
@@ -67,12 +62,21 @@ const DatasetDetails= (props)=>{
         }
         setIsLoadingConsoleUrl(false);
 
-    }
+    };
+    const updateStack=async ()=> {
+        const response = await client.mutate(updateDatasetStack(props.dataset.datasetUri));
+
+        if (!response.errors) {
+            toast(`Dataset CloudFormation stack update started`)
+        } else {
+            toast(`Failed to start CloudFormation stack update, received ${response.errors[0].message}`)
+        }
+    };
 
     useEffect(()=>{},[client])
 
     const account=<DatasetAccount {...props} copy={copy}/>
-    const resources=<DatasetAwsResources {...props} copy={copy}/>
+    const resources=<DatasetAwsResources {...props} copy={copy} updateStack={updateStack}/>
     const connect=<DatasetConnect
         {...props}
         isLoadingConsoleUrl={isLoadingConsoleUrl}
