@@ -46,8 +46,8 @@ const EnvironmentList=(props)=>{
             .query(listEnvironments({
                 filter:{
                     term :search,
+                    roles:['Owner','Admin'],
                     page:  envs.page,
-                    roles:[],
                     pageSize: envs.pageSize
                 }
             }));
