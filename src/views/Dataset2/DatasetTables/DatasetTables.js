@@ -194,12 +194,12 @@ const DatasetTables=(props)=>{
                                         <DatasetTablePreview table={tables.nodes[current]}/>
                                     </Col>
                                 </Case>
-                                <Case condition={tab==4}>
+                                <Case condition={tab==3}>
                                     <Col xs={12}>
                                         <DatasetTableMetrics table={tables.nodes[current]}/>
                                     </Col>
                                 </Case>
-                                <Case condition={tab==5}>
+                                <Case condition={tab==4}>
                                     <Col xs={12}>
                                         <DatasetTableProfilingRuns table={tables.nodes[current]}/>
                                     </Col>
