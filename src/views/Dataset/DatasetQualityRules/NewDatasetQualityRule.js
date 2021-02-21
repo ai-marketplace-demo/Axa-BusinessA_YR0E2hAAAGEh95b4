@@ -1,42 +1,85 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {toast} from "react-toastify";
 import styled from "styled-components";
-import {Container, Row, Col} from "react-bootstrap";
-import * as Icon from "react-bootstrap-icons";
-import {If, Then , Else } from "react-if";
+import {Container, Row, Col, Form, Button, Spinner} from "react-bootstrap";
 import useClient from "../../../api/client";
 import createDatasetQualityRule  from "../../../api/DatasetQualityRule/createDatasetQualityRule";
-import MainActionButton from "../../../components/MainActionButton/MainButton";
-import BootstrapTable from 'react-bootstrap-table-next';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import {Link,useHistory} from "react-router-dom";
+import * as Yup from "yup";
+import {Formik} from "formik";
+import {If, Then} from "react-if";
+import * as AiIcon from "react-icons/ai";
+import Editor from "@monaco-editor/react";
 
-let Styled= styled.div`
-height: 100vh;
-`
+const Background=styled.div`
+margin-top: 3%;
+margin-right: 5px;
+z-index: 10;
+border-radius: 0px;
+background-color: white;
+border : 1px solid lightgrey;
+border-left:  4px solid black;
+overflow-y:auto;
+overflow-x: hidden;
 
+box-shadow: 0px 1px 2px 2px whitesmoke;
+padding: 16px;
+.form-group {
+    margin-bottom: 1.6em;
+  }
+.error {
+    border: 2px solid #FF6565;
+  }
+.error-message {
+color: #FF6565;
+padding: .5em .2em;
+height: 1em;
+position: absolute;
+font-size: .8em;
+}
+.editor {
+fontFamily:'Courier';
+overflowY:'auto';
+color: #FF6565;
+}
+`;
 const NewDatasetQualityRule = (props)=>{
     let client = useClient();
-    let history = useHistory();
-
+    let [submitting, setSubmitting] = useState(false);
     let [formData, setFormData] = useState({
         label:'',
         description:'',
         query:''
     });
+    const [isEditorReady, setIsEditorReady] = useState(false);
+    const valueGetter = useRef();
+    function handleEditorDidMount(_valueGetter) {
+        setIsEditorReady(true);
+        valueGetter.current = _valueGetter;
+    }
+
+    const validationSchema = Yup.object().shape({
+        label: Yup.string()
+            .min(1, "*Query name must have at least 1 character")
+            .max(63, "*Query name can't be longer than 63 characters")
+            .required("*Query name is required"),
+    });
 
 
-    const submitForm=async ()=>{
+    const submitForm=async (formData)=>{
+        setSubmitting(true);
+        let input = {label: formData.label, description: formData.description, query: valueGetter.current() || 'SELECT 1;'};
         const response = await client.mutate(createDatasetQualityRule({
             datasetUri:props.dataset.datasetUri,
-            input: formData
-        }))
+            input: input
+        }));
         if (!response.errors){
-            toast(`Created new rule ${response.data.createDatasetQualityRule.ruleUri}`);
-            history.goBack();
+            toast.success(`Created new rule ${response.data.createDatasetQualityRule.ruleUri}`);
+            props.close();
         }else{
-            toast(`Could not create data quality rule, received ${response.errors[0].message}`);
+            toast.error(`Could not create data quality rule, received ${response.errors[0].message}`);
         }
+        setSubmitting(false);
     }
 
     const handleChange=(e)=>{
@@ -44,50 +87,99 @@ const NewDatasetQualityRule = (props)=>{
     }
     useEffect(()=>{},[client]);
 
-    return <Styled>
-        <Container>
-            <Row>
-                <Col xs={1}>
-                    <Link style={{color:`black`}} to={`/dataset/${props.dataset.datasetUri}/data-quality-rules`}>
-                        <Icon.ChevronLeft className={`pt-2`} size={32}/>
-                    </Link>
-                </Col>
-                <Col xs={8}>
-                    <h4>Create new rule </h4>
-                </Col>
-            </Row>
-            <Row className={`mt-2 `}>
-                <Col xs={2}><b>Name</b></Col>
-                <Col xs={9}>
-                    <input name={`label`} className={`form-control`} value={formData.label} onChange={handleChange}/>
-                </Col>
-            </Row>
-            <Row className={`pt-2`} >
-                <Col xs={2}><b>Description</b></Col>
-                <Col xs={9}>
-                    <input name={`description`} className={`form-control`} value={formData.description} onChange={handleChange}/>
-                </Col>
+    return <Container>
+        <Row>
+            <Col xs={1}>
+                <AiIcon.AiOutlineFileSearch size={32}/>
+            </Col>
+            <Col xs={11}>
+                <h4>New Data Quality Rule</h4>
+            </Col>
+            <Col xs={12}>
+                <If condition={submitting}>
+                    <Then>
+                        <Spinner variant={'primary'} animation={`border`}/>
+                    </Then>
+                </If>
+            </Col>
+        </Row>
+        <Background>
+            <Formik
+                enableReinitialize
+                initialValues={formData}
+                validationSchema={validationSchema}
+                onSubmit={(formData, {setSubmitting, resetForm}) => {
+                    submitForm(formData)
+                }}
+            >
+                {/* Callback function containing Formik state and helpers that handle common form actions */}
+                {( {values,
+                       errors,
+                       touched,
+                       handleChange,
+                       handleBlur,
+                       handleSubmit,
+                       isSubmitting ,
+                       setFieldValue}) => (
 
-            </Row>
-            <Row className={`pt-2`} >
-                <Col xs={2}><b>Query</b></Col>
-                <Col xs={9}>
-                    <textarea style={{fontFamily:'Courier' ,overflowY:'auto'}} rows={10} name={`query`} className={`bg-dark text-white form-control`} value={formData.query} onChange={handleChange}/>
-                </Col>
+                    <Form onSubmit={handleSubmit} className="mx-auto">
+                        {console.log("form values",values)}
+                        <Form.Group controlId="label">
+                            <Form.Label><b>Name</b></Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="label"
+                                placeholder="Rule name"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.label}
+                                className={touched.label && errors.label ? "error" : null}
+                            />
+                            {touched.label && errors.label ? (
+                                <div className="error-message">{errors.label}</div>
+                            ): null}
+                        </Form.Group>
 
-            </Row>
-            <Row className={`mt-3`}>
-                <Col xs={2}></Col>
-                <Col xs={4}>
-                    <div onClick={submitForm} className={`btn btn-sm btn-primary`}>
-                        Save
-                    </div>
-                </Col>
+                        <Form.Group controlId="description">
+                            <Form.Label><b>Description</b></Form.Label>
+                            <Form.Control as="textarea"
+                                          name="description"
+                                          placeholder="Rule description"
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.description}
+                                          className={touched.description && errors.description ? "error" : null}
+                            />
+                        </Form.Group>
+                        <Editor value={formData.query||"select * from T"}
+                                options={{minimap:{enabled:false}}}
+                                theme={"hc-black"}
+                                inDiffEditor={false}
+                                height="19rem"
+                                editorDidMount={handleEditorDidMount}
+                                language="sql" />
+                        {touched.query && errors.query ? (
+                            <div className="mt-3 error-message">{errors.query}</div>
+                        ): null}
+                        <Row className={`mt-3`}>
+                            <Col xs={2}>
+                                <Button className="btn-sm btn-success" type="submit" disabled={isSubmitting}>
+                                    <b>Create</b>
+                                </Button>
+                            </Col>
+                            <Col xs={2}>
+                                <div onClick={props.close} className={`btn btn-sm btn-secondary`}>
+                                    Cancel
+                                </div>
+                            </Col>
 
-            </Row>
+                        </Row>
+                    </Form>
 
-        </Container>
-    </Styled>
+                )}
+            </Formik>
+        </Background>
+    </Container>
 }
 
 

@@ -23,7 +23,7 @@ display: inline-block;
 background: white;
 overflow: visible;
 width : 100%;
-margin-bottom: ${props=>props.h?"4em":"3em"};
+margin-bottom: ${props=>props.h?"5em":"4em"};
 __border : 1px solid lightgrey;
 box-shadow: 0 5px 15px rgba(0,0,0,0.4);
 height:auto;

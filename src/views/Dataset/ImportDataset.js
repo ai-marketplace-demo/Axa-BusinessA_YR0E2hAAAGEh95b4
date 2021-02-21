@@ -13,11 +13,11 @@ import Steps from "../../components/Steps/Steps";
 import useClient from "../../api/client";
 import useGroups from "../../api/useGroups";
 import SelectGroup from "../../components/SelectGroup/SelectGroup";
-import createDataset from "../../api/Dataset/createDataset";
+import importDataset from "../../api/Dataset/importDataset";
 import listOrganizationEnvironments from "../../api/Environment/listOrganizationEnvironments";
 import listOrganizations from "../../api/Organization/listOrganizations";
 import {AwsRegionsSelect, getRegionLabel}  from "../../components/AwsRegions/AwsRegionSelect";
-import TopicSelect from "../../components/Topic/TopicSelect";
+
 
 
 const Background=styled.div`
@@ -65,7 +65,7 @@ const Topics=Object.keys({
     return {label : k, value:k}
 })
 
-const NewDatasetForm = (_props)=>{
+const ImportDatasetForm = (_props)=>{
     let location=useLocation();
     let history = useHistory();
     let [submitting, setSubmitting] = useState(false);
@@ -80,7 +80,7 @@ const NewDatasetForm = (_props)=>{
 
 
     let [formData, setFormData]=useState({
-        label:'Dataset name',
+        label:'',
         region :{},
         description:'dataset description',
         topics:[],
@@ -88,6 +88,7 @@ const NewDatasetForm = (_props)=>{
         language:Languages[0],
         owner:'',
         stewards:[],
+        bucketName:'',
         confidentiality: Classificiations[0],
         tags:[]});
 
@@ -165,13 +166,13 @@ const NewDatasetForm = (_props)=>{
         console.log(env)
         console.log(org);
         const res = await client.mutate(
-            createDataset({
+            importDataset({
                 label :formData.label,
+                bucketName: formData.bucketName,
                 language : formData.language.value,
                 confidentiality:formData.confidentiality.value,
                 topics : formData.topics?formData.topics.map((t)=>{return t.value}):[],
                 tags:tags,
-                //region : env.region,//formData.region.value,
                 owner:formData.owner,
                 SamlAdminGroupName: formData.SamlAdminGroupName.value,
                 businessOwnerEmail : formData.owner,
@@ -198,16 +199,15 @@ const NewDatasetForm = (_props)=>{
 
         <Row>
             <Col xs={10}>
-                <h4>Create your dataset <b className={`text-primary`}> {formData.label}</b></h4>
+                <h4>Import dataset <b className={`text-primary`}> {formData.label}</b></h4>
             </Col>
-            <Col xs={12}>
+            <Col xs={2}>
                 <If condition={submitting}>
                     <Then>
                         <Spinner variant={'primary'} animation={`border`}/>
                     </Then>
                 </If>
             </Col>
-
         </Row>
 
         {
@@ -262,26 +262,26 @@ const NewDatasetForm = (_props)=>{
                         <Col xs={2}><b>Admin Group</b></Col>
                         <Col xs={10}>
                             {/**
-                            <input
-                                className={`form-control`}
-                                name={"SamlAdminGroupName"}
+                             <input
+                             className={`form-control`}
+                             name={"SamlAdminGroupName"}
+                             value={formData.SamlAdminGroupName}
+                             onChange={handleChange}
+                             style={{width:'100%'}}
+                             placeholder={"Dataset admin group name"}/>**/}
+
+
+                            <SelectGroup
                                 value={formData.SamlAdminGroupName}
-                                onChange={handleChange}
-                                style={{width:'100%'}}
-                                placeholder={"Dataset admin group name"}/>**/}
-
-
-                                <SelectGroup
-                                    value={formData.SamlAdminGroupName}
-                                    onChange={(opt)=>{setFormData({...formData, SamlAdminGroupName:opt})}}
-                                />
+                                onChange={(opt)=>{setFormData({...formData, SamlAdminGroupName:opt})}}
+                            />
                             {/**
-                                <Select
-                                    value={formData.SamlAdminGroupName}
-                                    onChange={(opt)=>{setFormData({...formData, SamlAdminGroupName:opt})}}
+                             <Select
+                             value={formData.SamlAdminGroupName}
+                             onChange={(opt)=>{setFormData({...formData, SamlAdminGroupName:opt})}}
 
-                                    options={(groups&&groups||[]).map((g)=>{return {label : g, value: g}})}
-                                />
+                             options={(groups&&groups||[]).map((g)=>{return {label : g, value: g}})}
+                             />
                              **/}
                         </Col>
                     </Row>
@@ -316,7 +316,13 @@ const NewDatasetForm = (_props)=>{
                     <Row className={"mt-2"}>
                         <Col xs={2}><b>Label</b></Col>
                         <Col xs={10}>
-                            <input className={`form-control`} name={"label"}  value={formData.label} onChange={handleChange} style={{width:'100%'}} placeholder={"name your dataset"}></input>
+                            <input className={`form-control`} name={"label"}  value={formData.label} onChange={handleChange} style={{width:'100%'}} placeholder={"Dataset name"}></input>
+                        </Col>
+                    </Row>
+                    <Row className={"mt-2"}>
+                        <Col xs={2}><b>Bucket Name</b></Col>
+                        <Col xs={10}>
+                            <input className={`form-control`} name={"bucketName"}  value={formData.bucketName} onChange={handleChange} style={{width:'100%'}} placeholder={"S3 bucket name to link with the dataset"}></input>
                         </Col>
                     </Row>
                     <Row className={"mt-2"}>
@@ -365,7 +371,6 @@ const NewDatasetForm = (_props)=>{
                     </Row>
 
 
-
                 </Background>
             ):(<div/>)
         }
@@ -377,4 +382,4 @@ const NewDatasetForm = (_props)=>{
 
 }
 
-export default NewDatasetForm;
+export default ImportDatasetForm;

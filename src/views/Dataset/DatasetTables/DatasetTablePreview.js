@@ -16,7 +16,7 @@ const DatasetTablePreview= (props)=>{
         setRunning(true);
         const response = await client.query(previewTable2(props.table.tableUri));
         if (!response.errors){
-            setRows(response.data.previewTable2);
+            setRows(response.data.previewTable2.rows);
         }else{
             toast.info(`Could not retrieve preview, received ${response.errors[0].message}`)
         }

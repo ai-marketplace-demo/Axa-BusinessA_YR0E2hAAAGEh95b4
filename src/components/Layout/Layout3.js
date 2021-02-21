@@ -16,10 +16,11 @@ import * as Icon from "react-bootstrap-icons";
 import Home from "../../views/Home/Home";
 import Tenant from "../../views/Tenant/TenantView";
 import GetStarted from "../../views/GetStarted/GetStarted";
-import DatasetList from "../../views/Dataset2/DatasetList";
+import DatasetList from "../../views/Dataset/DatasetList";
 import ProjectList from "../../views/Project/ProjectList";
-import DatasetView from "../../views/Dataset2/DatasetView";
+import DatasetView from "../../views/Dataset/DatasetView";
 import NewDatasetForm from "../../views/Dataset/NewDatasetForm";
+import ImportDatasetForm from "../../views/Dataset/ImportDataset";
 import ProjectView from "../../views/Project/ProjectView2";
 import NewProjectForm from "../../views/Project/NewProjectForm";
 import OrganizationList from "../../views/Organization/Organizations/OrganizationList";
@@ -459,6 +460,9 @@ const Layout = (props) => {
                                 </Route>
                                 <Route path={`/newdataset`}>
                                     <NewDatasetForm/>
+                                </Route>
+                                <Route path={`/importdataset`}>
+                                    <ImportDatasetForm/>
                                 </Route>
                                 <Route path={`/newenvironmentpermission/:uri`}>
                                     <EnvironmentNotMembersList/>

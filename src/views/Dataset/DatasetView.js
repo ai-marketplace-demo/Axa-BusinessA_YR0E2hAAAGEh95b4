@@ -1,125 +1,150 @@
-import React ,{useState} from "react";
-import styled from "styled-components";
-import {Row,Container, Col,ListGroup,ListGroupItem} from "react-bootstrap"
+import React, {useState, useEffect, Component} from "react";
+import {Container, Spinner, Row, Col, Tabs, Tab, Badge} from "react-bootstrap";
+import Loader from 'react-loaders';
 import * as Icon from "react-bootstrap-icons";
-import Tabs from "../../components/Tabs/Tabs";
-import QueryBrowser from "./QueryBrowser/QueryBrowser";
+import {If,Then,Else, Switch, Case,Default} from "react-if";
+import useClient from "../../api/client";
+import getDataset from "../../api/Dataset/getDataset";
+import {useParams} from "react-router-dom";
+import RoutableTabs from "../../components/Tabs/Tabs";
+import DatasetTables from "./DatasetTables/DatasetTables";
 import DatasetOverview from "./DatasetOverview/DatasetOverview";
-import DatasetDetails from "./DatasetDetails/DatasetDetails";
-import DatasetContributorsList from "./DatasetContributors/DatasetContributors";
-import DatasetTables from "./Tables/DatasetTables";
-import DatasetQueries from "./Queries/DatasetQueries";
-import {
-    BrowserRouter as Router,
-    Route,
-    Link ,
-    Switch,
-    useParams,
-    useRouteMatch
-} from "react-router-dom";
+import DatasetDetails  from "./DatasetDetails/DatasetDetails2";
+import DatasetSummary  from "./DatasetSummary/DatasetSummary";
+import DatasetFolderList  from "./DatasetFolders/DatasetFolderList";
+import DatasetShareList  from "./DatasetShares/DatasetShareList";
+import DatasetUpload  from "./DatasetUpload/DatasetUpload";
+import ItemViewHeader from "../../components/ItemViewHeader/ItemViewHeader";
+import DatasetQualityRulesList from "./DatasetQualityRules/DatasetQualityRulesList";
+
+
+const DatasetAdminView = (props)=>{
+    const client= useClient();
+    let params= useParams();
+    let [info,setInfo] = useState({});
+    let [canEdit, setCanEdit] = useState(false);
+    let [ready, setReady] = useState(false);
+    const [key, setKey] = useState(params.tab||'overview');
 
 
 
-const TabLink=styled.div`
-__position : fixed;
 
-width : 100%;
-text-align: center;
-border-bottom: ${props=>props.active?"3px lightblue solid":""};
-&:hover{
-  font-weight: bolder;
-}
-
-`
-
-
-const FullScreen=styled.div`
-position : fixed;
-top : 1%;
-z-index: 10;
-width: 100%;
-margin-left: 0%;
-__border : 1px solid black;
-background-color: white;
-height: 200vh;
-`
-
-
-const DatasetView=(props)=>{
-    let [view, selectView] = useState("overview");
-    let selectTab=(name)=>{
-        selectView(name);
+    const fetchDataset=async ()=>{
+        const response = await client.query(getDataset(params.uri))
+        if (!response.errors){
+            setInfo(response.data.getDataset);
+            setReady(true);
+            setCanEdit(['Creator','Admin'].indexOf(response.data.getDataset.userRoleForDataset)!=-1)
+        }
     }
-    const params = useParams()
-    const datasetUri = params.uri;
-    return <FullScreen>
-        <Container className={"m-0 p-0"}>
-        <Row className={"border-bottom"}>
-            <Col xs={4}>
-                <Row>
-                    <Col className="pt-3" xs={2}>
-                        <Icon.Folder size={32}/>
-                    </Col>
-                    <Col xs={10}>
-                        <Row>
-                            <h4>My Dataset</h4>
-                        </Row>
-                        <Row>
-                            <p>by <a href={"#"}>@moshirm</a></p>
-                        </Row>
 
-                    </Col>
-                </Row>
+
+    useEffect(()=>{
+        if (client){
+            fetchDataset();
+        }
+    },[client,params.tab])
+
+
+    if (!ready){
+        return <Container>
+            <Row>
+                <Col style={{marginTop: '24%', marginLeft:'43%'}} xs={4}>
+                    <Loader color={`lightblue`} type="ball-scale-multiple" />
+                </Col>
+            </Row>
+        </Container>
+    }
+
+    return <Container
+        __style={{
+            marginTop: '1rem',
+            borderTop: '1px lightgrey solid',
+            borderLeft: '1px lightgrey solid',
+            borderRight: '1px lightgrey solid',
+            borderTopLeftRadius: '12px ',
+            borderTopRightRadius: '12px ',
+            //boxShadow:' 0px -5px 5px  #f7f7f7',
+            //backgroundColor:'#f7f7f7',
+        }}
+        fluid>
+        <ItemViewHeader
+            label={info.label}
+            owner={info.owner}
+            status={info.stack.status}
+            role={info.userRoleForDataset}
+            region={info.region}
+            created={info.created}
+            itemIcon={<Icon.Folder size={32}/>}
+        />
+        <Row className={`mt-2`}>
+            <Col xs={12}>
+                <RoutableTabs
+                    tabs={[
+                        'overview',
+                        'summary',
+                        'details',
+                        'tables',
+                        "folders",
+                        'shares',
+                        "upload",
+                        'Data Quality'
+                    ]}
+                />
             </Col>
         </Row>
-        <Row className={"pt-3"}>
-            <Col xs={12}>
-               <Tabs tabs={["Overview","Details","Contributors","Tables","Files","Queries","Integrations","Discussions"]}/>
-            </Col>
-        </Row>
-        <Row className={"mt-2"}>
-            <Col xs={12}>
+        <Row className={`mt-1`}>
+            <Col className={`pl-1 `} xs={12}>
                 <Switch>
-                    <Route exact path={`/dataset/:uri/shares`}>
-                        <h1>Shares</h1>
-                    </Route>
-                    <Route exact path={`/dataset/:uri/Details`}>
-                        <DatasetDetails/>
-                    </Route>
-                    <Route exact path={`/dataset/:uri/contributors`}>
-                        <DatasetContributorsList/>
-                    </Route>
-                    <Route exact path={`/dataset/:uri/tables`}>
-                        <DatasetTables/>
-                    </Route>
-                    <Route exact path={`/dataset/:uri/files`}>
-                        <h1>Files</h1>
-                    </Route>
-                    <Route exact path={`/dataset/:uri/jobs`}>
-                        <h1>Jobs</h1>
-                    </Route>
-                    <Route exact path={`/dataset/:uri/queries`}>
-                        <DatasetQueries/>
-                    </Route>
-                    <Route exact path={`/dataset/:uri/integrations`}>
-                        <h1>Integrations</h1>
-                    </Route>
-                    <Route exact path={`/dataset/:uri/discussions`}>
-                        <h1>Discussions</h1>
-                    </Route>
-                    <Route  exact path={`/dataset/:uri/overview`}>
-                        <DatasetOverview/>
-                    </Route>
+                    <Case condition={params.tab == `tables`}>
+                        <If condition={ready}>
+                            <Then>
+                                <DatasetTables dataset={info}/>
+                            </Then>
+                        </If>
+                    </Case>
+                    <Case condition={params.tab == `folders`}>
+                        <DatasetFolderList dataset={info}/>
+                    </Case>
+                    <Case condition={params.tab == `shares`}>
+                        <DatasetShareList dataset={info}/>
+                    </Case>
+                    <Case condition={params.tab == `details`}>
+                        <If condition={ready}>
+                            <Then>
+                                <DatasetDetails dataset={info}/>
+                            </Then>
+                        </If>
+                    </Case>
+                    <Case condition={params.tab == `summary`}>
+                        <If condition={ready}>
+                            <Then>
+                                <DatasetSummary dataset={info}/>
+                            </Then>
+                        </If>
+                    </Case>
+                    <Case condition={params.tab == `upload`}>
+                        <DatasetUpload dataset={info}/>
+                    </Case>
+
+                    <Case condition={params.tab === `Data Quality`}>
+                        <DatasetQualityRulesList
+                            client={client}
+                            dataset={info}
+                        />
+                    </Case>
+                    <Default>
+                        <If condition={ready}>
+                            <Then>
+                                <DatasetOverview dataset={info}/>
+                            </Then>
+                        </If>
+                    </Default>
                 </Switch>
             </Col>
         </Row>
-
     </Container>
-    </FullScreen>
 }
 
 
-
-export default DatasetView;
-
-
+export default DatasetAdminView;

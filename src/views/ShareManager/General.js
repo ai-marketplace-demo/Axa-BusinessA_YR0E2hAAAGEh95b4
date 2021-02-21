@@ -15,7 +15,7 @@ const General = (props)=>{
                                 <b>Dataset</b>
                             </td>
                             <td>
-                                <Link className={`text-info`} to={`/dataset/${props.share.dataset.datasetUri}`}>
+                                <Link className={`text-info`} to={`/dataset/${props.share.dataset.datasetUri}/overview`}>
                                     {props.share.dataset.datasetName}
                                 </Link>
                             </td>

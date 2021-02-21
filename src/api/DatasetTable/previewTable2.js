@@ -7,7 +7,10 @@ const previewTable2= (tableUri)=>{
         },
         query:gql`
             query PreviewTable2($tableUri:String!){
-                previewTable2(tableUri:$tableUri)
+                previewTable2(tableUri:$tableUri){
+                    fields
+                    rows
+                }
             }
         `
     }

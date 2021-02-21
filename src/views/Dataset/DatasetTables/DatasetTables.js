@@ -209,14 +209,16 @@ const DatasetTables=(props)=>{
                     </Col>
                 </Row>
             </Then>
-            <Else>
-                    <span>
+        </If>
+        <If condition={!loading && !loadingTables && tables.nodes.length === 0}>
+            <Then>
+                <span>
                         <i>
                             No tables found for this dataset. Synchronize tables from AWS Glue Catalog
                             <Link className={'primary'} onClick={startSyncTables}> here</Link>
                         </i>
                     </span>
-            </Else>
+            </Then>
         </If>
 
         <Row style={{minHeight:'30rem'}}/>
