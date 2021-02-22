@@ -16,7 +16,7 @@ margin-top: 6px;
 border-radius: 0px;
 background-color: white;
 border : 1px solid lightgrey;
-border-left:  4px solid lightcoral;
+border-left:  4px solid #24a8c9;
 
 box-shadow: 0px 1px 2px 2px whitesmoke;
 padding: 16px;

@@ -23,7 +23,7 @@ z-index: 10;
 border-radius: 0px;
 background-color: white;
 border : 1px solid lightgrey;
-border-left:  4px solid lightcoral;
+border-left:  4px solid #24a8c9;
 overflow-y:auto;
 overflow-x: hidden;
 
@@ -386,18 +386,18 @@ const NewRedshiftCluster= (props)=>{
                         </Form.Group>
 
                         <Row className={"mt-4"}>
-                            <Col xs={3}><b></b>
+                            <Col xs={2}><b></b>
 
-                                <Button className="btn-sm btn-success" type="submit" disabled={isSubmitting}>
+                                <Button className="btn-sm btn-info" type="submit" disabled={isSubmitting}>
                                     <b>Create</b>
                                 </Button>
                             </Col>
-                            <Col xs={3}>
+                            <Col xs={2}>
 
                                 <Link to={"/redshiftclusters"}>
-                                <div className="btn btn-sm btn-secondary" type="submit" disabled={isSubmitting}>
-                                    <b>Cancel</b>
-                                </div>
+                                    <div className="btn btn-sm btn-outline-primary" type="submit" disabled={isSubmitting}>
+                                        <b>Cancel</b>
+                                    </div>
                                 </Link>
 
                             </Col>

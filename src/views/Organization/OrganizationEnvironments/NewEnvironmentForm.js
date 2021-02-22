@@ -20,11 +20,11 @@ const FormStyled=styled.div`
 border: 1px lightgrey solid;
 height:23em;
 border-radius: 0px Opx 5px 5px;
-border-left: 7px solid lightblue;
+border-left:  4px solid #24a8c9;
 padding: 3em;
 margin-bottom: 12%;
 width:100%;
-box-shadow: 0px 1px 0px 1px lightyellow;
+box-shadow: 0px 1px 2px 2px whitesmoke;
 `
 
 const NewEnvironmentForm= (props)=>{
@@ -107,9 +107,9 @@ const NewEnvironmentForm= (props)=>{
 
     return <PageStyled>
     <Container>
-        <Row>
+        <Row className={'mt-3'}>
             <Col xs={11}>
-                <h3>Link Environment <b className={`text-primary text-capitalize`}>{formData.label}</b> </h3>
+                <h3><Icon.Cloud className={'mr-3'}/>Link Environment <b className={`text-primary text-capitalize`}>{formData.label}</b> </h3>
             </Col>
         </Row>
 
@@ -193,7 +193,7 @@ const NewEnvironmentForm= (props)=>{
                             </div>
                         </Then>
                         <Else>
-                            <div className={"btn disabled btn-sm btn-success"}>
+                            <div className={"btn disabled btn-sm btn-info"}>
                                 Submit
                             </div>
                         </Else>
@@ -208,14 +208,14 @@ const NewEnvironmentForm= (props)=>{
                                     state : location.state,
                                     pathname:`/organization/${params.uri}/environments`}}
                             >
-                                <div className={"btn btn-sm btn-secondary"}>
+                                <div className={"btn btn-sm btn-outline-primary"}>
                                     Cancel
                                 </div>
 
                             </Link>
                         </Then>
                         <Else>
-                            <div className={"btn disabled btn-sm btn-secondary"}>
+                            <div className={"btn disabled btn-sm btn-outline-primary"}>
                                 Cancel
                             </div>
                         </Else>

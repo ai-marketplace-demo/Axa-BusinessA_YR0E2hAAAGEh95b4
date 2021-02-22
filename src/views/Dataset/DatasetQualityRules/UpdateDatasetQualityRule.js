@@ -21,7 +21,7 @@ z-index: 10;
 border-radius: 0px;
 background-color: white;
 border : 1px solid lightgrey;
-border-left:  4px solid black;
+border-left:  4px solid #24a8c9;
 overflow-y:auto;
 overflow-x: hidden;
 

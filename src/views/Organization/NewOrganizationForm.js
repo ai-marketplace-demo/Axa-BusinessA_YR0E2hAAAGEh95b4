@@ -12,13 +12,13 @@ import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import SelectGroup from "../../components/SelectGroup/SelectGroup";
 const FormStyled=styled.div`
-border: 1px lightgrey solid;
 margin-top: 0px;
 border-radius: 0px Opx 5px 5px;
-border-left: 7px solid lightblue;
+border : 1px solid lightgrey;
+border-left:  4px solid #24a8c9;
 padding: 3em;
 width:100%;
-box-shadow: 0px 1px 0px 2px lightyellow;
+box-shadow: 0px 1px 2px 2px whitesmoke;
 `
 
 const NewOrganizationForm = (props)=>{
@@ -119,7 +119,7 @@ const NewOrganizationForm = (props)=>{
                 </Col>
                 <Col xs={2}>
                     <Link style={{color:"black"}} to={`/organizations`}>
-                        <div className={"btn btn-sm btn-secondary"}>
+                        <div className={"btn btn-sm btn-outline-primary"}>
                             Cancel
                         </div>
                     </Link>

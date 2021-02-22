@@ -2,13 +2,11 @@ import React, {useState, useEffect} from "react";
 import {Container, Row, Col, Spinner, Form, Button} from "react-bootstrap";
 import {Link, useHistory} from "react-router-dom";
 import styled from "styled-components";
-import * as Icon from "react-bootstrap-icons";
 import * as FiIcon from "react-icons/fi";
 import useClient from "../../api/client";
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import {toast} from"react-toastify"
-import createRedshiftCluster from "../../api/RedshiftCluster/createCluster";
 import importRedshiftCluster from "../../api/RedshiftCluster/importCluster";
 import {If, Then} from "react-if";
 import Select from "react-select";
@@ -25,7 +23,7 @@ z-index: 10;
 border-radius: 0px;
 background-color: white;
 border : 1px solid lightgrey;
-border-left:  4px solid lightcoral;
+border-left:  4px solid #24a8c9;
 overflow-y:auto;
 overflow-x: hidden;
 
@@ -214,15 +212,15 @@ const ImportCluster= (props)=>{
                         </Form.Group>
 
                         <Row className={"mt-4"}>
-                            <Col xs={3}><b></b>
-                                <Button className="btn-success btn-sm" type="submit" disabled={submitting}>
+                            <Col xs={2}><b></b>
+                                <Button className="btn-info btn-sm" type="submit" disabled={submitting}>
                                     <b>Create</b>
                                 </Button>
                             </Col>
-                            <Col xs={3}>
+                            <Col xs={2}>
 
                                 <Link to={"/redshiftclusters"}>
-                                    <div className="btn btn-sm btn-secondary" type="submit" disabled={submitting}>
+                                    <div className="btn btn-sm btn-outline-primary" type="submit" disabled={submitting}>
                                         <b>Cancel</b>
                                     </div>
                                 </Link>

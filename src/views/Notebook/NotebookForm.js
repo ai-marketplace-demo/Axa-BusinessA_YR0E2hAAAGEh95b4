@@ -6,8 +6,7 @@ import listOrganizationEnvironments from "../../api/Environment/listOrganization
 import listOrganizations from "../../api/Organization/listOrganizations";
 import {AwsRegionsSelect, getRegionLabel}  from "../../components/AwsRegions/AwsRegionSelect";
 import useClient from "../../api/client";
-import useGroups from "../../api/useGroups";
-import SelectGroup from "../../components/SelectGroup/SelectGroup";
+import * as SiIcon from "react-icons/si";
 import Select from 'react-select';
 import styled from "styled-components";
 import createSagemakerNotebook from "../../api/SagemakerNotebook/createSagemakerNotebook";
@@ -19,7 +18,7 @@ margin-right: 5px;
 border-radius: 0px;
 background-color: white;
 border : 1px solid lightgrey;
-border-left:  4px solid lightseagreen;
+border-left:  4px solid #24a8c9;
 padding: 16px;
 `
 
@@ -93,21 +92,16 @@ const NotebookForm = (props)=>{
     },[client]);
 
 
-    return <Background>
+    return<Container>
+        <Row className={`mt-2`}>
+            <Col xs={12}>
+                <h3><SiIcon.SiJupyter/> Create Notebook <b className={`ml-2 text-primary`}>{formData.label}</b></h3>
+            </Col>
+        </Row>
+    <Background>
         <If condition={!saving}>
             <Then>
-                <Container className={`mt-3`}>
-                    <Row className={`mt-2`}>
-                        <Col xs={12}>
-                            <h3>Create Notebook <b className={`text-primary`}>{formData.label}</b></h3>
-                        </Col>
-                    </Row>
-                    <Row className={`mt-2`}>
-                        <Col xs={12}>
-                            <h4>Settings</h4>
-                        </Col>
-                    </Row>
-
+                <Container>
                     <Row>
                         <Col xs={1}><b>Org</b></Col>
                         <Col xs={3}>
@@ -143,19 +137,18 @@ const NotebookForm = (props)=>{
                         </Col>
 
                     </Row>
-                    <Row className={`mt-4`}>
-                        <Col xs={1}/>
+                    <Row className={"mt-4"}>
+                        <Col xs={1}><b></b></Col>
                         <Col xs={2}>
-                            <div onClick={submitForm} className={`btn btn-primary rounded-pill`}>
-                                Save
-                            </div>
+                            <div onClick={submitForm} className={"btn btn-sm btn-info"}>Create</div>
                         </Col>
                         <Col xs={2}>
-                            <Link to={`/notebooks`}>
-                                <div className={`btn btn-secondary rounded-pill`}>
-                                    Cancel
+                            <Link to={"/notebooks"}>
+                                <div className="btn btn-sm btn-outline-primary" type="submit">
+                                    <b>Cancel</b>
                                 </div>
                             </Link>
+
                         </Col>
                     </Row>
                 </Container>
@@ -171,6 +164,7 @@ const NotebookForm = (props)=>{
         </If>
 
     </Background>
+    </Container>
 }
 
 

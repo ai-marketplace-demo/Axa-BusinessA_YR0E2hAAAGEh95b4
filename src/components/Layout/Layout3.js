@@ -221,6 +221,7 @@ const Layout = (props) => {
                                 <SidebarLink  icon={<Icon.Terminal/>}to={"/queries"} label={"Queries"}/>
                                 <SidebarLink  icon={<SiIcon.SiJupyter/>}to={"/notebooks"} label={"Notebooks"}/>
                                 <SidebarLink  icon={<Icon.Gear />}to={"/sqlpipelines"} label={"Pipelines"}/>
+                                <SidebarLink  icon={<FiIcon.FiBox/>}to={"/redshiftclusters"} label={"Warehouses"}/>
                                 {/**
                                  <Col className={`mt-1 mb-1`}xs={12}>
                                  <b>COLLABORATE</b>
@@ -230,7 +231,7 @@ const Layout = (props) => {
                             <Row className={``} style={{marginTop:'3%'}}>
                                 <SidebarLink  icon={<Icon.House />}to={"/organizations"} label={"Organizations"}/>
                                 <SidebarLink  icon={<Icon.Cloud />}to={"/environments"} label={"Environments"}/>
-                                <SidebarLink  icon={<FiIcon.FiBox/>}to={"/redshiftclusters"} label={"Warehouses"}/>
+
                                 {/**<SidebarLink icon={<Icon.Journal size={12}/>}to={"/"} label={"Recent Activities"}/>**/}
                                 {/**<SidebarLink icon={<Icon.Play/>}to={"/xp"} label={"XP"}/>**/}
                             </Row>

@@ -70,7 +70,7 @@ const DashboardList = function(){
                 </Col>
 
                 <Col xs={2} className={`mt-2`}>
-                    <div onClick={displayEnvironments} className={`btn btn-success btn-sm rounded-pill`}> Start Session </div>
+                    <div onClick={displayEnvironments} className={`btn btn-primary btn-sm rounded-pill`}> Start Session </div>
                 </Col>
             </Row>
             <Row>

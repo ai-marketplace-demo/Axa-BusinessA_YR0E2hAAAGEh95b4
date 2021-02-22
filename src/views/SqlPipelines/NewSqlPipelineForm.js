@@ -20,7 +20,7 @@ border-radius: 0px;
 overflow-y: auto;
 background-color: white;
 border : 1px solid lightgrey;
-border-left:  4px solid lightcoral;
+border-left:  4px solid #24a8c9;
 
 box-shadow: 0px 1px 2px 2px whitesmoke;
 padding: 16px;
@@ -130,7 +130,7 @@ const NewSqlPipelineForm= (_props)=>{
     return <Container>
         <Row>
             <Col xs={4}>
-                <h4> <Icon.ArrowRepeat xs={48}/> Create New SqlPipeline</h4>
+                <h4> <Icon.Gear/> Create New Pipeline</h4>
             </Col>
             <Col xs={8}>
                 {(isSubmitting)?(
@@ -228,7 +228,15 @@ const NewSqlPipelineForm= (_props)=>{
                         <Row className={"mt-4"}>
                             <Col xs={2}><b></b></Col>
                             <Col xs={2}>
-                                <div onClick={submitForm} className={"btn btn-sm btn-success"}>Save</div>
+                                <div onClick={submitForm} className={"btn btn-sm btn-info"}>Create</div>
+                            </Col>
+                            <Col xs={2}>
+                                <Link to={"/sqlpipelines"}>
+                                    <div className="btn btn-sm btn-outline-primary" type="submit">
+                                        <b>Cancel</b>
+                                    </div>
+                                </Link>
+
                             </Col>
                         </Row>
 
