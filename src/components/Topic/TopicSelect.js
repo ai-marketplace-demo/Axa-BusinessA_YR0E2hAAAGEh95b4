@@ -1,6 +1,6 @@
-import React from 'react'
-import ReactTags from 'react-tag-autocomplete'
-import styled from "styled-components";
+import React from 'react';
+import ReactTags from 'react-tag-autocomplete';
+import styled from 'styled-components';
 
 
 const Styled = styled.div`
@@ -139,57 +139,53 @@ const Styled = styled.div`
   opacity: 0.5;
   cursor: auto;
 }
-`
+`;
 class TopicSelect extends React.Component {
-
-    constructor (props) {
-        super(props)
-        const topics={
-            Finances:"Finances",
-            HumanResources:"HumanResources",
-            Products:"Products",
-            Services:"Services",
-            Operations:"Operations",
-            Research:"Research",
-            Sales:"Sales",
-            Orders:"Orders",
-            Sites:"Sites",
-            Energy:'Energy',
-            Customers:"Customers",
-            Misc:"Misc"
-        }
+    constructor(props) {
+        super(props);
+        const topics = {
+            Finances: 'Finances',
+            HumanResources: 'HumanResources',
+            Products: 'Products',
+            Services: 'Services',
+            Operations: 'Operations',
+            Research: 'Research',
+            Sales: 'Sales',
+            Orders: 'Orders',
+            Sites: 'Sites',
+            Energy: 'Energy',
+            Customers: 'Customers',
+            Misc: 'Misc'
+        };
         this.state = {
-            tags: Object.keys(topics).map((t,i)=>{
-                return {id:i, name:t}
-            }),
-            suggestions: Object.keys(topics).map((t,i)=>{
-                return {id:i, name:t}
-            })
-        }
+            tags: Object.keys(topics).map((t, i) => ({ id: i, name: t })),
+            suggestions: Object.keys(topics).map((t, i) => ({ id: i, name: t }))
+        };
     }
 
-    handleDelete (i) {
-        const tags = this.state.tags.slice(0)
-        tags.splice(i, 1)
-        this.setState({ tags })
+    handleDelete(i) {
+        const tags = this.state.tags.slice(0);
+        tags.splice(i, 1);
+        this.setState({ tags });
     }
 
-    handleAddition (tag) {
-        const tags = [].concat(this.state.tags, tag)
-        this.setState({ tags })
+    handleAddition(tag) {
+        const tags = [].concat(this.state.tags, tag);
+        this.setState({ tags });
     }
 
-    render () {
+    render() {
         return (
             <Styled>
-            <ReactTags
-                tags={this.state.tags}
-                suggestions={this.state.suggestions}
-                handleDelete={this.handleDelete.bind(this)}
-                placeholder={`Add new topic`}
-                handleAddition={this.handleAddition.bind(this)} />
+                <ReactTags
+                    tags={this.state.tags}
+                    suggestions={this.state.suggestions}
+                    handleDelete={this.handleDelete.bind(this)}
+                    placeholder={'Add new topic'}
+                    handleAddition={this.handleAddition.bind(this)}
+                />
             </Styled>
-        )
+        );
     }
 }
 

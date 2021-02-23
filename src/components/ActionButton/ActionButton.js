@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from "react";
-import styled from "styled-components";
-import Zoom from "../Zoomer/Zoom";
-import {Col, Container, Row} from "react-bootstrap";
-import * as Icon from "react-bootstrap-icons";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { Col, Container, Row } from 'react-bootstrap';
+import * as Icon from 'react-bootstrap-icons';
+import Zoom from '../Zoomer/Zoom';
 
 const Menu = styled.div`
 position:absolute;
-z-index: ${props=>props.zIndex||1};
-visibility: ${props=>props.visibility||"hidden"};
+z-index: ${(props) => props.zIndex || 1};
+visibility: ${(props) => props.visibility || 'hidden'};
 width:220px;
 border-radius: 6px;
 margin: 0px;
@@ -34,67 +34,65 @@ box-shadow: 0px 5px 2px 1px lightgrey;
 }
 }
 
-`
+`;
 
-class ActionButton extends React.Component{
-    constructor(props){
+class ActionButton extends React.Component {
+    constructor(props) {
         super(props);
-        this.state={
-            visibility: "hidden",
-            zIndex:0
-        }
+        this.state = {
+            visibility: 'hidden',
+            zIndex: 0
+        };
         this.toggleMenu = this.toggleMenu.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.node = React.createRef();
     }
 
-    handleClick(event){
+    handleClick(event) {
         if (this.node.current.contains(event.target)) {
             // inside click
-            console.log("clicked inside")
-            return
-        }else{
-            console.log("clicked outside")
-           if (this.state.visibility=="visible"){
-               this.setState({
-                   visibility : "hidden"
-               })
-           }
+            console.log('clicked inside');
+        } else {
+            console.log('clicked outside');
+            if (this.state.visibility == 'visible') {
+                this.setState({
+                    visibility: 'hidden'
+                });
+            }
         }
     }
 
-    toggleMenu(){
-        console.log("toggleMenu cliecked");
+    toggleMenu() {
+        console.log('toggleMenu cliecked');
         this.setState({
-            visibility : (this.state.visibility == "hidden")?"visible":"hidden"
-        },()=>{
-            console.log("new state = ", this.state);
-        })
+            visibility: (this.state.visibility == 'hidden') ? 'visible' : 'hidden'
+        }, () => {
+            console.log('new state = ', this.state);
+        });
     }
 
-    componentDidMount(){
-        document.addEventListener("click", this.handleClick);
-
-    }
-    componentWillUnmount(){
-        document.removeEventListener("click", this.handleClick)
+    componentDidMount() {
+        document.addEventListener('click', this.handleClick);
     }
 
-    render(){
-        return <div ref={this.node}>
-            <Zoom color={"black"}>
-                <Icon.ThreeDotsVertical onClick={()=>{this.toggleMenu()}}/>
-            </Zoom>
+    componentWillUnmount() {
+        document.removeEventListener('click', this.handleClick);
+    }
 
-            <Menu  {...this.state}>
-                {React.Children.map(this.props.children,(child)=>{
-                    return <div className={"menu-item"}>{child}</div>;
-                })}
-            </Menu>
-        </div>
+    render() {
+        return (
+            <div ref={this.node}>
+                <Zoom color={'black'}>
+                    <Icon.ThreeDotsVertical onClick={() => { this.toggleMenu(); }} />
+                </Zoom>
+
+                <Menu {...this.state}>
+                    {React.Children.map(this.props.children, (child) => <div className={'menu-item'}>{child}</div>)}
+                </Menu>
+            </div>
+        );
     }
 }
-
 
 
 export default ActionButton;

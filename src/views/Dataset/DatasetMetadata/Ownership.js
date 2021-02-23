@@ -1,25 +1,27 @@
-import React  ,{useState} from "react";
-import {If,Then,Else} from "react-if";
-import {Container,Row,Col,Table} from "react-bootstrap";
-import UserProfileLink from "../../Profile/UserProfileLink";
-import dayjs from "dayjs";
-import EasyEdit, {Types} from "react-easy-edit";
-import Creatable from "react-select/creatable/dist/react-select.esm";
+import React, { useState } from 'react';
+import { If, Then, Else } from 'react-if';
+import {
+    Container, Row, Col, Table
+} from 'react-bootstrap';
+import dayjs from 'dayjs';
+import EasyEdit, { Types } from 'react-easy-edit';
+import Creatable from 'react-select/creatable/dist/react-select.esm';
+import UserProfileLink from '../../Profile/UserProfileLink';
 
 
-const Ownership  =(props)=>{
-    return <Row className={`mt-2`}>
+const Ownership = (props) => (
+    <Row className={'mt-2'}>
         <Col xs={12}>
             <Table striped bordered hover size="sm">
                 <tr>
-                    <td className={`text-capitalize`}>
+                    <td className={'text-capitalize'}>
                         Business Owner
                     </td>
                     <td>
                         <If condition={props.canEdit}>
                             <Then>
                                 <EasyEdit
-                                    attributes={{name:'businessOwnerEmail'}}
+                                    attributes={{ name: 'businessOwnerEmail' }}
                                     type={Types.TEXT}
                                     onSave={props.handleEdit('businessOwnerEmail')}
                                     value={props.dataset.businessOwnerEmail}
@@ -35,7 +37,7 @@ const Ownership  =(props)=>{
                     </td>
                 </tr>
                 <tr scope="row">
-                    <td className={`text-capitalize`}>
+                    <td className={'text-capitalize'}>
                         Stewards
                     </td>
                     <td>
@@ -43,15 +45,13 @@ const Ownership  =(props)=>{
                             <Then>
                                 <Creatable
                                     isMulti
-                                    //onChange={selectStewardEmails}
-                                    //options={[]}
+                                    // onChange={selectStewardEmails}
+                                    // options={[]}
                                     value={props.dataset.businessOwnerDelegationEmails}
                                 />
                             </Then>
                             <Else>
-                                {props.dataset.businessOwnerDelegationEmails.map((t)=>{
-                                    return <div>{t}</div>
-                                })}
+                                {props.dataset.businessOwnerDelegationEmails.map((t) => <div>{t}</div>)}
                             </Else>
                         </If>
                     </td>
@@ -76,6 +76,6 @@ const Ownership  =(props)=>{
             </Table>
         </Col>
     </Row>
-}
+);
 
 export default Ownership;

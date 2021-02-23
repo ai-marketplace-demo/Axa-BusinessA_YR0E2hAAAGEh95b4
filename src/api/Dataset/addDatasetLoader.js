@@ -1,9 +1,8 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const createDatasetLoader =({datasetUri, input})=>{
-    return {
-        variables:{input,datasetUri},
-        mutation :gql`mutation createDatasetLoader(
+const createDatasetLoader = ({ datasetUri, input }) => ({
+    variables: { input, datasetUri },
+    mutation: gql`mutation createDatasetLoader(
             $datasetUri:String,
             $input:NewDatasetLoaderInput,
         ){
@@ -12,8 +11,7 @@ const createDatasetLoader =({datasetUri, input})=>{
                 input:$input
             )
         }`
-    }
-}
+});
 
 
 export default createDatasetLoader;

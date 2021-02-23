@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-const SpanZoomer=styled.span`
+const SpanZoomer = styled.span`
 transition: transform .2s;
 &:hover{
     display: inline-block;

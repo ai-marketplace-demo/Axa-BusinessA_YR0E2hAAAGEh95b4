@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const getDatasetTableProfilingRun=(tableUri)=>{
-    return {
-        variables:{
-            tableUri: tableUri
-        },
-        query :gql`query getDatasetTableProfilingRun($tableUri:String!){
+const getDatasetTableProfilingRun = (tableUri) => ({
+    variables: {
+        tableUri
+    },
+    query: gql`query getDatasetTableProfilingRun($tableUri:String!){
             getDatasetTableProfilingRun(tableUri:$tableUri){
                 profilingRunUri
                 status
@@ -21,8 +20,7 @@ const getDatasetTableProfilingRun=(tableUri)=>{
                 status
             }
         }`
-    }
-}
+});
 
 
 export default getDatasetTableProfilingRun;

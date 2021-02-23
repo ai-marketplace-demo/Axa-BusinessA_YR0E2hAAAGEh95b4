@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const addProjectPipelineNode=({pipelineUri ,input})=>{
-    return {
-        variables:{
-            pipelineUri,input
-        },
-        mutation :gql`mutation addProjectPipelineNode(
+const addProjectPipelineNode = ({ pipelineUri, input }) => ({
+    variables: {
+        pipelineUri, input
+    },
+    mutation: gql`mutation addProjectPipelineNode(
             $input:NewProjectPipelineNodeInput,
             $pipelineUri : String!
         ){
@@ -16,8 +15,7 @@ const addProjectPipelineNode=({pipelineUri ,input})=>{
                 name
             }
         }`
-    }
-}
+});
 
 
 export default addProjectPipelineNode;

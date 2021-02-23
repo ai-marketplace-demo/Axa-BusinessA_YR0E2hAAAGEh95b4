@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listDatasetTableProfilingRuns = (tableUri)=>{
-    return {
-        variables:{
-            tableUri:tableUri
-        },
-        query:gql`
+const listDatasetTableProfilingRuns = (tableUri) => ({
+    variables: {
+        tableUri
+    },
+    query: gql`
             query listDatasetTableProfilingRuns($tableUri:String!){
                 listDatasetTableProfilingRuns(tableUri:$tableUri){
                     count
@@ -24,7 +23,6 @@ const listDatasetTableProfilingRuns = (tableUri)=>{
                 }
             }
         `
-    }
-};
+});
 
-export default listDatasetTableProfilingRuns ;
+export default listDatasetTableProfilingRuns;

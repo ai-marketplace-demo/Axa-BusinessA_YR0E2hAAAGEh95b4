@@ -1,9 +1,9 @@
-import React, {useState} from "react";
-import {Row,Col} from "react-bootstrap";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import { Row, Col } from 'react-bootstrap';
+import styled from 'styled-components';
 
 
-const TileStyled=styled.div`
+const TileStyled = styled.div`
   width: 90%;
   height: 100px;
   margin: 10px;
@@ -27,24 +27,25 @@ const TileStyled=styled.div`
     transform: scaleY(1.26) ;
   }
   
-`
+`;
 
 
-const Tile = (props)=>{
-    let [hovered, setHovered] = useState(false);
-    const enter=()=>{
-        console.log("enter");
-        setHovered(true)
-    }
-    const exit=()=>{
-        console.log("exit")
+const Tile = (props) => {
+    const [hovered, setHovered] = useState(false);
+    const enter = () => {
+        console.log('enter');
+        setHovered(true);
+    };
+    const exit = () => {
+        console.log('exit');
         setHovered(false);
-    }
-    return <TileStyled onMouseOver={enter} onMouseOut={exit}>
+    };
+    return (
+        <TileStyled onMouseOver={enter} onMouseOut={exit}>
             <h2>hello l</h2>
         </TileStyled>
-
-}
+    );
+};
 
 /**
  *

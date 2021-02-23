@@ -1,12 +1,11 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listDatasetTableColumns= ({tableUri,filter})=>{
-    return {
-        variables:{
-            tableUri:tableUri,
-            filter: filter
-        },
-        query:gql`
+const listDatasetTableColumns = ({ tableUri, filter }) => ({
+    variables: {
+        tableUri,
+        filter
+    },
+    query: gql`
             query ListDatasetTableColumns($tableUri:String!,$filter:DatasetTableColumnFilter){
                 listDatasetTableColumns(tableUri:$tableUri, filter:$filter){
                     count
@@ -23,8 +22,7 @@ const listDatasetTableColumns= ({tableUri,filter})=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default listDatasetTableColumns ;
+export default listDatasetTableColumns;

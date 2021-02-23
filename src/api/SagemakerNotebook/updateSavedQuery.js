@@ -1,12 +1,11 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const updateSavedQuery=({queryUri,input})=>{
-    return {
-        variables:{
-            queryUri: queryUri,
-            input  : input
-        },
-        mutation :gql`mutation UpdateSavedQuery(
+const updateSavedQuery = ({ queryUri, input }) => ({
+    variables: {
+        queryUri,
+        input
+    },
+    mutation: gql`mutation UpdateSavedQuery(
             $queryUri:String!,
             $input:ModifySavedQueryInput,
         ){
@@ -20,8 +19,7 @@ const updateSavedQuery=({queryUri,input})=>{
                 tags
             }
         }`
-    }
-}
+});
 
 
 export default updateSavedQuery;

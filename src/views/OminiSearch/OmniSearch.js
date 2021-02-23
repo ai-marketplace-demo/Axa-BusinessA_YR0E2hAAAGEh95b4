@@ -1,9 +1,7 @@
-import React from "react";
+import React from 'react';
 
 
-const OmniSearch = ()=>{
-    return <h2>Search results</h2>
-}
+const OmniSearch = () => <h2>Search results</h2>;
 
 
 export default OmniSearch;

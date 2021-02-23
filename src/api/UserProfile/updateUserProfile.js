@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const updateUserProfile= (input)=>{
-    return {
-        variables:{
-            input : input
-        },
-        mutation:gql`mutation UpdateUserProfile($input:UserProfileInput!){
+const updateUserProfile = (input) => ({
+    variables: {
+        input
+    },
+    mutation: gql`mutation UpdateUserProfile($input:UserProfileInput!){
                 updateUserProfile(input:$input){
                     username
                     bio
@@ -14,8 +13,7 @@ const updateUserProfile= (input)=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default updateUserProfile ;
+export default updateUserProfile;

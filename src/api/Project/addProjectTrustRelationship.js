@@ -1,9 +1,8 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const createProjectTrustRelationShip =({projectUri, input})=>{
-    return {
-        variables:{input,projectUri},
-        mutation :gql`mutation CreateProjectTrustRelationShip(
+const createProjectTrustRelationShip = ({ projectUri, input }) => ({
+    variables: { input, projectUri },
+    mutation: gql`mutation CreateProjectTrustRelationShip(
             $projectUri:String,
             $input:NewProjectTrustRelationship,
         ){
@@ -12,8 +11,7 @@ const createProjectTrustRelationShip =({projectUri, input})=>{
                 input:$input
             )
         }`
-    }
-}
+});
 
 
 export default createProjectTrustRelationShip;

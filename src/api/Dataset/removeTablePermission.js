@@ -1,13 +1,12 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const removeTablePermissions= ({tableUri, role, userName})=>{
-    return {
-        variables:{
-            tableUri,
-            role,
-            userName
-        },
-        mutation:gql`
+const removeTablePermissions = ({ tableUri, role, userName }) => ({
+    variables: {
+        tableUri,
+        role,
+        userName
+    },
+    mutation: gql`
             mutation RemoveTablePermission(
                 $tableUri:String!,
                 $userName:String!
@@ -18,8 +17,7 @@ const removeTablePermissions= ({tableUri, role, userName})=>{
                 )
             }
         `
-    }
-}
+});
 
 
-export default removeTablePermissions ;
+export default removeTablePermissions;

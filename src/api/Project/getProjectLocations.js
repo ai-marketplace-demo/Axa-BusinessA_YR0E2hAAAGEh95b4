@@ -1,12 +1,11 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listProjectLocations= ({projectUri,filter})=>{
-    return {
-        variables:{
-            projectUri:projectUri,
-            filter:filter
-        },
-        query:gql`
+const listProjectLocations = ({ projectUri, filter }) => ({
+    variables: {
+        projectUri,
+        filter
+    },
+    query: gql`
             query ListProjectStorageLocations($projectUri:String!,$filter:DatasetStorageLocationFilter){
                 listProjectStorageLocations(projectUri:$projectUri,filter:$filter){
                     count
@@ -29,8 +28,7 @@ const listProjectLocations= ({projectUri,filter})=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default listProjectLocations ;
+export default listProjectLocations;

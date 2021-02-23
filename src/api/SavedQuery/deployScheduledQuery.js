@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const deployScheduledQuery = (scheduledQueryUri)=>{
-    return {
-        variables:{
-            scheduledQueryUri:scheduledQueryUri
-        },
-        mutation:gql`
+const deployScheduledQuery = (scheduledQueryUri) => ({
+    variables: {
+        scheduledQueryUri
+    },
+    mutation: gql`
             mutation DeployScheduledQuery (
                 $scheduledQueryUri:String!){
                 deployScheduledQuery (
@@ -13,8 +12,7 @@ const deployScheduledQuery = (scheduledQueryUri)=>{
                 )
             }
         `
-    }
-}
+});
 
 
-export default deployScheduledQuery ;
+export default deployScheduledQuery;

@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listDatasets= ({filter})=>{
-    return {
-        variables:{
-            filter:filter
-        },
-        query:gql`
+const listDatasets = ({ filter }) => ({
+    variables: {
+        filter
+    },
+    query: gql`
             query ListDatasets($filter:DatasetFilter){
                 listDatasets(filter:$filter){
                     count
@@ -43,8 +42,7 @@ const listDatasets= ({filter})=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default listDatasets ;
+export default listDatasets;

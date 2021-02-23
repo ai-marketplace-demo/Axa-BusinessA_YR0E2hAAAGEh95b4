@@ -1,7 +1,9 @@
-import React, {useState,useEffect} from "react";
-import config from '../config';
-import { ApolloClient, ApolloLink, InMemoryCache,HttpLink } from 'apollo-boost';
+import React, { useState, useEffect } from 'react';
+import {
+    ApolloClient, ApolloLink, InMemoryCache, HttpLink
+} from 'apollo-boost';
 import { Auth } from 'aws-amplify';
+import config from '../config';
 
 const defaultOptions = {
     watchQuery: {
@@ -17,19 +19,19 @@ const defaultOptions = {
     }
 };
 
-const useClient=()=>{
-    let [client, setClient] = useState(null);
-    let [token, setToken] = useState();
+const useClient = () => {
+    const [client, setClient] = useState(null);
+    const [token, setToken] = useState();
 
-    const fetchAuthToken = async()=>{
-        if (!token){
-            //let session = await Auth.currentSession();
-            //const t = await session.getIdToken().getJwtToken();
-            //console.log("got token", t);
+    const fetchAuthToken = async () => {
+        if (!token) {
+            // let session = await Auth.currentSession();
+            // const t = await session.getIdToken().getJwtToken();
+            // console.log("got token", t);
             const t = localStorage.getItem(`datahub-token-${config.cognito.APP_CLIENT_ID}`);
             const httpLink = new HttpLink({
                 uri: config.apiGateway.URL,
-                //uri: 'http://localhost:5000/graphql'
+                // uri: 'http://localhost:5000/graphql'
             });
             const authLink = new ApolloLink((operation, forward) => {
                 operation.setContext({
@@ -37,7 +39,7 @@ const useClient=()=>{
                         AccessControlAllowOrigin: '*',
                         AccessControlAllowHeaders: '*',
                         'access-control-allow-origin': '*',
-                        Authorization: t ? `${t}` : "",
+                        Authorization: t ? `${t}` : '',
                         AccessKeyId: 'none',
                         SecretKey: 'none',
 
@@ -48,19 +50,18 @@ const useClient=()=>{
             const client = new ApolloClient({
                 link: authLink.concat(httpLink),
                 cache: new InMemoryCache(),
-                defaultOptions:defaultOptions
+                defaultOptions
 
             });
             setToken(t);
             setClient(client);
         }
     };
-    useEffect(()=> {
-        if (!token){
+    useEffect(() => {
+        if (!token) {
             fetchAuthToken();
-
         }
-    },[token]);
+    }, [token]);
     return client;
 };
 

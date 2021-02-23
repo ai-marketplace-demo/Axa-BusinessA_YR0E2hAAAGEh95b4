@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listDatasetTableProfilingJobs= (tableUri)=>{
-    return {
-        variables:{
-            tableUri:tableUri
-        },
-        query:gql`
+const listDatasetTableProfilingJobs = (tableUri) => ({
+    variables: {
+        tableUri
+    },
+    query: gql`
             query GetDatasetTable($tableUri:String!){
                 getDatasetTable(tableUri:$tableUri){
                         datasetUri
@@ -30,8 +29,7 @@ const listDatasetTableProfilingJobs= (tableUri)=>{
                     }
                 }
         `
-    }
-}
+});
 
 
-export default listDatasetTableProfilingJobs ;
+export default listDatasetTableProfilingJobs;

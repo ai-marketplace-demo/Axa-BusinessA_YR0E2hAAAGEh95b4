@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const syncDatasetTableColumns= (tableUri)=>{
-    return {
-        variables:{
-            tableUri:tableUri,
-        },
-        mutation:gql`
+const syncDatasetTableColumns = (tableUri) => ({
+    variables: {
+        tableUri,
+    },
+    mutation: gql`
             mutation SyncDatasetTableColumns($tableUri:String!){
                 syncDatasetTableColumns(tableUri:$tableUri){
                     count
@@ -22,8 +21,7 @@ const syncDatasetTableColumns= (tableUri)=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default syncDatasetTableColumns ;
+export default syncDatasetTableColumns;

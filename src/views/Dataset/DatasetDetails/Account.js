@@ -1,22 +1,24 @@
-import React  ,{useState} from "react";
-import {If,Then,Else} from "react-if";
-import {Container,Row,Col,Table} from "react-bootstrap";
-import UserProfileLink from "../../Profile/UserProfileLink";
-import Zoom from "../../../components/Zoomer/Zoom";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
-import * as Icon from "react-bootstrap-icons";
-import dayjs from "dayjs";
-import EasyEdit, {Types} from "react-easy-edit";
-import Creatable from "react-select/creatable/dist/react-select.esm";
+import React, { useState } from 'react';
+import { If, Then, Else } from 'react-if';
+import {
+    Container, Row, Col, Table
+} from 'react-bootstrap';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import * as Icon from 'react-bootstrap-icons';
+import dayjs from 'dayjs';
+import EasyEdit, { Types } from 'react-easy-edit';
+import Creatable from 'react-select/creatable/dist/react-select.esm';
+import Zoom from '../../../components/Zoomer/Zoom';
+import UserProfileLink from '../../Profile/UserProfileLink';
 
 
-const DatasetAccount  =(props)=>{
-    return <Row className={`mt-2`}>
+const DatasetAccount = (props) => (
+    <Row className={'mt-2'}>
         <Col xs={12}>
-            <Table   hover size="sm">
+            <Table hover size="sm">
                 <tbody>
                     <tr>
-                        <td className={`text-capitalize`}>
+                        <td className={'text-capitalize'}>
                             Aws AccountId
                         </td>
                         <td>
@@ -24,12 +26,12 @@ const DatasetAccount  =(props)=>{
                         </td>
                         <td>
                             <CopyToClipboard text={props.dataset.AwsAccountId}>
-                                <Icon.Clipboard onClick={()=>{props.copy('AwsAccountId')}} className={`ml-2`}/>
+                                <Icon.Clipboard onClick={() => { props.copy('AwsAccountId'); }} className={'ml-2'} />
                             </CopyToClipboard>
                         </td>
                     </tr>
                     <tr>
-                        <td className={`text-capitalize`}>
+                        <td className={'text-capitalize'}>
                             Region
                         </td>
                         <td>
@@ -37,7 +39,7 @@ const DatasetAccount  =(props)=>{
                         </td>
                         <td>
                             <CopyToClipboard text={props.dataset.region}>
-                                <Icon.Clipboard onClick={()=>{props.copy('region')}} className={`ml-2`}/>
+                                <Icon.Clipboard onClick={() => { props.copy('region'); }} className={'ml-2'} />
                             </CopyToClipboard>
                         </td>
                     </tr>
@@ -46,6 +48,6 @@ const DatasetAccount  =(props)=>{
             </Table>
         </Col>
     </Row>
-}
+);
 
 export default DatasetAccount;

@@ -1,7 +1,6 @@
-import React ,{useEffect} from "react";
-import {Link,useLocation} from "react-router-dom";
-import styled from "styled-components"
-
+import React, { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 
 
 const StyledLink = styled.div`
@@ -13,7 +12,7 @@ color: black;
 margin-left: 1ch;
 padding-left: 0ch;
 display:inline;
-border-right: ${props=>props.location&&props.location.pathname.indexOf(props.to)!=-1?"3px #24a8c9 solid;":""};
+border-right: ${(props) => (props.location && props.location.pathname.indexOf(props.to) != -1 ? '3px #24a8c9 solid;' : '')};
 float:left;
 &:hover{
   #background-color: white;
@@ -23,14 +22,14 @@ float:left;
   font-weight: bolder;
 }
 
-`
+`;
 
-const IconStyled= styled.div`
+const IconStyled = styled.div`
 width: 30%;
 display:inline;
-`
+`;
 
-const LinkStyled= styled.div`
+const LinkStyled = styled.div`
 width:60%;
 margin-left: 1ch;
 display:inline;
@@ -46,16 +45,18 @@ a{
 }
 
 
-`
+`;
 
-const SidebarLink = (props)=>{
-    const location=useLocation();
-    useEffect(()=>{},[location]);
-    return <StyledLink  onClick={props.onClick||function(){}} to={props.to} location={location}>
-        <IconStyled>{props.icon}</IconStyled>
-        <LinkStyled><Link to={props.to}>{props.label}</Link></LinkStyled>
-    </StyledLink>
-}
+const SidebarLink = (props) => {
+    const location = useLocation();
+    useEffect(() => {}, [location]);
+    return (
+        <StyledLink onClick={props.onClick || function () {}} to={props.to} location={location}>
+            <IconStyled>{props.icon}</IconStyled>
+            <LinkStyled><Link to={props.to}>{props.label}</Link></LinkStyled>
+        </StyledLink>
+    );
+};
 
 
 export default SidebarLink;

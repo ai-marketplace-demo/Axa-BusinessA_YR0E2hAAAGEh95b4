@@ -1,9 +1,8 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const removeDatasetToProject=({ projectUri, datasetUri})=>{
-    return {
-        variables:{projectUri,datasetUri},
-        mutation :gql`mutation RemoveDatasetFromProject(
+const removeDatasetToProject = ({ projectUri, datasetUri }) => ({
+    variables: { projectUri, datasetUri },
+    mutation: gql`mutation RemoveDatasetFromProject(
             $projectUri:String,
             $datasetUri:String,
         ){
@@ -12,8 +11,7 @@ const removeDatasetToProject=({ projectUri, datasetUri})=>{
                 datasetUri:$datasetUri
             )
         }`
-    }
-}
+});
 
 
 export default removeDatasetToProject;

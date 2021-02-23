@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const getEnvironment = ({environmentUri})=>{
-    return {
-        variables:{
-            environmentUri: environmentUri
-        },
-        query:gql`
+const getEnvironment = ({ environmentUri }) => ({
+    variables: {
+        environmentUri
+    },
+    query: gql`
             query GetEnvironment($environmentUri:String){
                 getEnvironment(environmentUri:$environmentUri){
                     environmentUri
@@ -29,8 +28,7 @@ const getEnvironment = ({environmentUri})=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default getEnvironment ;
+export default getEnvironment;

@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const getScheduledQuery = (scheduledQueryUri)=>{
-    return {
-        variables:{
-            scheduledQueryUri:scheduledQueryUri,
-        },
-        query:gql`
+const getScheduledQuery = (scheduledQueryUri) => ({
+    variables: {
+        scheduledQueryUri,
+    },
+    query: gql`
             query GetScheduledQuery($scheduledQueryUri:String!){
                 getScheduledQuery(scheduledQueryUri:$scheduledQueryUri){
                     scheduledQueryUri
@@ -42,8 +41,7 @@ const getScheduledQuery = (scheduledQueryUri)=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default getScheduledQuery ;
+export default getScheduledQuery;

@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listProjects= ({term,organization,roles})=>{
-    return {
-        variables:{
-            filter:{organization:organization||'',term:term||'', roles:roles}
-        },
-        query:gql`
+const listProjects = ({ term, organization, roles }) => ({
+    variables: {
+        filter: { organization: organization || '', term: term || '', roles }
+    },
+    query: gql`
             query ListProjects($filter:ProjectFilter){
                 listProjects(filter:$filter){
                         count
@@ -41,8 +40,7 @@ const listProjects= ({term,organization,roles})=>{
                     }
                 }
         `
-    }
-}
+});
 
 
-export default listProjects ;
+export default listProjects;

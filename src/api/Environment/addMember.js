@@ -1,9 +1,8 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const inviteUser=({environmentUri, userName, role})=>{
-    return {
-        variables:{environmentUri:environmentUri, userName:userName, role:role||'Invited'},
-        mutation :gql`mutation InviteUserOnEnvironment($environmentUri:String!,$userName:String!,$role:EnvironmentPermission!){
+const inviteUser = ({ environmentUri, userName, role }) => ({
+    variables: { environmentUri, userName, role: role || 'Invited' },
+    mutation: gql`mutation InviteUserOnEnvironment($environmentUri:String!,$userName:String!,$role:EnvironmentPermission!){
             inviteUserOnEnvironment(
                 environmentUri:$environmentUri,
                 role:$role,
@@ -14,8 +13,7 @@ const inviteUser=({environmentUri, userName, role})=>{
                 created
             }
         }`
-    }
-}
+});
 
 
-export default inviteUser
+export default inviteUser;

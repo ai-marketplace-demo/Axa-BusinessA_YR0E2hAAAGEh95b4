@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listProjectMLPipelines= (projectUri)=>{
-    return {
-        variables:{
-            projectUri:projectUri
-        },
-        query:gql`
+const listProjectMLPipelines = (projectUri) => ({
+    variables: {
+        projectUri
+    },
+    query: gql`
             query listProjectMLPipelines($projectUri:String!){
                 listProjectMLPipelines(projectUri:$projectUri){
                     count
@@ -50,8 +49,7 @@ const listProjectMLPipelines= (projectUri)=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default listProjectMLPipelines ;
+export default listProjectMLPipelines;

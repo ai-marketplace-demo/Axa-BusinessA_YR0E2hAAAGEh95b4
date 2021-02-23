@@ -1,17 +1,19 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const createEnvironment=({organizationUri, AwsAccountId,region,SamlGroupName,description,label})=>{
-    return {
-        variables:{
-            input  : {
-                organizationUri:organizationUri,
-                description:description,
-                SamlGroupName: SamlGroupName,
-                label:label, AwsAccountId:AwsAccountId,
-                region : region
-            }
-        },
-        mutation :gql`mutation CreateEnvironment($input:NewEnvironmentInput){
+const createEnvironment = ({
+    organizationUri, AwsAccountId, region, SamlGroupName, description, label
+}) => ({
+    variables: {
+        input: {
+            organizationUri,
+            description,
+            SamlGroupName,
+            label,
+            AwsAccountId,
+            region
+        }
+    },
+    mutation: gql`mutation CreateEnvironment($input:NewEnvironmentInput){
             createEnvironment(input:$input){
                 environmentUri
                 label
@@ -21,8 +23,7 @@ const createEnvironment=({organizationUri, AwsAccountId,region,SamlGroupName,des
                 created
             }
         }`
-    }
-}
+});
 
 
 export default createEnvironment;

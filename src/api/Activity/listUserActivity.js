@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listUserActivities= ({filter})=>{
-    return {
-        variables:{
-            filter:filter
-        },
-        query:gql`
+const listUserActivities = ({ filter }) => ({
+    variables: {
+        filter
+    },
+    query: gql`
             query ListUserActivities($filter:ActivityFilter){
                 listUserActivities(filter:$filter){
                     count
@@ -23,8 +22,7 @@ const listUserActivities= ({filter})=>{
                     }
                 }
             }`
-    }
-}
+});
 
 
 export default listUserActivities;

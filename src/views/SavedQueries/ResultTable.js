@@ -1,10 +1,9 @@
-import {Table} from "react-bootstrap";
-import React from "react";
-import styled from "styled-components";
+import { Table } from 'react-bootstrap';
+import React from 'react';
+import styled from 'styled-components';
 
 
-
-const TableStyled=styled.div`
+const TableStyled = styled.div`
 margin-bottom: 20%;
 margin-top: 5%;
 .ExcelTable2007 {
@@ -54,50 +53,41 @@ margin-top: 5%;
 }
 `;
 
-const ResultTable=(props)=> {
+const ResultTable = (props) => {
+    const data = (props.results && props.results.rows || []).map((r) => r.data);
+    const metadata = (props.results && props.results.metadata && props.results.metadata || []).map((c) => c.Name);
 
-    const data = (props.results&&props.results.rows||[]).map((r)=>{
-        return r.data
-    });
-    const metadata = (props.results&&props.results.metadata&&props.results.metadata||[]).map((c)=>{
-        return c.Name
-    })
-
-    return  <TableStyled className={""}>
-        <Table className={`ExcelTable2007`} size={`sm`} hover border>
-            <thead>
-            <tr>
-                {
-                    metadata.map((c)=>{
-                        return <th>
-                            {c}
-                        </th>
-                    })
-                }
-            </tr>
-            </thead>
-            <tbody>
-            {
-                data.map((r)=>{
-                    return <tr>
+    return (
+        <TableStyled className={''}>
+            <Table className={'ExcelTable2007'} size={'sm'} hover border>
+                <thead>
+                    <tr>
                         {
-                            r.map((v)=>{
-                                return <td>{v}</td>
-                            })
+                            metadata.map((c) => (
+                                <th>
+                                    {c}
+                                </th>
+                            ))
                         }
                     </tr>
-                })
-            }
+                </thead>
+                <tbody>
+                    {
+                        data.map((r) => (
+                            <tr>
+                                {
+                                    r.map((v) => <td>{v}</td>)
+                                }
+                            </tr>
+                        ))
+                    }
 
-            </tbody>
+                </tbody>
 
-        </Table>
-    </TableStyled>
-
-
-
-}
-
+            </Table>
+        </TableStyled>
+    );
+};
 
 
 export default ResultTable;

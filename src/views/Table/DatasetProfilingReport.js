@@ -1,33 +1,36 @@
-import React, {useState,useEffect} from "react";
-import {Row, Col, Container,Button} from "react-bootstrap";
-import styled from "styled-components";
-import {If, Then,Else} from "react-if";
-import * as Icon from "react-bootstrap-icons";
-import FullScreen from "../../components/FullScreen/Fullscreen";
+import React, { useState, useEffect } from 'react';
+import {
+    Row, Col, Container, Button
+} from 'react-bootstrap';
+import styled from 'styled-components';
+import { If, Then, Else } from 'react-if';
+import * as Icon from 'react-bootstrap-icons';
 import Editor from '@monaco-editor/react';
 import Select from 'react-select';
-import {toast} from "react-toastify";
+import { toast } from 'react-toastify';
 import { HotTable } from '@handsontable/react';
 import 'handsontable/dist/handsontable.full.css';
 import {
     BrowserRouter as Router,
     Route,
-    Link ,
+    Link,
     Switch,
     useParams,
     useRouteMatch,
     useHistory
-} from "react-router-dom";
-import Tabs from "../../components/Tabs/Tabs";
-import useClient from "../../api/client";
-import getDatasetTable from "../../api/DatasetTable/getDatasetTable";
-import startProfilingJob from "../../api/DatasetTable/startProfilingJob";
-import getDatasetTableProfilingReport from "../../api/DatasetTable/getDatasetProfilingReport";
-import dayjs from "dayjs"
+} from 'react-router-dom';
+import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import Tabs from '../../components/Tabs/Tabs';
+import useClient from '../../api/client';
+import getDatasetTable from '../../api/DatasetTable/getDatasetTable';
+import startProfilingJob from '../../api/DatasetTable/startProfilingJob';
+import getDatasetTableProfilingReport from '../../api/DatasetTable/getDatasetProfilingReport';
+import FullScreen from '../../components/FullScreen/Fullscreen';
+
 dayjs.extend(relativeTime);
 
-const Styled= styled.div`
+const Styled = styled.div`
 height:100vh;
 width:125%;
 z-index:999;
@@ -53,48 +56,49 @@ scrollbar-width: thin;
 	background-color: lightblue;
 }
 
-`
-const TableProfilingReport= (props)=>{
-    let client =  useClient();
-    let params=useParams();
-    let [report, setReport] = useState()
-    const fetchReport=async ()=>{
+`;
+const TableProfilingReport = (props) => {
+    const client = useClient();
+    const params = useParams();
+    const [report, setReport] = useState();
+    const fetchReport = async () => {
         const response = await client.query(getDatasetTableProfilingReport(params.jobUri));
-        if (!response.errors){
-            setReport(response.data.getDatasetTableProfilingReport)
-        }else {
-            toast(`Could not retrieve profiling report `);
+        if (!response.errors) {
+            setReport(response.data.getDatasetTableProfilingReport);
+        } else {
+            toast('Could not retrieve profiling report ');
         }
-    }
+    };
 
-    useEffect(()=>{
-        if (client){
+    useEffect(() => {
+        if (client) {
             fetchReport();
         }
+    }, [client, report]);
 
-    },[client,report])
+    const getReport = () => ({ __html: report });
+    return (
+        <Container>
+            <Row>
+                <Col xs={8}>
+                    <h4>Data Profiling Report</h4>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={12}>
+                    <Styled>
+                        <div
+                            dangerouslySetInnerHTML={
+                                getReport()
+                            }
+                        />
+                    </Styled>
+                </Col>
+            </Row>
 
-    const getReport=()=>{
-        return {__html: report};
-    }
-    return <Container>
-        <Row>
-            <Col xs={8}>
-                <h4>Data Profiling Report</h4>
-            </Col>
-        </Row>
-        <Row>
-            <Col xs={12}>
-                <Styled>
-                <div dangerouslySetInnerHTML={
-                    getReport()
-                }/>
-                </Styled>
-            </Col>
-        </Row>
-
-    </Container>
-}
+        </Container>
+    );
+};
 
 
 export default TableProfilingReport;

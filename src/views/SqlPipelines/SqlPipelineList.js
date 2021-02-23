@@ -1,101 +1,104 @@
-import React ,{useEffect,useState} from "react";
-import {Col, Row, Container, Spinner} from "react-bootstrap";
-import {If, Then, Else} from "react-if";
-import * as Icon from  "react-bootstrap-icons";
-import styled from "styled-components";
-import MainActionButton from "../../components/MainActionButton/MainButton";
-import {Link} from "react-router-dom";
-import useClient from "../../api/client";
-import listSqlPipelines from "../../api/SqlPipeline/listSqlPipelines";
-import {toast} from "react-toastify";
-import SqlPipelineListItem from "./SqlPipelineListItem";
-import Pager from "../../components/Pager/Pager";
+import React, { useEffect, useState } from 'react';
+import {
+    Col, Row, Container, Spinner
+} from 'react-bootstrap';
+import { If, Then, Else } from 'react-if';
+import * as Icon from 'react-bootstrap-icons';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import MainActionButton from '../../components/MainActionButton/MainButton';
+import useClient from '../../api/client';
+import listSqlPipelines from '../../api/SqlPipeline/listSqlPipelines';
+import SqlPipelineListItem from './SqlPipelineListItem';
+import Pager from '../../components/Pager/Pager';
 
-const Styled=styled.div`
+const Styled = styled.div`
 height:100vh;
-`
+`;
 
 
-const SqlPipelineList = function(){
+const SqlPipelineList = function () {
     const client = useClient();
 
     const [loading, setLoading] = useState(false);
-    const [sqlPipelines,setSqlPipelines] =useState({
-        count:  0,
-        page : 1,
-        pages:1,
-        hasNext:false,
-        hasPrevious : false,
-        nodes:[]
-    })
+    const [sqlPipelines, setSqlPipelines] = useState({
+        count: 0,
+        page: 1,
+        pages: 1,
+        hasNext: false,
+        hasPrevious: false,
+        nodes: []
+    });
 
-    let [term, setTerm] = useState();
-    let [ready, setReady] = useState(false);
+    const [term, setTerm] = useState();
+    const [ready, setReady] = useState(false);
 
-    const fetchItems= async()=>{
+    const fetchItems = async () => {
         const response = await client.query(
-            listSqlPipelines ({term : term, page:sqlPipelines.page, pageSize:5})
-        )
-        if (!response.errors){
+            listSqlPipelines({ term, page: sqlPipelines.page, pageSize: 5 })
+        );
+        if (!response.errors) {
             setSqlPipelines(response.data.listSqlPipelines);
             setReady(true);
-        }else {
+        } else {
             toast(`Received ${response.errors[0].message}`);
         }
-    }
+    };
 
 
-    const nextPage=()=>{
-        if (sqlPipelines.hasNext){
+    const nextPage = () => {
+        if (sqlPipelines.hasNext) {
             setReady(false);
-            setSqlPipelines({...sqlPipelines, page:sqlPipelines.page+1});
+            setSqlPipelines({ ...sqlPipelines, page: sqlPipelines.page + 1 });
         }
-    }
+    };
 
-    const prevPage=()=>{
-        if (sqlPipelines.hasPrevious){
+    const prevPage = () => {
+        if (sqlPipelines.hasPrevious) {
             setReady(false);
-            setSqlPipelines({...sqlPipelines, page:sqlPipelines.page-1});
+            setSqlPipelines({ ...sqlPipelines, page: sqlPipelines.page - 1 });
         }
-    }
+    };
 
-    useEffect(()=>{
-        if (client){
+    useEffect(() => {
+        if (client) {
             fetchItems();
         }
-    },[client, sqlPipelines.page])
+    }, [client, sqlPipelines.page]);
 
 
-    return <Styled>
-        <Container fluid className={"bg-transparent mt-4"}>
-            <Row>
-                <Col xs={8}>
-                    <h3> <Icon.Gear/> My Data Pipelines</h3>
-                </Col>
-                <Col xs={2}/>
-                <Col className={`mb-1 text-right`} xs={2}>
-                    <Link to={"/newsqlPipeline"}>
-                        <div className={`rounded-pill btn btn-sm btn-info`}>
-                            <b>  Create </b>
-                        </div>
-                    </Link>
-                </Col>
-            </Row>
-            <Row>
-                <Col xs={12}>
-                    <Pager
-                        label={`pipelines(s)`}
-                        page={sqlPipelines.page}
-                        pages={sqlPipelines.pages}
-                        count={sqlPipelines.count}
-                        next={nextPage}
-                        previous={prevPage}
-                        onKeyDown={()=>{fetchItems()}}
-                        onChange={(e)=>{setTerm(e.target.value)}}
-                    />
-                </Col>
-            </Row>
-            {/**
+    return (
+        <Styled>
+            <Container fluid className={'bg-transparent mt-4'}>
+                <Row>
+                    <Col xs={8}>
+                        <h3> <Icon.Gear /> My Data Pipelines</h3>
+                    </Col>
+                    <Col xs={2} />
+                    <Col className={'mb-1 text-right'} xs={2}>
+                        <Link to={'/newsqlPipeline'}>
+                            <div className={'rounded-pill btn btn-sm btn-info'}>
+                                <b>  Create </b>
+                            </div>
+                        </Link>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12}>
+                        <Pager
+                            label={'pipelines(s)'}
+                            page={sqlPipelines.page}
+                            pages={sqlPipelines.pages}
+                            count={sqlPipelines.count}
+                            next={nextPage}
+                            previous={prevPage}
+                            onKeyDown={() => { fetchItems(); }}
+                            onChange={(e) => { setTerm(e.target.value); }}
+                        />
+                    </Col>
+                </Row>
+                {/**
             <Row className={"mt-3"}>
                 <Col xs={12}>
                     <Row>
@@ -120,33 +123,33 @@ const SqlPipelineList = function(){
 
 
             </Row>
-             **/}
+             * */}
 
-            <Row className={`mt-3`}>
-                <If condition={ready}>
-                    <Then>
-                        {
-                            sqlPipelines.nodes.map((sqlPipeline)=>{
-                                return <Col xs={4}>
-                                    <SqlPipelineListItem sqlPipeline={sqlPipeline}/>
-                                </Col>
-                            })
-                        }
-                    </Then>
-                    <Else>
-                        <Col xs={4}>
-                            <Spinner variant={`info`} animation="border" role="status">
-                                <span className="sr-only">Loading...</span>
-                            </Spinner>
-                        </Col>
-                    </Else>
-                </If>
+                <Row className={'mt-3'}>
+                    <If condition={ready}>
+                        <Then>
+                            {
+                                sqlPipelines.nodes.map((sqlPipeline) => (
+                                    <Col xs={4}>
+                                        <SqlPipelineListItem sqlPipeline={sqlPipeline} />
+                                    </Col>
+                                ))
+                            }
+                        </Then>
+                        <Else>
+                            <Col xs={4}>
+                                <Spinner variant={'info'} animation="border" role="status">
+                                    <span className="sr-only">Loading...</span>
+                                </Spinner>
+                            </Col>
+                        </Else>
+                    </If>
 
-            </Row>
-        </Container>
-    </Styled>
-
-}
+                </Row>
+            </Container>
+        </Styled>
+    );
+};
 
 
 export default SqlPipelineList;

@@ -1,74 +1,79 @@
-import React ,{useState,useEffect} from "react";
-import {Container, Table,Row, Badge,Col,Spinner} from "react-bootstrap";
-import styled from "styled-components";
-import * as Icon from "react-bootstrap-icons";
-import Select from 'react-select'
-import {Link,useParams,useLocation,useHistory} from "react-router-dom"
-import useClient from "../../../api/client";
-import listEnvironmentMembers from "../../../api/Environment/listEnvironmentMembers";
-import dayjs from "dayjs"
+import React, { useState, useEffect } from 'react';
+import {
+    Container, Table, Row, Badge, Col, Spinner
+} from 'react-bootstrap';
+import styled from 'styled-components';
+import * as Icon from 'react-bootstrap-icons';
+import Select from 'react-select';
+import {
+    Link, useParams, useLocation, useHistory
+} from 'react-router-dom';
+import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-dayjs.extend(relativeTime)
+import useClient from '../../../api/client';
+import listEnvironmentMembers from '../../../api/Environment/listEnvironmentMembers';
+
+dayjs.extend(relativeTime);
 
 
-const EnvironmentPermissionListItem=(props)=>{
-    const member = props.member;
-    const environment = props.environment;
+const EnvironmentPermissionListItem = (props) => {
+    const { member } = props;
+    const { environment } = props;
 
-    let EnvironmentPermissions=[
+    const EnvironmentPermissions = [
         'Admin',
-        "DatasetCreator",
-        "Invited",
-        "NotInvited"
-    ].map((permissionLabel)=>{
-        return {label : permissionLabel, value:permissionLabel}
-    })
+        'DatasetCreator',
+        'Invited',
+        'NotInvited'
+    ].map((permissionLabel) => ({ label: permissionLabel, value: permissionLabel }));
 
-    let options=[
-        {label:member.userRoleInEnvironment, value:member.userRoleInEnvironment}
-    ]
-    let actionsDisabled= true;
-    if (environment.userRoleInEnvironment=='Admin' | environment.userRoleInEnvironment=='Owner'){
-        actionsDisabled=false;
+    const options = [
+        { label: member.userRoleInEnvironment, value: member.userRoleInEnvironment }
+    ];
+    let actionsDisabled = true;
+    if (environment.userRoleInEnvironment == 'Admin' | environment.userRoleInEnvironment == 'Owner') {
+        actionsDisabled = false;
     }
-    if (member.userRoleInEnvironment=='Owner'){
-        actionsDisabled=true;
+    if (member.userRoleInEnvironment == 'Owner') {
+        actionsDisabled = true;
     }
 
-    let [role, setRole] = useState(options[0]);
-    const changeRole=async (selectOption)=>{
-        console.log(">>",selectOption);
+    const [role, setRole] = useState(options[0]);
+    const changeRole = async (selectOption) => {
+        console.log('>>', selectOption);
         setRole(selectOption);
         await props.updateUserRoleInEnvironment({
-            userName:member.userName,
-            role : selectOption.value
+            userName: member.userName,
+            role: selectOption.value
         });
-    }
+    };
 
-    let leaveEnv=async (userName)=>{
+    const leaveEnv = async (userName) => {
         await props.leaveUser(member.userName);
-    }
-    return <tr>
-        <td>
-            {member.userName}
-        </td>
-        <td>
-            {dayjs(member.created).fromNow()}
-        </td>
-        <td>
-           <Select onChange={changeRole} isDisabled={actionsDisabled} options={EnvironmentPermissions} value={role}/>
-        </td>
-        <td>
-            {
-                (actionsDisabled)?(
-                    <p></p>
-                ):(
-                    <div onClick={leaveEnv} className={"btn btn-sm border bg-white"}>Leave</div>
-                )
-            }
-        </td>
-    </tr>
-}
+    };
+    return (
+        <tr>
+            <td>
+                {member.userName}
+            </td>
+            <td>
+                {dayjs(member.created).fromNow()}
+            </td>
+            <td>
+                <Select onChange={changeRole} isDisabled={actionsDisabled} options={EnvironmentPermissions} value={role} />
+            </td>
+            <td>
+                {
+                    (actionsDisabled) ? (
+                        <p></p>
+                    ) : (
+                        <div onClick={leaveEnv} className={'btn btn-sm border bg-white'}>Leave</div>
+                    )
+                }
+            </td>
+        </tr>
+    );
+};
 
 
 export default EnvironmentPermissionListItem;

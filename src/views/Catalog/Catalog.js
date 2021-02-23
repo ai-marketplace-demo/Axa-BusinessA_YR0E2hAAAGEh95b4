@@ -1,17 +1,21 @@
-import React,{useState,useEffect} from "react";
-import {Container, Row, Col,Spinner,Badge, Form} from "react-bootstrap";
-import * as Icon from "react-bootstrap-icons";
-import {BrowserRouter, Route,Link, Switch} from "react-router-dom";
-import styled from "styled-components";
-import Avatar from "react-avatar"
-import Zoom from "../../components/Zoomer/Zoom"
-import Wireframe from "../../components/Wireframe/Wireframe";
-import useClient from "../../api/client";
-import searchDatasets from "../../api/Catalog/searchDatasets";
-import {toast} from "react-toastify";
-import dayjs from "dayjs";
+import React, { useState, useEffect } from 'react';
+import {
+    Container, Row, Col, Spinner, Badge, Form
+} from 'react-bootstrap';
+import * as Icon from 'react-bootstrap-icons';
+import {
+    BrowserRouter, Route, Link, Switch
+} from 'react-router-dom';
+import styled from 'styled-components';
+import Avatar from 'react-avatar';
+import { toast } from 'react-toastify';
+import dayjs from 'dayjs';
+import Zoom from '../../components/Zoomer/Zoom';
+import Wireframe from '../../components/Wireframe/Wireframe';
+import useClient from '../../api/client';
+import searchDatasets from '../../api/Catalog/searchDatasets';
 
-const FacetGroupStyled=styled.div`
+const FacetGroupStyled = styled.div`
 __border-radius: 8px;
 __border : solid 1px lightgrey;
 __background-color: white;
@@ -20,10 +24,10 @@ padding : 0px;
 margin-bottom: 3%;
 __height: 3em;
 font-size: 1.2rem;
-`
+`;
 
 
-const FacetGroupLine=styled.div`
+const FacetGroupLine = styled.div`
 padding : 0px;
 margin: 0;
 height:1.3em;
@@ -36,11 +40,10 @@ width:100%;
   font-weight: bolder;
 }
 
-`
+`;
 
 
-
-const FullScreen=styled.div`
+const FullScreen = styled.div`
 position : top;#fixed;
 top : 1%;
 z-index: 10;
@@ -55,10 +58,10 @@ a:link, a:visited{
 a{
  outline: 0;
 }
-`
+`;
 
 
-const HitStyled=styled.div`
+const HitStyled = styled.div`
 transition: transform 0.3s ease-in-out;
 &:hover{
   transform: translateY(-3px);
@@ -82,325 +85,325 @@ a:hover, a:link, a:visited{
 }
 `;
 
-const FacetGroupItem = (props)=>{
-    return <FacetGroupLine><Row>
+const FacetGroupItem = (props) => (
+    <FacetGroupLine><Row>
 
-            <Col xs={9}>
-                <div onClick={()=>{props.toggleFilter(props.group, props.value)}}>{props.value}</div>
-            </Col>
-            <Col xs={2}>
-                {
-                    (props.filters[props.group][props.value])?(
-                        <div> <Badge variant={'primary'} size={'sm'}>{props.count}</Badge></div>
-                    ):(
-                        <b>{props.count}</b>
-                    )
-                }
-            </Col>
+        <Col xs={9}>
+            <div onClick={() => { props.toggleFilter(props.group, props.value); }}>{props.value}</div>
+        </Col>
+        <Col xs={2}>
+            {
+                (props.filters[props.group][props.value]) ? (
+                    <div> <Badge variant={'primary'} size={'sm'}>{props.count}</Badge></div>
+                ) : (
+                    <b>{props.count}</b>
+                )
+            }
+        </Col>
 
     </Row>
     </FacetGroupLine>
+);
 
-}
 
-
-const FacetGroup=(props)=>{
-    return <Row className={"ml-0 mb-2"}>
+const FacetGroup = (props) => (
+    <Row className={'ml-0 mb-2'}>
         <Col xs={12}>
-            <Row className={`mt-1`}>
+            <Row className={'mt-1'}>
                 <Col className="ml-0 text-left" xs={10}>
-                    <b className={"text-capitalize"}>{props.dimensionName}</b>
+                    <b className={'text-capitalize'}>{props.dimensionName}</b>
                 </Col>
             </Row>
 
-            <Row className={"ml-0 mt-1"}>
-                    {props.items.map((value, value_index)=>{
-                        return <FacetGroupItem
-                            select={true}
-                            toggleFilter={props.toggleFilter}
-                            filters={props.filters}
-                            group={props.dimensionName}
-                            key={`facet-group-item-${props.name}-${value_index}`}{...value}/>
-                    })}
+            <Row className={'ml-0 mt-1'}>
+                {props.items.map((value, value_index) => (
+                    <FacetGroupItem
+                        select
+                        toggleFilter={props.toggleFilter}
+                        filters={props.filters}
+                        group={props.dimensionName}
+                        key={`facet-group-item-${props.name}-${value_index}`}
+                        {...value}
+                    />
+                ))}
             </Row>
         </Col>
     </Row>
-
-}
-const FacetGroups = (props)=>{
-    return <>
-        <Row className={`ml-0`} >
-            <Col className={`ml-0`} xs={4}>
+);
+const FacetGroups = (props) => (
+    <>
+        <Row className={'ml-0'}>
+            <Col className={'ml-0'} xs={4}>
                 <Row>
                     <Col xs={6}>
                         <Zoom scale={'1.1'}>
-                        <div
-                            onClick={props.applyFilters} className={`text-primary`}>apply</div>
+                            <div
+                                onClick={props.applyFilters}
+                                className={'text-primary'}
+                            >apply
+                            </div>
                         </Zoom>
                     </Col>
                     <Col xs={6}>
                         <Zoom scale={'1.1'}>
-                        <div onClick={props.resetFilters} className={`text-info`}>reset</div>
+                            <div onClick={props.resetFilters} className={'text-info'}>reset</div>
                         </Zoom>
                     </Col>
                 </Row>
             </Col>
 
         </Row>
-        <Row className={`ml-0 mt-2`}>
+        <Row className={'ml-0 mt-2'}>
 
             <Col xs={12}>
-                {props.groups.map((group,group_index)=>{
-                    return <FacetGroup
-                            toggleFilter={props.toggleFilter}
-                            filters={props.filters}
-                            {...group}/>
-                })}
+                {props.groups.map((group, group_index) => (
+                    <FacetGroup
+                        toggleFilter={props.toggleFilter}
+                        filters={props.filters}
+                        {...group}
+                    />
+                ))}
             </Col>
-    </Row>
+        </Row>
     </>
-}
+);
 
-const Catalog=(props)=>{
-    let [ready, setReady] = useState(false);
-    let [results, setResults] = useState({groups:[]});
-    let [hits, setHits] = useState({});
-    let [facetFilters, setFacetFilters]= useState({});
-    let [search, setSearch] = useState()
-    let client = useClient();
-
-
-    const handleInputChange=(e)=>setSearch(e.target.value);
+const Catalog = (props) => {
+    const [ready, setReady] = useState(false);
+    const [results, setResults] = useState({ groups: [] });
+    const [hits, setHits] = useState({});
+    const [facetFilters, setFacetFilters] = useState({});
+    const [search, setSearch] = useState();
+    const client = useClient();
 
 
-    const handleKeyDown=async (e)=>{
+    const handleInputChange = (e) => setSearch(e.target.value);
+
+
+    const handleKeyDown = async (e) => {
         if (e.key === 'Enter') {
             await fetchItems();
         }
-    }
+    };
 
-    const nextPage=()=>{
-        if (hits.hasNext){
-
-            setHits({...hits, page:hits.page+1})
+    const nextPage = () => {
+        if (hits.hasNext) {
+            setHits({ ...hits, page: hits.page + 1 });
         }
-    }
-    const prevPage=()=>{
-        if (hits.hasPrevious){
-            setHits({...hits, page:hits.page-1})
+    };
+    const prevPage = () => {
+        if (hits.hasPrevious) {
+            setHits({ ...hits, page: hits.page - 1 });
         }
+    };
 
-    }
-
-    const fetchItems=async ()=>{
-        const gqlFilters={filters:[]}
-        Object.keys(facetFilters).map((grp)=>{
-            let FacetFilter={
-                group:grp,
-                values:[]
-            }
-            Object.keys(facetFilters[grp]).forEach((v)=>{
-                if (facetFilters[grp][v]){
+    const fetchItems = async () => {
+        const gqlFilters = { filters: [] };
+        Object.keys(facetFilters).map((grp) => {
+            const FacetFilter = {
+                group: grp,
+                values: []
+            };
+            Object.keys(facetFilters[grp]).forEach((v) => {
+                if (facetFilters[grp][v]) {
                     FacetFilter.values.push(v);
                 }
             });
             gqlFilters.filters.push(FacetFilter);
-        })
-        const response=await client
+        });
+        const response = await client
             .query(
                 searchDatasets({
-                    filters:gqlFilters,
-                    page: hits.page||1,
-                    term:search})
+                    filters: gqlFilters,
+                    page: hits.page || 1,
+                    term: search
+                })
             );
-        if (!response.errors){
+        if (!response.errors) {
             setResults(response.data.searchDatasets.facets);
             setHits(response.data.searchDatasets.hits);
-            const filters={};
-            response.data.searchDatasets.facets.groups.map((grp)=>{
-                filters[grp.dimensionName]={}
-                grp.items.map((item)=>{
-                    filters[grp.dimensionName][item.value]=false
-                })
+            const filters = {};
+            response.data.searchDatasets.facets.groups.map((grp) => {
+                filters[grp.dimensionName] = {};
+                grp.items.map((item) => {
+                    filters[grp.dimensionName][item.value] = false;
+                });
             });
-            setFacetFilters({...filters})
+            setFacetFilters({ ...filters });
             setReady(true);
-
-        }else{
-            toast("KO", {hideProgressBar:true})
+        } else {
+            toast('KO', { hideProgressBar: true });
         }
-
-    }
-    useEffect(()=>{
-        if (client){
+    };
+    useEffect(() => {
+        if (client) {
             fetchItems();
         }
-    },[client, ready, hits.page])
+    }, [client, ready, hits.page]);
 
-    const toggleFilter=(group, value)=>{
-        facetFilters[group][value] =!facetFilters[group][value]
-        setFacetFilters({...facetFilters})
-    }
+    const toggleFilter = (group, value) => {
+        facetFilters[group][value] = !facetFilters[group][value];
+        setFacetFilters({ ...facetFilters });
+    };
 
-    const resetFilters=()=>{
-        Object.keys(facetFilters).map((grp)=>{
-            Object.keys(facetFilters[grp]).map((v)=>{
-                facetFilters[grp][v]= false
-            })
+    const resetFilters = () => {
+        Object.keys(facetFilters).map((grp) => {
+            Object.keys(facetFilters[grp]).map((v) => {
+                facetFilters[grp][v] = false;
+            });
         });
-        setFacetFilters({...facetFilters})
-    }
+        setFacetFilters({ ...facetFilters });
+    };
 
-    const applyFilters=async ()=>{
+    const applyFilters = async () => {
         await fetchItems();
-    }
+    };
 
 
-
-    return <FullScreen>
-        <Container>
-            <Row>
-                <Col xs={3}>
-                    <h3>Catalog</h3>
-                </Col>
-                <Col className={`ml-3 pt-2`} xs={3}>
-                    <i>Found {hits.count} results</i>
-                </Col>
-                <Col className={`pt-2`}xs={5}>
-                    <Row>
-                        <Col xs={2}><Icon.ChevronLeft onClick={prevPage}/></Col>
-                        <Col xs={4}>Page {hits.page}/{hits.pages}</Col>
-                        <Col xs={2}><Icon.ChevronRight onClick={nextPage}/></Col>
-                    </Row>
-                </Col>
-                <Col className={`mt-3 pl-4`} xs={12}>
-                    <input
-                        name={`search`}
-                        value={search}
-                        onChange={handleInputChange}
-                        onKeyDown={handleKeyDown}
-                        style={{width:"100%"}}/>
-                </Col>
-            </Row>
-
-        <Row className={"ml-0"}>
-            <Col className="ml-0" xs={3}>
-                {!ready?(
-                    <>
-                    <Row className={"ml-0"}>
-                        <Col xs={6}>
-                            <Spinner size="sm"  animation={"border-0"} variant={"secondary"}/>
-
-                        </Col>
-                    </Row>
-                        <Row className={"mt-5"}>
-                            <Col xs={6}>
-                                <Spinner size="sm" animation={"border-0"} variant={"secondary"}/>
-                            </Col>
+    return (
+        <FullScreen>
+            <Container>
+                <Row>
+                    <Col xs={3}>
+                        <h3>Catalog</h3>
+                    </Col>
+                    <Col className={'ml-3 pt-2'} xs={3}>
+                        <i>Found {hits.count} results</i>
+                    </Col>
+                    <Col className={'pt-2'} xs={5}>
+                        <Row>
+                            <Col xs={2}><Icon.ChevronLeft onClick={prevPage} /></Col>
+                            <Col xs={4}>Page {hits.page}/{hits.pages}</Col>
+                            <Col xs={2}><Icon.ChevronRight onClick={nextPage} /></Col>
                         </Row>
-                    </>
-                ):(
-                    <Row>
-                        <Col className={`border-0 border-0-success p-0`} xs={12}>
-                        <FacetGroups
-                            groups={results.groups}
-                            toggleFilter={toggleFilter}
-                            resetFilters={resetFilters}
-                            applyFilters={applyFilters}
-                            filters={facetFilters}
+                    </Col>
+                    <Col className={'mt-3 pl-4'} xs={12}>
+                        <input
+                            name={'search'}
+                            value={search}
+                            onChange={handleInputChange}
+                            onKeyDown={handleKeyDown}
+                            style={{ width: '100%' }}
                         />
-                        </Col>
+                    </Col>
+                </Row>
 
-                    </Row>
-                )}
+                <Row className={'ml-0'}>
+                    <Col className="ml-0" xs={3}>
+                        {!ready ? (
+                            <>
+                                <Row className={'ml-0'}>
+                                    <Col xs={6}>
+                                        <Spinner size="sm" animation={'border-0'} variant={'secondary'} />
 
-            </Col>
-            <Col className={`m-0 p-0  `}xs={9}>
-                {!ready?(
-                    <Spinner animation={"border-0"} variant={"primary"}/>
-                ):(
-                    <Row className={`  ml-0`}>
-                        <Col xs={12}>
-                            {
-                                hits.nodes.map((hit)=>{
+                                    </Col>
+                                </Row>
+                                <Row className={'mt-5'}>
+                                    <Col xs={6}>
+                                        <Spinner size="sm" animation={'border-0'} variant={'secondary'} />
+                                    </Col>
+                                </Row>
+                            </>
+                        ) : (
+                            <Row>
+                                <Col className={'border-0 border-0-success p-0'} xs={12}>
+                                    <FacetGroups
+                                        groups={results.groups}
+                                        toggleFilter={toggleFilter}
+                                        resetFilters={resetFilters}
+                                        applyFilters={applyFilters}
+                                        filters={facetFilters}
+                                    />
+                                </Col>
 
-                                    return <HitStyled>
-                                        <Row key={hit.datasetUri}>
+                            </Row>
+                        )}
 
-                                        <Col xs={6} className={` `}>
-                                            <Row>
-                                                <Col xs={1}>
-                                                    <Avatar className={`mr-1`} size={22} round={true} name={hit.label}/>
-                                                </Col>
-                                                <Col xs={9}>
-                                                    <h5>
-                                                        <Link to={`/dataset/${hit.datasetUri}/overview`}>
-                                                            {hit.label}
-                                                        </Link>
-                                                    </h5>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={4}>
-                                                    <Icon.Table size={12}/> <small>{hit.statistics.tables} tables</small>
-                                                </Col>
-                                                <Col xs={6}>
-                                                    <Icon.Table size={12}/> <small>{hit.statistics.locations} locations</small>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={12}>
-                                                    <small>
-                                                        {hit.description.slice(0,200)}
-                                                    </small>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={8}>
-                                                    {
-                                                        hit.tags.map((tag)=>{
-                                                            return <Badge className={'ml-1'} variant={`info`} key={tag}>{tag}</Badge>
-                                                        })
-                                                    }
-                                                </Col>
-                                            </Row>
+                    </Col>
+                    <Col className={'m-0 p-0  '} xs={9}>
+                        {!ready ? (
+                            <Spinner animation={'border-0'} variant={'primary'} />
+                        ) : (
+                            <Row className={'  ml-0'}>
+                                <Col xs={12}>
+                                    {
+                                        hits.nodes.map((hit) => (
+                                            <HitStyled>
+                                                <Row key={hit.datasetUri}>
 
-                                        </Col>
-                                        <Col className={` `} xs={6}>
-                                            <Row>
-                                                <Col xs={8}>
-                                                    <small>in Org:<b> {hit.organization.label}</b></small>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col xs={12}>
-                                                    <small>Created by {hit.owner} {dayjs(hit.created).fromNow()}</small>
-                                                </Col>
-                                            </Row>
+                                                    <Col xs={6} className={' '}>
+                                                        <Row>
+                                                            <Col xs={1}>
+                                                                <Avatar className={'mr-1'} size={22} round name={hit.label} />
+                                                            </Col>
+                                                            <Col xs={9}>
+                                                                <h5>
+                                                                    <Link to={`/dataset/${hit.datasetUri}/overview`}>
+                                                                        {hit.label}
+                                                                    </Link>
+                                                                </h5>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col xs={4}>
+                                                                <Icon.Table size={12} /> <small>{hit.statistics.tables} tables</small>
+                                                            </Col>
+                                                            <Col xs={6}>
+                                                                <Icon.Table size={12} /> <small>{hit.statistics.locations} locations</small>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col xs={12}>
+                                                                <small>
+                                                                    {hit.description.slice(0, 200)}
+                                                                </small>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col xs={8}>
+                                                                {
+                                                                    hit.tags.map((tag) => <Badge className={'ml-1'} variant={'info'} key={tag}>{tag}</Badge>)
+                                                                }
+                                                            </Col>
+                                                        </Row>
 
-                                            <Row className={`mt-2`}>
-                                                <Col xs={6}>
+                                                    </Col>
+                                                    <Col className={' '} xs={6}>
+                                                        <Row>
+                                                            <Col xs={8}>
+                                                                <small>in Org:<b> {hit.organization.label}</b></small>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col xs={12}>
+                                                                <small>Created by {hit.owner} {dayjs(hit.created).fromNow()}</small>
+                                                            </Col>
+                                                        </Row>
 
-                                                    <Zoom scale={'1.1'}>
-                                                        <small className={"text-primary"}>Request Access</small>
-                                                    </Zoom>
-                                                </Col>
-                                            </Row>
+                                                        <Row className={'mt-2'}>
+                                                            <Col xs={6}>
 
-                                        </Col>
+                                                                <Zoom scale={'1.1'}>
+                                                                    <small className={'text-primary'}>Request Access</small>
+                                                                </Zoom>
+                                                            </Col>
+                                                        </Row>
 
-                                    </Row>
-                                    </HitStyled>
-                                })
-                            }
-                        </Col>
-                    </Row>
-                )}
-            </Col>
-        </Row>
-    </Container>
-    </FullScreen>
-}
+                                                    </Col>
+
+                                                </Row>
+                                            </HitStyled>
+                                        ))
+                                    }
+                                </Col>
+                            </Row>
+                        )}
+                    </Col>
+                </Row>
+            </Container>
+        </FullScreen>
+    );
+};
 
 
 export default Catalog;

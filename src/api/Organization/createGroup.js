@@ -1,11 +1,14 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const createGroup=({organizationUri, description,label, role})=>{
-    return {
-        variables:{
-            input  : {organizationUri:organizationUri, description:description,label:label, role:role||'Member'}
-        },
-        mutation :gql`mutation CreateGroup($input:NewGroupInput){
+const createGroup = ({
+    organizationUri, description, label, role
+}) => ({
+    variables: {
+        input: {
+            organizationUri, description, label, role: role || 'Member'
+        }
+    },
+    mutation: gql`mutation CreateGroup($input:NewGroupInput){
             createGroup(input:$input){
                 groupUri
                 label
@@ -14,8 +17,7 @@ const createGroup=({organizationUri, description,label, role})=>{
                 userRoleInGroup
             }
         }`
-    }
-}
+});
 
 
-export default createGroup
+export default createGroup;

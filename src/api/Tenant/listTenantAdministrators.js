@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listTenantAdministrators= (filter)=>{
-    return {
-        variables:{
-            filter:filter
-        },
-        query:gql`
+const listTenantAdministrators = (filter) => ({
+    variables: {
+        filter
+    },
+    query: gql`
             query ListTenantAdministrators($filter:TenantAdministratorFilter){
                 listTenantAdministrators(filter:$filter){
                     count
@@ -21,8 +20,7 @@ const listTenantAdministrators= (filter)=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default listTenantAdministrators ;
+export default listTenantAdministrators;

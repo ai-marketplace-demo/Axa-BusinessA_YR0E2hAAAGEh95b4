@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const importDashboard=({environmentUri ,input})=>{
-    return {
-        variables:{
-            input  : input
-        },
-        mutation :gql`mutation importDashboard(
+const importDashboard = ({ environmentUri, input }) => ({
+    variables: {
+        input
+    },
+    mutation: gql`mutation importDashboard(
             $input:ImportDashboardInput,
         ){
             importDashboard(input:$input){
@@ -16,8 +15,7 @@ const importDashboard=({environmentUri ,input})=>{
                 created
             }
         }`
-    }
-}
+});
 
 
 export default importDashboard;

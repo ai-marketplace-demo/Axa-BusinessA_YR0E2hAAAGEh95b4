@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row,Col} from "react-bootstrap";
+import { Row, Col } from 'react-bootstrap';
 import CompletenessMetrics from './CompletenessMetrics';
 import StringTypeMetrics from './StringTypeMetrics';
 import DateTypeMetrics from './DateTypeMetrics';
@@ -54,7 +54,7 @@ class MetricsComponent extends React.PureComponent {
 
     render() {
         const {
-             column
+            column
         } = this.props;
 
         return (

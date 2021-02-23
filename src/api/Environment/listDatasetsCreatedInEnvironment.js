@@ -1,12 +1,11 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listDatasetsCreatedInEnvironment = ({filter,environmentUri})=>{
-    return {
-        variables:{
-            environmentUri: environmentUri,
-            filter:filter
-        },
-        query:gql`
+const listDatasetsCreatedInEnvironment = ({ filter, environmentUri }) => ({
+    variables: {
+        environmentUri,
+        filter
+    },
+    query: gql`
             query ListDatasetsCreatedInEnvironment($filter:DatasetFilter,$environmentUri:String){
                 listDatasetsCreatedInEnvironment(environmentUri:$environmentUri,filter:$filter){
                     count
@@ -24,8 +23,7 @@ const listDatasetsCreatedInEnvironment = ({filter,environmentUri})=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default listDatasetsCreatedInEnvironment ;
+export default listDatasetsCreatedInEnvironment;

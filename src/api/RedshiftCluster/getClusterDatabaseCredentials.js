@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const getRedshiftClusterDatabaseCredentials=(clusterUri)=>{
-    return {
-        variables:{
-            clusterUri:clusterUri,
-        },
-        query:gql`
+const getRedshiftClusterDatabaseCredentials = (clusterUri) => ({
+    variables: {
+        clusterUri,
+    },
+    query: gql`
             query getRedshiftClusterDatabaseCredentials($clusterUri:String!){
                 getRedshiftClusterDatabaseCredentials(clusterUri:$clusterUri){
                      clusterUri
@@ -17,8 +16,7 @@ const getRedshiftClusterDatabaseCredentials=(clusterUri)=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default getRedshiftClusterDatabaseCredentials ;
+export default getRedshiftClusterDatabaseCredentials;

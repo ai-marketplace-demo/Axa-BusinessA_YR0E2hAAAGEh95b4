@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const searchRedshiftClusters= (filter)=>{
-    return {
-        variables:{
-            filter:filter,
-        },
-        query:gql`
+const searchRedshiftClusters = (filter) => ({
+    variables: {
+        filter,
+    },
+    query: gql`
             query searchRedshiftClusters($filter:RedshiftClusterFilter){
                 searchRedshiftClusters(filter:$filter){
                     count
@@ -64,8 +63,7 @@ const searchRedshiftClusters= (filter)=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default searchRedshiftClusters ;
+export default searchRedshiftClusters;

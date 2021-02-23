@@ -1,12 +1,13 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listOrganizationGroups= ({term,limit,skip,role,organizationUri})=>{
-    return {
-        variables:{
-            organizationUri: organizationUri,
-            filter:{term:term||""}
-        },
-        query:gql`
+const listOrganizationGroups = ({
+    term, limit, skip, role, organizationUri
+}) => ({
+    variables: {
+        organizationUri,
+        filter: { term: term || '' }
+    },
+    query: gql`
             query getOrg($organizationUri:String,$filter:GroupFilter){
                 getOrganization(organizationUri:$organizationUri){
                     groups(filter:$filter){
@@ -23,8 +24,7 @@ const listOrganizationGroups= ({term,limit,skip,role,organizationUri})=>{
                 }
             }
         `
-    }
-}
+});
 
 
 export default listOrganizationGroups;

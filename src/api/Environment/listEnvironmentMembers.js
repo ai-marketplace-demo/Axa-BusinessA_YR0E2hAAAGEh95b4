@@ -1,12 +1,11 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listEnvironmentMembers = ({term,environmentUri})=>{
-    return {
-        variables:{
-            environmentUri: environmentUri,
-            filter:{term:term||''}
-        },
-        query:gql`
+const listEnvironmentMembers = ({ term, environmentUri }) => ({
+    variables: {
+        environmentUri,
+        filter: { term: term || '' }
+    },
+    query: gql`
             query getEnvironment($filter:OrganizationUserFilter,$environmentUri:String){
                 getEnvironment(environmentUri:$environmentUri){
                     environmentUri
@@ -23,8 +22,7 @@ const listEnvironmentMembers = ({term,environmentUri})=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default listEnvironmentMembers ;
+export default listEnvironmentMembers;

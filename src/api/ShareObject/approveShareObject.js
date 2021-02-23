@@ -1,18 +1,16 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const approveShareObject=({shareUri})=>{
-    return {
-        variables:{
-            shareUri:shareUri,
-        },
-        mutation :gql`mutation approveShareObject($shareUri:String!){
+const approveShareObject = ({ shareUri }) => ({
+    variables: {
+        shareUri,
+    },
+    mutation: gql`mutation approveShareObject($shareUri:String!){
             approveShareObject(shareUri:$shareUri){
                 shareUri
                 status
             }
         }`
-    }
-}
+});
 
 
 export default approveShareObject;

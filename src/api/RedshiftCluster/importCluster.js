@@ -1,12 +1,11 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const importRedshiftCluster=({environmentUri ,input})=>{
-    return {
-        variables:{
-            environmentUri: environmentUri,
-            clusterInput  : input
-        },
-        mutation :gql`mutation importRedshiftCluster(
+const importRedshiftCluster = ({ environmentUri, input }) => ({
+    variables: {
+        environmentUri,
+        clusterInput: input
+    },
+    mutation: gql`mutation importRedshiftCluster(
             $environmentUri: String!, $clusterInput: ImportClusterInput!
         ){
             importRedshiftCluster(environmentUri:$environmentUri, clusterInput:$clusterInput){
@@ -16,7 +15,6 @@ const importRedshiftCluster=({environmentUri ,input})=>{
                 created
             }
         }`
-    }
-}
+});
 
 export default importRedshiftCluster;

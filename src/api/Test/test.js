@@ -1,14 +1,12 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const test= ()=>{
-    return {
-        query:gql`
+const test = () => ({
+    query: gql`
             query Test{
                 test
             }
         `
-    }
-}
+});
 
 
 export default test;

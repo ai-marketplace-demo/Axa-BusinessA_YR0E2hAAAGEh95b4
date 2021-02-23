@@ -1,17 +1,15 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const browseSqlPipelineRepository= (input)=>{
-    return {
-        variables:{
-            input:input,
-        },
-        query:gql`
+const browseSqlPipelineRepository = (input) => ({
+    variables: {
+        input,
+    },
+    query: gql`
             query BrowseSqlPipelineRepository($input:SqlPipelineBrowseInput!){
                 browseSqlPipelineRepository(input:$input)
             }
         `
-    }
-}
+});
 
 
-export default browseSqlPipelineRepository ;
+export default browseSqlPipelineRepository;

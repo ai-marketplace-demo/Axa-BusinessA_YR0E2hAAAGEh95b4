@@ -1,12 +1,11 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const getCrawlerStatus=({datasetUri, name})=>{
-    return {
-        variables:{
-            datasetUri: datasetUri,
-            input : name
-        },
-        query :gql`query GetCrawlerStatus($datasetUri:String, name:String){
+const getCrawlerStatus = ({ datasetUri, name }) => ({
+    variables: {
+        datasetUri,
+        input: name
+    },
+    query: gql`query GetCrawlerStatus($datasetUri:String, name:String){
             getCrawlerStatus(datasetUri:$datasetUri,name:$name){
                 Name
                 AwsAccountId
@@ -14,8 +13,7 @@ const getCrawlerStatus=({datasetUri, name})=>{
                 status
             }
         }`
-    }
-}
+});
 
 
 export default getCrawlerStatus;

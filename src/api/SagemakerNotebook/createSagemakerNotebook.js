@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const createSagemakerNotebook=(input)=>{
-    return {
-        variables:{
-            input  : input
-        },
-        mutation :gql`mutation CreateSagemakerNotebook(
+const createSagemakerNotebook = (input) => ({
+    variables: {
+        input
+    },
+    mutation: gql`mutation CreateSagemakerNotebook(
             $input:NewSagemakerNotebookInput,
         ){
             createSagemakerNotebook(input:$input){
@@ -17,8 +16,7 @@ const createSagemakerNotebook=(input)=>{
                 tags
             }
         }`
-    }
-}
+});
 
 
 export default createSagemakerNotebook;

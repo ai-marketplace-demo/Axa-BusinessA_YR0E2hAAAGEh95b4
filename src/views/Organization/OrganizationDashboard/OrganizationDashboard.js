@@ -1,21 +1,24 @@
-import React, {useState, useEffect} from "react";
-import {Link,Redirect,Route, Switch,useParams,useLocation,useHistory} from "react-router-dom";
-import {If, Then,Else} from "react-if";
-import * as Icon from "react-bootstrap-icons";
-import {toast} from "react-toastify";
-import styled from "styled-components";
-import {Container, Spinner,Row, Col} from "react-bootstrap";
-import MainButton from "../../../components/MainActionButton/MainButton";
-import Tag from "../../../components/Tag/Tag";
-import useClient from "../../../api/client";
-import getOrganization from "../../../api/Organization/getOrganization";
-import listOrganizationTopics from "../../../api/Organization/listOrganizationTopics";
-import createTopic from "../../../api/Organization/addOrUpdateOrganizationTopic";
-import UserProfileLink from "../../Profile/UserProfileLink";
-import EditTopicForm from "./EditTopicForm";
-import NewTopicForm from "./NewTopicForm";
-import OrganizationTopicList from "./OrganizationTopicList";
-
+import React, { useState, useEffect } from 'react';
+import {
+    Link, Redirect, Route, Switch, useParams, useLocation, useHistory
+} from 'react-router-dom';
+import { If, Then, Else } from 'react-if';
+import * as Icon from 'react-bootstrap-icons';
+import { toast } from 'react-toastify';
+import styled from 'styled-components';
+import {
+    Container, Spinner, Row, Col
+} from 'react-bootstrap';
+import MainButton from '../../../components/MainActionButton/MainButton';
+import Tag from '../../../components/Tag/Tag';
+import useClient from '../../../api/client';
+import getOrganization from '../../../api/Organization/getOrganization';
+import listOrganizationTopics from '../../../api/Organization/listOrganizationTopics';
+import createTopic from '../../../api/Organization/addOrUpdateOrganizationTopic';
+import UserProfileLink from '../../Profile/UserProfileLink';
+import EditTopicForm from './EditTopicForm';
+import NewTopicForm from './NewTopicForm';
+import OrganizationTopicList from './OrganizationTopicList';
 
 
 /**
@@ -191,52 +194,54 @@ const OrganizationTopics=(props)=>{
     </div>
 }
 
-**/
-const OrganizationDashboard= (props)=>{
-    let params=useParams();
-    let organizationUri=params.uri;
-    let client = useClient();
-    let [org, setOrg] = useState({})
+* */
+const OrganizationDashboard = (props) => {
+    const params = useParams();
+    const organizationUri = params.uri;
+    const client = useClient();
+    const [org, setOrg] = useState({});
 
-    let fetchOrganization = async ()=>{
+    const fetchOrganization = async () => {
         const response = await client.query(getOrganization(organizationUri));
-        if (!response.errors){
-            setOrg({...response.data.getOrganization})
-        }else {
-            toast(`Could not retrieve organization, received ${response.errors[0].message}`)
+        if (!response.errors) {
+            setOrg({ ...response.data.getOrganization });
+        } else {
+            toast(`Could not retrieve organization, received ${response.errors[0].message}`);
         }
-    }
+    };
 
-    useEffect(()=>{
-        if (client){
+    useEffect(() => {
+        if (client) {
             fetchOrganization();
         }
-    },[client])
+    }, [client]);
 
-    return <If condition={org}>
-        <Then>
-            <Container>
-                <Row>
-                    <Col xs={2}/>
-                    <Col xs={6}>
-                        <h3>Organization <b className={`text-primary text-capitalize`}>{org.label}</b></h3>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={2}>
-                        <Row>
-                            <Col xs={12}>
-                                <Link
-                                    style={{
-                                        color:'black',
-                                        outline:'none'
-                                    }}
-                                    to={`/organization/${organizationUri}/dashboard`}>
-                                    About
-                                </Link>
-                            </Col>
-                        </Row>
-                        {/**
+    return (
+        <If condition={org}>
+            <Then>
+                <Container>
+                    <Row>
+                        <Col xs={2} />
+                        <Col xs={6}>
+                            <h3>Organization <b className={'text-primary text-capitalize'}>{org.label}</b></h3>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs={2}>
+                            <Row>
+                                <Col xs={12}>
+                                    <Link
+                                        style={{
+                                            color: 'black',
+                                            outline: 'none'
+                                        }}
+                                        to={`/organization/${organizationUri}/dashboard`}
+                                    >
+                                        About
+                                    </Link>
+                                </Col>
+                            </Row>
+                            {/**
                         <Row>
                             <Col xs={12}>
                                 <Link
@@ -249,59 +254,58 @@ const OrganizationDashboard= (props)=>{
                                 </Link>
                             </Col>
                         </Row>
-                         **/}
-                    </Col>
-                    <Col xs={10}>
-                        <Switch>
+                         * */}
+                        </Col>
+                        <Col xs={10}>
+                            <Switch>
 
-                            <Route path={`/organization/${organizationUri}/dashboard`}>
-                                <Row className={`mt-4`}>
-                                    <Col xs={4}>
-                                        <b>About</b>
-                                    </Col>
-                                    <Col xs={12}>
-                                        {org.description}
-                                    </Col>
-                                </Row>
-                                <Row className={`mt-4`}>
-                                    <Col xs={4}>
-                                        <b>Saml Admin Group Name</b>
-                                    </Col>
-                                    <Col xs={12}>
-                                        {org.SamlGroupName}
-                                    </Col>
-                                </Row>
-                                <Row className={`mt-4`}>
-                                    <Col xs={4}>
-                                        <b>Created By </b>
-                                    </Col>
-                                    <Col xs={12}>
-                                        <UserProfileLink username={org.owner}></UserProfileLink>
-                                    </Col>
-                                </Row>
-                                <Row className={`mt-4`}>
-                                    <Col xs={4}>
-                                        <b>Tags</b>
-                                    </Col>
-                                    <Col className={`mt-3`} xs={12}>
-                                        {
-                                            org.tags&&org.tags.map((tag)=>{
-                                                return <Tag tag={tag}/>
-                                            })
-                                        }
-                                    </Col>
-                                </Row>
+                                <Route path={`/organization/${organizationUri}/dashboard`}>
+                                    <Row className={'mt-4'}>
+                                        <Col xs={4}>
+                                            <b>About</b>
+                                        </Col>
+                                        <Col xs={12}>
+                                            {org.description}
+                                        </Col>
+                                    </Row>
+                                    <Row className={'mt-4'}>
+                                        <Col xs={4}>
+                                            <b>Saml Admin Group Name</b>
+                                        </Col>
+                                        <Col xs={12}>
+                                            {org.SamlGroupName}
+                                        </Col>
+                                    </Row>
+                                    <Row className={'mt-4'}>
+                                        <Col xs={4}>
+                                            <b>Created By </b>
+                                        </Col>
+                                        <Col xs={12}>
+                                            <UserProfileLink username={org.owner}></UserProfileLink>
+                                        </Col>
+                                    </Row>
+                                    <Row className={'mt-4'}>
+                                        <Col xs={4}>
+                                            <b>Tags</b>
+                                        </Col>
+                                        <Col className={'mt-3'} xs={12}>
+                                            {
+                                                org.tags && org.tags.map((tag) => <Tag tag={tag} />)
+                                            }
+                                        </Col>
+                                    </Row>
 
-                            </Route>
-                        </Switch>
-                    </Col>
-                </Row>
-            </Container>
-        </Then>
-        <Else>
-            <Spinner animation={`border`} variant={`primary`}/>
-        </Else>
+                                </Route>
+                            </Switch>
+                        </Col>
+                    </Row>
+                </Container>
+            </Then>
+            <Else>
+                <Spinner animation={'border'} variant={'primary'} />
+            </Else>
         </If>
-}
+    );
+};
 
-export default OrganizationDashboard
+export default OrganizationDashboard;

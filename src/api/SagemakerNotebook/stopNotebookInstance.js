@@ -1,17 +1,15 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const stopSagemakerNotebook = (notebookUri)=>{
-    return {
-        variables:{
-            notebookUri:notebookUri,
-        },
-        mutation:gql`
+const stopSagemakerNotebook = (notebookUri) => ({
+    variables: {
+        notebookUri,
+    },
+    mutation: gql`
             mutation StopSagemakerNotebook($notebookUri:String!){
                 stopSagemakerNotebook(notebookUri:$notebookUri)
             }
         `
-    }
-}
+});
 
 
-export default stopSagemakerNotebook ;
+export default stopSagemakerNotebook;

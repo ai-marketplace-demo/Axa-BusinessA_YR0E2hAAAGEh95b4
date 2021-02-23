@@ -1,12 +1,11 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listGroupNotMembers= ({term,groupUri})=>{
-    return {
-        variables:{
-            groupUri: groupUri,
-            filter:{userName:term||''}
-        },
-        query:gql`
+const listGroupNotMembers = ({ term, groupUri }) => ({
+    variables: {
+        groupUri,
+        filter: { userName: term || '' }
+    },
+    query: gql`
             query getGroup($filter:GroupMemberFilter,$groupUri:String){
                 getGroup(groupUri:$groupUri){
                     groupUri
@@ -24,8 +23,7 @@ const listGroupNotMembers= ({term,groupUri})=>{
                 }
             }
         `
-    }
-}
+});
 
 
 export default listGroupNotMembers;

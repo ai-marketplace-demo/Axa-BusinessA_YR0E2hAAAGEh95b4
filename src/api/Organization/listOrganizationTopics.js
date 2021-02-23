@@ -1,12 +1,11 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listOrganizationTopics= ({filter,organizationUri})=>{
-    return {
-        variables:{
-            organizationUri: organizationUri,
-            filter:filter
-        },
-        query:gql`
+const listOrganizationTopics = ({ filter, organizationUri }) => ({
+    variables: {
+        organizationUri,
+        filter
+    },
+    query: gql`
             query ListOrganizationTopics($organizationUri:String,$filter:OrganizationTopicFilter){
                 listOrganizationTopics(organizationUri:$organizationUri,filter:$filter){
                     count
@@ -23,8 +22,7 @@ const listOrganizationTopics= ({filter,organizationUri})=>{
 
             }
         `
-    }
-}
+});
 
 
 export default listOrganizationTopics;

@@ -1,13 +1,12 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const searchDatasets= ({filters, page,term})=>{
-    return {
-        variables:{
-            filters:filters,
-            page:page||1,
-            term:term
-        },
-        query:gql`
+const searchDatasets = ({ filters, page, term }) => ({
+    variables: {
+        filters,
+        page: page || 1,
+        term
+    },
+    query: gql`
             query SearchDatasets($filters:FacetFilters, $page:Int,$term:String){
                     searchDatasets(
                         filters:$filters,
@@ -56,8 +55,7 @@ const searchDatasets= ({filters, page,term})=>{
                     }
                 }
         `
-    }
-}
+});
 
 
-export default searchDatasets ;
+export default searchDatasets;

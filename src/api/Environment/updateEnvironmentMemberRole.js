@@ -1,9 +1,8 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const updateMemberRole=({environmentUri, userName, role})=>{
-    return {
-        variables:{environmentUri:environmentUri, userName:userName, role:role||'Member'},
-        mutation :gql`mutation UpdateGroupMember(
+const updateMemberRole = ({ environmentUri, userName, role }) => ({
+    variables: { environmentUri, userName, role: role || 'Member' },
+    mutation: gql`mutation UpdateGroupMember(
             $environmentUri:String!,
             $userName:String!,
             $role:EnvironmentPermission
@@ -16,8 +15,7 @@ const updateMemberRole=({environmentUri, userName, role})=>{
                 environmentUri
             }
         }`
-    }
-}
+});
 
 
 export default updateMemberRole;

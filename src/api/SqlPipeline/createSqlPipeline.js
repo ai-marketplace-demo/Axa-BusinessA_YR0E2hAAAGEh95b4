@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const createSqlPipeline=({environmentUri ,input})=>{
-    return {
-        variables:{
-            input  : input
-        },
-        mutation :gql`mutation CreateSqlPipeline(
+const createSqlPipeline = ({ environmentUri, input }) => ({
+    variables: {
+        input
+    },
+    mutation: gql`mutation CreateSqlPipeline(
             $input:NewSqlPipelineInput,
         ){
             createSqlPipeline(input:$input){
@@ -15,8 +14,7 @@ const createSqlPipeline=({environmentUri ,input})=>{
                 created
             }
         }`
-    }
-}
+});
 
 
 export default createSqlPipeline;

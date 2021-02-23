@@ -1,9 +1,8 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const searchOutbox=({filter})=>{
-    return {
-        variables:{filter},
-        query:gql`query RequestsFromMe($filter:ShareObjectFilter){
+const searchOutbox = ({ filter }) => ({
+    variables: { filter },
+    query: gql`query RequestsFromMe($filter:ShareObjectFilter){
             requestsFromMe(filter:$filter){
                 count
                 page
@@ -36,8 +35,7 @@ const searchOutbox=({filter})=>{
                 }
             }
         }`
-    }
-}
+});
 
 
 export default searchOutbox;

@@ -1,15 +1,13 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const switchShareObject=({shareUri})=>{
-    return {
-        variables:{
-            shareUri:shareUri,
-        },
-        mutation :gql`mutation SwitchShareObject($shareUri:String!){
+const switchShareObject = ({ shareUri }) => ({
+    variables: {
+        shareUri,
+    },
+    mutation: gql`mutation SwitchShareObject($shareUri:String!){
             switchShareObject(shareUri:$shareUri)
         }`
-    }
-}
+});
 
 
 export default switchShareObject;

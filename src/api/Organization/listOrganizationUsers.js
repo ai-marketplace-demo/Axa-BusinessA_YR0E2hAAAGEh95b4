@@ -1,13 +1,13 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listOrganizationUsers= ({filter,organizationUri})=>{
-    console.log("listOrganizationUsers")
+const listOrganizationUsers = ({ filter, organizationUri }) => {
+    console.log('listOrganizationUsers');
     return {
-        variables:{
-            organizationUri: organizationUri,
-            filter:filter
+        variables: {
+            organizationUri,
+            filter
         },
-        query:gql`
+        query: gql`
             query getOrg($organizationUri:String,$filter:OrganizationUserFilter){
                 getOrganization(organizationUri:$organizationUri){
                     organizationUri
@@ -30,8 +30,8 @@ const listOrganizationUsers= ({filter,organizationUri})=>{
                 }
             }
         `
-    }
-}
+    };
+};
 
 
 export default listOrganizationUsers;

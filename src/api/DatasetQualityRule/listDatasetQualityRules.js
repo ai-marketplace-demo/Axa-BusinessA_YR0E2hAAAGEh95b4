@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listDatasetQualityRules= ({datasetUri,filter})=>{
-    return {
-        variables:{
-            datasetUri, filter
-        },
-        query:gql`
+const listDatasetQualityRules = ({ datasetUri, filter }) => ({
+    variables: {
+        datasetUri, filter
+    },
+    query: gql`
             query ListDatasetQualityRules($datasetUri:String!,$filter:DatasetQualityRuleFilter){
                 listDatasetQualityRules(datasetUri:$datasetUri,filter:$filter){
                     count
@@ -27,8 +26,7 @@ const listDatasetQualityRules= ({datasetUri,filter})=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default listDatasetQualityRules ;
+export default listDatasetQualityRules;

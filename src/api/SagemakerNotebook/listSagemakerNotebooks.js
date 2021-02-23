@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listSagemakerNotebooks= (filter)=>{
-    return {
-        variables:{
-            filter:filter,
-        },
-        query:gql`
+const listSagemakerNotebooks = (filter) => ({
+    variables: {
+        filter,
+    },
+    query: gql`
             query ListSagemakerNotebooks($filter:SagemakerNotebookFilter){
                 listSagemakerNotebooks(filter:$filter){
                     count
@@ -39,8 +38,7 @@ const listSagemakerNotebooks= (filter)=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default listSagemakerNotebooks ;
+export default listSagemakerNotebooks;

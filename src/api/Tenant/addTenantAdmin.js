@@ -1,17 +1,15 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const addTenantAdministrator= (userName)=>{
-    return {
-        variables:{
-            userName:userName
-        },
-        mutation:gql`
+const addTenantAdministrator = (userName) => ({
+    variables: {
+        userName
+    },
+    mutation: gql`
             mutation AddTenantAdministrator($userName:String!){
                 addTenantAdministrator(userName:$userName)
             }
         `
-    }
-}
+});
 
 
-export default addTenantAdministrator ;
+export default addTenantAdministrator;

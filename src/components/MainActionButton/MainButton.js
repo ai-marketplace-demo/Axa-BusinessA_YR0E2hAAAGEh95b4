@@ -1,9 +1,8 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 
-
-const MainActionButton=styled.div`
+const MainActionButton = styled.div`
 border-radius : 23px;
 height : 4ch;
 padding : 2px;
@@ -13,7 +12,7 @@ color : white;
 width:13ch;
 text-align: center;
 
- background: ${props => props.secondary ? "lightsteelblue" : "lightseagreen"};
+ background: ${(props) => (props.secondary ? 'lightsteelblue' : 'lightseagreen')};
 __border : 1px solid lightgray;
 transition: transform 0.2s ease-in-out;
 &:hover{
@@ -35,7 +34,7 @@ a:link, a:visited,a:hover{
     outline: 0;
 }
 
-`
+`;
 
 
 export default MainActionButton;

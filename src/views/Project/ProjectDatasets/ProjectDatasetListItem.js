@@ -1,17 +1,22 @@
-import React,{useState,useEffect} from "react";
-import {Container, Spinner, Row, Col, Badge} from "react-bootstrap";
-import Select from "react-select";
-import * as Icon from "react-bootstrap-icons";
-import {Link, Router, Switch,Route,useLocation,useHistory,useParams} from "react-router-dom";
-import styled from "styled-components"
-import {toast} from "react-toastify";
-import useClient from "../../../api/client";
-import ProjectContributorListItem from "../ProjectContributors/ProjectContributorListItem";
-import dayjs from "dayjs"
+import React, { useState, useEffect } from 'react';
+import {
+    Container, Spinner, Row, Col, Badge
+} from 'react-bootstrap';
+import Select from 'react-select';
+import * as Icon from 'react-bootstrap-icons';
+import {
+    Link, Router, Switch, Route, useLocation, useHistory, useParams
+} from 'react-router-dom';
+import styled from 'styled-components';
+import { toast } from 'react-toastify';
+import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import useClient from '../../../api/client';
+import ProjectContributorListItem from '../ProjectContributors/ProjectContributorListItem';
+
 dayjs.extend(relativeTime);
 
-const Styled=styled.div`
+const Styled = styled.div`
 __border-radius: 4px;
 min-height: 7rem;
 padding: 11px;
@@ -22,22 +27,23 @@ transition: transform 0.3s ease-in-out;
   box-shadow: 0px 5px 2px lightgrey;
   
 }
-`
+`;
 
 
-const ProjectDatasetListItem = (props)=>{
-    return <Styled>
+const ProjectDatasetListItem = (props) => (
+    <Styled>
         <Row>
             <Col xs={4}>
                 <Link to={`/dataset/${props.dataset.datasetUri}/overview`}>
-                <h5 ><Icon.Folder/> <b className={'text-primary'}>
-                    {props.dataset.label}
-                </b></h5>
+                    <h5><Icon.Folder /> <b className={'text-primary'}>
+                        {props.dataset.label}
+                                        </b>
+                    </h5>
                 </Link>
             </Col>
-            <Col xs={2}/>
-            <Col xs={3}><Icon.Grid size={18}/> Tables</Col>
-            <Col xs={3}><Icon.Folder size={18}/> Storage Locations</Col>
+            <Col xs={2} />
+            <Col xs={3}><Icon.Grid size={18} /> Tables</Col>
+            <Col xs={3}><Icon.Folder size={18} /> Storage Locations</Col>
         </Row>
         <Row>
             <Col xs={6}>
@@ -47,21 +53,21 @@ const ProjectDatasetListItem = (props)=>{
             <Col xs={3}>222 </Col>
         </Row>
 
-        <Row className={`mt-2`}>
+        <Row className={'mt-2'}>
             <Col xs={8}>
                 <small>
-                    {`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`}
+                    {'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'}
                 </small>
             </Col>
-            <Col xs={2}/>
+            <Col xs={2} />
             <Col xs={2}>
-                <div className={"btn btn-primary btn-sm"}>
+                <div className={'btn btn-primary btn-sm'}>
                     Unlink
                 </div>
             </Col>
         </Row>
     </Styled>
-}
+);
 
 
 export default ProjectDatasetListItem;

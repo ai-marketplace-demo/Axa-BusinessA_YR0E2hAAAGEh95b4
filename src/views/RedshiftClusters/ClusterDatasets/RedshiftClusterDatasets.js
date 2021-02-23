@@ -1,22 +1,27 @@
-import React,{useState,useEffect} from "react";
-import {Container, Spinner, Row, Col, Badge} from "react-bootstrap";
-import {If, Then, Else} from "react-if";
+import React, { useState, useEffect } from 'react';
+import {
+    Container, Spinner, Row, Col, Badge
+} from 'react-bootstrap';
+import { If, Then, Else } from 'react-if';
 import BootstrapTable from 'react-bootstrap-table-next';
-import MainActionButton from "../../../components/MainActionButton/MainButton";
-import * as Icon from "react-bootstrap-icons";
-import {Link, Router, Switch,Route,useLocation,useHistory,useParams} from "react-router-dom";
-import styled from "styled-components"
-import {toast} from "react-toastify";
-import useClient from "../../../api/client";
-import dayjs from "dayjs";
+import * as Icon from 'react-bootstrap-icons';
+import {
+    Link, Router, Switch, Route, useLocation, useHistory, useParams
+} from 'react-router-dom';
+import styled from 'styled-components';
+import { toast } from 'react-toastify';
+import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import listClusterDatasets from "../../../api/RedshiftCluster/listClusterDatasets";
-import removeDatasetFromCluster  from "../../../api/RedshiftCluster/removeDatasetFromCluster";
+import useClient from '../../../api/client';
+import MainActionButton from '../../../components/MainActionButton/MainButton';
+import listClusterDatasets from '../../../api/RedshiftCluster/listClusterDatasets';
+import removeDatasetFromCluster from '../../../api/RedshiftCluster/removeDatasetFromCluster';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+
 dayjs.extend(relativeTime);
 
 
-const Styled= styled.div`
+const Styled = styled.div`
 height:60vh;
 width:100%;
 overflow-y:auto;
@@ -38,9 +43,9 @@ scrollbar-width: thin;
 	background-color: lightblue;
 }
 
-`
+`;
 
-const RoundedButton=styled.div`
+const RoundedButton = styled.div`
 border-radius : 23px;
 height : 4ch;
 padding : 2px;
@@ -56,205 +61,200 @@ transition: transform 0.2s ease-in-out;
   transform: translateY(-3px);
   box-shadow: darkgray 2px 0px 2px;
   }
-`
+`;
 
-const RedshiftClusterDatasets= (props)=>{
-    console.log("props = ", props);
-    const client=useClient();
-    let params=useParams();
-    const cluster= props.cluster;
-    const clusterUri = cluster.clusterUri;
+const RedshiftClusterDatasets = (props) => {
+    console.log('props = ', props);
+    const client = useClient();
+    const params = useParams();
+    const { cluster } = props;
+    const { clusterUri } = cluster;
 
-    let [datasets, setDatasets]=useState({
-        count:0,
-        nodes:[],
-        page:1,
-        pages:1,
-        hasNext:false,
-        hasPrevious : false
+    const [datasets, setDatasets] = useState({
+        count: 0,
+        nodes: [],
+        page: 1,
+        pages: 1,
+        hasNext: false,
+        hasPrevious: false
     });
-    let [term, setTerm] = useState(null);
+    const [term, setTerm] = useState(null);
 
 
+    const envFormatter = (cell, row) => <Link to={`/playground/${row.environment.environmentUri}`}>{row.environment.name}</Link>;
 
-    const envFormatter=(cell, row)=>{
-        return <Link to={`/playground/${row.environment.environmentUri}`}>{row.environment.name}</Link>
-
-    };
-
-    const datasetLinkFormatter=(cell, row)=>{
-        return <p>
+    const datasetLinkFormatter = (cell, row) => (
+        <p>
             <Link to={`/organization/${row.organization.organizationUri}/dashboard`}>{row.organization.name}</Link> /
             <Link to={`/dataset/${row.datasetUri}/overview`}>{row.name}</Link>
         </p>
-    };
+    );
 
-    const actionFormatter=(cell, row)=>{
-        return <div onClick={()=>{unlinkDataset(row)}} className={`btn btn-secondary btn-sm `}>Unlink</div>
-    };
+    const actionFormatter = (cell, row) => <div onClick={() => { unlinkDataset(row); }} className={'btn btn-secondary btn-sm '}>Unlink</div>;
 
-    const columns=[
+    const columns = [
         {
             dataField: 'label',
-            headerStyle: {width: '5ch'},
-            formatter:datasetLinkFormatter,
+            headerStyle: { width: '5ch' },
+            formatter: datasetLinkFormatter,
             text: 'Dataset'
         },
         {
-            datafield:'environment',
-            formatter:envFormatter,
-            headerStyle: {width: '5ch'},
-            text:'Env'
+            datafield: 'environment',
+            formatter: envFormatter,
+            headerStyle: { width: '5ch' },
+            text: 'Env'
         },
         {
             dataField: 'userRoleForDataset',
-            headerStyle: {width: '5ch'},
+            headerStyle: { width: '5ch' },
             text: 'Permission'
 
         },
         {
             dataField: 'redshiftClusterPermission',
-            headerStyle: {width: '5ch'},
+            headerStyle: { width: '5ch' },
             text: 'Access Type'
         },
 
         {
-            text:'Action',
-            headerStyle: {width: '5ch'},
-            formatter:actionFormatter,
+            text: 'Action',
+            headerStyle: { width: '5ch' },
+            formatter: actionFormatter,
             dataField: 'datasetUri',
         },
-    ]
+    ];
 
-    const handleInputChange=(e)=>{
+    const handleInputChange = (e) => {
         setTerm(e.target.value);
-        setDatasets({...datasets,page:1})
+        setDatasets({ ...datasets, page: 1 });
     };
 
 
-    const handleKeyDown = async (e)=>{
+    const handleKeyDown = async (e) => {
         if (e.key === 'Enter') {
-            setDatasets({...datasets,page:1});
-            await fetchItems()
+            setDatasets({ ...datasets, page: 1 });
+            await fetchItems();
         }
     };
-    const nextPage=()=>{
-        if(datasets.hasNext){
-            setDatasets({...datasets,page:datasets.page+1})
+    const nextPage = () => {
+        if (datasets.hasNext) {
+            setDatasets({ ...datasets, page: datasets.page + 1 });
         }
     };
-    const prevPage=()=>{
-        if(datasets.hasPrevious){
-            setDatasets({...datasets,page:datasets.page-1})
+    const prevPage = () => {
+        if (datasets.hasPrevious) {
+            setDatasets({ ...datasets, page: datasets.page - 1 });
         }
+    };
 
-    };
-
-    const unlinkDataset=async (dataset)=>{
+    const unlinkDataset = async (dataset) => {
         toast(`Unlinking dataset ${dataset.label} from cluster ${cluster.label}`);
-        const datasetUri = dataset.datasetUri;
+        const { datasetUri } = dataset;
         const res = await client.mutate(removeDatasetFromCluster({
             clusterUri,
             datasetUri
         }));
-        if (!res.errors){
+        if (!res.errors) {
             toast.success(`Dataset ${dataset.label} unlinked from cluster ${cluster.label}`);
-            await fetchItems()
-        }else{
+            await fetchItems();
+        } else {
             toast.warn(`Could not unlink dataset ${dataset.label} 
-            from cluster ${cluster.label}, ${res.errors[0].message}`)
+            from cluster ${cluster.label}, ${res.errors[0].message}`);
         }
     };
 
-    const fetchItems=async ()=>{
-        const response= await  client
+    const fetchItems = async () => {
+        const response = await client
             .query(listClusterDatasets({
-                clusterUri:clusterUri,
-                filter:{
+                clusterUri,
+                filter: {
                     term,
-                    page:datasets.page,
-                    pageSize:10
+                    page: datasets.page,
+                    pageSize: 10
                 }
             }));
-        if (!response.errors){
+        if (!response.errors) {
             setDatasets(response.data.listRedshiftClusterDatasets);
-        }else {
-            toast.error(`Could not retrieve datasets, received ${response.errors[0].message}`)
+        } else {
+            toast.error(`Could not retrieve datasets, received ${response.errors[0].message}`);
         }
-    }
-    useEffect(()=>{
-        if (client){
+    };
+    useEffect(() => {
+        if (client) {
             fetchItems();
         }
-    },[client,datasets.page]);
+    }, [client, datasets.page]);
 
 
-    return <Container>
-        <Row className={'mt-4'}>
-            <Col xs={8}>
-                <h4><Icon.Folder size={32}/> Available Datasets</h4>
-            </Col>
-            <Col xs={4}>
-                <Link to={`/redshiftcluster/${cluster.clusterUri}/addDataset`}>
-                    <MainActionButton>Link Dataset</MainActionButton>
-                </Link>
-            </Col>
-        </Row>
-        <Row className={`mt-4`}>
-            <Col xs={12}>
-                <Row>
-                    <Col xs={4}><i>Found {datasets.count} results</i></Col>
-                    <Col xs={6}>
-                        <Row>
-                            <Col className={`pt-2 text-right`} onClick={prevPage} xs={1}>
-                                <Icon.ChevronLeft/>
-                            </Col>
-                            <Col className={`text-center`} xs={5}>
-                                Page {datasets.page}/{datasets.pages}
-                            </Col>
-                            <Col className={`pt-2 text-left`}  onClick={nextPage} xs={1}>
-                                <Icon.ChevronRight/>
-                            </Col>
-                        </Row>
-                    </Col>
-
-                </Row>
-            </Col>
-            <Col className={`pt-2`} xs={12}>
-                <input className={`form-control`} onKeyDown={handleKeyDown} value={term} onChange={handleInputChange} style={{width:"100%"}}/>
-            </Col>
-        </Row>
-
-        <Styled>
-            <Row className={`mt-4`}>
-                <If condition={datasets.count}>
-                    <Then>
-                        <Col xs={12}>
-                            <BootstrapTable
-                                rowStyle={{height:'15px',fontSize:'13px'}}
-                                hover
-                                condensed
-                                bordered={ false }
-                                keyField='datasetUri'
-                                data={ datasets.nodes}
-                                columns={ columns }
-                            />
-                        </Col>
-                    </Then>
-                    <Else>
-                        <Col xs={12}>
-                            <i>No datasets added to your cluster. Start linking datasets
-                                <Link to={`addDataset`}> Here</Link>, or create a new one <Link to={`/newdataset`}>Here</Link>
-
-                            </i>
-                        </Col>
-                    </Else>
-                </If>
+    return (
+        <Container>
+            <Row className={'mt-4'}>
+                <Col xs={8}>
+                    <h4><Icon.Folder size={32} /> Available Datasets</h4>
+                </Col>
+                <Col xs={4}>
+                    <Link to={`/redshiftcluster/${cluster.clusterUri}/addDataset`}>
+                        <MainActionButton>Link Dataset</MainActionButton>
+                    </Link>
+                </Col>
             </Row>
-        </Styled>
+            <Row className={'mt-4'}>
+                <Col xs={12}>
+                    <Row>
+                        <Col xs={4}><i>Found {datasets.count} results</i></Col>
+                        <Col xs={6}>
+                            <Row>
+                                <Col className={'pt-2 text-right'} onClick={prevPage} xs={1}>
+                                    <Icon.ChevronLeft />
+                                </Col>
+                                <Col className={'text-center'} xs={5}>
+                                    Page {datasets.page}/{datasets.pages}
+                                </Col>
+                                <Col className={'pt-2 text-left'} onClick={nextPage} xs={1}>
+                                    <Icon.ChevronRight />
+                                </Col>
+                            </Row>
+                        </Col>
 
-    </Container>
-}
+                    </Row>
+                </Col>
+                <Col className={'pt-2'} xs={12}>
+                    <input className={'form-control'} onKeyDown={handleKeyDown} value={term} onChange={handleInputChange} style={{ width: '100%' }} />
+                </Col>
+            </Row>
+
+            <Styled>
+                <Row className={'mt-4'}>
+                    <If condition={datasets.count}>
+                        <Then>
+                            <Col xs={12}>
+                                <BootstrapTable
+                                    rowStyle={{ height: '15px', fontSize: '13px' }}
+                                    hover
+                                    condensed
+                                    bordered={false}
+                                    keyField="datasetUri"
+                                    data={datasets.nodes}
+                                    columns={columns}
+                                />
+                            </Col>
+                        </Then>
+                        <Else>
+                            <Col xs={12}>
+                                <i>No datasets added to your cluster. Start linking datasets
+                                    <Link to={'addDataset'}> Here</Link>, or create a new one <Link to={'/newdataset'}>Here</Link>
+
+                                </i>
+                            </Col>
+                        </Else>
+                    </If>
+                </Row>
+            </Styled>
+
+        </Container>
+    );
+};
 
 
 export default RedshiftClusterDatasets;

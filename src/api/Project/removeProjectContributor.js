@@ -1,9 +1,8 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const removeProjectContributor=({userName, projectUri})=>{
-    return {
-        variables:{userName,projectUri},
-        mutation :gql`mutation RemoveProjectContributor(
+const removeProjectContributor = ({ userName, projectUri }) => ({
+    variables: { userName, projectUri },
+    mutation: gql`mutation RemoveProjectContributor(
             $projectUri:String,
             $userName:String
         ){
@@ -12,8 +11,7 @@ const removeProjectContributor=({userName, projectUri})=>{
                 userName:$userName
             )
         }`
-    }
-}
+});
 
 
 export default removeProjectContributor;

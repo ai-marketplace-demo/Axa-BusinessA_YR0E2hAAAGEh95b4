@@ -1,9 +1,8 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const addDatasetStorageLocation=({datasetUri, input})=>{
-    return {
-        variables:{datasetUri,input},
-        mutation :gql`mutation CreateDatasetStorageLocation(
+const addDatasetStorageLocation = ({ datasetUri, input }) => ({
+    variables: { datasetUri, input },
+    mutation: gql`mutation CreateDatasetStorageLocation(
             $datasetUri:String,
             $input:NewDatasetStorageLocationInput
         ){
@@ -15,8 +14,7 @@ const addDatasetStorageLocation=({datasetUri, input})=>{
                 S3Prefix
             }
         }`
-    }
-}
+});
 
 
 export default addDatasetStorageLocation;

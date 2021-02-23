@@ -1,12 +1,13 @@
-import React,{useState,useEffect} from "react";
-import {Container, Table,Spinner, Row, Col, Tabs,Tab,Badge,Dropdown} from "react-bootstrap";
-import {Link} from "react-router-dom";
-import ShareStatusBadge from "../../components/ShareStatusBadge/ShareStatusBadge";
+import React, { useState, useEffect } from 'react';
+import {
+    Container, Table, Spinner, Row, Col, Tabs, Tab, Badge, Dropdown
+} from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import ShareStatusBadge from '../../components/ShareStatusBadge/ShareStatusBadge';
 
-const General = (props)=>{
-
-    return <Container className={`mt-1 pb-2`}fluid>
-        <Row className={`mt-2`}>
+const General = (props) => (
+    <Container className={'mt-1 pb-2'} fluid>
+        <Row className={'mt-2'}>
             <Col xs={12}>
                 <Table size="sm">
                     <tbody>
@@ -15,7 +16,7 @@ const General = (props)=>{
                                 <b>Dataset</b>
                             </td>
                             <td>
-                                <Link className={`text-info`} to={`/dataset/${props.share.dataset.datasetUri}/overview`}>
+                                <Link className={'text-info'} to={`/dataset/${props.share.dataset.datasetUri}/overview`}>
                                     {props.share.dataset.datasetName}
                                 </Link>
                             </td>
@@ -42,7 +43,7 @@ const General = (props)=>{
                                 <b>Status</b>
                             </td>
                             <td>
-                                <ShareStatusBadge status={props.share.status}/>
+                                <ShareStatusBadge status={props.share.status} />
                             </td>
                         </tr>
                         <tr scope="row">
@@ -83,7 +84,7 @@ const General = (props)=>{
             </Col>
         </Row>
     </Container>
-}
+);
 
 
 export default General;

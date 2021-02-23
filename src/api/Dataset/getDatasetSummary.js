@@ -1,17 +1,15 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const getDatasetSummary= (datasetUri)=>{
-    return {
-        variables:{
-            datasetUri:datasetUri
-        },
-        query:gql`
+const getDatasetSummary = (datasetUri) => ({
+    variables: {
+        datasetUri
+    },
+    query: gql`
             query GetDatasetSummary($datasetUri:String!){
                 getDatasetSummary(datasetUri:$datasetUri)
             }
         `
-    }
-}
+});
 
 
-export default getDatasetSummary ;
+export default getDatasetSummary;

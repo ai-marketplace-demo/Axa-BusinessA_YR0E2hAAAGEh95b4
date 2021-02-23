@@ -1,12 +1,11 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const createNotebook=({projectUri ,input})=>{
-    return {
-        variables:{
-            projectUri : projectUri,
-            input  : input
-        },
-        mutation :gql`mutation CreateProjectNotebook(
+const createNotebook = ({ projectUri, input }) => ({
+    variables: {
+        projectUri,
+        input
+    },
+    mutation: gql`mutation CreateProjectNotebook(
             $input:NewProjectNotebookInput,
             $projectUri : String!
         ){
@@ -20,8 +19,7 @@ const createNotebook=({projectUri ,input})=>{
                 owner
             }
         }`
-    }
-}
+});
 
 
 export default createNotebook;

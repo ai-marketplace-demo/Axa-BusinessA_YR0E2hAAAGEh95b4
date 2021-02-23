@@ -1,17 +1,15 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const getEnvironmentAssumeRoleUrl = ({environmentUri})=>{
-    return {
-        variables:{
-            environmentUri: environmentUri
-        },
-        query:gql`
+const getEnvironmentAssumeRoleUrl = ({ environmentUri }) => ({
+    variables: {
+        environmentUri
+    },
+    query: gql`
             query GetEnvironmentAssumeRoleUrl($environmentUri:String){
                 getEnvironmentAssumeRoleUrl(environmentUri:$environmentUri)
             }
         `
-    }
-}
+});
 
 
-export default getEnvironmentAssumeRoleUrl ;
+export default getEnvironmentAssumeRoleUrl;

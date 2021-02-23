@@ -1,53 +1,54 @@
-import React, {useState, useEffect} from "react";
-import {Container, Row, Col, Badge, Spinner} from "react-bootstrap";
-import {If,Then, Else, Switch, Case, Default} from "react-if";
+import React, { useState, useEffect } from 'react';
+import {
+    Container, Row, Col, Badge, Spinner
+} from 'react-bootstrap';
+import {
+    If, Then, Else, Switch, Case, Default
+} from 'react-if';
 import BootstrapTable from 'react-bootstrap-table-next';
-import useClient from "../../../api/client";
-import getSqlPipelineBuilds from "../../../api/SqlPipeline/getSqlPipelineBuilds";
-import {toast} from "react-toastify";
-import dayjs from "dayjs";
+import { toast } from 'react-toastify';
+import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-dayjs.extend(relativeTime)
+import getSqlPipelineBuilds from '../../../api/SqlPipeline/getSqlPipelineBuilds';
+import useClient from '../../../api/client';
 
-const SqlPipelineBuildList=(props)=>{
-    const dateFormatter= (cell, row, rowIndex)=>{
-        return <div>{dayjs(cell).fromNow()}</div>
-    }
+dayjs.extend(relativeTime);
+
+const SqlPipelineBuildList = (props) => {
+    const dateFormatter = (cell, row, rowIndex) => <div>{dayjs(cell).fromNow()}</div>;
 
 
-    const statusRenderer= (cell, row, rowIndex)=>{
-        return <h6><Switch>
-            <Case condition={cell=="Succeeded"}>
-                <Badge variant={`success`}>{cell}</Badge>
+    const statusRenderer = (cell, row, rowIndex) => (
+        <h6><Switch>
+            <Case condition={cell == 'Succeeded'}>
+                <Badge variant={'success'}>{cell}</Badge>
             </Case>
-            <Case condition={cell=="Failed"}>
-                <Badge variant={`warning`}>{cell}</Badge>
+            <Case condition={cell == 'Failed'}>
+                <Badge variant={'warning'}>{cell}</Badge>
             </Case>
-            <Case condition={cell=="InProgress"}>
-                <div>  <Badge variant={`primary`}>{cell}</Badge> <Spinner size={`sm`} animation={`border`} variant={`primary`}/></div>
+            <Case condition={cell == 'InProgress'}>
+                <div>  <Badge variant={'primary'}>{cell}</Badge> <Spinner size={'sm'} animation={'border'} variant={'primary'} /></div>
             </Case>
             <Default>
-                <Badge variant={`danger`}>{cell}</Badge>
+                <Badge variant={'danger'}>{cell}</Badge>
             </Default>
         </Switch>
         </h6>
-    }
+    );
 
     const columns = [
 
         {
             dataField: 'pipelineExecutionId',
-            //headerStyle: {width: '12ch'},
+            // headerStyle: {width: '12ch'},
             text: 'Execution Id',
-            formatter: (cell)=>{
-                return <small><code>{cell}</code></small>
-            }
+            formatter: (cell) => <small><code>{cell}</code></small>
 
         },
         {
             dataField: 'status',
             text: 'Status',
-            formatter : statusRenderer,
+            formatter: statusRenderer,
         },
         {
             dataField: 'startTime',
@@ -62,61 +63,64 @@ const SqlPipelineBuildList=(props)=>{
     ];
 
     const client = useClient();
-    const sqlPipeline = props.sqlPipeline;
-    const [builds,setBuilds] = useState(null);
+    const { sqlPipeline } = props;
+    const [builds, setBuilds] = useState(null);
     const [count, setCount] = useState(-1);
-    const [ready,setReady] = useState(false);
-    const fetchItems=async ()=>{
+    const [ready, setReady] = useState(false);
+    const fetchItems = async () => {
         const response = await client.query(getSqlPipelineBuilds(sqlPipeline.sqlPipelineUri));
-        console.log("getSqlPipelineBuilds.fetchItems",response)
-        if (!response.errors){
+        console.log('getSqlPipelineBuilds.fetchItems', response);
+        if (!response.errors) {
             setBuilds(response.data.getSqlPipeline.builds);
             setCount(response.data.getSqlPipeline.builds.length);
-        }else {
+        } else {
             toast.warn(`Could not retrieved builds list, received ${response.errors[0].message}`);
         }
-        setReady(true)
-    }
+        setReady(true);
+    };
 
-    useEffect(()=>{
-        if (client){
+    useEffect(() => {
+        if (client) {
             fetchItems();
         }
-    },[client])
+    }, [client]);
 
 
-    if (!ready){
-        return <Container>
-            <Row className={`mt-2 ml-2`}>
+    if (!ready) {
+        return (
+            <Container>
+                <Row className={'mt-2 ml-2'}>
+                    <Col xs={12}>
+                        <Spinner variant={'info'} animation={'border'} />
+                    </Col>
+                </Row>
+            </Container>
+        );
+    }
+    return (
+        <Container>
+            <Row>
                 <Col xs={12}>
-                    <Spinner variant={`info`} animation={`border`}/>
+                    <p> Found {count} build(s)</p>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={12}>
+                    <BootstrapTable
+                        rowStyle={{ height: '15px', fontSize: '13px' }}
+                        hover
+                        condensed
+                        bordered={false}
+                        keyField="shareUri"
+                        data={builds || []}
+                        columns={columns}
+                    />
+
                 </Col>
             </Row>
         </Container>
-    }
-    return <Container>
-        <Row>
-            <Col xs={12}>
-                <p> Found {count} build(s)</p>
-            </Col>
-        </Row>
-        <Row>
-            <Col xs={12}>
-                <BootstrapTable
-                    rowStyle={{height:'15px',fontSize:'13px'}}
-                    hover
-                    condensed
-                    bordered={ false }
-                    keyField='shareUri'
-                    data={ builds || []}
-                    columns={ columns }
-                />
-
-            </Col>
-        </Row>
-    </Container>
-
-}
+    );
+};
 
 
 export default SqlPipelineBuildList;

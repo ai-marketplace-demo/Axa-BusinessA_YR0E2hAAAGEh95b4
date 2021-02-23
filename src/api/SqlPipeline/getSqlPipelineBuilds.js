@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const getSqlPipelineBuilds= (sqlPipelineUri)=>{
-    return {
-        variables:{
-            sqlPipelineUri:sqlPipelineUri,
-        },
-        query:gql`
+const getSqlPipelineBuilds = (sqlPipelineUri) => ({
+    variables: {
+        sqlPipelineUri,
+    },
+    query: gql`
             query GetSqlPipeline($sqlPipelineUri:String!){
                 getSqlPipeline(sqlPipelineUri:$sqlPipelineUri){
                     sqlPipelineUri
@@ -19,8 +18,7 @@ const getSqlPipelineBuilds= (sqlPipelineUri)=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default getSqlPipelineBuilds ;
+export default getSqlPipelineBuilds;

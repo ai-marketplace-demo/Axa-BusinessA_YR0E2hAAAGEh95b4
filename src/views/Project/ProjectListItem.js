@@ -1,18 +1,23 @@
-import React ,{useState, useEffect} from "react";
-import {Container,Row, Col, Badge,ListGroupItem,ListGroup,Dropdown,Table,Card} from "react-bootstrap";
-import * as Icon from "react-bootstrap-icons";
-import Zoom from "../../components/Zoomer/Zoom";
-import Tag from "../../components/Tag/Tag";
-import styled from "styled-components";
-import ActionButton from "../../components/ActionButton/ActionButton";
-import { Sparklines,SparklinesBars } from 'react-sparklines';
-import {BrowserRouter, Route,Link, Switch} from "react-router-dom";
-import dayjs from "dayjs"
+import React, { useState, useEffect } from 'react';
+import {
+    Container, Row, Col, Badge, ListGroupItem, ListGroup, Dropdown, Table, Card
+} from 'react-bootstrap';
+import * as Icon from 'react-bootstrap-icons';
+import styled from 'styled-components';
+import { Sparklines, SparklinesBars } from 'react-sparklines';
+import {
+    BrowserRouter, Route, Link, Switch
+} from 'react-router-dom';
+import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import Avatar from "react-avatar";
-dayjs.extend(relativeTime)
+import Avatar from 'react-avatar';
+import ActionButton from '../../components/ActionButton/ActionButton';
+import Tag from '../../components/Tag/Tag';
+import Zoom from '../../components/Zoomer/Zoom';
 
-const Styled=styled.div`
+dayjs.extend(relativeTime);
+
+const Styled = styled.div`
 transition: transform 0.3s ease-in-out;
 &:hover{
   transform: translateY(-5px);
@@ -36,30 +41,25 @@ a:hover, a:link, a:visited{
 `;
 
 
-
-
-
-
-
-const ProjectListItem2 = (props)=>{
-    return <Styled>
-        <Row className={``}>
+const ProjectListItem2 = (props) => (
+    <Styled>
+        <Row className={''}>
             <Col xs={8}>
                 <Link to={`/project/${props.project.projectUri}/overview`}>
                     <p>
-                        <Avatar className={`mr-1`} size={32} round={true} name={props.project.label}/> <b className={"text-capitalize"}>{props.project.label.slice(0,10)}</b>
+                        <Avatar className={'mr-1'} size={32} round name={props.project.label} /> <b className={'text-capitalize'}>{props.project.label.slice(0, 10)}</b>
                     </p>
                 </Link>
             </Col>
             <Col xs={12}>
-                <b>{props.project.description.slice(0,25)}</b>
+                <b>{props.project.description.slice(0, 25)}</b>
             </Col>
         </Row>
 
-        <Row className={`mt-1`}>
+        <Row className={'mt-1'}>
             <Col xs={4}><Icon.Person></Icon.Person></Col>
-           <Col xs={8}>
-               <small>{props.project.owner} </small>
+            <Col xs={8}>
+                <small>{props.project.owner} </small>
             </Col>
             <Col xs={4}><Icon.People></Icon.People></Col>
             <Col xs={8}>
@@ -80,20 +80,19 @@ const ProjectListItem2 = (props)=>{
 
         </Row>
 
-        <Row className={`mt-2 border-top`}>
-                {
-                    props.project.tags.map((tag)=>{
-                        return <Col className={`ml-1 mt-1 pr-2`} xs={3}>
-                            <Badge className={`ml-1`} variant={`secondary`}  >{tag}</Badge>
-                        </Col>
-                    })
-                }
+        <Row className={'mt-2 border-top'}>
+            {
+                props.project.tags.map((tag) => (
+                    <Col className={'ml-1 mt-1 pr-2'} xs={3}>
+                        <Badge className={'ml-1'} variant={'secondary'}>{tag}</Badge>
+                    </Col>
+                ))
+            }
         </Row>
         <Row>
-            <div style={{height:`200px`}}/>
+            <div style={{ height: '200px' }} />
         </Row>
     </Styled>
-}
+);
 
 export default ProjectListItem2;
-

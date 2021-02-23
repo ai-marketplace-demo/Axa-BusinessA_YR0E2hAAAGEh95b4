@@ -1,18 +1,17 @@
 import React from 'react';
 import './style.css';
-import {Col, Row} from "react-bootstrap";
-import HighchartsReact from "highcharts-react-official";
-import Highcharts from "highcharts";
+import { Col, Row } from 'react-bootstrap';
+import HighchartsReact from 'highcharts-react-official';
+import Highcharts from 'highcharts';
 
 
 class StringTypeMetrics extends React.PureComponent {
-
     render() {
         if (!this.props.metadata) {
             return false;
         }
         const options = {
-            chart: { type: 'pie', height: 200, width: 400},
+            chart: { type: 'pie', height: 200, width: 400 },
             title: { text: '' },
             xAxis: {
                 categories: this.props.metadata.Histogram.map((r) => r.name),

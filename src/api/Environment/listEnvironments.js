@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listEnvironments = ({filter})=>{
-    return {
-        variables:{
-            filter: filter
-        },
-        query:gql`
+const listEnvironments = ({ filter }) => ({
+    variables: {
+        filter
+    },
+    query: gql`
             query ListEnvironments($filter:EnvironmentFilter){
                 listEnvironments(filter:$filter){
                     count
@@ -38,8 +37,7 @@ const listEnvironments = ({filter})=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default listEnvironments ;
+export default listEnvironments;

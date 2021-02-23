@@ -1,0 +1,11 @@
+tests/*
+docs/*
+node_modules/*
+templates/*
+dist/*
+public/*
+.cache/*
+coverage/*
+flow-typed/*
+/node_modules
+/.idea

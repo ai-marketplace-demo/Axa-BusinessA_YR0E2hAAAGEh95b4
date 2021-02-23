@@ -1,12 +1,11 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const listAvailableDatasets= ({clusterUri,filter})=>{
-    return {
-        variables:{
-            clusterUri:clusterUri,
-            filter:filter
-        },
-        query:gql`
+const listAvailableDatasets = ({ clusterUri, filter }) => ({
+    variables: {
+        clusterUri,
+        filter
+    },
+    query: gql`
             query ListRedshiftClusterAvailableDatasets($clusterUri:String!,$filter:RedshiftClusterDatasetFilter){
                 listRedshiftClusterAvailableDatasets(clusterUri:$clusterUri,filter:$filter){
                     count
@@ -44,8 +43,7 @@ const listAvailableDatasets= ({clusterUri,filter})=>{
                 }
             }
         `
-    }
-};
+});
 
 
-export default listAvailableDatasets ;
+export default listAvailableDatasets;

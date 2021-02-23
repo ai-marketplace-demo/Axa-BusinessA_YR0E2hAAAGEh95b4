@@ -1,11 +1,10 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const getDatasetQualityJobRun= (datasetUri)=>{
-    return {
-        variables:{
-            datasetUri
-        },
-        query:gql`
+const getDatasetQualityJobRun = (datasetUri) => ({
+    variables: {
+        datasetUri
+    },
+    query: gql`
             query getDatasetQualityJobRun($datasetUri:String!){
                 getDatasetQualityJobRun(datasetUri:$datasetUri){
                     status
@@ -15,8 +14,7 @@ const getDatasetQualityJobRun= (datasetUri)=>{
                 }
             }
         `
-    }
-}
+});
 
 
-export default getDatasetQualityJobRun ;
+export default getDatasetQualityJobRun;

@@ -1,12 +1,11 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
-const getShareObject=({shareUri,filter})=>{
-    return {
-        variables:{
-            shareUri:shareUri,
-            filter:filter
-        },
-        query :gql`query getShareObject($shareUri:String!,$filter:ShareableObjectFilter){
+const getShareObject = ({ shareUri, filter }) => ({
+    variables: {
+        shareUri,
+        filter
+    },
+    query: gql`query getShareObject($shareUri:String!,$filter:ShareableObjectFilter){
             getShareObject(shareUri:$shareUri){
                 shareUri
                 created
@@ -49,8 +48,7 @@ const getShareObject=({shareUri,filter})=>{
 
             }
         }`
-    }
-}
+});
 
 
 export default getShareObject;
