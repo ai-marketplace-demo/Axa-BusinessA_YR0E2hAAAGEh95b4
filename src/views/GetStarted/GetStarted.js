@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import * as Icon from 'react-bootstrap-icons';
-import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
     Planet, File, Backpack, Browser
 } from 'react-kawaii';
-import test from '../../api/Test/test';
 import useClient from '../../api/client';
 
 
