@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Container, Table, Row, Badge, Col, Spinner
+    Container, Table, Row, Badge, Col, Spinner, Button
 } from 'react-bootstrap';
 import styled from 'styled-components';
 import * as Icon from 'react-bootstrap-icons';
@@ -14,14 +14,32 @@ import useClient from '../../api/client';
 import updateOrganization from '../../api/Organization/updateOrganization';
 
 
-const FormStyled = styled.div`
-border: 1px lightgrey solid;
-height:18em;
-border-radius: 0px Opx 5px 5px;
-border-left: 7px solid lightblue;
-padding: 3em;
-width:80%;
-box-shadow: 0px 1px 0px 2px lightyellow;
+const Background = styled.div`
+margin-top: 4%;
+margin-right: 5px;
+z-index: 10;
+border-radius: 0px;
+background-color: white;
+border : 1px solid lightgrey;
+border-left:  4px solid #24a8c9;
+overflow-y:auto;
+overflow-x: hidden;
+
+box-shadow: 0px 1px 2px 2px whitesmoke;
+padding: 16px;
+.form-group {
+    margin-bottom: 1.6em;
+  }
+.error {
+    border: 2px solid #FF6565;
+  }
+.error-message {
+color: #FF6565;
+padding: .5em .2em;
+height: 1em;
+position: absolute;
+font-size: .8em;
+}
 `;
 
 const EditOrganizationForm = (props) => {
@@ -55,7 +73,7 @@ const EditOrganizationForm = (props) => {
                     <h3>Edit Organization <b className={'text-primary'}>{formData.label}</b></h3>
                 </Col>
             </Row>
-            <FormStyled className={'mt-5'}>
+            <Background>
                 <Row>
                     <Col className="pt-2" xs={3}><h6><b>Name</b></h6></Col>
                     <Col xs={5}>
@@ -86,22 +104,20 @@ const EditOrganizationForm = (props) => {
 
                     </Col>
                 </Row>
-
                 <Row className={'mt-3'}>
                     <Col xs={3} />
                     <Col xs={2}>
-                        <div className={'btn-group'}>
-                            <div onClick={onSubmit} className={'btn btn-success'}>
-                                Save
-                            </div>
-                            <div className={'btn btn-info'}>
-                                <Link className="text-white" to={'/organizations'}> Cancel</Link>
-                            </div>
-
+                        <div onClick={onSubmit} className={'btn btn-info btn-sm'}>
+                            Edit
                         </div>
                     </Col>
+                    <Col xs={2}>
+                        <Button onClick={() => { history.push('/organizations'); }} className="btn-primary btn-sm" type="submit">
+                            <b>Cancel</b>
+                        </Button>
+                    </Col>
                 </Row>
-            </FormStyled>
+            </Background>
         </Container>
     );
 };
