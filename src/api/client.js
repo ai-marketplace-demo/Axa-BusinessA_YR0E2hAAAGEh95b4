@@ -1,8 +1,10 @@
-import React, {useState,useEffect} from "react";
-import config from '../config';
-import { ApolloClient, ApolloLink, InMemoryCache,HttpLink } from 'apollo-boost';
+import React, { useState, useEffect } from 'react';
+import {
+    ApolloClient, ApolloLink, InMemoryCache, HttpLink
+} from 'apollo-boost';
 import { Auth } from 'aws-amplify';
-import useToken from "./token";
+import config from '../config';
+import useToken from './token';
 
 const defaultOptions = {
     watchQuery: {
@@ -20,12 +22,12 @@ const defaultOptions = {
 };
 
 
-const useClient=()=>{
-    let [client, setClient] = useState(null);
+const useClient = () => {
+    const [client, setClient] = useState(null);
     const token = useToken();
 
-    const initClient= async()=>{
-        console.log("token = ", token);
+    const initClient = async () => {
+        console.log('token = ', token);
         const t = token;
         const httpLink = new HttpLink({
             uri: config.apiGateway.URL,
@@ -36,10 +38,11 @@ const useClient=()=>{
                     AccessControlAllowOrigin: '*',
                     AccessControlAllowHeaders: '*',
                     'access-control-allow-origin': '*',
-                    Authorization: t ? `${t}` : "",
+                    Authorization: t ? `${t}` : '',
                     AccessKeyId: 'none',
                     SecretKey: 'none',
-  
+                    username: 'jeff'
+
                 }
             });
             return forward(operation);
@@ -47,19 +50,18 @@ const useClient=()=>{
         const client = new ApolloClient({
             link: authLink.concat(httpLink),
             cache: new InMemoryCache(),
-            defaultOptions:defaultOptions
+            defaultOptions
 
         });
         setClient(client);
     };
 
 
-
-    useEffect(()=> {
-        if (token){
+    useEffect(() => {
+        if (token) {
             initClient();
         }
-    },[token]);
+    }, [token]);
     return client;
 };
 
