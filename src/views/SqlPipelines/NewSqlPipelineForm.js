@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Container, Row, Col, Base, Spinner
+    Container, Row, Col, Base, Spinner, Button
 } from 'react-bootstrap';
 import styled from 'styled-components';
 import * as Icon from 'react-bootstrap-icons';
@@ -241,12 +241,9 @@ const NewSqlPipelineForm = (_props) => {
                                     <div onClick={submitForm} className={'btn btn-sm btn-info'}>Create</div>
                                 </Col>
                                 <Col xs={2}>
-                                    <Link to={'/sqlpipelines'}>
-                                        <div className="btn btn-sm btn-outline-primary" type="submit">
-                                            <b>Cancel</b>
-                                        </div>
-                                    </Link>
-
+                                    <Button onClick={() => { history.push('/sqlpipelines'); }} className="btn-primary btn-sm" type="submit">
+                                        <b>Cancel</b>
+                                    </Button>
                                 </Col>
                             </Row>
 

@@ -390,15 +390,13 @@ const NewRedshiftCluster = (props) => {
                                         <b>Create</b>
                                     </Button>
                                 </Col>
+
                                 <Col xs={2}>
-
-                                    <Link to={'/redshiftclusters'}>
-                                        <div className="btn btn-sm btn-outline-primary" type="submit" disabled={isSubmitting}>
-                                            <b>Cancel</b>
-                                        </div>
-                                    </Link>
-
+                                    <Button onClick={() => { history.push('/redshiftclusters'); }} className="btn-primary btn-sm" type="submit" disabled={submitting}>
+                                        <b>Cancel</b>
+                                    </Button>
                                 </Col>
+
 
                             </Row>
                         </Form>

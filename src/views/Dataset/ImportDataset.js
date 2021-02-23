@@ -395,19 +395,15 @@ const ImportDatasetForm = (_props) => {
                             </Form.Group>
 
                             <Row className={'mt-4'}>
-                                <Col xs={3}>
+                                <Col xs={2}>
                                     <Button className="btn-info btn-sm" type="submit" disabled={submitting}>
                                         <b>Import</b>
                                     </Button>
                                 </Col>
-                                <Col xs={3}>
-
-                                    <Link to={'/datasets'}>
-                                        <div className="btn btn-sm btn-outline-primary" type="submit" disabled={submitting}>
-                                            <b>Cancel</b>
-                                        </div>
-                                    </Link>
-
+                                <Col xs={2}>
+                                    <Button onClick={() => { history.push('/datasets'); }} className="btn-primary btn-sm" type="submit" disabled={submitting}>
+                                        <b>Cancel</b>
+                                    </Button>
                                 </Col>
                             </Row>
                         </Form>

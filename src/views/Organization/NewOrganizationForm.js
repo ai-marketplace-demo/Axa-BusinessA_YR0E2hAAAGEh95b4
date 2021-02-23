@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { gql } from 'apollo-boost';
 import {
-    Container, Table, Row, Badge, Col, Spinner
+    Container, Table, Row, Badge, Col, Spinner, Button
 } from 'react-bootstrap';
 import styled from 'styled-components';
 import * as Icon from 'react-bootstrap-icons';
@@ -123,11 +123,9 @@ const NewOrganizationForm = (props) => {
                         </div>
                     </Col>
                     <Col xs={2}>
-                        <Link style={{ color: 'black' }} to={'/organizations'}>
-                            <div className={'btn btn-sm btn-outline-primary'}>
-                                Cancel
-                            </div>
-                        </Link>
+                        <Button onClick={() => { history.push('/organizations'); }} className="btn-primary btn-sm" type="submit">
+                            <b>Cancel</b>
+                        </Button>
                     </Col>
                 </Row>
             </FormStyled>

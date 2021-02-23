@@ -9,12 +9,9 @@ import {
     Link, useParams, useLocation, useHistory
 } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Steps from '../../components/Steps/Steps';
 import useClient from '../../api/client';
-import createProject from '../../api/Project/createProject';
 import listOrganizationEnvironments from '../../api/Environment/listOrganizationEnvironments';
 import listOrganizations from '../../api/Organization/listOrganizations';
-import listProjects from '../../api/Project/listProjects';
 import getDataset from '../../api/Dataset/getDataset';
 import createRequest from '../../api/DataAccessRequest/createRequest';
 

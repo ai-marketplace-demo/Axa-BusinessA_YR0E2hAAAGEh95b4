@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import * as MdIcon from 'react-icons/md';
-import * as ImIcon from 'react-icons/im';
 import * as SiIcon from 'react-icons/si';
 import * as FiIcon from 'react-icons/fi';
 import { If, Then, Else } from 'react-if';
@@ -12,22 +11,14 @@ import * as Icon from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { Slide, ToastContainer } from 'react-toastify';
 import { Auth } from 'aws-amplify';
-import BodyStyled from './BodyStyled';
-import SidebarStyled from './SidebarStyled';
-import MainStyled from './MainStyled';
-import Sidebar from '../Sidebar/Sidebar';
 
 import Header from '../Header/Header2';
 import Home from '../../views/Home/Home';
-import Tenant from '../../views/Tenant/TenantView';
 import GetStarted from '../../views/GetStarted/GetStarted';
 import DatasetList from '../../views/Dataset/DatasetList';
-import ProjectList from '../../views/Project/ProjectList';
 import DatasetView from '../../views/Dataset/DatasetView';
 import NewDatasetForm from '../../views/Dataset/NewDatasetForm';
 import ImportDatasetForm from '../../views/Dataset/ImportDataset';
-import ProjectView from '../../views/Project/ProjectView2';
-import NewProjectForm from '../../views/Project/NewProjectForm';
 import OrganizationList from '../../views/Organization/Organizations/OrganizationList';
 import OrganizationDashboard from '../../views/Organization/OrganizationDashboard/OrganizationDashboard';
 import NewOrganizationForm from '../../views/Organization/NewOrganizationForm';
@@ -48,11 +39,9 @@ import EnvironmentClusterList from '../../views/Organization/OrganizationEnviron
 import EnvironmentPlayground from '../../views/EnvironmentPlayground/EnvironmentPlayground';
 import ImportClusterForm from '../../views/Organization/OrganizationEnvironments/EnvironmentCluster/ImportClusterForm';
 import Catalog from '../../views/Catalog/Catalog2';
-// import QueryEditor from "../../views/Query/QueryEditor";
 import QueryList from '../../views/SavedQueries/QueryList';
 import QueryEditor from '../../views/SavedQueries/QueryEditor';
 import QueryForm from '../../views/SavedQueries/ScheduledQueryForm';
-import TableExplorer from '../../views/Table/TableExplorer';
 import Notifications from '../../views/DataAccessRequest/Notifications';
 import NewDataRequestAccess from '../../views/DataAccessRequest/NewRequest';
 import UserProfile from '../../views/Profile/UserProfile';
@@ -66,11 +55,9 @@ import NewSqlPipelineForm from '../../views/SqlPipelines/NewSqlPipelineForm';
 import SqlPipelineAdmin from '../../views/SqlPipelines/SqlPipelineAdmin';
 import SidebarLink from './SidebarLink';
 import ShareManager from '../../views/ShareManager/ShareManager';
-import XP from '../../views/XP/XP';
 import Graph from '../../views/XP/Graph';
 import ES from '../../views/XP/ES';
 import NotebookList from '../../views/Notebook/NotebookList';
-import QueryTool from '../../views/XP/QueryEditor';
 import NotebookForm from '../../views/Notebook/NotebookForm';
 import NotebookAdmin from '../../views/Notebook/NotebookAdmin';
 import RedshiftClusterList from '../../views/RedshiftClusters/ClusterList';
@@ -385,9 +372,6 @@ const Layout = (props) => {
                                     <Route path={'/playground/:uri/:tab?'}>
                                         <EnvironmentPlayground />
                                     </Route>
-                                    <Route path={'/tenant-administrators'}>
-                                        <Tenant />
-                                    </Route>
                                     <Route path={'/queries'}>
                                         <QueryList />
                                     </Route>
@@ -430,11 +414,6 @@ const Layout = (props) => {
                                     <Route path={'/dashboardadmin/:uri/:tab?'}>
                                         <DashboardAdmin />
                                     </Route>
-
-
-                                    <Route path={'/projects'}>
-                                        <ProjectList />
-                                    </Route>
                                     <Route path={'/environments'}>
                                         <EnvironmentList />
                                     </Route>
@@ -459,14 +438,8 @@ const Layout = (props) => {
                                     <Route path={'/dataset/:uri/:tab?/:tableUri?'}>
                                         <DatasetView />
                                     </Route>
-                                    <Route path={'/project/:uri'}>
-                                        <ProjectView />
-                                    </Route>
                                     <Route path={'/notifications'}>
                                         <Notifications />
-                                    </Route>
-                                    <Route path={'/newproject'}>
-                                        <NewProjectForm />
                                     </Route>
                                     <Route path={'/newdataaccessrequest/:uri'}>
                                         <NewDataRequestAccess />
@@ -521,9 +494,6 @@ const Layout = (props) => {
                                     </Route>
                                     <Route path={'/organizations'}>
                                         <OrganizationList />
-                                    </Route>
-                                    <Route path={'/table/:datasetUri/:tableUri'}>
-                                        <TableExplorer />
                                     </Route>
                                     <Route path={'/redshiftclusters'}>
                                         <RedshiftClusterList />

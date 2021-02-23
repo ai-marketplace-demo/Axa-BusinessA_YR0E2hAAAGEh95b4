@@ -195,7 +195,7 @@ const NewEnvironmentForm = (props) => {
                         <Col xs={2}>
                             <If condition={!isSubmitting}>
                                 <Then>
-                                    <div onClick={submitForm} className={'btn btn-sm btn-success'}>
+                                    <div onClick={submitForm} className={'btn btn-sm btn-info'}>
                                         Submit
                                     </div>
                                 </Then>
@@ -216,14 +216,14 @@ const NewEnvironmentForm = (props) => {
                                             pathname: `/organization/${params.uri}/environments`
                                         }}
                                     >
-                                        <div className={'btn btn-sm btn-outline-primary'}>
+                                        <div className={'btn btn-sm btn-primary'}>
                                             Cancel
                                         </div>
 
                                     </Link>
                                 </Then>
                                 <Else>
-                                    <div className={'btn disabled btn-sm btn-outline-primary'}>
+                                    <div className={'btn disabled btn-sm btn-primary'}>
                                         Cancel
                                     </div>
                                 </Else>

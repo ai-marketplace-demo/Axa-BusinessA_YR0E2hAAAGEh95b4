@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Container, Row, Col, Badge, Spinner, Table
+    Container, Row, Col, Badge, Spinner, Table, Button
 } from 'react-bootstrap';
 import { If, Then, Else } from 'react-if';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import * as SiIcon from 'react-icons/si';
 import Select from 'react-select';
 import styled from 'styled-components';
@@ -26,6 +26,7 @@ padding: 16px;
 
 const NotebookForm = (props) => {
     const client = useClient();
+    const history = useHistory();
     const [formData, setFormData] = useState({
         environmentUri: null,
         label: 'NotebookName',
@@ -144,12 +145,9 @@ const NotebookForm = (props) => {
                                     <div onClick={submitForm} className={'btn btn-sm btn-info'}>Create</div>
                                 </Col>
                                 <Col xs={2}>
-                                    <Link to={'/notebooks'}>
-                                        <div className="btn btn-sm btn-outline-primary" type="submit">
-                                            <b>Cancel</b>
-                                        </div>
-                                    </Link>
-
+                                    <Button onClick={() => { history.push('/notebooks'); }} className="btn-primary btn-sm" type="submit">
+                                        <b>Cancel</b>
+                                    </Button>
                                 </Col>
                             </Row>
                         </Container>
