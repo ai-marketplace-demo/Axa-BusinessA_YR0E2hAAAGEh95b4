@@ -41,7 +41,6 @@ const useClient = () => {
                     Authorization: t ? `${t}` : '',
                     AccessKeyId: 'none',
                     SecretKey: 'none',
-                    username: 'jeff'
 
                 }
             });
