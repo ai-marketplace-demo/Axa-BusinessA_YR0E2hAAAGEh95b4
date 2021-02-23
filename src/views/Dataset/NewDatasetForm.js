@@ -112,30 +112,19 @@ const NewDatasetForm = (_props) => {
     const [topics, setTopics] = useState([]);
 
     const selectOrg = async (selectOption) => {
-        setOrg(selectOption);
-        const res = await client.query(listOrganizationEnvironments({
-            organizationUri: selectOption.value,
-            filter: {
-                page: 1,
-                roles: ['Admin', 'Owner', 'Invited', 'DatasetCreator'],
-                pageSize: 10
-            }
-        }));
+        setFormData({ ...formData, org: selectOption });
+        const res = await client.query(listOrganizationEnvironments({ organizationUri: selectOption.value }));
         if (!res.errors) {
-            setEnvs(res.data.getOrganization.environments.nodes.map((e) => ({
-                label: `${e.label}(${e.SamlGroupName})`,
-                value: e.environmentUri,
-                region: { label: getRegionLabel(e.region), value: e.region }
-            })));
+            setEnvs(res.data.getOrganization.environments.nodes.map((e) => (
+                { label: e.label, value: e.environmentUri, region: { label: getRegionLabel(e.region), value: e.region }})));
         }
+    };
+    const selectEnv = (selectOption) => {
+        setFormData({ ...formData, env: selectOption });
     };
 
     const selectStewards = (selectOption) => {
         setStewards(selectOption);
-    };
-
-    const selectEnv = (selectOption) => {
-        setEnv(selectOption);
     };
 
     const selectTopic = (selectOption) => {
@@ -173,15 +162,15 @@ const NewDatasetForm = (_props) => {
             businessOwnerEmail: formData.owner,
             businessOwnerDelegationEmails: stewards ? stewards.map((s) => s.value) : [],
             description: formData.description,
-            environmentUri: env.value,
-            organizationUri: org.value
+            environmentUri: formData.env.value,
+            organizationUri: formData.org.value
         };
         const res = await client.mutate(
             createDataset(input)
         );
         setSubmitting(false);
         if (!res.errors) {
-            toast(`Created Dataset ${formData.label} in ${org.label}/${env.label}`, {
+            toast(`Created Dataset ${input.label} in ${formData.org.label}/${formData.env.label}`, {
                 hideProgressBar: true,
                 onClose: () => { history.goBack(); }
             });
