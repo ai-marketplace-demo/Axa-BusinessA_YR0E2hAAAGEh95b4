@@ -378,7 +378,7 @@ const ES = (props) => {
                                                 showLoadMore
                                                 showMissing
                                                 showFilter
-                                                renderNoResults={() => <p>No Results Found</p>}
+                                                renderNoResults={() => <p></p>}
                                                 componentId="KindSensor"
                                                 dataField="datahubKind"
                                                 title="Type"
@@ -398,7 +398,7 @@ const ES = (props) => {
                                                 showLoadMore
                                                 showMissing
                                                 showFilter
-                                                renderNoResults={() => <p>No Results Found</p>}
+                                                renderNoResults={() => <p></p>}
                                                 componentId="TagSensor"
                                                 dataField="tags"
                                                 title="Tags"
@@ -419,7 +419,7 @@ const ES = (props) => {
                                                 showLoadMore
                                                 showMissing
                                                 showFilter
-                                                renderNoResults={() => <p>No Results Found</p>}
+                                                renderNoResults={() => <p></p>}
                                                 componentId="TopicSensor"
                                                 dataField="topics"
                                                 title="Topics"
@@ -438,7 +438,7 @@ const ES = (props) => {
                                                 showLoadMore
                                                 // showMissing={true}
                                                 // showFilter={true}
-                                                renderNoResults={() => <p>No Results Found</p>}
+                                                renderNoResults={() => <p></p>}
                                                 componentId="RegionSensor"
                                                 dataField="region"
                                                 title="Regions"
