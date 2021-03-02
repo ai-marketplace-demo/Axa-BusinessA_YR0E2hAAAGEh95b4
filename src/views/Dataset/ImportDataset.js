@@ -94,7 +94,7 @@ const ImportDatasetForm = (_props) => {
         region: {},
         description: 'dataset description',
         topics: [],
-        SamlAdminGroupName: groups ? groups[0] : 'Choose an administrator group',
+        SamlAdminGroupName: groups ? groups[0] : '',
         language: Languages[0],
         owner: '',
         stewards: [],
