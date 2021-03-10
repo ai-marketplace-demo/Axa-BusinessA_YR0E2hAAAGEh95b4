@@ -64,8 +64,6 @@ class MetricsComponent extends React.PureComponent {
                     <code>{column.Type}</code>
                 </Row>
                 <Row className="values mt-2">
-                    /*<Col xs={3}> { this.renderCompleteness(column) }</Col>
-                    <Col xs={9}>{ this.renderGraph(column) }</Col>*/
                     Not available !
                 </Row>
             </React.Fragment>
