@@ -1,4 +1,4 @@
-import React from 'react';
+/**import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import './style.css';
 
@@ -36,3 +36,4 @@ class CompletenessMetrics extends React.Component {
 
 
 export default CompletenessMetrics;
+**/

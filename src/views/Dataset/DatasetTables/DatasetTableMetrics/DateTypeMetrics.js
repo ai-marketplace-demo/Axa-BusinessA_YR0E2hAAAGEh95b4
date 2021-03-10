@@ -1,4 +1,4 @@
-import React from 'react';
+/**import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import './style.css';
@@ -54,3 +54,4 @@ class DateTypeMetrics extends React.PureComponent {
 
 
 export default DateTypeMetrics;
+**/

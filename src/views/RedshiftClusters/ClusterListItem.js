@@ -3,12 +3,6 @@ import {
     Row, Col, Badge, Spinner, Button, Modal
 } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
-import {
-    faSyncAlt, faGlobeEurope, faNetworkWired, faPlayCircle, faPauseCircle,
-    faTrashAlt, faLockOpen, faIdCard, faHome, faCloud, faUserCog, faFolderPlus, faKey
-} from '@fortawesome/free-solid-svg-icons';
-import { faAws } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -236,10 +230,7 @@ const RedshiftClusterListItem = (props) => {
                 </Col>
             </Row>
             <Row>
-                <Col xs={2} className={'mt-1'}>
-                    <FontAwesomeIcon icon={faNetworkWired} />
-                </Col>
-                <Col xs={8}>
+                <Col xs={9}>
                     <small>{!cluster.endpoint ? ' -' : cluster.endpoint}</small>
                 </Col>
                 <Col xs={2}>
@@ -299,7 +290,7 @@ const RedshiftClusterListItem = (props) => {
                                         <Spinner size={'sm'} variant={'primary'} animation={'grow'} />
                                     </Then>
                                 </If>
-                                <b><FontAwesomeIcon icon={faAws} /> Console</b>
+                                <b>Console</b>
                             </div>
                         </Col>
                         <Col xs={5}>
@@ -308,7 +299,7 @@ const RedshiftClusterListItem = (props) => {
                                 className={'btn btn-success rounded-pill btn-sm'}
                                 onClick={goToClusterDatasets}
                             >
-                                <b><FontAwesomeIcon icon={faFolderPlus} /> Datasets</b>
+                                <b>Datasets</b>
                             </div>
                         </Col>
                         <Col xs={1} />
@@ -325,7 +316,7 @@ const RedshiftClusterListItem = (props) => {
                                 className={'btn btn-dark rounded-pill btn-sm'}
                                 onClick={() => goToClusterCreds()}
                             >
-                                <b><FontAwesomeIcon icon={faKey} /> Credentials</b>
+                                <b>Credentials</b>
                             </div>
                         </Col>
                         <Col xs={5}>
@@ -339,7 +330,7 @@ const RedshiftClusterListItem = (props) => {
                                         <Spinner size={'sm'} variant={'primary'} animation={'grow'} />
                                     </Then>
                                 </If>
-                                <b><FontAwesomeIcon icon={faTrashAlt} /> Delete</b>
+                                <b>Delete</b>
                             </div>
                         </Col>
                         <Col xs={1} />

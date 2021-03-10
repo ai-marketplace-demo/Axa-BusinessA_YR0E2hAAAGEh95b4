@@ -5,7 +5,6 @@ import {
 import { If, Then, Else } from 'react-if';
 import * as Icon from 'react-bootstrap-icons';
 import { toast } from 'react-toastify';
-import 'handsontable/dist/handsontable.full.css';
 import {
     BrowserRouter as Router,
     Route,

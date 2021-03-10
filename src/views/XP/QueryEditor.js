@@ -9,7 +9,6 @@ import {
 } from 'react-if';
 import Select from 'react-select';
 import styled from 'styled-components';
-import { HotTable } from '@handsontable/react';
 import useClient from '../../api/client';
 
 const TableStyled = styled.div`
@@ -26,7 +25,7 @@ const ResultTable = (props) => {
     ];
     return (
         <div style={{ backgroundColor: '' }}>
-            <HotTable
+            /*<HotTable
                 data={data}
                 colHeaders
                 key={'non-commercial-and-evaluation'}
@@ -34,7 +33,8 @@ const ResultTable = (props) => {
                 stretchH={'last'}
                 width={'100%'}
                 height={'300'}
-            />
+            />*/
+            /*Remove HotTable Not open source*/
         </div>
     );
 

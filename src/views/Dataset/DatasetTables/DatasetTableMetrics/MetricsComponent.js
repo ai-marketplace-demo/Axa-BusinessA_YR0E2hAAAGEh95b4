@@ -12,7 +12,7 @@ class MetricsComponent extends React.PureComponent {
         super(props);
     }
 
-    renderGraph(column) {
+    /*renderGraph(column) {
         if (column.Type === 'string') {
             return (
                 <StringTypeMetrics
@@ -51,7 +51,7 @@ class MetricsComponent extends React.PureComponent {
 
         return false;
     }
-
+}*/
     render() {
         const {
             column
@@ -64,12 +64,15 @@ class MetricsComponent extends React.PureComponent {
                     <code>{column.Type}</code>
                 </Row>
                 <Row className="values mt-2">
-                    <Col xs={3}> { this.renderCompleteness(column) }</Col>
-                    <Col xs={9}>{ this.renderGraph(column) }</Col>
+                    /*<Col xs={3}> { this.renderCompleteness(column) }</Col>
+                    <Col xs={9}>{ this.renderGraph(column) }</Col>*/
+                    Not available !
                 </Row>
             </React.Fragment>
         );
     }
+
 }
 
 export default (MetricsComponent);
+

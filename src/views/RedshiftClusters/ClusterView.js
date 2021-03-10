@@ -12,12 +12,6 @@ import { Else, If, Then } from 'react-if';
 import { toast } from 'react-toastify';
 import * as FiIcon from 'react-icons/fi';
 import styled from 'styled-components';
-import {
-    faPlayCircle, faPauseCircle,
-    faTrashAlt
-} from '@fortawesome/free-solid-svg-icons';
-import { faAws } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Datashopper from './ClusterDatasets/Datashopper';
 import RedshiftClusterDatasets from './ClusterDatasets/RedshiftClusterDatasets';
 import ClusterDetails from './ClusterDetails';
@@ -184,19 +178,15 @@ const RedshiftClusterView = (props) => {
                                     <Col xs={12}>
                                         <DropdownButton id="dropdown-basic-button" className="float-right" variant={'outline-primary'} title="Actions">
                                             <Dropdown.Item eventKey="consoleAccess" onSelect={(k) => handleActionButtons(k)}>
-                                                <FontAwesomeIcon icon={faAws} style={{ color: '#545b64', marginRight: '5px' }} size="sm" />
                                                 Console
                                             </Dropdown.Item>
                                             <Dropdown.Item eventKey="resume" onSelect={(k) => handleActionButtons(k)}>
-                                                <FontAwesomeIcon icon={faPlayCircle} style={{ color: '#545b64', marginRight: '5px' }} size="sm" />
                                                 Resume
                                             </Dropdown.Item>
                                             <Dropdown.Item eventKey="pause" onSelect={(k) => handleActionButtons(k)}>
-                                                <FontAwesomeIcon icon={faPauseCircle} style={{ color: '#545b64', marginRight: '5px' }} size="sm" />
                                                 Pause
                                             </Dropdown.Item>
                                             <Dropdown.Item eventKey="delete" onSelect={(k) => handleActionButtons(k)}>
-                                                <FontAwesomeIcon icon={faTrashAlt} style={{ color: '#545b64', marginRight: '5px' }} size="sm" />
                                                 Delete
                                             </Dropdown.Item>
                                         </DropdownButton>

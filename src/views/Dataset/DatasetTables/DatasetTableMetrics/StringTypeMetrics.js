@@ -1,4 +1,4 @@
-import React from 'react';
+/**import React from 'react';
 import './style.css';
 import { Col, Row } from 'react-bootstrap';
 import HighchartsReact from 'highcharts-react-official';
@@ -57,3 +57,4 @@ class StringTypeMetrics extends React.PureComponent {
 
 
 export default StringTypeMetrics;
+**/
