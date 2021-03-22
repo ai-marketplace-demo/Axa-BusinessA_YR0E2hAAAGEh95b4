@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const syncTables = (datasetUri) => ({
-    variables: {
-        datasetUri
-    },
-    mutation: gql`mutation SyncTables($datasetUri:String!){
+const syncTables=(datasetUri)=>{
+    return {
+        variables:{
+            datasetUri: datasetUri
+        },
+        mutation :gql`mutation SyncTables($datasetUri:String!){
             syncTables(datasetUri:$datasetUri){
                 count 
                 nodes
@@ -24,7 +25,8 @@ const syncTables = (datasetUri) => ({
                 }
             }
         }`
-});
+    }
+}
 
 
 export default syncTables;

@@ -1,11 +1,12 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const createProject = ({ environmentUri, input }) => ({
-    variables: {
-        environmentUri,
-        input
-    },
-    mutation: gql`mutation CreateProject(
+const createProject=({environmentUri ,input})=>{
+    return {
+        variables:{
+            environmentUri : environmentUri,
+            input  : input
+        },
+        mutation :gql`mutation CreateProject(
             $input:NewProjectInput,
             $environmentUri : String!
         ){
@@ -16,7 +17,8 @@ const createProject = ({ environmentUri, input }) => ({
                 userRoleInProject
             }
         }`
-});
+    }
+}
 
 
 export default createProject;

@@ -1,15 +1,17 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const deleteProjectPipeline = (pipelineUri) => ({
-    variables: {
-        pipelineUri
-    },
-    mutation: gql`mutation DeleteProjectPipeline(
+const deleteProjectPipeline=(pipelineUri)=>{
+    return {
+        variables:{
+            pipelineUri : pipelineUri
+        },
+        mutation :gql`mutation DeleteProjectPipeline(
             $pipelineUri : String!
         ){
             deleteProjectPipeline(pipelineUri:$pipelineUri)
         }`
-});
+    }
+}
 
 
 export default deleteProjectPipeline;

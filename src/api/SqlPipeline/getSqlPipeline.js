@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const getSqlPipeline = (sqlPipelineUri) => ({
-    variables: {
-        sqlPipelineUri,
-    },
-    query: gql`
+const getSqlPipeline= (sqlPipelineUri)=>{
+    return {
+        variables:{
+            sqlPipelineUri:sqlPipelineUri,
+        },
+        query:gql`
             query GetSqlPipeline($sqlPipelineUri:String!){
                 getSqlPipeline(sqlPipelineUri:$sqlPipelineUri){
                     sqlPipelineUri
@@ -14,10 +15,10 @@ const getSqlPipeline = (sqlPipelineUri) => ({
                     description
                     label
                     created
+                    userRoleForPipeline
                     tags
                     repo
                     cloneUrlHttp
-                    userRoleForPipeline
                     environment{
                         environmentUri
                         AwsAccountId
@@ -29,17 +30,27 @@ const getSqlPipeline = (sqlPipelineUri) => ({
                         name
                     }
                     stack{
-                        stackUri
+                        stack
                         status
+                        stackUri
+                        targetUri
+                        accountid
+                        region
                         stackid
                         link
                         outputs
-                        
+                        resources
+                    }
+                    runs{
+                        Id
+                        StartedOn
+                        JobRunState
                     }
                 }
             }
         `
-});
+    }
+}
 
 
-export default getSqlPipeline;
+export default getSqlPipeline ;

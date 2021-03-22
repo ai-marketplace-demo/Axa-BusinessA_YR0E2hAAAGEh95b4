@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const getSavedQuery = (queryUri) => ({
-    variables: {
-        queryUri,
-    },
-    query: gql`
+const getSavedQuery = (queryUri)=>{
+    return {
+        variables:{
+            queryUri:queryUri,
+        },
+        query:gql`
             query getSavedQuery ($queryUri:String!){
                 getSavedQuery (queryUri:$queryUri){
                     savedQueryUri
@@ -20,7 +21,8 @@ const getSavedQuery = (queryUri) => ({
                 }
             }
         `
-});
+    }
+}
 
 
-export default getSavedQuery;
+export default getSavedQuery ;

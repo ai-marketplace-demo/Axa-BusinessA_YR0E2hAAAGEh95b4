@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const getProject = (projectUri) => ({
-    variables: {
-        projectUri
-    },
-    query: gql`
+const getProject= (projectUri)=>{
+    return {
+        variables:{
+            projectUri:projectUri
+        },
+        query:gql`
             query GetProject($projectUri:String!){
                 getProject(projectUri:$projectUri){
                         projectUri
@@ -33,7 +34,8 @@ const getProject = (projectUri) => ({
                     }
                 }
         `
-});
+    }
+}
 
 
-export default getProject;
+export default getProject ;

@@ -1,11 +1,12 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const listDatasetShareObjects = ({ datasetUri, filter }) => ({
-    variables: {
-        datasetUri,
-        filter
-    },
-    query: gql`query ListDatasetShareObjects($datasetUri:String!,$filter:ShareObjectFilter){
+const listDatasetShareObjects=({datasetUri, filter})=>{
+    return {
+        variables:{
+            datasetUri:datasetUri,
+            filter: filter
+        },
+        query :gql`query ListDatasetShareObjects($datasetUri:String!,$filter:ShareObjectFilter){
             getDataset(datasetUri:$datasetUri){
                 shares(filter:$filter){
                     page
@@ -39,7 +40,8 @@ const listDatasetShareObjects = ({ datasetUri, filter }) => ({
                 }
             }
         }`
-});
+    }
+}
 
 
 export default listDatasetShareObjects;

@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const getDashboard = (dashboardUri) => ({
-    variables: {
-        dashboardUri,
-    },
-    query: gql`
+const getDashboard= (dashboardUri)=>{
+    return {
+        variables:{
+            dashboardUri:dashboardUri,
+        },
+        query:gql`
             query GetDashboard($dashboardUri:String!){
                 getDashboard(dashboardUri:$dashboardUri){
                     dashboardUri
@@ -15,23 +16,16 @@ const getDashboard = (dashboardUri) => ({
                     label
                     created
                     tags
-                    userRoleForDashboard
                     organization{
                         organizationUri
                         label
                         name
                     }
-                    environment{
-                            environmentUri
-                            name
-                            label
-                            AwsAccountId
-                            region
-                        }
                 }
             }
         `
-});
+    }
+}
 
 
-export default getDashboard;
+export default getDashboard ;

@@ -1,10 +1,12 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const getUserProfile = (username) => ({
-    variables: {
-        username
-    },
-    query: gql`
+const getUserProfile= (username)=>{
+
+    return{
+        variables:{
+            username
+        },
+        query:gql`
             query GetUserProfile($username:String){
                 getUserProfile(username:$username){
                     username
@@ -14,7 +16,8 @@ const getUserProfile = (username) => ({
                 }
             }
         `
-});
+    }
+}
 
 
-export default getUserProfile;
+export default getUserProfile ;

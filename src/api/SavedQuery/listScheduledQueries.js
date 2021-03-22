@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const listScheduledQueries = (filter) => ({
-    variables: {
-        filter,
-    },
-    query: gql`
+const listScheduledQueries= (filter)=>{
+    return {
+        variables:{
+            filter:filter,
+        },
+        query:gql`
             query ListScheduledQueries($filter:ScheduledQueryFilter){
                 listScheduledQueries(filter:$filter){
                     count
@@ -30,15 +31,12 @@ const listScheduledQueries = (filter) => ({
                             organizationUri
                             name
                         }
-                        stack{
-                            status
-                        }
-                        userRoleForScheduledQuery
                     }
                 }
             }
         `
-});
+    }
+}
 
 
-export default listScheduledQueries;
+export default listScheduledQueries ;

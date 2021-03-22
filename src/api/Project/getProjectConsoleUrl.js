@@ -1,15 +1,17 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const getProjectConsoleUrl = (projectUri) => ({
-    variables: {
-        projectUri
-    },
-    query: gql`
+const getProjectConsoleUrl= (projectUri)=>{
+    return {
+        variables:{
+            projectUri:projectUri
+        },
+        query:gql`
             query GetProjectConsoleUrl($projectUri:String!){
                 getProjectConsoleAccess(projectUri:$projectUri)
             }
         `
-});
+    }
+}
 
 
-export default getProjectConsoleUrl;
+export default getProjectConsoleUrl ;

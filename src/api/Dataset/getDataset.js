@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const getDataset = (datasetUri) => ({
-    variables: {
-        datasetUri
-    },
-    query: gql`
+const getDataset= (datasetUri)=>{
+    return {
+        variables:{
+            datasetUri:datasetUri
+        },
+        query:gql`
             query GetDataset($datasetUri:String!){
                 getDataset(datasetUri:$datasetUri){
                         datasetUri
@@ -15,6 +16,7 @@ const getDataset = (datasetUri) => ({
                         region
                         created
                         userRoleForDataset
+                        SamlAdminGroupName
                         AwsAccountId
                         S3BucketName
                         GlueDatabaseName
@@ -23,9 +25,16 @@ const getDataset = (datasetUri) => ({
                         IAMDatasetAdminRoleArn                        
                         businessOwnerDelegationEmails
                         stack{
-                            stackid
+                            stack
                             status
+                            stackUri
+                            targetUri
+                            accountid
+                            region
+                            stackid
                             link
+                            outputs
+                            resources
                             
                         }
                         customTags{
@@ -40,15 +49,31 @@ const getDataset = (datasetUri) => ({
                             organizationUri
                             label
                         }
+                        terms{
+                            count
+                            nodes{
+                                __typename
+                                ...on Term {
+                                    nodeUri
+                                    path
+                                    label
+                                }
+                            }
+                        }
                         environment{
                             environmentUri
                             label
+                            region
+                            organization{
+                                organizationUri
+                                label
+                            }
                         }
-                        quality
                     }
                 }
         `
-});
+    }
+}
 
 
-export default getDataset;
+export default getDataset ;

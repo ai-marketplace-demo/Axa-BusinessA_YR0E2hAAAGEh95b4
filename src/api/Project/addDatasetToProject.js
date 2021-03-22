@@ -1,8 +1,9 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const addDatasetToProject = ({ projectUri, datasetUri }) => ({
-    variables: { projectUri, datasetUri },
-    mutation: gql`mutation AddDatasetToProject(
+const addDatasetToProject=({ projectUri, datasetUri})=>{
+    return {
+        variables:{projectUri,datasetUri},
+        mutation :gql`mutation AddDatasetToProject(
             $projectUri:String,
             $datasetUri:String,
         ){
@@ -16,7 +17,8 @@ const addDatasetToProject = ({ projectUri, datasetUri }) => ({
                 userRoleInEnvironment
             }
         }`
-});
+    }
+}
 
 
 export default addDatasetToProject;

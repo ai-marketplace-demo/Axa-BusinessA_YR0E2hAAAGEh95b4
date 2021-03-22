@@ -1,11 +1,12 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const updateTopic = ({ input, topicUri }) => ({
-    variables: {
-        topicUri,
-        input
-    },
-    mutation: gql`mutation UpdateTopic($topicUri:String,$input:OrganizationTopicInput){
+const updateTopic= ({input,topicUri})=>{
+    return {
+        variables:{
+            topicUri: topicUri,
+            input:input
+        },
+        mutation:gql`mutation UpdateTopic($topicUri:String,$input:OrganizationTopicInput){
             updateTopic(organizationUri:$organizationUri,input:$input){
                     topicUri
                     label
@@ -15,7 +16,8 @@ const updateTopic = ({ input, topicUri }) => ({
                 }
             }
         `
-});
+    }
+}
 
 
 export default updateTopic;

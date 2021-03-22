@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const getScheduledQuery = (scheduledQueryUri) => ({
-    variables: {
-        scheduledQueryUri,
-    },
-    query: gql`
+const getScheduledQuery = (scheduledQueryUri)=>{
+    return {
+        variables:{
+            scheduledQueryUri:scheduledQueryUri,
+        },
+        query:gql`
             query GetScheduledQuery($scheduledQueryUri:String!){
                 getScheduledQuery(scheduledQueryUri:$scheduledQueryUri){
                     scheduledQueryUri
@@ -28,20 +29,11 @@ const getScheduledQuery = (scheduledQueryUri) => ({
                             queryOrder
                         }
                     }
-                    environment{
-                            AwsAccountId
-                            region
-                            name
-                            label
-                        }
-                    stack{
-                            status
-                        }
-                    userRoleForScheduledQuery
                 }
             }
         `
-});
+    }
+}
 
 
-export default getScheduledQuery;
+export default getScheduledQuery ;

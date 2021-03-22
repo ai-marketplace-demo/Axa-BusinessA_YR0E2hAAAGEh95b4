@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const getNotebook = (notebookUri) => ({
-    variables: {
-        notebookUri,
-    },
-    query: gql`
+const getNotebook = (notebookUri)=>{
+    return {
+        variables:{
+            notebookUri:notebookUri,
+        },
+        query:gql`
             query getSagemakerNotebook ($notebookUri:String!){
                 getSagemakerNotebook (notebookUri:$notebookUri){
                     notebookUri
@@ -15,7 +16,7 @@ const getNotebook = (notebookUri) => ({
                     created
                     tags
                     NotebookInstanceStatus
-                    userRoleForProjectNotebook
+                    #SamlAdminGroupName
                     environment{
                         label
                         name
@@ -29,12 +30,22 @@ const getNotebook = (notebookUri) => ({
                         organizationUri
                     }
                     stack{
-                     status
+                        stack
+                        status
+                        stackUri
+                        targetUri
+                        accountid
+                        region
+                        stackid
+                        link
+                        outputs
+                        resources
                     }
                 }
             }
         `
-});
+    }
+}
 
 
-export default getNotebook;
+export default getNotebook ;

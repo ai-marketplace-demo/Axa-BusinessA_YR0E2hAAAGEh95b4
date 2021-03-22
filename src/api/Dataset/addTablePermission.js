@@ -1,12 +1,13 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const addTablePermissions = ({ tableUri, role, userName }) => ({
-    variables: {
-        tableUri,
-        role,
-        userName
-    },
-    mutation: gql`
+const addTablePermissions= ({tableUri, role, userName})=>{
+    return {
+        variables:{
+            tableUri,
+            role,
+            userName
+        },
+        mutation:gql`
             mutation AddTablePermission(
                 $tableUri:String!,
                 $userName:String!
@@ -21,7 +22,8 @@ const addTablePermissions = ({ tableUri, role, userName }) => ({
                 }
             }
         `
-});
+    }
+}
 
 
-export default addTablePermissions;
+export default addTablePermissions ;

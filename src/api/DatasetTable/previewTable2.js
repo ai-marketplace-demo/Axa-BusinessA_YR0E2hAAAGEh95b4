@@ -1,18 +1,20 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const previewTable2 = (tableUri) => ({
-    variables: {
-        tableUri,
-    },
-    query: gql`
+const previewTable2= (tableUri)=>{
+    return {
+        variables:{
+            tableUri:tableUri,
+        },
+        query:gql`
             query PreviewTable2($tableUri:String!){
                 previewTable2(tableUri:$tableUri){
-                    fields
                     rows
+                    fields
                 }
             }
         `
-});
+    }
+}
 
 
-export default previewTable2;
+export default previewTable2 ;

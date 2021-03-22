@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const listSavedQueries = (filter) => ({
-    variables: {
-        filter,
-    },
-    query: gql`
+const listSavedQueries= (filter)=>{
+    return {
+        variables:{
+            filter:filter,
+        },
+        query:gql`
             query ListSavedQueries($filter:SavedQueryFilter){
                 listSavedQueries(filter:$filter){
                     count
@@ -24,7 +25,8 @@ const listSavedQueries = (filter) => ({
                 }
             }
         `
-});
+    }
+}
 
 
-export default listSavedQueries;
+export default listSavedQueries ;

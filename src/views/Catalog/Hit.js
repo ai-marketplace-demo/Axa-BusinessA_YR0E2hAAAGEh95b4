@@ -1,172 +1,119 @@
-import React, { useState, useEffect } from 'react';
-import { Row, Col, Badge } from 'react-bootstrap';
-import {
-    If, Then, Else, Switch, Case
-} from 'react-if';
-import * as Icon from 'react-bootstrap-icons';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import Avatar from 'react-avatar';
-import dayjs from 'dayjs';
-import Zoom from '../../components/Zoomer/Zoom';
-import Tag from '../../components/Tag/Tag';
-import UserProfileLink from '../Profile/UserProfileLink';
+import  {useState,useEffect} from "react";
+import {HitCard} from "./styles";
+import {Link,Redirect,useHistory} from "react-router-dom";
+import * as ReactIf from "react-if";
+import * as BsIcons from "react-icons/bs";
+import * as FiIcons from "react-icons/fi"
+import {Button,Icon} from "semantic-ui-react";
+const HitICon = ({hit})=>{
+    const history= useHistory();
 
-const HitStyled = styled.div`
-transition: transform 0.3s ease-in-out;
-&:hover{
-  transform: translateY(-3px);
-  box-shadow: 0px 3px 2px lightgrey;
+    return <ReactIf.Switch>
+        <ReactIf.Case condition={hit.datahubKind=='dataset'}>
+            <BsIcons.BsFolder size={23}/>
+        </ReactIf.Case>
+        <ReactIf.Case condition={hit.datahubKind=='table'}>
+            <BsIcons.BsTable/>
+        </ReactIf.Case>
+        <ReactIf.Case condition={hit.datahubKind=='folder'}>
+            <FiIcons.FiFile size={23}/>
+        </ReactIf.Case>
+    </ReactIf.Switch>
 }
-height:14rem;
-margin-top: 7px;
-padding: 1em;
-border : 1px solid gainsboro;
-border-radius: 8px;
 
-a{
-  color :black;
-  outline: 0;
+const Hit= ({hit})=>{
+    const history = useHistory();
+    const redirect=()=>{
+        if (hit.datahubKind=='dataset'){
+            history.push(`/dataset/${hit._id}/`)
+        }else if (hit.datahubKind=='table'){
+            history.push(`/table/${hit._id}/`)
+        }
+    }
+    const redirectToRequest = ()=>{
+        history.push(`/request/${hit.datahubKind}/${hit._id}`)
+    }
+    return <HitCard>
+        <div style={{display:'grid', gridTemplateColumns:'6fr 3fr 2fr '}}>
+            <div style={{display:'grid', placeItems:'start start',rowGap:'4px',gridTemplateRows:'1fr 1fr 4fr 0.5fr 0.1fr'}}>
+
+                <div style={{display:"grid" ,gridTemplateColumns:'3fr 8fr '}}>
+                    <HitICon hit={hit}/>
+                    <div style={{color:'rgba(0,0,0,0.8)',fontSize:'large'}}>{hit.name}</div>
+                </div>
+                <div style={{color:'darkgray',fontSize:'medium',display:'grid', gridTemplateColumns:'1fr'}}>
+                    {hit.description}
+                </div>
+                <div style={{
+                    display:'grid',
+                    gridTemplateRows:'repeat(5,1.5rem)',
+                    placeItems:'center start',
+                    gridTemplateColumns:'0.6fr 4fr 5fr '}}>
+                        <BsIcons.BsPerson/>
+                        <div>Created By</div>
+                        <div>{hit.owner}</div>
+                    <BsIcons.BsPeople/>
+                    <div>Administrators</div>
+                    <div>{hit.admins}</div>
+                        <BsIcons.BsHouse/>
+                        <div>Organization</div>
+                        <div>{hit.organizationName}</div>
+                        <BsIcons.BsCalendar/>
+                        <div>Created</div>
+                        <div>{hit.created}</div>
+                        <BsIcons.BsCloud/>
+                        <div>Environment</div>
+                        <div>{hit.environmentName}</div>
+                        <FiIcons.FiGlobe/>
+                        <div>Region</div>
+                        <div>{hit.region}</div>
+                </div>
+
+            </div>
+            <div style={{display:'grid', placeItems:'start start',rowGap:'1rem', gridTemplateRows:'0.15fr'}}>
+                <div style={{display: "grid", columnGap:'2px',gridTemplateRows: '1fr', gridTemplateColumns: 'repeat(5,minmax(auto,0.1fr))'}}>
+                    {
+                        hit.topics&&hit.topics.map((topic)=>{
+                            return <div
+                                style={{
+                                    padding:'4px',
+                                    textAlign:"center",
+                                    border:'1px lightgrey solid',
+                                    borderRadius:'12px',
+                                    backgroundColor:'rgba(0,0,0,0.03)'}}>
+                                {topic}
+                            </div>
+                        })}
+                </div>
+                <div style={{display: "grid", columnGap:'2px',gridTemplateRows: 'minmax(1fr,23px)', gridTemplateColumns: 'repeat(5,minmax(auto,0.1fr))'}}>
+                    {
+                        hit.tags&&hit.tags.map((tag)=>{
+                            return <div
+                                style={{
+                                    padding:'4px',
+                                    textAlign:"center",
+                                    border:'1px lightgrey solid',
+                                    borderRadius:'12px',
+                                    backgroundColor:'rgba(0,0,0,0.03)'}}>
+                                {tag}
+                            </div>
+                        })}
+                </div>
+            </div>
+            <div style={{display:'grid', placeItems:'center center',gridTemplateRows:'repeat(3,0.2fr'}}>
+                <Button   primary outline onClick={redirect} icon labelPosition='right' style={{width:'100%'}} color={``} size={`mini`} >
+                    Learn More
+                    <Icon name='right arrow' />
+                </Button>
+                <Button  icon labelPosition='right' onClick={redirectToRequest} style={{width:'100%'}} color={`green`} size={`tiny`} >
+                    Get it
+                    <Icon name={`cart`}/>
+                </Button>
+            </div>
+        </div>
+
+
+    </HitCard>
 }
-a:hover, a:link, a:visited{
-  text-decoration:none;
-  color :black;
-}
-}
-`;
-
-
-const Hit = (props) => {
-    const [regions, setRegions] = useState([
-
-        { label: 'US East (Ohio)', value: 'us-east-2' },
-        { label: 'US East (N. Virginia)', value: 'us-east-1' },
-        { label: 'US West (N. California)', value: 'us-west-1' },
-        { label: 'US West (Oregon)', value: 'us-west-2' },
-        { label: 'Africa (Cape Town)', value: 'af-south-1' },
-        { label: 'Asia Pacific (Hong Kong)', value: 'ap-east-1' },
-        { label: 'Asia Pacific (Mumbai)', value: 'ap-south-1' },
-        { label: 'Asia Pacific (Osaka-Local)', value: 'ap-northeast-3' },
-        { label: 'Asia Pacific (Seoul)', value: 'ap-northeast-2' },
-        { label: 'Asia Pacific (Singapore)', value: 'ap-southeast-1' },
-        { label: 'Asia Pacific (Sydney)', value: 'ap-southeast-2' },
-        { label: 'Asia Pacific (Tokyo)', value: 'ap-northeast-1' },
-        { label: 'Canada (Central)', value: 'ca-central-1' },
-        { label: 'China (Beijing)', value: 'cn-north-1' },
-        { label: 'China (Ningxia)', value: 'cn-northwest-1' },
-        { label: 'Europe (Frankfurt)', value: 'eu-central-1' },
-        { label: 'Europe (Ireland)', value: 'eu-west-1' },
-        { label: 'Europe (London)', value: 'eu-west-2' },
-        { label: 'Europe (Milan)', value: 'eu-south-1' },
-        { label: 'Europe (Paris)', value: 'eu-west-3' },
-        { label: 'Europe (Stockholm)', value: 'eu-north-1' },
-        { label: 'Middle East (Bahrain)', value: 'me-south-1' },
-        { label: 'South America (São Paulo)', value: 'sa-east-1' },
-        { label: 'AWS GovCloud (US-East)', value: 'us-gov-east-1' },
-        { label: 'AWS GovCloud (US)', value: 'us-gov-west-1' },
-    ]);
-    const hit = props.node;
-    return (
-        <Row className={''}>
-            <Col xs={12}>
-                <HitStyled>
-                    <Row>
-
-                        <Col xs={8}>
-                            <Row>
-                                <Col xs={1}>
-                                    <Avatar className={'mr-1'} size={32} round name={hit.label} />
-                                </Col>
-                                <Col xs={9}>
-                                    <h5>
-                                        <Link to={`/dataset/${hit.datasetUri}/overview`}>
-                                            {hit.label}
-                                        </Link>
-                                    </h5>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={1} />
-                                <Col xs={11}>
-                                    <p> {hit.description.slice(0, 200)}</p>
-                                </Col>
-                            </Row>
-                            <Row className={'mt-1'}>
-                                <Col xs={1} />
-
-                                <Col xs={8}>
-                                    {
-                                        hit.tags.map((tag) => <Tag tag={tag} />)
-                                    }
-                                </Col>
-                            </Row>
-                            <Row className={'mt-2'}>
-                                <Col xs={1} />
-                                <Col xs={4}>
-                                    <Icon.Table size={12} /> {hit.statistics.tables} tables
-                                </Col>
-                                <Col xs={6}>
-                                    <Icon.Folder size={12} /> {hit.statistics.locations} locations
-                                </Col>
-                            </Row>
-
-
-                        </Col>
-                        <Col xs={4}>
-                            <Row>
-                                <Col xs={12}>
-                                    <Badge pill variant={'primary'} className={'pt-1'}> {hit.userRoleForDataset}</Badge>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={12}>
-                                    <small>Created by <UserProfileLink username={hit.owner} /> {dayjs(hit.created).fromNow()}</small>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={12}>
-                                    <small> Org:<b> {hit.organization.label}</b></small>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={12}>
-                                    <small> Env:<b> {hit.environment.label}</b></small>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={12}>
-                                    <small>Region:<b> {regions.find((r) => (r.value == hit.region)).label}
-                                                  </b>
-                                    </small>
-                                </Col>
-                            </Row>
-                            <Row className={'mt-2'}>
-                                <Col className={''} xs={12}>
-                                    <Link
-                                        target="_blank"
-                                        style={{ color: 'white' }}
-                                        state={{
-                                            dataset: hit
-                                        }}
-                                        to={{
-                                            pathname: `/dataset/${hit.datasetUri}/shares`
-                                        }}
-                                    >
-                                        <div style={{ width: '7rem' }} className={'btn btn-sm btn-primary border rounded-pill'}>
-                                            Get It
-                                        </div>
-
-                                    </Link>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-
-                </HitStyled>
-            </Col>
-        </Row>
-    );
-};
-
 
 export default Hit;

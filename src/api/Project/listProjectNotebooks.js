@@ -1,11 +1,12 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const listProjectNotebooks = ({ projectUri, filter }) => ({
-    variables: {
-        projectUri,
-        filter
-    },
-    query: gql`
+const listProjectNotebooks= ({projectUri,filter})=>{
+    return {
+        variables:{
+            projectUri:projectUri,
+            filter:filter
+        },
+        query:gql`
             query ListProjectNotebooks($projectUri:String!,$filter:ProjectNotebookFilter){
                 getProject(projectUri:$projectUri){
                         projectUri
@@ -24,7 +25,8 @@ const listProjectNotebooks = ({ projectUri, filter }) => ({
                     }
                 }
         `
-});
+    }
+}
 
 
-export default listProjectNotebooks;
+export default listProjectNotebooks ;

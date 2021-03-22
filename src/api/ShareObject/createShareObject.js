@@ -1,20 +1,30 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const createShareObject = ({ datasetUri, input }) => {
-    console.log('rcv', input);
+const createShareObject=({datasetUri, itemUri, itemType,input})=>{
+    console.log("rcv",input);
     return {
-        variables: {
-            datasetUri,
-            input
+        variables:{
+            datasetUri:datasetUri,
+            input  : input,
+            itemUri : itemUri,
+            itemType:itemType
         },
-        mutation: gql`mutation CreateShareObject($datasetUri:String!,$input:NewShareObjectInput){
-            createShareObject(datasetUri:$datasetUri,input:$input){
+        mutation :gql`mutation CreateShareObject(
+            $datasetUri:String!,
+            $itemType:String,
+            $itemUri:String,
+            $input:NewShareObjectInput){
+            createShareObject(
+                datasetUri:$datasetUri,
+                itemType:$itemType,
+                itemUri:$itemUri,
+                input:$input){
                 shareUri
                 created
             }
         }`
-    };
-};
+    }
+}
 
 
 export default createShareObject;

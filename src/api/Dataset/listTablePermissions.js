@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const listTablePermissions = ({ tableUri }) => ({
-    variables: {
-        tableUri
-    },
-    query: gql`
+const listTablePermissions= ({tableUri})=>{
+    return {
+        variables:{
+            tableUri
+        },
+        query:gql`
             query GetDatasetTable($tableUri:String!){
                 getDatasetTable(tableUri:$tableUri){
                         tableUri
@@ -20,7 +21,8 @@ const listTablePermissions = ({ tableUri }) => ({
                     }
                 }
         `
-});
+    }
+}
 
 
-export default listTablePermissions;
+export default listTablePermissions ;

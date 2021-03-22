@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const searchPrincipal = ({ filter }) => ({
-    variables: {
-        filter
-    },
-    query: gql`query SearchPrincipal($filter:PrincipalFilter){
+const searchPrincipal=({filter})=>{
+    return {
+        variables:{
+            filter: filter
+        },
+        query :gql`query SearchPrincipal($filter:PrincipalFilter){
             searchPrincipal(filter:$filter){
                 count
                 page
@@ -19,7 +20,8 @@ const searchPrincipal = ({ filter }) => ({
 
             }
         }`
-});
+    }
+}
 
 
-export default searchPrincipal;
+export default searchPrincipal

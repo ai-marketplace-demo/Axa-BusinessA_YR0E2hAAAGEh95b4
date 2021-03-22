@@ -1,11 +1,12 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const previewTable = ({ tableUri, queryExecutionId }) => ({
-    variables: {
-        tableUri,
-        queryExecutionId
-    },
-    query: gql`
+const previewTable= ({tableUri,queryExecutionId})=>{
+    return {
+        variables:{
+            tableUri:tableUri,
+            queryExecutionId : queryExecutionId
+        },
+        query:gql`
             query PreviewTable($tableUri:String!,$queryExecutionId:String){
                 previewTable(tableUri:$tableUri,queryExecutionId:$queryExecutionId){
                         count
@@ -17,7 +18,8 @@ const previewTable = ({ tableUri, queryExecutionId }) => ({
                     }
                 }
         `
-});
+    }
+}
 
 
-export default previewTable;
+export default previewTable ;

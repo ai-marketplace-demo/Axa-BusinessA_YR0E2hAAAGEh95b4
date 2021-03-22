@@ -1,9 +1,10 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
 
-const getOrganization = (organizationUri) => ({
-    variables: { organizationUri },
-    query: gql`
+const getOrganization= (organizationUri)=>{
+    return {
+        variables:{organizationUri:organizationUri},
+        query:gql`
             query GetOrganization($organizationUri:String!){
                 getOrganization(organizationUri:$organizationUri){
                     organizationUri
@@ -11,11 +12,13 @@ const getOrganization = (organizationUri) => ({
                     tags
                     SamlGroupName
                     owner
+                    created
                     description
                     userRoleInOrganization
                 }
             }`
-});
+    }
+}
 
 
 export default getOrganization;

@@ -1,8 +1,9 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const removeDatasetFromCluster = ({ clusterUri, datasetUri }) => ({
-    variables: { clusterUri, datasetUri },
-    mutation: gql`mutation removeDatasetFromRedshiftCluster(
+const removeDatasetFromCluster=({ clusterUri, datasetUri})=>{
+    return {
+        variables:{clusterUri,datasetUri},
+        mutation :gql`mutation removeDatasetFromRedshiftCluster(
             $clusterUri:String,
             $datasetUri:String,
         ){
@@ -11,7 +12,8 @@ const removeDatasetFromCluster = ({ clusterUri, datasetUri }) => ({
                 datasetUri:$datasetUri
             )
         }`
-});
+    }
+}
 
 
 export default removeDatasetFromCluster;

@@ -1,8 +1,9 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const addProjectContributor = ({ userName, projectUri, role }) => ({
-    variables: { userName, projectUri, role },
-    mutation: gql`mutation AddProjectContributor(
+const addProjectContributor=({userName, projectUri, role})=>{
+    return {
+        variables:{userName,projectUri,role},
+        mutation :gql`mutation AddProjectContributor(
             $projectUri:String,
             $userName:String,
             $role:ProjectMemberRole
@@ -18,7 +19,8 @@ const addProjectContributor = ({ userName, projectUri, role }) => ({
                 userRoleInEnvironment
             }
         }`
-});
+    }
+}
 
 
 export default addProjectContributor;

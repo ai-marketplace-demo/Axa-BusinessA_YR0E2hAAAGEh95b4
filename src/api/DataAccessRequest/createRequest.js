@@ -1,8 +1,9 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const createRequest = ({ datasetUri, input }) => ({
-    variables: { datasetUri, input },
-    mutation: gql`mutation CreateShareObject($datasetUri:String!,$input:NewShareObjectInput){
+const createRequest=({datasetUri,input})=>{
+    return {
+        variables:{datasetUri,input},
+        mutation :gql`mutation CreateShareObject($datasetUri:String!,$input:NewShareObjectInput){
             createShareObject(datasetUri:$datasetUri,input:$input){
                 shareUri
                 principal{
@@ -12,7 +13,8 @@ const createRequest = ({ datasetUri, input }) => ({
                 created
             }
         }`
-});
+    }
+}
 
 
 export default createRequest;

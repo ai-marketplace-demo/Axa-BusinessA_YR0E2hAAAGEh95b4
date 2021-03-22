@@ -1,7 +1,8 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const createApiKey = () => ({
-    mutation: gql`
+const createApiKey= ()=>{
+    return {
+        mutation:gql`
             mutation CreateApiKey{
                 createApiKey{
                     ApiKeyId
@@ -10,7 +11,8 @@ const createApiKey = () => ({
                 }
             }
         `
-});
+    }
+}
 
 
-export default createApiKey;
+export default createApiKey ;

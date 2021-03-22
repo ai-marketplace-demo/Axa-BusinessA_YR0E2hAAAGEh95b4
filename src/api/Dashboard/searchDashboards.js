@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const searchDashboards = (filter) => ({
-    variables: {
-        filter,
-    },
-    query: gql`
+const searchDashboards= (filter)=>{
+    return {
+        variables:{
+            filter:filter,
+        },
+        query:gql`
             query searchDashboards($filter:DashboardFilter){
                 searchDashboards(filter:$filter){
                     count
@@ -39,7 +40,8 @@ const searchDashboards = (filter) => ({
                 }
             }
         `
-});
+    }
+}
 
 
-export default searchDashboards;
+export default searchDashboards ;

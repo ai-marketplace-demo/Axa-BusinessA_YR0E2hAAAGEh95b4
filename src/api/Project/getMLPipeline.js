@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const getMLPipeline = (mlPipelineUri) => ({
-    variables: {
-        mlPipelineUri
-    },
-    query: gql`
+const getMLPipeline= (mlPipelineUri)=>{
+    return {
+        variables:{
+            mlPipelineUri:mlPipelineUri
+        },
+        query:gql`
             query GetMLPipeline($mlPipelineUri:String!){
                 getMLPipeline(mlPipelineUri:$mlPipelineUri){
                         mlPipelineUri
@@ -42,7 +43,8 @@ const getMLPipeline = (mlPipelineUri) => ({
                     }
                 }
         `
-});
+    }
+}
 
 
-export default getMLPipeline;
+export default getMLPipeline ;

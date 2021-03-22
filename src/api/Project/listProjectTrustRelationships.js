@@ -1,11 +1,12 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const listProjectTrustRelationships = ({ projectUri, filter }) => ({
-    variables: {
-        projectUri,
-        filter
-    },
-    query: gql`
+const listProjectTrustRelationships= ({projectUri,filter})=>{
+    return {
+        variables:{
+            projectUri:projectUri,
+            filter:filter
+        },
+        query:gql`
             query GetProject($filter:ProjectTrustRelationshipFilter,$projectUri:String!){
                 getProject(projectUri:$projectUri){
                         projectUri
@@ -29,7 +30,8 @@ const listProjectTrustRelationships = ({ projectUri, filter }) => ({
                     }
                 }
         `
-});
+    }
+}
 
 
-export default listProjectTrustRelationships;
+export default listProjectTrustRelationships ;

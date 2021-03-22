@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const listDatasetStorageLocations = (datasetUri) => ({
-    variables: {
-        datasetUri
-    },
-    query: gql`
+const listDatasetStorageLocations= (datasetUri)=>{
+    return {
+        variables:{
+            datasetUri:datasetUri
+        },
+        query:gql`
             query GetDataset($datasetUri:String!){
                 getDataset(datasetUri:$datasetUri){
                         datasetUri
@@ -24,7 +25,8 @@ const listDatasetStorageLocations = (datasetUri) => ({
                     }
                 }
         `
-});
+    }
+}
 
 
-export default listDatasetStorageLocations;
+export default listDatasetStorageLocations ;

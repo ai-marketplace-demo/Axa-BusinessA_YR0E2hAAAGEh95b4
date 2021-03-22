@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const createDatasetQualityRule = ({ datasetUri, input }) => ({
-    variables: {
-        datasetUri, input
-    },
-    mutation: gql`
+const createDatasetQualityRule= ({datasetUri,input})=>{
+    return {
+        variables:{
+            datasetUri, input
+        },
+        mutation:gql`
             mutation CreateDatasetQualityRule($datasetUri:String!,$input:NewDatasetQualityRuleInput){
                 createDatasetQualityRule(datasetUri:$datasetUri,input:$input){
                     ruleUri
@@ -16,7 +17,8 @@ const createDatasetQualityRule = ({ datasetUri, input }) => ({
                 }
             }
         `
-});
+    }
+}
 
 
-export default createDatasetQualityRule;
+export default createDatasetQualityRule ;

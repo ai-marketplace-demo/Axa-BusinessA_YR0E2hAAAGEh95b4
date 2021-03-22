@@ -1,11 +1,12 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const searchEnvironmentDataItems = ({ filter, environmentUri }) => ({
-    variables: {
-        environmentUri,
-        filter
-    },
-    query: gql`
+const searchEnvironmentDataItems = ({filter,environmentUri})=>{
+    return {
+        variables:{
+            environmentUri: environmentUri,
+            filter:filter
+        },
+        query:gql`
             query SearchEnvironmentDataItems($filter:EnvironmentDataItemFilter,$environmentUri:String){
                 searchEnvironmentDataItems(environmentUri:$environmentUri,filter:$filter){
                     count
@@ -31,7 +32,8 @@ const searchEnvironmentDataItems = ({ filter, environmentUri }) => ({
                 }
             }
         `
-});
+    }
+}
 
 
-export default searchEnvironmentDataItems;
+export default searchEnvironmentDataItems ;

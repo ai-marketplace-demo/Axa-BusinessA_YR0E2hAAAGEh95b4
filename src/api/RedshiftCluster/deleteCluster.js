@@ -1,15 +1,17 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const deleteRedshiftCluster = (clusterUri) => ({
-    variables: {
-        clusterUri
-    },
-    mutation: gql`mutation deleteRedshiftCluster(
+const deleteRedshiftCluster=(clusterUri)=>{
+    return {
+        variables:{
+            clusterUri : clusterUri
+        },
+        mutation :gql`mutation deleteRedshiftCluster(
             $clusterUri : String!
         ){
             deleteRedshiftCluster(clusterUri:$clusterUri)
         }`
-});
+    }
+}
 
 
 export default deleteRedshiftCluster;

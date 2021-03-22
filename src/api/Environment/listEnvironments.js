@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const listEnvironments = ({ filter }) => ({
-    variables: {
-        filter
-    },
-    query: gql`
+const listEnvironments = ({filter})=>{
+    return {
+        variables:{
+            filter: filter
+        },
+        query:gql`
             query ListEnvironments($filter:EnvironmentFilter){
                 listEnvironments(filter:$filter){
                     count
@@ -17,14 +18,25 @@ const listEnvironments = ({ filter }) => ({
                         userRoleInEnvironment
                         name
                         label
+                        description
                         AwsAccountId
                         region
                         created
                         owner
+                        tags
                         SamlGroupName
                         EnvironmentDefaultIAMRoleName
                         stack{
+                            stack
                             status
+                            stackUri
+                            targetUri
+                            accountid
+                            region
+                            stackid
+                            link
+                            outputs
+                            resources
                         }
                         organization{
                             organizationUri
@@ -37,7 +49,8 @@ const listEnvironments = ({ filter }) => ({
                 }
             }
         `
-});
+    }
+}
 
 
-export default listEnvironments;
+export default listEnvironments ;

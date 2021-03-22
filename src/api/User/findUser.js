@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const findUser = ({ userName, page, pageSize }) => ({
-    variables: {
-        userName, pageSize, page
-    },
-    query: gql`
+const findUser= ({userName ,page, pageSize})=>{
+    return {
+        variables:{
+            userName ,pageSize,page
+        },
+        query:gql`
             query FindUser($page:Int,$pageSize:Int,$userName:String){
                 FindUser(userName:$userName,page:$page, pageSize:$pageSize){
                     count
@@ -20,7 +21,8 @@ const findUser = ({ userName, page, pageSize }) => ({
                 }
             }
         `
-});
+    }
+}
 
 
-export default listProjects;
+export default listProjects ;

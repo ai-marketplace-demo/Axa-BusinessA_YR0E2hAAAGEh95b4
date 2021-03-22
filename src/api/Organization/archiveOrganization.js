@@ -1,13 +1,15 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const archiveOrganization = (organizationUri) => ({
-    variables: {
-        organizationUri
-    },
-    mutation: gql`mutation ArciveOrg($organizationUri:String!){
+const archiveOrganization=(organizationUri)=>{
+    return {
+        variables:{
+            organizationUri:organizationUri
+        },
+        mutation :gql`mutation ArciveOrg($organizationUri:String!){
             archiveOrganization(organizationUri:$organizationUri)
         }`
-});
+    }
+}
 
 
 export default archiveOrganization;

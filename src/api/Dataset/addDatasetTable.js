@@ -1,8 +1,9 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const createDatasetTable = ({ datasetUri, input }) => ({
-    variables: { datasetUri, input },
-    mutation: gql`mutation CreateDatasetTable(
+const createDatasetTable=({datasetUri, input})=>{
+    return {
+        variables:{datasetUri,input},
+        mutation :gql`mutation CreateDatasetTable(
             $datasetUri:String,
             $input:NewDatasetTableInput
         ){
@@ -14,7 +15,8 @@ const createDatasetTable = ({ datasetUri, input }) => ({
                 name
             }
         }`
-});
+    }
+}
 
 
 export default createDatasetTable;

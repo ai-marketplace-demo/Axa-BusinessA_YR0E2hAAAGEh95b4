@@ -1,11 +1,12 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const createProjectMLPipeline = ({ projectUri, input }) => ({
-    variables: {
-        projectUri,
-        input
-    },
-    mutation: gql`mutation createProjectMLPipeline(
+const createProjectMLPipeline=({projectUri ,input})=>{
+    return {
+        variables:{
+            projectUri : projectUri,
+            input  : input
+        },
+        mutation :gql`mutation createProjectMLPipeline(
             $input:NewProjectMLPipelineInput,
             $projectUri : String!
         ){
@@ -19,7 +20,8 @@ const createProjectMLPipeline = ({ projectUri, input }) => ({
                 subnetId
             }
         }`
-});
+    }
+}
 
 
 export default createProjectMLPipeline;

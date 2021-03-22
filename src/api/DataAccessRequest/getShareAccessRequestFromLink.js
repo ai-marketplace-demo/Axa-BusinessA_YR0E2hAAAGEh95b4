@@ -1,9 +1,10 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
 
-const getShareAccessRequestFromLink = (linkid) => ({
-    variables: { linkid },
-    query: gql`query GetShareAccessRequestFromLink($linkid:String!){
+const getShareAccessRequestFromLink=(linkid)=>{
+    return {
+        variables:{linkid},
+        query:gql`query GetShareAccessRequestFromLink($linkid:String!){
         getShareAccessRequestFromLink(linkid:$linkid){
             shareUri
             description
@@ -16,6 +17,7 @@ const getShareAccessRequestFromLink = (linkid) => ({
             }
         }
         }`
-});
+    }
+}
 
 export default getShareAccessRequestFromLink;

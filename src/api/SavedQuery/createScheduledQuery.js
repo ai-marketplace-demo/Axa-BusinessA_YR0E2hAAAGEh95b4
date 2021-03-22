@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const createScheduledQuery = (input) => ({
-    variables: {
-        input
-    },
-    mutation: gql`mutation CreateScheduledQuery(
+const createScheduledQuery=(input)=>{
+    return {
+        variables:{
+            input  : input
+        },
+        mutation :gql`mutation CreateScheduledQuery(
             $input:NewScheduledQueryInput,
         ){
             createScheduledQuery(input:$input){
@@ -16,7 +17,8 @@ const createScheduledQuery = (input) => ({
                 tags
             }
         }`
-});
+    }
+}
 
 
 export default createScheduledQuery;

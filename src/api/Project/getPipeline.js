@@ -1,11 +1,12 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const getPipeline = ({ pipelineUri, filter }) => ({
-    variables: {
-        pipelineUri,
-        filter
-    },
-    query: gql`query GetPipeline(
+const getPipeline=({pipelineUri ,filter})=>{
+    return {
+        variables:{
+            pipelineUri ,
+            filter
+        },
+        query :gql`query GetPipeline(
             $filter:ProjectPipelineNodeFilter,
             $pipelineUri: String!
         ){
@@ -31,7 +32,8 @@ const getPipeline = ({ pipelineUri, filter }) => ({
 
             }
         }`
-});
+    }
+}
 
 
 export default getPipeline;

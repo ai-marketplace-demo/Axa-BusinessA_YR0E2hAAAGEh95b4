@@ -1,15 +1,17 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const deleteApiKey = (ApiKeyId) => ({
-    variables: {
-        ApiKeyId
-    },
-    mutation: gql`
+const deleteApiKey= (ApiKeyId)=>{
+    return {
+        variables:{
+            ApiKeyId:ApiKeyId
+        },
+        mutation:gql`
             mutation DeleteApiKey($ApiKeyId:String!){
                 deleteApiKey(ApiKeyId:$ApiKeyId)
             }
         `
-});
+    }
+}
 
 
-export default deleteApiKey;
+export default deleteApiKey ;

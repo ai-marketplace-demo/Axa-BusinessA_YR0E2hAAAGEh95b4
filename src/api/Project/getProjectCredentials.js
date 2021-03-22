@@ -1,15 +1,17 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const getProjectCredentials = (projectUri) => ({
-    variables: {
-        projectUri
-    },
-    query: gql`
+const getProjectCredentials= (projectUri)=>{
+    return {
+        variables:{
+            projectUri:projectUri
+        },
+        query:gql`
             query GetProjectCredentials($projectUri:String!){
                 getProjectCredentials(projectUri:$projectUri)
             }
         `
-});
+    }
+}
 
 
-export default getProjectCredentials;
+export default getProjectCredentials ;

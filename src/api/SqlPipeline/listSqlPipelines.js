@@ -1,10 +1,11 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const searchSqlPipelines = (filter) => ({
-    variables: {
-        filter,
-    },
-    query: gql`
+const searchSqlPipelines= (filter)=>{
+    return {
+        variables:{
+            filter:filter,
+        },
+        query:gql`
             query ListSqlPipelines($filter:SqlPipelineFilter){
                 listSqlPipelines(filter:$filter){
                     count
@@ -28,18 +29,30 @@ const searchSqlPipelines = (filter) => ({
                         }
                         environment{
                             environmentUri
+                            AwsAccountId
+                            region
                             label
                         }
                         userRoleForPipeline
                         stack{
+                            stack
                             status
+                            stackUri
+                            targetUri
+                            accountid
+                            region
+                            stackid
+                            link
+                            outputs
+                            resources
                         }
                         
                     }
                 }
             }
         `
-});
+    }
+}
 
 
-export default searchSqlPipelines;
+export default searchSqlPipelines ;

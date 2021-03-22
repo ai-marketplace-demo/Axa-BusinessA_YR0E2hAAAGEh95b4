@@ -1,15 +1,17 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const getSqlPipelineCredsLinux = (sqlPipelineUri) => ({
-    variables: {
-        sqlPipelineUri,
-    },
-    query: gql`
+const getSqlPipelineCredsLinux= (sqlPipelineUri)=>{
+    return {
+        variables:{
+            sqlPipelineUri:sqlPipelineUri,
+        },
+        query:gql`
             query GetSqlPipelineCredsLinux($sqlPipelineUri:String!){
                 getSqlPipelineCredsLinux(sqlPipelineUri:$sqlPipelineUri)
             }
         `
-});
+    }
+}
 
 
-export default getSqlPipelineCredsLinux;
+export default getSqlPipelineCredsLinux ;

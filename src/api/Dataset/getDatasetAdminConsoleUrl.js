@@ -1,15 +1,17 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
-const getDatasetAssumeRoleUrl = (datasetUri) => ({
-    variables: {
-        datasetUri
-    },
-    query: gql`
+const getDatasetAssumeRoleUrl= (datasetUri)=>{
+    return {
+        variables:{
+            datasetUri:datasetUri
+        },
+        query:gql`
             query GetDatasetAssumeRoleUrl($datasetUri:String!){
                 getDatasetAssumeRoleUrl(datasetUri:$datasetUri)
             }
         `
-});
+    }
+}
 
 
-export default getDatasetAssumeRoleUrl;
+export default getDatasetAssumeRoleUrl ;
