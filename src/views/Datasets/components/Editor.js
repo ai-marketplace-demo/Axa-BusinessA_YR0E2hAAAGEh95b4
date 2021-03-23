@@ -16,7 +16,11 @@ const Editor = ({dataset, client,editable}) => {
                 topics: formData.topics.map((t) => {
                     return t.value
                 }),
-                terms:formData.terms.map(t=>t.value)
+                terms:formData.terms.map(t=>t.value),
+                businessOwnerDelegationEmails: formData.businessOwnerDelegationEmails ? formData.businessOwnerDelegationEmails.map((s) => {
+                    return s.value
+                }) : [],
+                businessOwnerEmail: formData.businessOwnerEmail,
 
             }
         }))
@@ -28,7 +32,7 @@ const Editor = ({dataset, client,editable}) => {
         } else {
             fail({
                 header: 'Failed updating',
-                content: `Could not update dataset, received ${response.error[0].message}`
+                content: `Could not update dataset, received ${response.errors[0].message}`
             })
         }
 
@@ -49,6 +53,11 @@ const Editor = ({dataset, client,editable}) => {
             return ""
         }
     }
+    const resolveBusinessOwners = (formData) => {
+        return formData.businessOwnerDelegationEmails ? formData.businessOwnerDelegationEmails.map((s) => {
+            return s.value
+        }) : []
+    }
 
 
     const resolveRegion = (formData) => {
@@ -63,7 +72,7 @@ const Editor = ({dataset, client,editable}) => {
         if (!d) {
             return false
         } else {
-            if (["Creator", "Admin", "Owner"].indexOf(d.userRoleForDataset) != -1) {
+            if (["Creator", "Admin", "Owner", "BusinessOwner"].indexOf(d.userRoleForDataset) != -1) {
                 return true
             } else {
                 return false
@@ -149,6 +158,27 @@ const Editor = ({dataset, client,editable}) => {
                         icon: 'boxes',
                         value: resolveOrganization
                     },
+                ]
+            },
+            {
+                items: [
+                    {
+                        type: FormFieldTypes.Input,
+                        label: 'Business Owner',
+                        name: 'businessOwnerEmail',
+                        width: 8,
+                        editable: true,
+                    },
+
+                    {
+                        type: FormFieldTypes.MultiSelect,
+                        label: 'Stewards',
+                        width: 8,
+                        options: dataset.businessOwnerDelegationEmails,
+                        name: 'businessOwnerDelegationEmails',
+                        editable:true
+                    },
+
                 ]
             },
             {

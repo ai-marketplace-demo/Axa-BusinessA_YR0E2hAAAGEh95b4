@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom";
 import {Table} from "semantic-ui-react";
 
 
@@ -9,14 +10,38 @@ const ShareSummary = ({share,client})=>{
                     Dataset
                 </Table.Cell>
                 <Table.Cell>
-                    {share.dataset.datasetName}
+                    <Link style={{color:'blue'}} to={`/dataset/${share.dataset.datasetUri}/overview`}>
+                        {share.dataset.datasetName}
+                    </Link>
                 </Table.Cell>
-
-
             </Table.Row>
             <Table.Row>
                 <Table.Cell>
-                    Team
+                    Business Owner
+                </Table.Cell>
+                <Table.Cell>
+                    {share.dataset.businessOwnerEmail}
+                </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+                <Table.Cell>
+                    Share Role
+                </Table.Cell>
+                <Table.Cell>
+                    {share.userRoleForShareObject}
+                </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+                <Table.Cell>
+                    Status
+                </Table.Cell>
+                <Table.Cell>
+                    {share.status}
+                </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+                <Table.Cell>
+                    Requesters Team
                 </Table.Cell>
                 <Table.Cell>
                     {share.principal.principalName}
@@ -24,7 +49,7 @@ const ShareSummary = ({share,client})=>{
             </Table.Row>
             <Table.Row>
                 <Table.Cell>
-                    Aws Account Id
+                    AWS Account
                 </Table.Cell>
                 <Table.Cell>
                     {share.principal.AwsAccountId}
