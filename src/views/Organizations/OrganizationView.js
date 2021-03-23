@@ -58,24 +58,19 @@ const OrganizationView = (props) => {
 
     const Actions = (org) => (
         <div>
-            <Button.Group>
-                <Button.Group color='blue'>
-                    <Button size='small' name={`url`} onClick={linkEnvironment} disabled={false} loading={false}
-                            icon labelPosition='left'>
-                        <Icon name='linkify'/>
-                        Link Environment
-                    </Button>
-                    <Dropdown.Divider />
-                    <Dropdown
-                        className='button icon'
-                        options={[
-                            { key: 'delete', text: <Button basic onClick={() => setShowDeleteOrg(true)}>
-                                    <Icon name='trash'/> Delete
-                                </Button>, value: 'delete' },
-                        ]}
-                        trigger={<></>}
-                    />
-                </Button.Group>
+            <Button.Group color='blue'>
+                <Button size='small' onClick={linkEnvironment}><Icon name={'linkify'}/>Link Environment
+                </Button>
+                <Dropdown.Divider />
+                <Dropdown
+                    className='button icon'
+                    options={[
+                        { key: 'delete', text: <Button basic onClick={() => setShowDeleteOrg(true)}>
+                                <Icon name='trash'/> Delete
+                            </Button>, value: 'delete' },
+                    ]}
+                    trigger={<></>}
+                />
             </Button.Group>
             <ReactIf.If condition={showDeleteOrg}>
                 <ReactIf.Then>
