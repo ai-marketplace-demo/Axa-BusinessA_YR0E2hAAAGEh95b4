@@ -52,52 +52,67 @@ const EnvironmentView = (props) => {
         }
     }, [client]);
 
-    const Actions = (env) => (
-        <div>
-            <Button.Group>
-                <Button color={'blue'} basic onClick={() => setShowDeleteEnv(true)}>Delete</Button>
-            </Button.Group>
-            <ReactIf.If condition={showDeleteEnv}>
-                <ReactIf.Then>
-                    <Modal
-                        centered={false}
-                        onClose={() => setShowDeleteEnv(false)}
-                        onOpen={() => setShowDeleteEnv(true)}
-                        open={() => setShowDeleteEnv(true)}
-                        size='small'
-                        trigger={<span/>}
-                    >
-                        <Modal.Content>
-                            <Modal.Description>
-                                <Header>Archive environment {env.label} ?</Header>
-                                <p>
-                                    You must first delete all objects linked to this environment !
-                                </p>
-                                {error && <Message negative>
-                                    <Message.Header>Could not archive environment</Message.Header>
-                                    <p>{error && error.message}</p>
-                                </Message>
-                                }
-                            </Modal.Description>
-                        </Modal.Content>
-                        <Modal.Actions>
-                            <Button color={'grey'} basic onClick={() => setShowDeleteEnv(false)}>
-                                Cancel
-                            </Button>
-                            <Button
-                                color={'red'}
-                                basic
-                                content="Archive"
-                                labelPosition='left'
-                                icon='archive'
-                                onClick={archiveEnv}
-                            />
-                        </Modal.Actions>
-                    </Modal>
-                </ReactIf.Then>
-            </ReactIf.If>
-        </div>
+    const isAdmin = (d) => {
+        if (!d) {
+            return false
+        } else {
+            if (["Creator", "Admin", "Owner"].indexOf(d.userRoleInEnvironment) != -1) {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
 
+    const Actions = (env) => (
+        <ReactIf.If condition={isAdmin(env)}>
+            <ReactIf.Then>
+                <div>
+                    <Button.Group>
+                        <Button color={'blue'} basic onClick={() => setShowDeleteEnv(true)}>Delete</Button>
+                    </Button.Group>
+                    <ReactIf.If condition={showDeleteEnv}>
+                        <ReactIf.Then>
+                            <Modal
+                                centered={false}
+                                onClose={() => setShowDeleteEnv(false)}
+                                onOpen={() => setShowDeleteEnv(true)}
+                                open={() => setShowDeleteEnv(true)}
+                                size='small'
+                                trigger={<span/>}
+                            >
+                                <Modal.Content>
+                                    <Modal.Description>
+                                        <Header>Archive environment {env.label} ?</Header>
+                                        <p>
+                                            You must first delete all objects linked to this environment !
+                                        </p>
+                                        {error && <Message negative>
+                                            <Message.Header>Could not archive environment</Message.Header>
+                                            <p>{error && error.message}</p>
+                                        </Message>
+                                        }
+                                    </Modal.Description>
+                                </Modal.Content>
+                                <Modal.Actions>
+                                    <Button color={'grey'} basic onClick={() => setShowDeleteEnv(false)}>
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        color={'red'}
+                                        basic
+                                        content="Archive"
+                                        labelPosition='left'
+                                        icon='archive'
+                                        onClick={archiveEnv}
+                                    />
+                                </Modal.Actions>
+                            </Modal>
+                        </ReactIf.Then>
+                    </ReactIf.If>
+                </div>
+            </ReactIf.Then>
+        </ReactIf.If>
     );
     const actions = <Actions {...env}/>
     const Status = () => (

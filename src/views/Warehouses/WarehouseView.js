@@ -93,6 +93,18 @@ const WarehouseView = (props) => {
         setShowResumeCluster(false)
     };
 
+    const isAdmin = (d) => {
+        if (!d) {
+            return false
+        } else {
+            if (["Creator", "Admin", "Owner"].indexOf(d.userRoleForCluster) != -1) {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+
     const fetchItem = async () => {
         const response = await client.query(getCluster(params.uri));
         if (!response.errors) {
@@ -113,104 +125,108 @@ const WarehouseView = (props) => {
     }, [client]);
 
     const Actions = () => (
-        <div>
-            <Button.Group>
-                <Button.Group color='blue'>
-                    <Button loading={isLoadingUI} onClick={goToConsole}><FiIcon.FiBox/> Query Editor</Button>
-                    <Dropdown.Divider />
-                    <Dropdown
-                        className='button icon'
-                        options={[
-                            { key: 'pause', text: <Button basic onClick={() => setShowPauseCluster(true)}>
-                                    <Icon name='pause'/> Pause
-                                </Button>, value: 'pause' },
-                            { key: 'resume', text: <Button basic onClick={resumeCluster}>
-                                    <Icon name='play'/> Resume
-                                </Button>, value: 'resume' },
-                            { key: 'delete', text: <Button basic onClick={() => setShowDeleteCluster(true)}>
-                                    <Icon name='trash'/> Delete
-                                </Button>, value: 'delete' },
-                        ]}
-                        trigger={<></>}
-                    />
-                </Button.Group>
-            </Button.Group>
-            <ReactIf.If condition={showPauseCluster}>
-                <ReactIf.Then>
-                    <Modal
-                        centered={false}
-                        onClose={() => setShowPauseCluster(false)}
-                        onOpen={() => setShowPauseCluster(true)}
-                        open={() => setShowPauseCluster(true)}
-                        size='small'
-                        trigger={<span/>}
-                    >
-                        <Modal.Content>
-                            <Modal.Description>
-                                <Header>Pause cluster {warehouse.label} ?</Header>
-                                {error && <Message negative>
-                                    <Message.Header>error.header</Message.Header>
-                                    <p>{error && error.content}</p>
-                                </Message>
-                                }
-                            </Modal.Description>
-                        </Modal.Content>
-                        <Modal.Actions>
-                            <Button color={'grey'} basic onClick={() => setShowPauseCluster(false)}>
-                                Cancel
-                            </Button>
-                            <Button
-                                color={'red'}
-                                basic
-                                content="Pause"
-                                labelPosition='left'
-                                icon='pause'
-                                onClick={pauseCluster}
+        <ReactIf.If condition={isAdmin(warehouse)}>
+            <ReactIf.Then>
+                <div>
+                    <Button.Group>
+                        <Button.Group color='blue'>
+                            <Button loading={isLoadingUI} onClick={goToConsole}><FiIcon.FiBox/> Query Editor</Button>
+                            <Dropdown.Divider />
+                            <Dropdown
+                                className='button icon'
+                                options={[
+                                    { key: 'pause', text: <Button basic onClick={() => setShowPauseCluster(true)}>
+                                            <Icon name='pause'/> Pause
+                                        </Button>, value: 'pause' },
+                                    { key: 'resume', text: <Button basic onClick={resumeCluster}>
+                                            <Icon name='play'/> Resume
+                                        </Button>, value: 'resume' },
+                                    { key: 'delete', text: <Button basic onClick={() => setShowDeleteCluster(true)}>
+                                            <Icon name='trash'/> Delete
+                                        </Button>, value: 'delete' },
+                                ]}
+                                trigger={<></>}
                             />
-                        </Modal.Actions>
-                    </Modal>
-                </ReactIf.Then>
-            </ReactIf.If>
-            <ReactIf.If condition={showDeleteCluster}>
-                <ReactIf.Then>
-                    <Modal
-                        centered={false}
-                        onClose={() => setShowDeleteCluster(false)}
-                        onOpen={() => setShowDeleteCluster(true)}
-                        open={() => setShowDeleteCluster(true)}
-                        size='small'
-                        trigger={<span/>}
-                    >
-                        <Modal.Content>
-                            <Modal.Description>
-                                <Header>Delete cluster {warehouse.label} ?</Header>
-                                <p>
-                                    Deleting the cluster may cause data loss. Please be sure that you have
-                                    backed up your data !
-                                </p>
-                                {error && <Message negative>
-                                    <Message.Header>error.header</Message.Header>
-                                    <p>{error && error.content}</p>
-                                </Message>
-                                }
-                            </Modal.Description>
-                        </Modal.Content>
-                        <Modal.Actions>
-                            <Button color={'grey'} onClick={() => setShowDeleteCluster(false)}>
-                                Cancel
-                            </Button>
-                            <Button
-                                color={'red'}
-                                content="Confirm"
-                                labelPosition='left'
-                                icon='trash'
-                                onClick={deleteCluster}
-                            />
-                        </Modal.Actions>
-                    </Modal>
-                </ReactIf.Then>
-            </ReactIf.If>
-        </div>
+                        </Button.Group>
+                    </Button.Group>
+                    <ReactIf.If condition={showPauseCluster}>
+                        <ReactIf.Then>
+                            <Modal
+                                centered={false}
+                                onClose={() => setShowPauseCluster(false)}
+                                onOpen={() => setShowPauseCluster(true)}
+                                open={() => setShowPauseCluster(true)}
+                                size='small'
+                                trigger={<span/>}
+                            >
+                                <Modal.Content>
+                                    <Modal.Description>
+                                        <Header>Pause cluster {warehouse.label} ?</Header>
+                                        {error && <Message negative>
+                                            <Message.Header>error.header</Message.Header>
+                                            <p>{error && error.content}</p>
+                                        </Message>
+                                        }
+                                    </Modal.Description>
+                                </Modal.Content>
+                                <Modal.Actions>
+                                    <Button color={'grey'} basic onClick={() => setShowPauseCluster(false)}>
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        color={'red'}
+                                        basic
+                                        content="Pause"
+                                        labelPosition='left'
+                                        icon='pause'
+                                        onClick={pauseCluster}
+                                    />
+                                </Modal.Actions>
+                            </Modal>
+                        </ReactIf.Then>
+                    </ReactIf.If>
+                    <ReactIf.If condition={showDeleteCluster}>
+                        <ReactIf.Then>
+                            <Modal
+                                centered={false}
+                                onClose={() => setShowDeleteCluster(false)}
+                                onOpen={() => setShowDeleteCluster(true)}
+                                open={() => setShowDeleteCluster(true)}
+                                size='small'
+                                trigger={<span/>}
+                            >
+                                <Modal.Content>
+                                    <Modal.Description>
+                                        <Header>Delete cluster {warehouse.label} ?</Header>
+                                        <p>
+                                            Deleting the cluster may cause data loss. Please be sure that you have
+                                            backed up your data !
+                                        </p>
+                                        {error && <Message negative>
+                                            <Message.Header>error.header</Message.Header>
+                                            <p>{error && error.content}</p>
+                                        </Message>
+                                        }
+                                    </Modal.Description>
+                                </Modal.Content>
+                                <Modal.Actions>
+                                    <Button color={'grey'} onClick={() => setShowDeleteCluster(false)}>
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        color={'red'}
+                                        content="Confirm"
+                                        labelPosition='left'
+                                        icon='trash'
+                                        onClick={deleteCluster}
+                                    />
+                                </Modal.Actions>
+                            </Modal>
+                        </ReactIf.Then>
+                    </ReactIf.If>
+                </div>
+            </ReactIf.Then>
+        </ReactIf.If>
 
     );
     const actions = <Actions {...warehouse}/>

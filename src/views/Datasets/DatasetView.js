@@ -109,126 +109,141 @@ const DatasetView = (props) => {
         }
     }, [client]);
 
+    const isAdmin = (d) => {
+        if (!d) {
+            return false
+        } else {
+            if (["Creator", "Admin", "Owner"].indexOf(d.userRoleForDataset) != -1) {
+                return true
+            } else {
+                return false
+            }
+        }
 
+    }
 
     const Actions = () => (
-        <div>
-            <Button.Group>
-                <Button.Group color='blue'>
-                    <Button size='small' onClick={goToS3Console} loading={isLoadingUI}
-                            icon labelPosition='left'>
-                        <Icon name='external alternate'/>
-                        S3 Bucket
-                    </Button>
-                    <Dropdown.Divider />
-                    <Dropdown
-                        className='button icon'
-                        options={[
-                            { key: 'credentials', text: <Button loading={loadingCreds} basic onClick={generateCredentials}>
-                                    <Icon name={'file alternate'}/> Credentials
-                                </Button>, value: 'credentials' },
-                            { key: 'archive', text: <Button basic onClick={() => setShowArchiveDataset(true)}>
-                                    <Icon name={'archive'}/> Archive
-                                </Button>, value: 'archive' },
-                            { key: 'delete', text: <Button basic onClick={() => setShowDeleteDataset(true)}>
-                                    <Icon name={'trash'}/> Delete
-                                </Button>, value: 'delete' },
-                        ]}
-                        trigger={<></>}
-                    />
+        <ReactIf.If condition={isAdmin(dataset)}>
+            <ReactIf.Then>
+                <div>
+                <Button.Group>
+                    <Button.Group color='blue'>
+                        <Button size='small' onClick={goToS3Console} loading={isLoadingUI}
+                                icon labelPosition='left'>
+                            <Icon name='external alternate'/>
+                            S3 Bucket
+                        </Button>
+                        <Dropdown.Divider />
+                        <Dropdown
+                            className='button icon'
+                            options={[
+                                { key: 'credentials', text: <Button loading={loadingCreds} basic onClick={generateCredentials}>
+                                        <Icon name={'file alternate'}/> Credentials
+                                    </Button>, value: 'credentials' },
+                                { key: 'archive', text: <Button basic onClick={() => setShowArchiveDataset(true)}>
+                                        <Icon name={'archive'}/> Archive
+                                    </Button>, value: 'archive' },
+                                { key: 'delete', text: <Button basic onClick={() => setShowDeleteDataset(true)}>
+                                        <Icon name={'trash'}/> Delete
+                                    </Button>, value: 'delete' },
+                            ]}
+                            trigger={<></>}
+                        />
+                    </Button.Group>
                 </Button.Group>
-            </Button.Group>
-            <ReactIf.If condition={showCreds}>
-                <ReactIf.Then>
-                    <Modal
-                        centered={false}
-                        onClose={() => setShowCreds(false)}
-                        onOpen={() => setShowCreds(true)}
-                        open={() => setShowCreds(true)}
-                        size='small'
-                        trigger={<span/>}
-                    >
-                        <Modal.Header>{credentials?.header}</Modal.Header>
-                        <Modal.Content>
-                            <Form>
-                                <Form.Field>
-                                    <textarea value={credentials?.content}/>
-                                </Form.Field>
-                            </Form>
-                        </Modal.Content>
-                    </Modal>
-                </ReactIf.Then>
-            </ReactIf.If>
-            <ReactIf.If condition={showArchiveDataset}>
-                <ReactIf.Then>
-                    <Modal
-                        centered={false}
-                        onClose={() => setShowArchiveDataset(false)}
-                        onOpen={() => setShowArchiveDataset(true)}
-                        open={() => setShowArchiveDataset(true)}
-                        size='small'
-                        trigger={<span/>}
-                    >
-                        <Modal.Content>
-                            <Modal.Description>
-                                <Header>Archive dataset {dataset.label} ?</Header>
-                                <p>
-                                    Archiving a dataset will remove it from the Catalog but still available on AWS !
-                                </p>
-                            </Modal.Description>
-                        </Modal.Content>
-                        <Modal.Actions>
-                            <Button color={'grey'} basic onClick={() => setShowArchiveDataset(false)}>
-                                Cancel
-                            </Button>
-                            <Button
-                                color={'red'}
-                                basic
-                                content="Archive"
-                                labelPosition='left'
-                                icon='archive'
-                                onClick={storeDataset}
-                            />
-                        </Modal.Actions>
-                    </Modal>
-                </ReactIf.Then>
-            </ReactIf.If>
-            <ReactIf.If condition={showDeleteDataset}>
-                <ReactIf.Then>
-                    <Modal
-                        centered={false}
-                        onClose={() => setShowDeleteDataset(false)}
-                        onOpen={() => setShowDeleteDataset(true)}
-                        open={() => setShowDeleteDataset(true)}
-                        size='small'
-                        trigger={<span/>}
-                    >
-                        <Modal.Content>
-                            <Modal.Description>
-                                <Header>Delete dataset {dataset.label} ?</Header>
-                                <p>
-                                    Delete action will destroy all AWS resources linked to your dataset
-                                    (S3 bucket, IAM role...)!
-                                </p>
-                            </Modal.Description>
-                        </Modal.Content>
-                        <Modal.Actions>
-                            <Button color={'grey'} basic onClick={() => setShowDeleteDataset(false)}>
-                                Cancel
-                            </Button>
-                            <Button
-                                color={'red'}
-                                content='Delete'
-                                labelPosition='left'
-                                icon='trash'
-                                onClick={removeDataset}
-                            />
-                        </Modal.Actions>
-                    </Modal>
-                </ReactIf.Then>
-            </ReactIf.If>
+                <ReactIf.If condition={showCreds}>
+                    <ReactIf.Then>
+                        <Modal
+                            centered={false}
+                            onClose={() => setShowCreds(false)}
+                            onOpen={() => setShowCreds(true)}
+                            open={() => setShowCreds(true)}
+                            size='small'
+                            trigger={<span/>}
+                        >
+                            <Modal.Header>{credentials?.header}</Modal.Header>
+                            <Modal.Content>
+                                <Form>
+                                    <Form.Field>
+                                        <textarea value={credentials?.content}/>
+                                    </Form.Field>
+                                </Form>
+                            </Modal.Content>
+                        </Modal>
+                    </ReactIf.Then>
+                </ReactIf.If>
+                <ReactIf.If condition={showArchiveDataset}>
+                    <ReactIf.Then>
+                        <Modal
+                            centered={false}
+                            onClose={() => setShowArchiveDataset(false)}
+                            onOpen={() => setShowArchiveDataset(true)}
+                            open={() => setShowArchiveDataset(true)}
+                            size='small'
+                            trigger={<span/>}
+                        >
+                            <Modal.Content>
+                                <Modal.Description>
+                                    <Header>Archive dataset {dataset.label} ?</Header>
+                                    <p>
+                                        Archiving a dataset will remove it from the Catalog but still available on AWS !
+                                    </p>
+                                </Modal.Description>
+                            </Modal.Content>
+                            <Modal.Actions>
+                                <Button color={'grey'} basic onClick={() => setShowArchiveDataset(false)}>
+                                    Cancel
+                                </Button>
+                                <Button
+                                    color={'red'}
+                                    basic
+                                    content="Archive"
+                                    labelPosition='left'
+                                    icon='archive'
+                                    onClick={storeDataset}
+                                />
+                            </Modal.Actions>
+                        </Modal>
+                    </ReactIf.Then>
+                </ReactIf.If>
+                <ReactIf.If condition={showDeleteDataset}>
+                    <ReactIf.Then>
+                        <Modal
+                            centered={false}
+                            onClose={() => setShowDeleteDataset(false)}
+                            onOpen={() => setShowDeleteDataset(true)}
+                            open={() => setShowDeleteDataset(true)}
+                            size='small'
+                            trigger={<span/>}
+                        >
+                            <Modal.Content>
+                                <Modal.Description>
+                                    <Header>Delete dataset {dataset.label} ?</Header>
+                                    <p>
+                                        Delete action will destroy all AWS resources linked to your dataset
+                                        (S3 bucket, IAM role...)!
+                                    </p>
+                                </Modal.Description>
+                            </Modal.Content>
+                            <Modal.Actions>
+                                <Button color={'grey'} basic onClick={() => setShowDeleteDataset(false)}>
+                                    Cancel
+                                </Button>
+                                <Button
+                                    color={'red'}
+                                    content='Delete'
+                                    labelPosition='left'
+                                    icon='trash'
+                                    onClick={removeDataset}
+                                />
+                            </Modal.Actions>
+                        </Modal>
+                    </ReactIf.Then>
+                </ReactIf.If>
+            </div>
+            </ReactIf.Then>
+        </ReactIf.If>
 
-        </div>
 
     );
     const actions = <Actions {...dataset}/>

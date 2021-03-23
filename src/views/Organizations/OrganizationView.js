@@ -54,63 +54,69 @@ const OrganizationView = (props) => {
     const linkEnvironment=()=>{
         history.push(`/new-environment/${org.organizationUri}`);
     }
-
+    const isAdmin = (org) => {
+        return ["Owner", "Admin"].indexOf(org.userRoleInOrganization) == -1 ? false : true
+    }
 
     const Actions = (org) => (
-        <div>
-            <Button.Group color='blue'>
-                <Button size='small' onClick={linkEnvironment}><Icon name={'linkify'}/>Link Environment
-                </Button>
-                <Dropdown.Divider />
-                <Dropdown
-                    className='button icon'
-                    options={[
-                        { key: 'delete', text: <Button basic onClick={() => setShowDeleteOrg(true)}>
-                                <Icon name='trash'/> Delete
-                            </Button>, value: 'delete' },
-                    ]}
-                    trigger={<></>}
-                />
-            </Button.Group>
-            <ReactIf.If condition={showDeleteOrg}>
-                <ReactIf.Then>
-                    <Modal
-                        centered={false}
-                        onClose={() => setShowDeleteOrg(false)}
-                        onOpen={() => setShowDeleteOrg(true)}
-                        open={() => {setShowDeleteOrg(true)}}
-                        size='small'
-                        trigger={<span/>}
-                    >
-                        <Modal.Content>
-                            <Modal.Description>
-                                <Header>Delete organization {org.label} ?</Header>
-                                <p>
-                                    You must first delete all environments linked to this organization !
-                                </p>
-                                {error && <Message negative>
-                                    <Message.Header>Could not delete organization</Message.Header>
-                                    <p>{error && error.message}</p>
-                                </Message>
-                                }
-                            </Modal.Description>
-                        </Modal.Content>
-                        <Modal.Actions>
-                            <Button color={'grey'} onClick={() => setShowDeleteOrg(false)}>
-                                Cancel
-                            </Button>
-                            <Button
-                                color={'red'}
-                                content="Confirm"
-                                labelPosition='left'
-                                icon='trash'
-                                onClick={archiveOrg}
-                            />
-                        </Modal.Actions>
-                    </Modal>
-                </ReactIf.Then>
-            </ReactIf.If>
-        </div>
+        <ReactIf.If condition={isAdmin(org)}>
+            <ReactIf.Then>
+                <div>
+                    <Button.Group color='blue'>
+                        <Button size='small' onClick={linkEnvironment}><Icon name={'linkify'}/>Link Environment
+                        </Button>
+                        <Dropdown.Divider />
+                        <Dropdown
+                            className='button icon'
+                            options={[
+                                { key: 'delete', text: <Button basic onClick={() => setShowDeleteOrg(true)}>
+                                        <Icon name='trash'/> Delete
+                                    </Button>, value: 'delete' },
+                            ]}
+                            trigger={<></>}
+                        />
+                    </Button.Group>
+                    <ReactIf.If condition={showDeleteOrg}>
+                        <ReactIf.Then>
+                            <Modal
+                                centered={false}
+                                onClose={() => setShowDeleteOrg(false)}
+                                onOpen={() => setShowDeleteOrg(true)}
+                                open={() => {setShowDeleteOrg(true)}}
+                                size='small'
+                                trigger={<span/>}
+                            >
+                                <Modal.Content>
+                                    <Modal.Description>
+                                        <Header>Delete organization {org.label} ?</Header>
+                                        <p>
+                                            You must first delete all environments linked to this organization !
+                                        </p>
+                                        {error && <Message negative>
+                                            <Message.Header>Could not delete organization</Message.Header>
+                                            <p>{error && error.message}</p>
+                                        </Message>
+                                        }
+                                    </Modal.Description>
+                                </Modal.Content>
+                                <Modal.Actions>
+                                    <Button color={'grey'} onClick={() => setShowDeleteOrg(false)}>
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        color={'red'}
+                                        content="Confirm"
+                                        labelPosition='left'
+                                        icon='trash'
+                                        onClick={archiveOrg}
+                                    />
+                                </Modal.Actions>
+                            </Modal>
+                        </ReactIf.Then>
+                    </ReactIf.If>
+                </div>
+            </ReactIf.Then>
+        </ReactIf.If>
 
     );
     const actions = <Actions {...org}/>

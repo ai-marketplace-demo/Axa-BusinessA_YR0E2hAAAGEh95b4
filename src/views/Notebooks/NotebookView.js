@@ -105,107 +105,122 @@ const NotebookView = (props) => {
         }
     }, [client]);
 
+    const isAdmin = (d) => {
+        if (!d) {
+            return false
+        } else {
+            if (["Creator", "Admin", "Owner"].indexOf(d.userRoleForProjectNotebook) != -1) {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
     const Actions = () => (
-        <div>
-            <Button.Group>
-                <Button.Group color='blue'>
-                    <Button loading={isOpeningJupyter} onClick={getThisNotebookPresignedUrl}><SiIcon.SiJupyter /> Jupyter Notebook</Button>
-                    <Dropdown.Divider />
-                    <Dropdown
-                        className='button icon'
-                        options={[
-                            { key: 'play', text: <Button basic onClick={startThisNotebook} loading={isStartingNotebook}>
-                                    <Icon name='play circle'/>
-                                    Start
-                                </Button>, value: 'play' },
-                            { key: 'resume', text: <Button basic onClick={()=>setShowStopInstance(true)} loading={isStoppingNotebook}>
-                                    <Icon name='stop circle'/>
-                                    Stop
-                                </Button>, value: 'resume' },
-                            { key: 'delete', text: <Button basic onClick={()=>setShowDelete(true)}>
-                                    <Icon name='trash'/>
-                                    Delete
-                                </Button>, value: 'delete' },
-                        ]}
-                        trigger={<></>}
-                    />
+        <ReactIf.If condition={isAdmin(notebook)}>
+            <ReactIf.Then>
+                <div>
+                <Button.Group>
+                    <Button.Group color='blue'>
+                        <Button loading={isOpeningJupyter} onClick={getThisNotebookPresignedUrl}><SiIcon.SiJupyter /> Jupyter Notebook</Button>
+                        <Dropdown.Divider />
+                        <Dropdown
+                            className='button icon'
+                            options={[
+                                { key: 'play', text: <Button basic onClick={startThisNotebook} loading={isStartingNotebook}>
+                                        <Icon name='play circle'/>
+                                        Start
+                                    </Button>, value: 'play' },
+                                { key: 'resume', text: <Button basic onClick={()=>setShowStopInstance(true)} loading={isStoppingNotebook}>
+                                        <Icon name='stop circle'/>
+                                        Stop
+                                    </Button>, value: 'resume' },
+                                { key: 'delete', text: <Button basic onClick={()=>setShowDelete(true)}>
+                                        <Icon name='trash'/>
+                                        Delete
+                                    </Button>, value: 'delete' },
+                            ]}
+                            trigger={<></>}
+                        />
+                    </Button.Group>
                 </Button.Group>
-            </Button.Group>
-            <ReactIf.If condition={showStopInstance}>
-                <ReactIf.Then>
-                    <Modal
-                        centered={false}
-                        onClose={() => setShowStopInstance(false)}
-                        onOpen={() => setShowStopInstance(true)}
-                        open={() => setShowStopInstance(true)}
-                        size='small'
-                        trigger={<span/>}
-                    >
-                        <Modal.Content>
-                            <Modal.Description>
-                                <Header>Stop SageMaker Instance {notebook.label} ?</Header>
-                                {errors && <Message negative>
-                                    <Message.Header>error.header</Message.Header>
-                                    <p>{errors && errors.content}</p>
-                                </Message>
-                                }
-                            </Modal.Description>
-                        </Modal.Content>
-                        <Modal.Actions>
-                            <Button color={'grey'} basic onClick={() => setShowStopInstance(false)}>
-                                Cancel
-                            </Button>
-                            <Button
-                                color={'red'}
-                                basic
-                                content="Stop"
-                                labelPosition='left'
-                                icon='stop'
-                                onClick={stopThisNotebook}
-                            />
-                        </Modal.Actions>
-                    </Modal>
-                </ReactIf.Then>
-            </ReactIf.If>
-            <ReactIf.If condition={showDelete}>
-                <ReactIf.Then>
-                    <Modal
-                        centered={false}
-                        onClose={() => setShowDelete(false)}
-                        onOpen={() => setShowDelete(true)}
-                        open={() => setShowDelete(true)}
-                        size='small'
-                        trigger={<span/>}
-                    >
-                        <Modal.Content>
-                            <Modal.Description>
-                                <Header>Delete SageMaker Instance {notebook.label} ?</Header>
-                                <p>
-                                    Make sure to save all your notebooks before deleting the instance
-                                </p>
-                                {error && <Message negative>
-                                    <Message.Header>error.header</Message.Header>
-                                    <p>{error && error.content}</p>
-                                </Message>
-                                }
-                            </Modal.Description>
-                        </Modal.Content>
-                        <Modal.Actions>
-                            <Button color={'grey'} onClick={() => setShowDelete(false)}>
-                                Cancel
-                            </Button>
-                            <Button
-                                color={'red'}
-                                content="Confirm"
-                                labelPosition='left'
-                                icon='trash'
-                                onClick={''}
-                            />
-                        </Modal.Actions>
-                    </Modal>
-                </ReactIf.Then>
-            </ReactIf.If>
-        </div>
+                <ReactIf.If condition={showStopInstance}>
+                    <ReactIf.Then>
+                        <Modal
+                            centered={false}
+                            onClose={() => setShowStopInstance(false)}
+                            onOpen={() => setShowStopInstance(true)}
+                            open={() => setShowStopInstance(true)}
+                            size='small'
+                            trigger={<span/>}
+                        >
+                            <Modal.Content>
+                                <Modal.Description>
+                                    <Header>Stop SageMaker Instance {notebook.label} ?</Header>
+                                    {errors && <Message negative>
+                                        <Message.Header>error.header</Message.Header>
+                                        <p>{errors && errors.content}</p>
+                                    </Message>
+                                    }
+                                </Modal.Description>
+                            </Modal.Content>
+                            <Modal.Actions>
+                                <Button color={'grey'} basic onClick={() => setShowStopInstance(false)}>
+                                    Cancel
+                                </Button>
+                                <Button
+                                    color={'red'}
+                                    basic
+                                    content="Stop"
+                                    labelPosition='left'
+                                    icon='stop'
+                                    onClick={stopThisNotebook}
+                                />
+                            </Modal.Actions>
+                        </Modal>
+                    </ReactIf.Then>
+                </ReactIf.If>
+                <ReactIf.If condition={showDelete}>
+                    <ReactIf.Then>
+                        <Modal
+                            centered={false}
+                            onClose={() => setShowDelete(false)}
+                            onOpen={() => setShowDelete(true)}
+                            open={() => setShowDelete(true)}
+                            size='small'
+                            trigger={<span/>}
+                        >
+                            <Modal.Content>
+                                <Modal.Description>
+                                    <Header>Delete SageMaker Instance {notebook.label} ?</Header>
+                                    <p>
+                                        Make sure to save all your notebooks before deleting the instance
+                                    </p>
+                                    {error && <Message negative>
+                                        <Message.Header>error.header</Message.Header>
+                                        <p>{error && error.content}</p>
+                                    </Message>
+                                    }
+                                </Modal.Description>
+                            </Modal.Content>
+                            <Modal.Actions>
+                                <Button color={'grey'} onClick={() => setShowDelete(false)}>
+                                    Cancel
+                                </Button>
+                                <Button
+                                    color={'red'}
+                                    content="Confirm"
+                                    labelPosition='left'
+                                    icon='trash'
+                                    onClick={''}
+                                />
+                            </Modal.Actions>
+                        </Modal>
+                    </ReactIf.Then>
+                </ReactIf.If>
+            </div>
+            </ReactIf.Then>
+        </ReactIf.If>
 
     );
     const actions = <Actions {...notebook}/>

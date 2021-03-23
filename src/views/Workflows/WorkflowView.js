@@ -73,62 +73,78 @@ const WorkflowView = (props) => {
         }
     }, [client]);
 
-    const Actions = (env) => (
-        <div>
-            <Button.Group>
-                <Button.Group color='blue'>
-                    <Button loading={isLoadingAirflowUI} onClick={goToAirflowUI}><SiIcon.SiApacheairflow/>  Airflow</Button>
-                    <Dropdown.Divider />
-                    <Dropdown
-                        className='button icon'
-                        options={[
-                            { key: 'delete', text: <Button basic onClick={() => setShowDeleteEnv(true)}>
-                                    <Icon name='trash'/> Delete
-                                </Button>, value: 'delete' },
-                        ]}
-                        trigger={<></>}
-                    />
-                </Button.Group>
-            </Button.Group>
-            <ReactIf.If condition={showDeleteEnv}>
-                <ReactIf.Then>
-                    <Modal
-                        centered={false}
-                        onClose={() => setShowDeleteEnv(false)}
-                        onOpen={() => setShowDeleteEnv(true)}
-                        open={() => setShowDeleteEnv(true)}
-                        size='small'
-                        trigger={<span/>}
-                    >
-                        <Modal.Content>
-                            <Modal.Description>
-                                <Header>Delete environment {workflow.label} ?</Header>
-                                <p>
-                                    You must first delete all objects linked to this Airflow environment !
-                                </p>
-                                {error && <Message negative>
-                                    <Message.Header>error.header</Message.Header>
-                                    <p>{error && error.content}</p>
-                                </Message>
-                                }
-                            </Modal.Description>
-                        </Modal.Content>
-                        <Modal.Actions>
-                            <Button color={'grey'} onClick={() => setShowDeleteEnv(false)}>
-                                Cancel
-                            </Button>
-                            <Button
-                                color={'red'}
-                                content="Confirm"
-                                labelPosition='left'
-                                icon='trash'
-                                onClick={deleteCluster}
+    const isAdmin = (d) => {
+        if (!d) {
+            return false
+        } else {
+            if (["Creator", "Admin", "Owner"].indexOf(d.userRoleForCluster) != -1) {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+
+    const Actions = () => (
+        <ReactIf.If condition={isAdmin(workflow)}>
+            <ReactIf.Then>
+                <div>
+                    <Button.Group>
+                        <Button.Group color='blue'>
+                            <Button loading={isLoadingAirflowUI} onClick={goToAirflowUI}><SiIcon.SiApacheairflow/>  Airflow</Button>
+                            <Dropdown.Divider />
+                            <Dropdown
+                                className='button icon'
+                                options={[
+                                    { key: 'delete', text: <Button basic onClick={() => setShowDeleteEnv(true)}>
+                                            <Icon name='trash'/> Delete
+                                        </Button>, value: 'delete' },
+                                ]}
+                                trigger={<></>}
                             />
-                        </Modal.Actions>
-                    </Modal>
-                </ReactIf.Then>
-            </ReactIf.If>
-        </div>
+                        </Button.Group>
+                    </Button.Group>
+                    <ReactIf.If condition={showDeleteEnv}>
+                        <ReactIf.Then>
+                            <Modal
+                                centered={false}
+                                onClose={() => setShowDeleteEnv(false)}
+                                onOpen={() => setShowDeleteEnv(true)}
+                                open={() => setShowDeleteEnv(true)}
+                                size='small'
+                                trigger={<span/>}
+                            >
+                                <Modal.Content>
+                                    <Modal.Description>
+                                        <Header>Delete environment {workflow.label} ?</Header>
+                                        <p>
+                                            You must first delete all objects linked to this Airflow environment !
+                                        </p>
+                                        {error && <Message negative>
+                                            <Message.Header>error.header</Message.Header>
+                                            <p>{error && error.content}</p>
+                                        </Message>
+                                        }
+                                    </Modal.Description>
+                                </Modal.Content>
+                                <Modal.Actions>
+                                    <Button color={'grey'} onClick={() => setShowDeleteEnv(false)}>
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        color={'red'}
+                                        content="Confirm"
+                                        labelPosition='left'
+                                        icon='trash'
+                                        onClick={deleteCluster}
+                                    />
+                                </Modal.Actions>
+                            </Modal>
+                        </ReactIf.Then>
+                    </ReactIf.If>
+                </div>
+            </ReactIf.Then>
+        </ReactIf.If>
 
     );
     const actions = <Actions {...workflow}/>
