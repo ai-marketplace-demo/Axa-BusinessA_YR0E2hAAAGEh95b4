@@ -1,17 +1,17 @@
 const config = {
     apiGateway: {
         REGION: "eu-west-1",
-        URL: "https://YOUR_APIG_ENDPOINT/prod/graphql/api",
-        ESURL: "https://YOUR_APIG_ENDPOINT/prod/search/api",
+        URL: "https://b3lggzkhnh.execute-api.eu-west-1.amazonaws.com/prod/graphql/api",
+        ESURL: "https://b3lggzkhnh.execute-api.eu-west-1.amazonaws.com/prod/search/api",
 
     },
     cognito: {
-        REGION: "YOUR_COGNITO_REGION",
-        USER_POOL_ID: "YOUR_COGNITO_USERPOOL_ID",
-        APP_CLIENT_ID: "YOUR_COGNITO_APP_CLIENT_ID",
-        DOMAIN: "YOUR_COGNITO_DOMAIN",
-        REDIRECT_URI: "YOUR_DATAHUB_FRONTEND_CLOUDFRONT_ENDPOINT",
-        SIGNOUT_URL: "YOUR_DATAHUB_FRONTEND_CLOUDFRONT_ENDPOINT",
+        REGION: "eu-west-1",
+        USER_POOL_ID: "eu-west-1_LHoa6avN8",
+        APP_CLIENT_ID: "6mub43r79g5iu3hm4gelj5i7e3",
+        DOMAIN: "datahubgammaeuwest1532999248425.auth.eu-west-1.amazoncognito.com",
+        REDIRECT_URI: "https://localhost:8080",
+        SIGNOUT_URL: "https://datahub.haramine.people.aws.dev",
         TYPE:"token",
         SCOPE:['email','phone','openid','profile']
     }
