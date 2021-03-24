@@ -1,9 +1,14 @@
 import {Link} from "react-router-dom";
-import {Table} from "semantic-ui-react";
+import {Button, Label, Table} from "semantic-ui-react";
+import React from "react";
 
 
-const ShareSummary = ({share,client})=>{
-    return <Table compact>
+const ShareSummary = ({share,reload, setTagColor})=>{
+    return <div>
+        <Button onClick={reload} primary size={`mini`}>
+            Refresh
+        </Button>
+        <Table compact>
         <Table.Header>
             <Table.Row>
                 <Table.Cell>
@@ -20,7 +25,7 @@ const ShareSummary = ({share,client})=>{
                     Business Owner
                 </Table.Cell>
                 <Table.Cell>
-                    {share.dataset.businessOwnerEmail}
+                    {share.dataset.businessOwnerEmail || '-'}
                 </Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -36,7 +41,7 @@ const ShareSummary = ({share,client})=>{
                     Status
                 </Table.Cell>
                 <Table.Cell>
-                    {share.status}
+                    <Label tag color={setTagColor(share)} style={{fontSize:'x-small'}}>{share.status}</Label>
                 </Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -64,7 +69,7 @@ const ShareSummary = ({share,client})=>{
                 </Table.Cell>
             </Table.Row>
         </Table.Header>
-    </Table>
+    </Table></div>
 
 }
 

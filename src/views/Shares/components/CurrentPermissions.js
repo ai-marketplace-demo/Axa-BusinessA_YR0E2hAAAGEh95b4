@@ -1,5 +1,5 @@
 import React, {useEffect,useState} from "react";
-import {Button, Icon, Label, Message} from "semantic-ui-react";
+import {Button, Icon, Label, Loader, Message} from "semantic-ui-react";
 import getShareObject from "../../../api/ShareObject/getShareObject";
 import removeSharedItem from "../../../api/ShareObject/removeSharedItem";
 import submitApproval from "../../../api/ShareObject/submitApproval";
@@ -10,26 +10,53 @@ import PagedResponseDefault from "../../../components/defaults/PagedResponseDefa
 import {
     Switch, Case, Default
 } from 'react-if';
-import {Link} from "react-router-dom";
 
-const CurrentPermissions = ({share,client})=>{
+
+const CurrentPermissions = ({shareUri,client})=>{
     const [loading, setLoading]= useState(false);
+    const [share, setShare] = useState(null);
     const [error, setError] = useState(null)
     const [sharedItems, setSharedItems] = useState(PagedResponseDefault );
     const [actions, setActions] = useState(null);
     const fetchItems=async ()=>{
         setLoading(true);
         const response = await client.query(getShareObject ({
-            shareUri:share.shareUri,
+            shareUri,
             filter:{
                 isShared:true
             }
         }));
         if (!response.errors){
-            updateActions();
             setSharedItems({...response.data.getShareObject.items});
         }else {
-           setError(``)
+            setError({message: response.errors[0].message})
+        }
+        setLoading(false);
+    }
+    const fetchShare= async()=>{
+        setLoading(true);
+        const response = await client.query(getShareObject({shareUri}));
+        if (!response.errors){
+            setShare(response.data.getShareObject);
+            if (response.data.getShareObject.userRoleForShareObject === 'Approvers') {
+                if (response.data.getShareObject.status === 'PendingApproval') {
+                    setActions('PendingApproval');
+                }
+            }
+            else if (response.data.getShareObject.userRoleForShareObject === 'Requesters'
+                || response.data.getShareObject.userRoleForShareObject === 'DatasetAdmins') {
+                if (response.data.getShareObject.status === 'Draft') {
+                    setActions('Submit');
+                }
+            }
+            else {
+                setActions('Refresh');
+            }
+        }else {
+            setError({
+                header: 'Error',
+                content: `Could not retrieve share ${shareUri}`
+            })
         }
         setLoading(false);
     }
@@ -38,24 +65,12 @@ const CurrentPermissions = ({share,client})=>{
         setLoading(true);
         const response= await client.mutate(removeSharedItem ({shareItemUri:item.shareItemUri}));
         if (!response.errors){
-            updateActions();
+            await fetchShare();
             await fetchItems();
         }else {
             setError({message: response.errors[0].message})
         }
         setLoading(false);
-    }
-    const updateActions = () => {
-        if (share.userRoleForShareObject === 'Approvers') {
-            if (share.status === 'PendingApproval') {
-                setActions('PendingApproval');
-            }
-        }
-        if (share.userRoleForShareObject === 'Requesters') {
-            if (share.status === 'Draft') {
-                setActions('Submit');
-            }
-        }
     }
 
 
@@ -68,6 +83,7 @@ const CurrentPermissions = ({share,client})=>{
                 })
             );
         if (!response.errors) {
+            await fetchShare();
             await fetchItems();
         } else {
             setError({message: response.errors[0].message})
@@ -84,12 +100,14 @@ const CurrentPermissions = ({share,client})=>{
                 })
             );
         if (!response.errors) {
+            await fetchShare();
             await fetchItems();
         } else {
             setError({message: response.errors[0].message})
         }
         setLoading(false);
     };
+
 
 
     const submit = async () => {
@@ -100,21 +118,45 @@ const CurrentPermissions = ({share,client})=>{
                 })
             );
         if (!response.errors) {
-            setLoading(true);
+            await fetchShare();
             await fetchItems();
         } else {
             setError({message: response.errors[0].message})
         }
     };
 
+    const setTagColor = () => {
+        if (share && share.status === 'Approved')
+            return 'green';
+        else if (share && share.status === 'Rejected')
+            return('red');
+        else if (share && share.status === 'PendingApproval')
+            return('grey');
+        else
+            return('black')
+    }
+
 
     useEffect(()=>{
         if (client){
+            fetchShare();
             fetchItems();
         }
     },[client])
+
+    if (loading){
+        return <div
+            style={{
+                width:'1fr',
+                display:'block',
+                height:'100%'
+            }}
+        >
+            <Loader active/>
+        </div>
+    }
     return <div>
-        {error && <Message negative>
+        {error && <Message negative onDismiss={()=>{setError(null)}}>
             <Message.Header>{error && error.header || 'Error'}</Message.Header>
             <p>{error && error.message}</p>
         </Message>
@@ -122,12 +164,25 @@ const CurrentPermissions = ({share,client})=>{
         <Switch>
             <Case condition={actions === 'PendingApproval'}>
                 <div>
+                    <Button onClick={fetchShare} basic primary size={`mini`}>
+                        Refresh
+                    </Button>
                     <Button onClick={accept} basic size={'mini'} color={`blue`} content='Approve' icon='checkmark' labelPosition='left'/>
                     <Button onClick={reject} basic size={'mini'} color={`red`} content='Reject' icon='window close' labelPosition='left'/>
                 </div>
             </Case>
+            <Case condition={actions === 'Submit'}>
+                <div>
+                    <Button onClick={fetchShare} basic primary size={`mini`}>
+                        Refresh
+                    </Button>
+                    <Button onClick={submit} basic size={'mini'} color={`blue`} content='Submit' icon='reply' labelPosition='left'/>
+                </div>
+            </Case>
             <Default>
-                <Button onClick={submit} basic size={'mini'} color={`blue`} content='Submit' icon='reply' labelPosition='left'/>
+                <Button onClick={fetchShare} basic primary size={`mini`}>
+                    Refresh
+                </Button>
             </Default>
         </Switch>
         <TableContainer
@@ -150,7 +205,9 @@ const CurrentPermissions = ({share,client})=>{
             }
         ]}
         rows={sharedItems.nodes.map((item)=>{
-            return {...item, action : <Button
+            return {...item,
+                status:<Label tag color={setTagColor()} style={{fontSize:'x-small'}}>{share ? share.status : '-'}</Label>,
+                action : <Button
                     icon labelPosition='right'
                     onClick={()=>{removeItemFromShareObject(item)}}
                     size={`mini`}>

@@ -13,7 +13,6 @@ const ShareView = (props) => {
     const params= useParams();
     let [error, setError] = useState(null);
     const [share,setShare] = useState({});
-    const [tagColor, setTagColor] = useState('blue');
     const [loading, setLoading] = useState(true);
 
     const fetchItem= async()=>{
@@ -22,14 +21,6 @@ const ShareView = (props) => {
         const response = await client.query(getShareObject({shareUri:params.uri}));
         if (!response.errors){
             setShare(response.data.getShareObject);
-            if (response.data.getShareObject.status === 'Approved')
-                setTagColor('green')
-            else if (response.data.getShareObject.status === 'Rejected')
-                setTagColor('red')
-            else if (response.data.getShareObject.status === 'PendingApproval')
-                setTagColor('black')
-            else
-                setTagColor('grey')
         }else {
             setError({
                 header: 'Error',
@@ -46,9 +37,18 @@ const ShareView = (props) => {
     const Status = () => (
         <div>
             <Label tag style={{fontSize:'xx-small'}}>{share.userRoleForShareObject}</Label>
-            <Label tag color={tagColor} style={{fontSize:'xx-small'}}>{share.status}</Label>
         </div>
     )
+    const setTagColor = (share) => {
+        if (share.status === 'Approved')
+            return 'green';
+        else if (share.status === 'Rejected')
+            return('red');
+        else if (share.status === 'PendingApproval')
+            return('grey');
+        else
+            return('black')
+    }
     return <ObjectView
         title={share.label}
         loading={loading}
@@ -64,9 +64,9 @@ const ShareView = (props) => {
         tabs={["overview", "permissions", "request"]}
         status={<Status/>}
     >
-        <Components.ShareSummmary share={share} client={client}/>
-        <Components.CurrentPermissions share={share} client={client}/>
-        <Components.PermissionRequest share={share} client={client}/>
+        <Components.ShareSummmary share={share} reload={fetchItem} setTagColor={setTagColor}/>
+        <Components.CurrentPermissions shareUri={share.shareUri} client={client} reload={() => { fetchItem() }} setTagColor={setTagColor}/>
+        <Components.PermissionRequest share={share} client={client} reload={fetchItem} setTagColor={setTagColor}/>
     </ObjectView>
 }
 

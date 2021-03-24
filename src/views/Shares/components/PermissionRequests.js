@@ -1,5 +1,5 @@
-import {useEffect,useState} from "react";
-import {Button,Icon} from "semantic-ui-react";
+import React, {useEffect,useState} from "react";
+import {Button, Icon, Message} from "semantic-ui-react";
 import getShareObject from "../../../api/ShareObject/getShareObject";
 import addSharedItem  from "../../../api/ShareObject/addSharedItem";
 import {TableContainer} from "../../../components/table";
@@ -22,7 +22,7 @@ const PermissionRequest = ({share,client})=>{
         if (!response.errors){
             setSharedItems({...response.data.getShareObject.items});
         }else {
-            setError(``)
+            setError({header:'Error', content:response.errors[0].message})
         }
         setLoading(false);
     }
@@ -39,7 +39,7 @@ const PermissionRequest = ({share,client})=>{
         if (!response.errors){
             await fetchItems();
         }else {
-            setError(`Could not add item, received ${response.errors[0].message}`);
+            setError({header:'Error', message:response.errors[0].message})
             setLoading(false)
         }
     }
@@ -49,7 +49,13 @@ const PermissionRequest = ({share,client})=>{
             fetchItems();
         }
     },[client])
-    return <TableContainer
+    return <div>
+        {error && <Message negative onDismiss={()=>{setError(null)}}>
+            <Message.Header>{error && error.header || 'Error'}</Message.Header>
+            <p>{error && error.message}</p>
+        </Message>
+        }
+        <TableContainer
         reload={fetchItems}
         columns={[{
             label:'itemUri',key:'itemUri',
@@ -71,7 +77,7 @@ const PermissionRequest = ({share,client})=>{
                     <Icon name='plus' />
             </Button>}
         })}
-    />
+    /></div>
 
 }
 
