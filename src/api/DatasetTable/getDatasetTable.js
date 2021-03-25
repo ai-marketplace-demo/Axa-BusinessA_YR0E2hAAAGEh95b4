@@ -11,6 +11,7 @@ const getDatasetTable= (tableUri)=>{
                         dataset{
                             datasetUri
                             name
+                            userRoleForDataset
                         }
                         datasetUri
                         owner

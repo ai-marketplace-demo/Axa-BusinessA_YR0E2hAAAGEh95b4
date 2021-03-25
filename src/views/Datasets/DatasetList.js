@@ -1,9 +1,11 @@
-import {useEffect, useState} from "react";
+import React,{useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 import DataView from "../../components/listview/DataView";
 import * as BsIcon from "react-icons/bs";
 import useClient from "../../api/client";
 import listDatasets from "../../api/Dataset/listDatasets";
 import * as Defaults from "../../components/defaults"
+import {Button} from "semantic-ui-react";
 
 const DatasetLink = ({item}) => {
     return `/dataset/${item.datasetUri}/`
@@ -19,6 +21,7 @@ const DatasetList = (props) => {
     const [filter, setFilter] = useState(Defaults.DefaultFilter);
     const [loading, setLoading] = useState(true);
     const client = useClient();
+    const history = useHistory();
 
     const handlePageChange=(e,{activePage})=>{
         if (activePage<=items.pages){
@@ -76,6 +79,10 @@ const DatasetList = (props) => {
 
         }
     }
+    const action= <div>
+        <Button onClick={()=>{history.push('/new-dataset')}} compact={true} basic color={`blue`} content='Create'/>
+        <Button onClick={()=>{history.push('/import-dataset')}} compact={true} basic color={`blue`} content='Import'/>
+    </div>
     useEffect(() => {
         if (client) {
             fetchItems()
@@ -88,6 +95,7 @@ const DatasetList = (props) => {
         createLink={() => {
             return `/new-dataset`
         }}
+        action={action}
         breadcrumbs={"/catalog/contribute"}
         loading={!ready}
         pager={{
@@ -100,7 +108,7 @@ const DatasetList = (props) => {
         commentable={false}
         commentsLink={DatasetCommentsLink}
         collectionable={false}
-        creatable={true}
+        creatable={false}
         keyField={`datasetUri`}
         itemBody={() => {
         }}

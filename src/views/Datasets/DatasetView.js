@@ -7,6 +7,7 @@ import useClient from "../../api/client";
 import getDataset from "../../api/Dataset/getDataset";
 import deleteDataset from '../../api/Dataset/deleteDataset';
 import archiveDataset from '../../api/Dataset/archiveDataset';
+import updateDatasetStack from '../../api/Dataset/updateDatasetStack';
 import getDatasetAdminConsoleUrl from '../../api/Dataset/getDatasetAdminConsoleUrl';
 import generateDatasetAccessToken from '../../api/Dataset/generateDatasetAccessToken';
 import Stack from "../Stack/Stack";
@@ -102,6 +103,21 @@ const DatasetView = (props) => {
         setLoadingCreds(false);
         setShowCreds(true);
     };
+
+    const updateStack = async () => {
+        const response = await client.mutate(updateDatasetStack(dataset.datasetUri));
+        if (!response.errors) {
+            setSuccess({
+                content: `CloudFormation stack stack-${dataset.stack.stackUri} update started`,
+            })
+            await fetchItem()
+        } else {
+            setUiError({
+                header: 'Error updating dataset stack',
+                content: `${response.errors[0].message}`
+            })
+        }
+    }
 
     useEffect(() => {
         if (client) {
@@ -298,7 +314,9 @@ const DatasetView = (props) => {
         <Components.FolderList dataset={dataset}/>
         <Components.PermissionList dataset={dataset}/>
         <Components.Uploader dataset={dataset} client={client}/>
-        <Stack stack={dataset.stack} reload={fetchItem}/>
+        {isAdmin(dataset) ?
+            <Stack stack={dataset.stack} reload={fetchItem} update={updateStack}/>: <div></div>
+        }
     </ObjectView>
 }
 

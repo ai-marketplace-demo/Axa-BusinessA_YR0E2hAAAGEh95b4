@@ -6,6 +6,7 @@ import * as Components from "./components";
 import useClient from "../../api/client";
 import getEnvironment from "../../api/Environment/getEnvironment";
 import archiveEnvironment from "../../api/Environment/archiveEnvironment";
+import updateEnvironmentStack from "../../api/Environment/updateEnvironmentStack";
 import {Button, Header, Label, Message, Modal} from "semantic-ui-react";
 import * as ReactIf from "react-if";
 import Stack from "../Stack/Stack"
@@ -16,6 +17,7 @@ const EnvironmentView = (props) => {
     const client = useClient();
     const [loading, setLoading] = useState(true);
     let [error, setError] = useState(null);
+    let [success, setSuccess] = useState(null);
     const [env, setEnv] = useState({});
     const [showDeleteEnv, setShowDeleteEnv] = useState(false);
 
@@ -28,19 +30,34 @@ const EnvironmentView = (props) => {
         } else {
             setError({
                 header: 'Error',
-                content: `Could not retrieve environment ${params.uri}`
+                content: `${response.errors[0].message}`
             })
         }
         setLoading(false);
     }
+    const updateStack = async () => {
+        const response = await client.mutate(updateEnvironmentStack({environmentUri: env.environmentUri}));
+        if (!response.errors) {
+            setSuccess({
+                content: `CloudFormation stack stack-${env.stack.stackUri} update started`,
+            })
+            fetchItem()
+        } else {
+            setError({
+                header: 'Error',
+                content: `${response.errors[0].message}`
+            })
+        }
+    };
+
     const archiveEnv = async () => {
-        const response = await client.mutate(archiveEnvironment(env.environmentUri));
+        const response = await client.mutate(archiveEnvironment({environmentUri: env.environmentUri}));
         if (!response.errors) {
             history.push('/environments')
         } else {
             setError({
                 header: 'Error',
-                content: `Could not archive environment ${params.uri}`
+                content: `${response.errors[0].message}s`
             })
         }
     };
@@ -115,6 +132,19 @@ const EnvironmentView = (props) => {
         </ReactIf.If>
     );
     const actions = <Actions {...env}/>
+    const Messages = () => (
+        <div>{error && <Message negative onDismiss={()=>{setError(null)}}>
+            <Message.Header>{error.header}</Message.Header>
+            <p>{error.content}</p>
+        </Message>
+        }
+            {success && <Message positive onDismiss={()=>{setSuccess(null)}}>
+                <Message.Header>{success.header}</Message.Header>
+                <p>{success.content}</p>
+            </Message>
+            }
+        </div>
+    )
     const Status = () => (
         <Label tag style={{fontSize:'xx-small'}}>{env.stack.status.toUpperCase()}</Label>
     )
@@ -133,6 +163,7 @@ const EnvironmentView = (props) => {
         tabs={["overview","console", "datasets", "shared","warehouses", "stack"]}
         actions={actions}
         status={<Status {...env}/>}
+        messages={<Messages/>}
     >
         <Components.Editor
             editable={["Admin", "Owner"].indexOf(env.userRoleInEnvironment) == -1 ? false : true}
@@ -145,7 +176,7 @@ const EnvironmentView = (props) => {
         <Components.DatasetList environment={env}/>
         <Components.SharedList environment={env}/>
         <Components.Warehouses environment={env}/>
-        <Stack stack={env.stack} reload={fetchItem}/>
+        <Stack stack={env.stack} reload={fetchItem} update={updateStack}/>
     </ObjectView>
 }
 

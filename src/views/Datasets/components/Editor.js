@@ -1,3 +1,4 @@
+import React, {useState} from "react";
 import * as Form from "../../../components/form"
 import FormFieldTypes from "../../../components/form/FormFieldTypes";
 import TopicsData from "../../../components/topics/TopicsData";
@@ -6,10 +7,19 @@ import updateDatataset from "../../../api/Dataset/updateDataset";
 
 const Editor = ({dataset, client,editable}) => {
 
+    const resolveBusinessOwners = () => {
+        const bos = [];
+        dataset.businessOwnerDelegationEmails.map((s) => {
+            bos.push({label:s, value:s})
+        })
+        return bos;
+    }
+
+    const [businessOwnerDelegationEmails, setBusinessOwnerDelegationEmails] = useState(resolveBusinessOwners());
+
     const onSubmit = async ({formData, success, fail}) => {
-        const response = await client.mutate(updateDatataset({
-            datasetUri: dataset.datasetUri,
-            input: {
+        console.log(">>>>>>>>>>", formData)
+        const input = {
                 label: formData.label,
                 description: formData.description,
                 tags: formData.tags,
@@ -23,6 +33,9 @@ const Editor = ({dataset, client,editable}) => {
                 businessOwnerEmail: formData.businessOwnerEmail,
 
             }
+        const response = await client.mutate(updateDatataset({
+            datasetUri: dataset.datasetUri,
+            input
         }))
         if (!response.errors) {
             success({
@@ -53,11 +66,7 @@ const Editor = ({dataset, client,editable}) => {
             return ""
         }
     }
-    const resolveBusinessOwners = (formData) => {
-        return formData.businessOwnerDelegationEmails ? formData.businessOwnerDelegationEmails.map((s) => {
-            return s.value
-        }) : []
-    }
+
 
 
     const resolveRegion = (formData) => {
@@ -80,12 +89,13 @@ const Editor = ({dataset, client,editable}) => {
         }
 
     }
-    return <Form.EditForm
+
+    return <div>{businessOwnerDelegationEmails && <Form.EditForm
         onSubmit={onSubmit}
-        client={client}
-        editable={isEditable(dataset)}
+        client={isEditable(dataset)}
+        editable={true}
         initialValues={
-            {...dataset}
+            {...dataset, businessOwnerDelegationEmails}
         }
 
         fields={[
@@ -174,7 +184,7 @@ const Editor = ({dataset, client,editable}) => {
                         type: FormFieldTypes.MultiSelect,
                         label: 'Stewards',
                         width: 8,
-                        options: dataset.businessOwnerDelegationEmails,
+                        options: businessOwnerDelegationEmails,
                         name: 'businessOwnerDelegationEmails',
                         editable:true
                     },
@@ -225,7 +235,7 @@ const Editor = ({dataset, client,editable}) => {
                 ]
             }
         ]}
-    />
+    />}</div>
 }
 
 export default Editor;

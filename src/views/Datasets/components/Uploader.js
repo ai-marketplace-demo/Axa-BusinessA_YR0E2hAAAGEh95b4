@@ -11,7 +11,7 @@ const Uploader = ({dataset,client})=>{
     const [messages, setMessages] = useState([
 
     ]);
-    const [prefix, setPrefix] = useState("RAW/");
+    const [prefix, setPrefix] = useState("raw");
     const [file, setFile]= useState(null);
     const [isUploading, setIsUploading] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -121,6 +121,7 @@ const Uploader = ({dataset,client})=>{
                 })
             }
             <Form.Field>
+                <label><small>Prefix without trailing slash at the end (e.g raw not raw/)</small></label>
                 <Input label={`s3://${dataset.S3BucketName}/`}
                        value={prefix}
                        onChange={(e)=>{setPrefix(e.target.value)}}

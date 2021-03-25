@@ -152,6 +152,11 @@ const Router=(props)=>{
                 <Dataset.DatasetForm/>
             </FullScreen>
         </Route>
+        <Route path={"/import-dataset"}>
+            <FullScreen>
+                <Dataset.DatasetImport/>
+            </FullScreen>
+        </Route>
         <Route path={"/dataset/:uri/:tab?"}>
             <FullScreen>
                 <Dataset.DatasetView/>

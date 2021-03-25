@@ -7,12 +7,14 @@ import useClient from "../../../api/client";
 import {useEffect, useState} from "react";
 import PagedResponseDefault from "../../../components/defaults/PagedResponseDefault";
 import syncTables from "../../../api/Dataset/syncTables";
+import crawlDataset from "../../../api/Dataset/crawlDataset";
 
 const TableList = ({dataset, tables, setTables}) => {
     const client = useClient();
     const [items, setItems] = useState(tables ? tables : PagedResponseDefault);
     const [loading, setLoading] = useState(true);
-    const [showInfo, setShowInfo] = useState(true);
+    const [startingCrawler, setStartingCrawler] = useState(false);
+    const [message, setMessage] = useState(null);
     const [filter, setFilter] = useState({
         term : '',
         page:1,
@@ -25,7 +27,36 @@ const TableList = ({dataset, tables, setTables}) => {
         if (!response.errors){
             setItems(response.data.syncTables)
         }
+        else{
+            setMessage({
+                negative: true,
+                positive: false,
+                header: 'Sync Error',
+                content: `Failed to synchronize tables from Glue catalog. ${response.errors[0].message}`
+            })
+        }
         setLoading(false);
+    }
+
+    const startCrawlingDataset = async()=>{
+        setStartingCrawler(true)
+        const response = await client.mutate(crawlDataset(dataset.datasetUri));
+        if (!response.errors){
+            setMessage({
+                negative: false,
+                positive: true,
+                content: 'Crawler Started',
+            })
+        }
+        else{
+            setMessage({
+                negative: true,
+                positive: false,
+                header: 'Crawler Error',
+                content: `Failed to crawl dataset. ${response.errors[0].message}`
+            })
+        }
+        setStartingCrawler(false)
     }
 
     const fetchItems = async () => {
@@ -47,16 +78,19 @@ const TableList = ({dataset, tables, setTables}) => {
         }
     }, [client])
     return<div>
-        {showInfo && <Message onDismiss={() => setShowInfo(false)}>
+        {message && <Message positive={message.positive} negative={message.negative} onDismiss={() => setMessage(null)}>
+            <Message.Header>{message.header}</Message.Header>
             <Message.Content>
-                <p>Create tables from  <Link style={{color:'#1890ff'}} to={`/worksheets`}>
-                Worksheets </Link> using SQL queries or
-                    upload a file.</p>
+                <p>{message.content}</p>
             </Message.Content>
         </Message>
-        }<TableContainer
+        }
+        <div>
+            <Button loading={loading} onClick={synchronizeTables}  size={'mini'} content='Sync Tables' icon='sync alternate' labelPosition='left'/>
+            <Button loading={startingCrawler} onClick={startCrawlingDataset}  size={'mini'} content='Crawl Dataset' icon='bug icon' labelPosition='left'/>
+        </div>
+        <TableContainer
         loading={loading}
-        reload={synchronizeTables}
         filter={{
             filter:filter,setFilter:setFilter
         }}

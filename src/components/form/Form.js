@@ -36,20 +36,7 @@ const CreateForm = ({icon,breadcrumbs,onSubmit,backLink,title,fields,initialValu
         setFormData({...formData,[e.target.name]: e.target.value})
     }
     if (!ready){
-        return <FormLayout>
-            <Placeholder>
-                <Placeholder.Header image>
-                    <Placeholder.Line />
-                    <Placeholder.Line />
-                </Placeholder.Header>
-                <Placeholder.Paragraph>
-                    <Placeholder.Line />
-                    <Placeholder.Line />
-                    <Placeholder.Line />
-                    <Placeholder.Line />
-                </Placeholder.Paragraph>
-            </Placeholder>
-        </FormLayout>
+        return <Loader active/>
     }
     return <div>
         <FormLayout>

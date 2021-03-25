@@ -1,27 +1,26 @@
 import React, {useState, useEffect} from 'react';
 
-import {Button, Container, Table} from 'semantic-ui-react'
+import {Button, Grid, Icon, Table} from 'semantic-ui-react'
 import * as Form from "../../components/form";
 import FormFieldTypes from "../../components/form/FormFieldTypes";
 
-const Stack = ({...props}) => {
-    const [stack, setStack] = useState({...props.stack})
+const Stack = ({stack, update}) => {
     const resources = stack.resources ? JSON.parse(stack.resources).resources : [];
     const stackName = `stack-${stack.stackUri}`;
-    const [loading, setLoading] = useState(false);
-    const refresh = () => {
-        props.reload();
-    }
-    useEffect(() => {
-        setStack(props.stack);
-    }, [props.stack])
     return <div>
+        {update && <Grid>
+            <Grid.Column floated='right' width={3}>
+                <Button size='small' compact onClick={update}
+                        icon labelPosition='left'>
+                    <Icon name='bars'/>
+                    Update Stack
+                </Button>
+            </Grid.Column>
+        </Grid>}
         <Form.EditForm
             onSubmit={()=>{}}
             editable={()=>{}}
-            initialValues={
-                {...stack, stackName}
-            }
+            initialValues={{...stack, stackName}}
 
             fields={[
 
