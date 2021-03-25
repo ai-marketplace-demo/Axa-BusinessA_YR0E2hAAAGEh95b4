@@ -34,9 +34,9 @@ const TableView = (props) => {
     }
 
     const deleteTable = async  () => {
-        const response = await client.mutate(deleteDatasetTable(table.tableUri));
+        const response = await client.mutate(deleteDatasetTable({tableUri:table.tableUri}));
         if (!response.errors){
-            history.push(`/dataset${table.dataset.datasetUri}/tables`)
+            history.push(`/dataset/${table.dataset.datasetUri}/tables`)
         }
         else{
             setActionError({
@@ -56,7 +56,7 @@ const TableView = (props) => {
     }
 
     const Actions = () => (
-        <ReactIf.If condition={isAdmin()}>
+        <ReactIf.If condition={true}>
             <ReactIf.Then>
                 <div>
                     <Button size='small' basic color={'blue'} onClick={() => setShowDelete(true)}>Delete</Button>
