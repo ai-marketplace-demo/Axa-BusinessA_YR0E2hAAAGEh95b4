@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import {Link, useParams, useHistory} from "react-router-dom";
 import { Auth } from 'aws-amplify';
 import useAuth from '../../hooks/useAuth';
 import styled from "styled-components";
 import * as Dropdown from "../dropdown";
+import {Badge} from "@material-ui/core";
+import useClient from "../../api/client";
+import countUnreadNotifications from "../../api/Notification/countUnreadNotifications";
 
 
 const Circle=styled.div`
   border-radius: 50%;
-  width: 2rem;
-  height: 2rem;
+  width: 2.8rem;
+  height: 2.8rem;
   background-color: dodgerblue;
   color: white;
   display: grid;
@@ -17,38 +21,45 @@ const Circle=styled.div`
     
 `
 const UserMenu=(props)=>{
-    const [userInfo, setUserInfo] = useState(null);
     const auth = useAuth();
-
-    const signOut = async () => {
-        try {
-            await Auth.signOut();
-        } catch (error) {
-            console.log('error signing out: ', error);
-        }
-    };
+    const client = useClient();
+    const mounted = useRef();
+    const history = useHistory();
+    const [countNotifications, setCountNotifications]= useState(1);
+    const [time, setTime]= useState(null);
+    const [userInfo, setUserInfo] = useState(null);
 
 
     const fetchUserInfo = () => {
         setUserInfo(auth);
     };
 
+    const fetchCountNotifications = async () => {
+        const response = await client.query(countUnreadNotifications());
+        if (!response.errors) {
+            setCountNotifications(response.data.countUnreadNotifications)
+        }
+        setTime((new Date()).getTime());
+    };
+    //FIXME: client not loaded yet
     useEffect(() => {
         if (!userInfo) {
             fetchUserInfo();
         }
-    }, [auth]);
+        //fetchCountNotifications();
+    }, [auth, client]);
+
     return <Dropdown.Dropdown width={'100%'}>
         <Dropdown.DropdownTitle>
-            <div style={{display:'grid', placeItems:'center',columnGap:'7px',gridTemplateColumns:'0.2fr 1fr'}}>
-                <Circle>{userInfo && userInfo.email[0]}</Circle>
+            <div onClick={() =>{history.push('/profile/notifications')}} style={{display:'grid', placeItems:'center',columnGap:'7px',gridTemplateColumns:'0.2fr 1fr'}}>
+                <Badge anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+
+                }}color={'error'} variant={'dot'} badgeContent={countNotifications}><Circle>{userInfo && userInfo.email[0]}</Circle></Badge>
                 <div>{userInfo && userInfo.email}</div>
             </div>
         </Dropdown.DropdownTitle>
-        <Dropdown.DropdownMenuItem eventKey={"k1"}>
-            <div onClick={signOut}>Signout</div>
-        </Dropdown.DropdownMenuItem>
-
     </Dropdown.Dropdown>
 }
 

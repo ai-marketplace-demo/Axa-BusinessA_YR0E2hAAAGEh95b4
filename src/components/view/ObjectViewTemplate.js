@@ -23,7 +23,7 @@ const ObjectView = ({loading,back,title,breadcrumbs,label,owner,created,icon,tab
                 height:'100%'
             }}
         >
-                <Loader active/>
+            <Loader active/>
         </div>
     }
 
@@ -38,7 +38,7 @@ const ObjectView = ({loading,back,title,breadcrumbs,label,owner,created,icon,tab
         <div>
             <Link to={back&&back.link}>
                 <div style={{fontSize:'smaller',color:'blue'}}>
-                {back&&back.label}
+                    {back&&back.label}
                 </div>
             </Link>
         </div>
@@ -48,16 +48,16 @@ const ObjectView = ({loading,back,title,breadcrumbs,label,owner,created,icon,tab
                 <Title>
                     <div>{icon}</div>
                     <div style={{fontSize:'x-large'}}>{title}</div>
-                    <div style={{fontSize:"smaller", color:'darkgray'}}>| {breadcrumbs}</div>
-                    <div style={{fontSize:'xx-small',fontWeight:'bolder',gridColumnStart:1,gridColumnEnd:4}}>
+                    {breadcrumbs && <div style={{fontSize:"smaller", color:'darkgray'}}> {breadcrumbs}</div>}
+                    {owner && created && <div style={{fontSize:'xx-small',fontWeight:'bolder',gridColumnStart:1,gridColumnEnd:4}}>
                         {owner} | {created}
-                    </div>
+                    </div>}
 
                 </Title>
             </Grid.Column>
             {(actions &&
                 <Grid.Column floated='right' width={3}>
-                    <div>{actions}</div>
+                    <div style={{marginTop:'10px'}}>{actions}</div>
                 </Grid.Column>
             )}
         </Grid>
@@ -76,10 +76,10 @@ const ObjectView = ({loading,back,title,breadcrumbs,label,owner,created,icon,tab
                     <Message.Header>{error&&error.header || 'Error'}</Message.Header>
                     <p>{error&&error.message}</p>
                     {back && <Link to={back&&back.link}>
-                            <div style={{fontSize:'smaller',color:'blue'}}>
-                                Back
-                            </div>
-                        </Link>
+                        <div style={{fontSize:'smaller',color:'blue'}}>
+                            Back
+                        </div>
+                    </Link>
                     }
                 </Message>
             </Then>

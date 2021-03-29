@@ -20,6 +20,7 @@ import * as Dropdown from "./components/dropdown";
 import * as Feed from "./views/Feed";
 import * as Workflows from './views/Workflows';
 import * as Warehouses from './views/Warehouses';
+import * as Profile from './views/Profile';
 import GlossarySelect from "./components/glossaryeditor/GlossarySelect";
 
 
@@ -46,7 +47,7 @@ const Router=(props)=>{
     return <Switch>
         <Route path="/discover">
             <FullScreen>
-            <Catalog.Catalog/>
+                <Catalog.Catalog/>
             </FullScreen>
         </Route>
         <Route path="/organizations">
@@ -138,12 +139,12 @@ const Router=(props)=>{
         </Route>
         <Route path={"/new-organization"}>
             <FullScreen>
-                 <Organization.OrganizationForm/>
+                <Organization.OrganizationForm/>
             </FullScreen>
         </Route>
         <Route path={"/organization/:uri/:tab?"}>
             <FullScreen>
-            <Organization.OrganizationView/>
+                <Organization.OrganizationView/>
             </FullScreen>
         </Route>
 
@@ -183,7 +184,7 @@ const Router=(props)=>{
         </Route>
         <Route path={"/glossary/:uri/:tab?"}>
             <FullScreen>
-            <Glossary.GlossaryView/>
+                <Glossary.GlossaryView/>
             </FullScreen>
         </Route>
         <Route path={"/dashboard/:uri/:tab?"}>
@@ -234,9 +235,14 @@ const Router=(props)=>{
                 <Warehouses.WarehouseView/>
             </FullScreen>
         </Route>
+        <Route path={"/profile/:tab?"}>
+            <FullScreen>
+                <Profile.Profile/>
+            </FullScreen>
+        </Route>
         <Route  path="/xp">
             <FullScreen>
-            <GlossarySelect />
+                <GlossarySelect />
             </FullScreen>
         </Route>
         <Route path="/">
