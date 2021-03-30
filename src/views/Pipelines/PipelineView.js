@@ -4,9 +4,10 @@ import ObjectView from "../../components/view/ObjectViewTemplate";
 import * as Components from "./components";
 import useClient from "../../api/client";
 import getSqlPipeline from "../../api/SqlPipeline/getSqlPipeline";
-import {useParams} from "react-router-dom";
+import {useParams, useHistory} from "react-router-dom";
 import Stack from "../Stack/Stack";
 import startDataProcessingPipeline from "../../api/SqlPipeline/startPipeline";
+import deleteSqlPipeline from "../../api/SqlPipeline/deleteSqlPipeline";
 import {Button, Dropdown, Header, Icon, Label, Message, Modal} from "semantic-ui-react";
 import * as ReactIf from "react-if";
 
@@ -14,13 +15,14 @@ import * as ReactIf from "react-if";
 const PipelineView = (props) => {
     const client = useClient();
     const params= useParams();
+    const history= useHistory();
     let [error, setError] = useState(null);
     let [runError, setRunError] = useState(null);
     let [success, setSuccess] = useState(null);
     const [pipeline, setPipeline] = useState({});
     const [loading, setLoading] = useState(true);
     const [isSubmitting, setIsSubmitting]=useState(false);
-    const [showDelete, setShowDelete] = useState(true);
+    const [showDelete, setShowDelete] = useState(false);
 
     const fetchItem= async()=>{
         setLoading(true);
@@ -45,6 +47,16 @@ const PipelineView = (props) => {
         }
         setIsSubmitting(false);
 
+    }
+    const deletePipeline = async()=>{
+        setShowDelete(true);
+        const response= await client.mutate(deleteSqlPipeline({sqlPipelineUri: pipeline.sqlPipelineUri}));
+        if (!response.errors){
+            history.push("/pipelines")
+        }else {
+            setRunError({header:'Failed',content:`Failed to delete pipeline, received ${response.errors[0].message}`});
+        }
+        setShowDelete(false);
     }
     useEffect(()=>{
         if (client){
@@ -80,7 +92,7 @@ const PipelineView = (props) => {
                     >
                         <Modal.Content>
                             <Modal.Description>
-                                <Header>Delete cluster {pipeline.label} ?</Header>
+                                <Header>Delete pipeline {pipeline.label} ?</Header>
                                 <p>
                                     Deleting the pipeline will delete all its related AWS resources
                                     (CodeCommit, CodePipeline, StepFunctions...) !
@@ -101,7 +113,7 @@ const PipelineView = (props) => {
                                 content="Confirm"
                                 labelPosition='left'
                                 icon='trash'
-                                onClick={''}
+                                onClick={deletePipeline}
                             />
                         </Modal.Actions>
                     </Modal>
@@ -135,7 +147,7 @@ const PipelineView = (props) => {
         loading={loading}
         icon={<BsIcon.BsFileCode/>}
         breadcrumbs={`| play/pipelines/pipeline`}
-        label={"xxx"}
+        label={pipeline.label}
         back={{
             link: '/pipelines',
             label: '< back to pipelines'
