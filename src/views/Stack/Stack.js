@@ -109,7 +109,8 @@ const Stack = ({stack, update}) => {
                         </Table.Cell>
                     </Table.Row>
                 })}</Table.Body>
-            </Table></div>
+            </Table>
+        </div>
         )}
     </div>
 }

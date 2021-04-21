@@ -7,6 +7,7 @@ import * as Tables from './views/Table';
 import * as Pipelines from './views/Pipelines';
 import * as Worksheets from './views/Worksheet';
 import * as Notebooks from './views/Notebooks';
+import * as SagemakerStudio from './views/SagemakerStudio';
 import * as Dashboards from './views/Dashboards';
 import * as Environments from './views/Environments';
 import * as Catalog from "./views/Catalog";
@@ -135,6 +136,19 @@ const Router=(props)=>{
         <Route path="/new-notebook">
             <FullScreen>
                 <Notebooks.NotebookForm/>
+            </FullScreen>
+        </Route>
+        <Route path="/sagemakerstudio/userprofiles">
+            <SagemakerStudio.SagemakerStudioList/>
+        </Route>
+        <Route path="/sagemakerstudio/userprofile/:uri/:tab?">
+            <FullScreen>
+                <SagemakerStudio.SagemakerStudioView/>
+            </FullScreen>
+        </Route>
+        <Route path="/new-sm-user-profile">
+            <FullScreen>
+                <SagemakerStudio.SagemakerStudioForm/>
             </FullScreen>
         </Route>
         <Route path={"/new-organization"}>
