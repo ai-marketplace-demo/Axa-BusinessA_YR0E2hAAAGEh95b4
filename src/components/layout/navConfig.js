@@ -3,7 +3,7 @@ import * as BsIcons from "react-icons/bs";
 import * as AiIcons from "react-icons/ai";
 import * as SiIcon from "react-icons/si";
 import * as MdIcons from "react-icons/md";
-import SagemakerStudioSvg from "../../assets/aws_assets/sagemaker/Res_Amazon-Sagemaker_Model_16_Light.svg"
+// import SagemakerStudioSvg from "../../assets/aws_assets/sagemaker/Res_Amazon-Sagemaker_Model_16_Light.svg"
 import React from "react";
 
 const navConfig = [
@@ -48,11 +48,11 @@ const navConfig = [
                 icon: <BsIcons.BsFileCode/>,
                 link: '/notebooks'
             },
-            {
-                label: 'Sagemaker Studio',
-                icon: <img src={SagemakerStudioSvg} /> ,
-                link: '/sagemakerstudio/userprofiles'
-            },
+            // {
+            //     label: 'Sagemaker Studio',
+            //     icon: <img src={SagemakerStudioSvg} /> ,
+            //     link: '/sagemakerstudio/userprofiles'
+            // },
             {
                 label: 'Dashboards',
                 link: '/dashboards',
