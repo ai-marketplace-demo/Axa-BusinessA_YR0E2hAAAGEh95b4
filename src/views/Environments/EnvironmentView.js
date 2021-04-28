@@ -51,7 +51,7 @@ const EnvironmentView = (props) => {
     };
 
     const archiveEnv = async () => {
-        const response = await client.mutate(archiveEnvironment({environmentUri: env.environmentUri}));
+        const response = await client.mutate(archiveEnvironment(env.environmentUri));
         if (!response.errors) {
             history.push('/environments')
         } else {
