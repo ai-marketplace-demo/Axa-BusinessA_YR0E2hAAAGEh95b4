@@ -32,7 +32,7 @@ const CodeCommitCredentialProvider= ({pipeline, client})=>{
                     fontSize:'x-small'}}>
                 {
                     Object.keys(script||{}).map((k)=>{
-                        return <div>export {k}= {script&&script[k]} </div>
+                        return <div>export {k}={script&&script[k]} </div>
                     })
                 }
                 <b style={{fontSize:'small'}}>
