@@ -64,6 +64,11 @@ const getDataset= (datasetUri)=>{
                             environmentUri
                             label
                             region
+                            subscriptionsEnabled
+                            subscriptionsProducersTopicImported
+                            subscriptionsConsumersTopicImported
+                            subscriptionsConsumersTopicName
+                            subscriptionsProducersTopicName
                             organization{
                                 organizationUri
                                 label

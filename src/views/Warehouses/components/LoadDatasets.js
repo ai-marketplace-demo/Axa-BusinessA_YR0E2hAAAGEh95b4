@@ -87,7 +87,6 @@ const LoadDatasets = ({warehouse, reload, datasets, setDatasets}) => {
             {label: "AWS Account", key: 'AwsAccountId'},
             {label: 'Region', key: "region"},
             {label: "Bucket", key: "S3BucketName"},
-            {label: "Created", key: "created"},
             {label: "Created By", key: "owner"},
             {label: "Load", key:"link"}
         ]}

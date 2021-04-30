@@ -3,7 +3,7 @@ import * as BsIcons from "react-icons/bs";
 import * as AiIcons from "react-icons/ai";
 import * as SiIcon from "react-icons/si";
 import * as MdIcons from "react-icons/md";
-// import SagemakerStudioSvg from "../../assets/aws_assets/sagemaker/Res_Amazon-Sagemaker_Model_16_Light.svg"
+import * as FiIcon from 'react-icons/fi';
 import React from "react";
 
 const navConfig = [
@@ -22,9 +22,6 @@ const navConfig = [
                 icon: <BsIcons.BsFolder/>,
                 link: '/datasets'
             },
-
-
-
             {
                 label: 'Organize',
                 icon: <BsIcons.BsTag/>,
@@ -68,7 +65,11 @@ const navConfig = [
                 icon: <SiIcon.SiApacheairflow/>,
                 link: '/workflows'
             },
-
+            {
+                label: 'Warehouses',
+                icon: <FiIcon.FiBox/>,
+                link: '/warehouses'
+            },
         ]
 
     },

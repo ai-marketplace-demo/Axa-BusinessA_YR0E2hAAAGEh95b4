@@ -69,12 +69,18 @@ const TableColumns= ({table, client})=>{
     const updateColumn=({column,description})=>{
 
     }
+
+    const isAdmin = () => {
+        return ["Creator", "Admin", "Owner"].indexOf(table?.dataset?.userRoleForDataset) === -1 ? false : true
+    }
+
     useEffect(()=>{
         if (client){
             fetchItems();
         }
     },[client]);
-    return     <TableContainer
+
+    return <TableContainer
         loading={refreshingColumns}
         reload={fetchItems}
         filter={{
@@ -88,22 +94,35 @@ const TableColumns= ({table, client})=>{
         ]}
         rows={
             columns.nodes.map((column) => {
-                return {
-                    ...column,
-                    description:<div contentEditable={column.editable}>{column.description}</div>,
-                    action:(<ReactIf.If condition={column.editable}>
-                        <ReactIf.Then>
-                            <Button.Group>
-                                <Button primary size={`tiny`}>Save</Button>
-                                <Button  size={`tiny`}  onClick={()=>{unsetEditable(column)}}>Cancel</Button>
-                            </Button.Group>
-                        </ReactIf.Then>
-                        <ReactIf.Else>
-                            <Button.Group>
-                                <Button  size={`tiny`} onClick={()=>{setEditable(column)}} size={`small`}>Edit</Button>
-                            </Button.Group>
-                        </ReactIf.Else>
-                    </ReactIf.If>)
+                if (isAdmin()) {
+                    return {
+                        ...column,
+                        description: <div contentEditable={column.editable}>{column.description}</div>,
+                        action: (<ReactIf.If condition={column.editable}>
+                            <ReactIf.Then>
+                                <Button.Group>
+                                    <Button primary size={`tiny`}>Save</Button>
+                                    <Button size={`tiny`} onClick={() => {
+                                        unsetEditable(column)
+                                    }}>Cancel</Button>
+                                </Button.Group>
+                            </ReactIf.Then>
+                            <ReactIf.Else>
+                                <Button.Group>
+                                    <Button size={`tiny`} onClick={() => {
+                                        setEditable(column)
+                                    }} size={`small`}>Edit</Button>
+                                </Button.Group>
+                            </ReactIf.Else>
+                        </ReactIf.If>)
+                    }
+                }
+                else{
+                    return {
+                        ...column,
+                        description: <div>{column.description}</div>,
+                        action: <div></div>
+                    }
                 }
             })
         }

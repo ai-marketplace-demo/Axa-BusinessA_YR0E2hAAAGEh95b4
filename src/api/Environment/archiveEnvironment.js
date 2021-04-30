@@ -1,6 +1,6 @@
 import { gql } from "apollo-boost";
 
-const archiveEnvironment=(environmentUri)=>{
+const archiveEnvironment=({environmentUri})=>{
     return {
         variables:{
             environmentUri:environmentUri

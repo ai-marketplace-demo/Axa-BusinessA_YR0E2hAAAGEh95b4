@@ -26,10 +26,13 @@ const Editor = ({table, client}) => {
         }
 
     }
+    const isAdmin = () => {
+        return ["Creator", "Admin", "Owner"].indexOf(table?.dataset?.userRoleForDataset) === -1 ? false : true
+    }
     return <Form.EditForm
             client={client}
             onSubmit={save}
-            editable={true}
+            editable={isAdmin()}
             initialValues={{...table, terms:table.terms||[],tags:table.tags||[]}}
             fields={[
                 {

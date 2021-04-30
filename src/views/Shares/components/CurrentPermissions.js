@@ -161,30 +161,32 @@ const CurrentPermissions = ({shareUri,client})=>{
             <p>{error && error.message}</p>
         </Message>
         }
-        <Switch>
-            <Case condition={actions === 'PendingApproval'}>
-                <div>
-                    <Button onClick={fetchShare} basic primary size={`mini`}>
+        <div  style={{marginBottom: '1rem'}}>
+            <Switch>
+                <Case condition={actions === 'PendingApproval'}>
+                    <div>
+                        <Button onClick={fetchShare} basic primary size={`mini`}>
+                            Refresh
+                        </Button>
+                        <Button onClick={accept} basic size={'mini'} color={`blue`} content='Approve' icon='checkmark' labelPosition='left'/>
+                        <Button onClick={reject} basic size={'mini'} color={`red`} content='Reject' icon='window close' labelPosition='left'/>
+                    </div>
+                </Case>
+                <Case condition={actions === 'Submit'}>
+                    <div>
+                        <Button onClick={fetchShare} basic primary size={`mini`}>
+                            Refresh
+                        </Button>
+                        <Button onClick={submit} basic size={'mini'} color={`blue`} content='Submit' icon='reply' labelPosition='left'/>
+                    </div>
+                </Case>
+                <Default>
+                    <Button onClick={fetchShare} primary size={`mini`}>
                         Refresh
                     </Button>
-                    <Button onClick={accept} basic size={'mini'} color={`blue`} content='Approve' icon='checkmark' labelPosition='left'/>
-                    <Button onClick={reject} basic size={'mini'} color={`red`} content='Reject' icon='window close' labelPosition='left'/>
-                </div>
-            </Case>
-            <Case condition={actions === 'Submit'}>
-                <div>
-                    <Button onClick={fetchShare} basic primary size={`mini`}>
-                        Refresh
-                    </Button>
-                    <Button onClick={submit} basic size={'mini'} color={`blue`} content='Submit' icon='reply' labelPosition='left'/>
-                </div>
-            </Case>
-            <Default>
-                <Button onClick={fetchShare} basic primary size={`mini`}>
-                    Refresh
-                </Button>
-            </Default>
-        </Switch>
+                </Default>
+            </Switch>
+        </div>
         <TableContainer
         columns={[{
             label:'itemUri',key:'itemUri',

@@ -14,14 +14,14 @@ const EnvironmentLink = ({item}) => {
 const EnvironmentList = (props) => {
     const params = useParams();
     const [ready, setReady] = useState(false);
-    const [filter, setFilter] = useState({term:'',page:1,pageSize:10});
+    const [filter, setFilter] = useState({term:'',roles: ['Owner','Admin'],page:1,pageSize:10});
     const [items, setItems] = useState({count: 0, page: 1, pages: 1, hasNext: false, hasPrevious: false, nodes: []})
     const [loading, setLoading] = useState(true);
     const client = useClient();
 
-    const handlePageChange = (e,{activePage})=>{
-        if (activePage<=items.pages&&activePage!=items.page){
-            setFilter({...filter, page:activePage});
+    const handlePageChange=async (e,{activePage})=>{
+        if (activePage<=items.pages && activePage!==items.page){
+            await setFilter({...filter, page:activePage});
         }
     }
 
@@ -37,8 +37,7 @@ const EnvironmentList = (props) => {
 
         } else {
             query = listEnvironments({
-                ...filter,
-                roles:['Owner','Admin', 'Invited', 'DatasetCreator']
+                filter,
             })
             resolve = (r) => {
                 return r.data.listEnvironments;
@@ -101,13 +100,11 @@ const EnvironmentList = (props) => {
             return `/new-environment/${params.uri}`
         }}
         pager={{
-            count:items.count,
-            page:filter.page,
-            pages:items.pages,
+            ...items,
             loading:!ready,
+            onPageChange:handlePageChange,
             onSearch:fetchItems,
-            onTermChange:(e)=>{setFilter({...filter, term:e.target.value})},
-            onPageChange:handlePageChange
+            onTermChange:(e)=>{setFilter({...filter, term:e.target.value})}
         }}
         breadcrumbs={params.uri ? `/onboard/org/${params.uri}/environments` : `on boarding/environments`}
         creatable={params.uri ? true : false}

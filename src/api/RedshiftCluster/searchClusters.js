@@ -48,6 +48,9 @@ const searchRedshiftClusters= (filter)=>{
                      userRoleForCluster
                      userRoleInEnvironment
                      imported
+                     stack{
+                      status
+                     }
                      vpc
                         organization{
                             organizationUri

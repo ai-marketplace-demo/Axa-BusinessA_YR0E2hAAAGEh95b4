@@ -1,20 +1,23 @@
 import React, {useEffect, useState} from "react";
-import * as _ from "lodash";
-import useClient from "../../../api/client";
 import * as ReactIf from "react-if";
 import previewTable2 from "../../../api/DatasetTable/previewTable2";
-import {Loader,Table } from "semantic-ui-react";
+import {Loader, Message, Table} from "semantic-ui-react";
 
 const TablePreview= ({table, client})=>{
     const [running, setRunning] = useState(false);
     const [result, setResult] = useState({rows:[], fields:[]});
+    const [message, setMessage] = useState(null);
     const fetchData=async ()=>{
         setRunning(true);
         const response = await client.query(previewTable2(table.tableUri));
         if (!response.errors){
             setResult(response.data.previewTable2);
         }else{
-
+            setMessage({
+                negative: true,
+                header: `Table Preview`,
+                content: `Failed to preview table: ${response.errors[0].message}`
+            })
         }
         setRunning(false);
     }
@@ -30,8 +33,15 @@ const TablePreview= ({table, client})=>{
             <Loader active/>
         </ReactIf.Then>
         <ReactIf.Else>
+            {message && <Message positive={message.positive} negative={message.negative} onDismiss={() => setMessage(null)}>
+                <Message.Header>{message.header}</Message.Header>
+                <Message.Content>
+                    <p>{message.content}</p>
+                </Message.Content>
+            </Message>
+            }
             <div
-                style={{width:'1100px',  overflowX:'scroll'}}>
+                style={{width:'1350px',  overflowX:'scroll'}}>
                 <Table
                     compact size={`small`}>
                     <Table.Header>

@@ -1,12 +1,12 @@
-import {Button, Form, Header, Icon, Message, Modal} from 'semantic-ui-react'
+import React, {useEffect, useState} from "react";
+import {Button, Form, Header, Icon, Message, Modal, Divider} from 'semantic-ui-react'
 import {Link} from "react-router-dom";
 import {TableContainer} from "../../../components/table";
 import listDatasetStorageLocations from "../../../api/Dataset/listDatasetStorageLocations";
 import addDatasetStorageLocation from "../../../api/Dataset/addDatasetStorageLocation";
+import publishDatasetStorageLocationUpdate from "../../../api/Dataset/publishDatasetLocationUpdate";
 import useClient from "../../../api/client";
-import React, {useEffect, useState} from "react";
 import PagedResponseDefault from "../../../components/defaults/PagedResponseDefault";
-import * as BsIcons from "react-icons/bs";
 import * as ReactIf from "react-if";
 
 
@@ -16,6 +16,7 @@ const FolderList = ({dataset, folders, setFolders}) => {
     const [loading, setLoading] = useState(true);
     const [showFolderForm, setShowFolderForm] = useState(false);
     const [error, setError] = useState(null);
+    const [message, setMessage] = useState(null);
     const [folderInput, setFolderInput] = useState({
         prefix:'',
         label:''
@@ -59,6 +60,31 @@ const FolderList = ({dataset, folders, setFolders}) => {
 
     };
 
+    const publishUpdate = async (item) => {
+        console.log(item);
+        const response = await client
+            .mutate(publishDatasetStorageLocationUpdate({
+                locationUri: item.locationUri,
+            }))
+
+        if (!response.errors) {
+            setMessage({
+                positive: true,
+                header: `Update Notification`,
+                content: `Notification published successfully to all folder ${item.name} subscribers`
+            })
+        } else {
+            setMessage({
+                negative: true,
+                header: `Update Notification`,
+                content: `${response.errors[0].message}`
+            })
+        }
+    };
+
+    const isAdmin = () => {
+        return ["Creator", "Admin", "Owner"].indexOf(dataset.userRoleForDataset) == -1 ? false : true
+    }
 
     useEffect(() => {
         if (client) {
@@ -68,11 +94,21 @@ const FolderList = ({dataset, folders, setFolders}) => {
         }
     }, [client])
     return <div>
-        <Button size='small' name={`url`} onClick={() => setShowFolderForm(true)} disabled={false} loading={false}
+            {message && <div>
+                <Message positive={message.positive} negative={message.negative} onDismiss={() => setMessage(null)}>
+                <Message.Header>{message.header}</Message.Header>
+                    <Message.Content>
+                        <p>{message.content}</p>
+                    </Message.Content>
+                </Message>
+                <Divider hidden/>
+            </div>
+            }
+        {isAdmin() && <Button size='small' name={`url`} onClick={() => setShowFolderForm(true)} disabled={false} loading={false}
                 icon labelPosition='left'>
             <Icon name='folder outline'/>
             New Folder
-        </Button>
+        </Button>}
         <TableContainer
         loading={loading}
         columns={[
@@ -80,9 +116,9 @@ const FolderList = ({dataset, folders, setFolders}) => {
             {label: "AWS Account", key: "AwsAccountId"},
             {label: "Region", key: "region"},
             {label: "S3 Prefix", key: "S3Prefix"},
-            {label: 'Description', key: "description"},
-            {label: 'Created', key: "created"},
-            {label: 'Path', key: "path"},
+            {label: "Created", key: "created"},
+            {label: "Path", key: "path"},
+            {label: "Subscriptions", key:"publishUpdate"}
         ]}
         rows={
             items.nodes.map((folder) => {
@@ -99,7 +135,18 @@ const FolderList = ({dataset, folders, setFolders}) => {
                                 <Link to={`/folder/${folder.locationUri}`}>{folder.locationUri}</Link>
                             </Header.Subheader>
                         </Header.Content>
-                    </Header>)
+                    </Header>),
+                    publishUpdate:(
+                        <ReactIf.If condition={dataset.environment.subscriptionsEnabled}>
+                            <ReactIf.Then>
+                                <Button icon labelPosition='left' size={'small'} onClick={()=>{publishUpdate(folder)}}>
+                                    <Icon name='bullhorn'/>Publish
+                                </Button>
+                            </ReactIf.Then>
+                            <ReactIf.Else>
+                                <Button disabled>Disabled</Button>
+                            </ReactIf.Else>
+                        </ReactIf.If>)
                 }
             })
         }

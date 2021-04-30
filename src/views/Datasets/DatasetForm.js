@@ -19,7 +19,7 @@ const DatasetForm = () => {
 
     const resolveOrganization = (formData) => {
         if (formData.environment && formData.environment.organization) {
-            return formData.environment.organization.organizationUri
+            return formData.environment.organization.label
         } else {
             return ""
         }
@@ -183,8 +183,6 @@ const DatasetForm = () => {
                 name: 'description',
                 width: 16,
             },
-
-
             {
                 type: FormFieldTypes.Select,
                 label: 'Admins',

@@ -1,4 +1,4 @@
-import {Placeholder, Icon, Table, Button, Loader} from "semantic-ui-react";
+import {Placeholder, Icon, Table, Button, Loader, Grid, GridColumn} from "semantic-ui-react";
 import styled from "styled-components";
 import {If,Then,Else} from "react-if";
 import Pager from "../../components/pager/Pager"
@@ -18,23 +18,25 @@ const TableContainer=({columns,rows,loading,reload,pager})=>{
             <Loader active/>
         </div>
     }
-    return <div style={{display:'grid', placeItems:'start start',gridTemplateColumns:'1fr',gridTemplateRows:'auto 1fr'}}>
-        <div style={{
-            display:'grid',
-            gridTemplateRows:'auto',
-            columnGap:'1rem',
-            placeItems:'end end',
-            gridTemplateColumns:'1fr 1fr '
-        }}>
+    const reloadMargin = pager ? '32px' : '0px'
+    return <div>
+        {(pager || reload) && <Grid>
             {pager &&
+            <Grid.Column floated='left' width={12}>
                 <Pager {...pager}/>
+            </Grid.Column>
             }
-            {reload && <div>
-                <Button onClick={reload} primary size={`mini`}>
-                    Refresh
-                </Button>
-            </div>}
-        </div>
+            {reload &&
+            <Grid.Column floated='left' width={4}>
+                <div style={{marginTop: reloadMargin}}>
+                    <Button onClick={reload} primary size={`mini`}>
+                        Refresh
+                    </Button>
+                </div>
+            </Grid.Column>
+            }
+        </Grid>
+        }
         <If condition={rows && rows.length > 0}>
             <Then>
                 <Table basic compact color={color} key={color}>

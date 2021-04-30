@@ -16,6 +16,7 @@ const syncTables=(datasetUri)=>{
                     description
                     name
                     label
+                    created
                     dataset{
                         datasetUri
                         name

@@ -12,6 +12,13 @@ const getDatasetTable= (tableUri)=>{
                             datasetUri
                             name
                             userRoleForDataset
+                            environment{
+                                subscriptionsEnabled
+                                subscriptionsProducersTopicImported
+                                subscriptionsConsumersTopicImported
+                                subscriptionsConsumersTopicName
+                                subscriptionsProducersTopicName
+                            }
                         }
                         datasetUri
                         owner
@@ -22,8 +29,9 @@ const getDatasetTable= (tableUri)=>{
                         AwsAccountId
                         GlueTableName
                         GlueDatabaseName
-                    label
-                    name
+                        label
+                        name
+                        S3Prefix
                         terms{
                             count
                             nodes{

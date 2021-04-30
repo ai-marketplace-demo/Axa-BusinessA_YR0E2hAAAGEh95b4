@@ -30,10 +30,6 @@ const DatasetView = (props) => {
     const [isLoadingUI, setIsLoadingUI] = useState(false);
     const [success, setSuccess] = useState(false);
     const [loadingCreds, setLoadingCreds] = useState(false);
-    const backLink = <Link to={`/datasets`}>
-        <small>{`<`} back to datasets</small>
-    </Link>
-
 
     const fetchItem = async () => {
         const response = await client.query(getDataset(params.uri));
@@ -276,10 +272,21 @@ const DatasetView = (props) => {
             }
         </div>
     )
+
     const Status = () => (
-        <Label tag style={{fontSize:'xx-small'}}>{dataset.stack.status.toUpperCase()}</Label>
+        <div>
+            <Label tag style={{fontSize:'xx-small'}}>{dataset.stack.status.toUpperCase()}</Label>
+        </div>
     )
 
+    const getTabs = () => {
+        if (isAdmin(dataset)){
+            return ["overview","schema","tables", "folders", "permissions", "upload", "stack"];
+        }
+        else{
+            return ["overview","schema","tables", "folders", "permissions"];
+        }
+    }
 
     return <ObjectView
         loading={loading}
@@ -294,12 +301,11 @@ const DatasetView = (props) => {
         error={error}
         owner={dataset.owner}
         created={dataset.created}
-        tabs={["overview",  "schema","tables", "folders", "permissions", "upload", "stack"]}
+        tabs={getTabs(dataset)}
         actions={actions}
         messages={<Messages/>}
         status={<Status/>}
     >
-
         <Components.Editor
             client={client}
             dataset={{
@@ -313,7 +319,9 @@ const DatasetView = (props) => {
         <Components.TableList dataset={dataset}/>
         <Components.FolderList dataset={dataset}/>
         <Components.PermissionList dataset={dataset}/>
-        <Components.Uploader dataset={dataset} client={client}/>
+        {isAdmin(dataset) ?
+            <Components.Uploader dataset={dataset} client={client}/>: <div></div>
+        }
         {isAdmin(dataset) ?
             <Stack stack={dataset.stack} reload={fetchItem} update={updateStack}/>: <div></div>
         }

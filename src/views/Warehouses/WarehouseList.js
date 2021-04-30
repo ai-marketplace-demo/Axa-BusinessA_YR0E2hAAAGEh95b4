@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 import DataView from "../../components/listview/DataView";
 import * as BsIcon from "react-icons/bs";
 import * as FiIcon from "react-icons/fi";
@@ -6,17 +7,19 @@ import WorkflowListItem from "./WorkflowListItem";
 import useClient from "../../api/client";
 import * as Defaults from "../../components/defaults";
 import * as SiIcon from "react-icons/si";
-import searchAirflowClusters from "../../api/AirflowCluster/searchClusters";
+import searchRedshiftClusters from "../../api/RedshiftCluster/searchClusters";
+import {Button} from "semantic-ui-react";
 
-const WorflowLink = ({item}) => {
-    return `/workflow/${item.clusterUri}/`
+const WarehouseLink = ({item}) => {
+    return `/warehouse/${item.clusterUri}/`
 }
-const WorkflowList = (props) => {
+const WarehouseList = (props) => {
     const [ready, setReady] = useState(false);
     const [items, setItems] = useState(Defaults.PagedResponseDefault);
     const [filter, setFilter] = useState(Defaults.DefaultFilter);
     const [loading, setLoading] = useState(true);
     const client = useClient();
+    const history = useHistory();
     const handlePageChange=(e,{activePage})=>{
         if (activePage<=items.pages){
             setFilter({...filter, page: activePage})
@@ -28,41 +31,45 @@ const WorkflowList = (props) => {
     }
     const fetchItems = async () => {
         setReady(false);
-        const response = await client.query(searchAirflowClusters(filter));
+        const response = await client.query(searchRedshiftClusters(filter));
         if (!response.errors) {
-            const nodes = response.data.searchAirflowClusters.nodes.map((workflow) => {
+            const nodes = response.data.searchRedshiftClusters.nodes.map((warehouse) => {
                 return {
-                    ...workflow, details: [
+                    ...warehouse, details: [
                         {
                             name: "AWS",
                             icon: <BsIcon.BsCloud/>,
-                            target: workflow.AwsAccountId
+                            target: warehouse.AwsAccountId
                         },
                         {
                             name: "Region",
                             icon: <FiIcon.FiGlobe/>,
-                            target: workflow.region
+                            target: warehouse.region
                         },
 
                         {
                             name: 'Role',
                             icon: <BsIcon.BsShield/>,
-                            target: workflow.userRoleForCluster
+                            target: warehouse.userRoleForCluster
 
                         },
                         {
                             name: 'Status',
                             icon: <BsIcon.BsAppIndicator/>,
-                            target: workflow.CFNStackStatus
+                            target: warehouse.stack.status
 
                         }
                     ]
                 }
             });
-            setItems({...items, ...response.data.searchAirflowClusters, nodes: nodes})
+            setItems({...items, ...response.data.searchRedshiftClusters, nodes: nodes})
         }
         setReady(true);
     };
+    const action= <div>
+        <Button onClick={()=>{history.push('/new-warehouse')}} compact={true} basic color={`blue`} content='Create'/>
+        <Button onClick={()=>{history.push('/import-warehouse')}} compact={true} basic color={`blue`} content='Import'/>
+    </div>
     useEffect(() => {
         if (client) {
             fetchItems();
@@ -70,14 +77,14 @@ const WorkflowList = (props) => {
     }, [client,filter.page])
 
     return <DataView
-        icon={<SiIcon.SiApacheairflow/>}
-        title={"Workflows"}
-        linkComponent={WorflowLink}
+        icon={<FiIcon.FiBox/>}
+        title={"Warehouses"}
+        linkComponent={WarehouseLink}
         createLink={() => {
-            return `/new-workflow`
+            return `/new-warehouse`
         }}
         itemBody={WorkflowListItem}
-        breadcrumbs={"/play/workflows"}
+        breadcrumbs={"/play/warehouses"}
         loading={!ready}
         pager={{
             ...items,
@@ -88,11 +95,12 @@ const WorkflowList = (props) => {
         }}
         collectionable={false}
         commentable={false}
-        creatable={true}
+        creatable={false}
         items={items}
         keyField={`clusterUri`}
+        action={action}
     />
 }
 
 
-export default WorkflowList;
+export default WarehouseList;

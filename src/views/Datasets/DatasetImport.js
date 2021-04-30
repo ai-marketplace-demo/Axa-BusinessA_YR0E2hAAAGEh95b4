@@ -84,7 +84,6 @@ const DatasetImport = () => {
         }
     }
 
-
     const fetchEnvironments = async () => {
         const response = await client.query(listEnvironments({filter: {roles: ["Admin", "Owner", "Invited", "DatasetCreator"]}}));
         if (!response.errors) {
@@ -172,8 +171,6 @@ const DatasetImport = () => {
 
                 ]
             },
-
-
             {
                 type: FormFieldTypes.Input,
                 label: 'Name',
@@ -193,8 +190,6 @@ const DatasetImport = () => {
                 name: 'description',
                 width: 16,
             },
-
-
             {
                 type: FormFieldTypes.Select,
                 label: 'Admins',

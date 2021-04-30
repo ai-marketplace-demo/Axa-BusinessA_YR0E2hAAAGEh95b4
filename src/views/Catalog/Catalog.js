@@ -83,7 +83,10 @@ const Catalog = ()=>{
                     dataField={[
                         "label",
                         "name",
-                        "description"
+                        "description",
+                        "region",
+                        "topics",
+                        "tags",
                     ]}
                     placeholder="Search anything"
                 />
@@ -147,7 +150,9 @@ const Catalog = ()=>{
                             react={{
                                 and: ['RegionSensor', 'SearchSensor', 'GlossaryPathSensor','TagSensor', 'TopicSensor', 'KindSensor'],
                             }}
-                            infiniteScroll={true}
+                            size={5}
+                            pagination
+                            paginationAt="bottom"
                             componentId="SearchResult"
                             renderItem={(hit) => {
                                 return <Hit hit={hit}/>

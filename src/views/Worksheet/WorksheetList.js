@@ -34,9 +34,9 @@ const WorksheetList = (props) => {
     }
 
 
-    const handlePageChange=(e,{activePage})=>{
-        if (activePage<=items.page&&activePage!=items.page){
-            setFilter({...filter, page:activePage})
+    const handlePageChange=async (e,{activePage})=>{
+        if (activePage<=items.pages && activePage!==items.page){
+            await setFilter({...filter, page:activePage});
         }
     }
 

@@ -51,7 +51,7 @@ const EnvironmentView = (props) => {
     };
 
     const archiveEnv = async () => {
-        const response = await client.mutate(archiveEnvironment(env.environmentUri));
+        const response = await client.mutate(archiveEnvironment({environmentUri: env.environmentUri}));
         if (!response.errors) {
             history.push('/environments')
         } else {
@@ -160,7 +160,7 @@ const EnvironmentView = (props) => {
         }}
         owner={env.owner}
         created={env.created}
-        tabs={["overview","console", "datasets", "shared","warehouses", "stack"]}
+        tabs={["overview","console", "datasets", "shared", "subscriptions", "stack"]}
         actions={actions}
         status={<Status {...env}/>}
         messages={<Messages/>}
@@ -175,7 +175,7 @@ const EnvironmentView = (props) => {
         />
         <Components.DatasetList environment={env}/>
         <Components.SharedList environment={env}/>
-        <Components.Warehouses environment={env}/>
+        <Components.Subscriptions environment={env} fetchItem={fetchItem}/>
         <Stack stack={env.stack} reload={fetchItem} update={updateStack}/>
     </ObjectView>
 }

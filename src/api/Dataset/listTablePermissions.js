@@ -9,6 +9,7 @@ const listTablePermissions= ({tableUri})=>{
             query GetDatasetTable($tableUri:String!){
                 getDatasetTable(tableUri:$tableUri){
                         tableUri
+                        userRoleForTable
                         permissions{
                             count
                             nodes{

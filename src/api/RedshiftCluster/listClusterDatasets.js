@@ -27,6 +27,7 @@ const listClusterDatasets= ({clusterUri,filter})=>{
                         tags
                         userRoleForDataset
                         redshiftClusterPermission(clusterUri:$clusterUri)
+                        redshiftDataCopyEnabled(clusterUri:$clusterUri)
                         description
                         organization{
                             name

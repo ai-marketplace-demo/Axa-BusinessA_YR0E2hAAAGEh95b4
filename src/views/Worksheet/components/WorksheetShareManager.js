@@ -64,8 +64,6 @@ const WorksheetShareManager = ({client, worksheet, api})=>{
            page={shares.page}
            disableSearch={true}
            onPageChange={handlePageChange}
-
-
            />
         <Table>
             <Table.Header>

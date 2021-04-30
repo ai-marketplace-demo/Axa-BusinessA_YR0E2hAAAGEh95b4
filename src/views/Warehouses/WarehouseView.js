@@ -54,7 +54,7 @@ const WarehouseView = (props) => {
             })
         }
         else{
-            history.push(`/environments`);
+            history.push(`/warehouses`);
         }
     };
 
@@ -260,19 +260,20 @@ const WarehouseView = (props) => {
         }
 
     }
+
     return <ObjectView
         loading={loading}
         back={{
-            link: `/environment/${warehouse.environmentUri}/warehouses`,
-            label: '< back to environment warehouses'
+            link: '/warehouses',
+            label: '< back to warehouses'
         }}
         title={warehouse.label}
-        breadcrumbs={`/environment/${warehouse.environmentUri}/warehouses`}
+        breadcrumbs={`play/warehouses/${warehouse.clusterUri}`}
         label={warehouse.label}
         owner={warehouse.owner}
         created={warehouse.created}
         icon={<FiIcon.FiBox/>}
-        tabs={["Overview","Connection","Datasets","Stack"]}
+        tabs={["Overview","Connection","Datasets", "Tables", "Stack"]}
         error={error}
         actions={actions}
         messages={messages}
@@ -285,6 +286,9 @@ const WarehouseView = (props) => {
             ...warehouse
         }}/>
         <Components.ClusterDatasets warehouse={{
+            ...warehouse
+        }}/>
+        <Components.ClusterTables warehouse={{
             ...warehouse
         }}/>
         <Stack stack={warehouse.stack} reload={fetchItem}/>

@@ -1,11 +1,12 @@
 import WarehouseForm from "./WarehouseForm";
-import WorkflowList from "./WorkflowList";
+import WarehouseList from "./WarehouseList";
 import WorkflowListItem from "./WorkflowListItem";
 import WarehouseView from "./WarehouseView";
-
+import WarehouseImport from "./WarehouseImport";
 export {
     WarehouseForm,
-    WorkflowList,
+    WarehouseList,
     WorkflowListItem,
-    WarehouseView
+    WarehouseView,
+    WarehouseImport,
 }

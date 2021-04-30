@@ -1,7 +1,5 @@
 import * as ReactIf from "react-if";
 import {Button, Icon,Dropdown,Select} from "semantic-ui-react";
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
 
 
 const DimensionPanel = ({worksheet, results, onChange})=>{
@@ -278,10 +276,7 @@ const ChartPanel = ({worksheet,results,currentQuery,onChange})=>{
                 <Button size={`mini`} color={`teal`} icon labelPosition={'right'} basic>Run <Icon name={`play`}/></Button>
             </div>
             <div style={{width:'1fr', overflowX:'scroll'}}>
-                <HighchartsReact
-                    highcharts={Highcharts}
-                    option={{}}
-                    />
+
             </div>
         </div>
 

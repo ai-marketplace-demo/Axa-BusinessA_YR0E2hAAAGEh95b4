@@ -2,17 +2,15 @@ import {useState,useEffect} from "react";
 import useClient from "../../api/client";
 import {Link,useParams,useHistory} from "react-router-dom";
 import Select from "react-select";
-import {Form,Button, Message,Icon, Table} from "semantic-ui-react";
+import {Form, Button, Message, Icon, Table, Input, Segment} from "semantic-ui-react";
 import getDataset from "../../api/Dataset/getDataset";
 import createShareObject from "../../api/ShareObject/createShareObject";
 import getDatasetTable from "../../api/DatasetTable/getDatasetTable";
 import listEnvironments from "../../api/Environment/listEnvironments";
-import listDatasetShareObjects from "../../api/Dataset/listShareObjects";
-import {Title} from "../../components/Text"
 import * as ReactIf from "react-if";
 import * as FiIcon from "react-icons/fi"
-import {DataViewHeader} from "../../components/listview/styles";
 const ShareRequestForm = ()=>{
+    const history = useHistory();
     const client = useClient();
     const [message,setMessage] = useState(null);
     const params = useParams();
@@ -129,6 +127,7 @@ const ShareRequestForm = ()=>{
             </div>
             <div style={{fontSize:'x-small'}}>{`/contribute/request`}</div>
         </div>
+        <Segment style={{borderRadius:'0px'}}>
         <Form>
             <ReactIf.If condition={message}>
                 <ReactIf.Then>
@@ -142,22 +141,31 @@ const ShareRequestForm = ()=>{
                         <Message.Content>
                             <Button icon onClick={()=>{setMessage(null)}}>
                                 Close
-                                <Icon name={`close`}/>
+                                <Icon name={`Close`}/>
                             </Button>
-                            <Button onClick={()=>{setMessage(null)}}>go back</Button>
+                            <Button onClick={()=>{history.push('/discover')}}>Go back</Button>
                         </Message.Content>
                     </Message>
                 </ReactIf.Then>
             </ReactIf.If>
             <Form.Field width={6}>
-                <label>Select Target Team</label>
+                <label>{params.kind?.replace(params.kind.charAt(0),params.kind.charAt(0).toUpperCase())}</label>
+                <Input
+                    value={item.name}
+                    readOnly={true}
+                    iconPosition={'left'}
+                    icon={params.kind === 'dataset' ? 'folder': 'table'}
+                />
+            </Form.Field>
+            <Form.Field width={6}>
+                <label>Target Team</label>
                 <Select placeholder={`Select target environment`} options={environmentOptions} onChange={(opt)=>{setCurrentEnv(opt)}} value={currentEnv}/>
             </Form.Field>
             <Button disabled={!currentEnv} onClick={submit}  primary >
                 Request
             </Button>
         </Form>
-
+        </Segment>
 
     </div>
 }

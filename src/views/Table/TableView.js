@@ -16,12 +16,12 @@ const TableView = (props) => {
     const [table, setTable] = useState({})
     const [error, setError] = useState(null)
     const [actionError, setActionError] = useState(null)
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const fetchItem=async  ()=>{
+        setLoading(true);
         const response = await client.query(getDatasetTable(params.uri));
         if (!response.errors){
-            console.log(response.data.getDatasetTable);
             setTable({...response.data.getDatasetTable});
         }
         else{
@@ -51,12 +51,13 @@ const TableView = (props) => {
             fetchItem();
         }
     },[client]);
+
     const isAdmin = () => {
-        return ["Creator", "Admin", "Owner"].indexOf(table.dataset.userRoleForDataset) == -1 ? false : true
+        return ["Creator", "Admin", "Owner"].indexOf(table?.dataset?.userRoleForDataset) == -1 ? false : true
     }
 
     const Actions = () => (
-        <ReactIf.If condition={true}>
+        <ReactIf.If condition={!loading && isAdmin}>
             <ReactIf.Then>
                 <div>
                     <Button size='small' basic color={'blue'} onClick={() => setShowDelete(true)}>Delete</Button>
@@ -104,29 +105,41 @@ const TableView = (props) => {
 
     );
     const actions = <Actions {...table}/>
-    return <ObjectView
-        title={table.GlueTableName}
-        error={error}
-        icon={<BsIcon.BsTable/>}
-        loading={loading}
-        breadcrumbs={`| dataset/${table.dataset&&table.dataset.name}/table/${table.GlueTableName}`}
-        label={"xxx"}
-        back={{
-            link: `/dataset/${table.datasetUri}/`,
-            label: `< back to parent dataset ${table&&table.dataset&&table.dataset.name}`
-        }}
-        owner={table.owner}
-        tabs={["overview","preview", "columns"]}
-        actions={actions}
-    >
-        <Components.Editor client={client}
-                           table={{
-                               ...table,
-                               terms:table.terms&&table.terms.count&&table.terms.nodes||[]
-                           }} />
-        <Components.TablePreview table={table} client={client}/>
-        <Components.TableColumns table={table} client={client}/>
-    </ObjectView>
+
+    const getTabs = () => {
+        if (isAdmin()){
+            return ["overview","preview", "metrics", "columns", "subscriptions"];
+        }
+        else{
+            return ["preview", "metrics", "columns"];
+        }
+    }
+
+    return <div>
+        <ObjectView
+            title={table.GlueTableName}
+            error={error}
+            icon={<BsIcon.BsTable/>}
+            loading={loading}
+            back={{
+                link: `/dataset/${table.datasetUri}/tables`,
+                label: `< back to parent dataset ${table&&table.dataset&&table.dataset.name}`
+            }}
+            owner={table.owner}
+            tabs={getTabs()}
+            actions={actions}
+        >
+            {isAdmin() && <Components.Editor client={client}
+                               table={{
+                                   ...table,
+                                   terms:table.terms&&table.terms.count&&table.terms.nodes||[]
+                               }} />}
+            <Components.TablePreview table={table} client={client}/>
+            <Components.TableMetrics table={table}/>
+            <Components.TableColumns table={table} client={client}/>
+            {isAdmin() && <Components.SubscriptionsForm table={table}/>}
+        </ObjectView>
+    </div>
 }
 
 

@@ -60,7 +60,7 @@ const Profile = (props) => {
             getCountRead()
         }
         else {
-            setActionError({
+            setError({
                 header: "Error",
                 content: `${response.errors[0].message}`
             })

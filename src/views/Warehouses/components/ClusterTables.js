@@ -2,118 +2,98 @@ import React, {useEffect, useState} from "react";
 import {Link, useHistory} from "react-router-dom";
 import {TableContainer} from "../../../components/table";
 import useClient from "../../../api/client";
-import * as BsIcons from "react-icons/bs";
 import {Button, Form, Header, Icon, Message, Modal} from "semantic-ui-react";
-import listClusterDatasets from "../../../api/RedshiftCluster/listClusterDatasets";
-import removeDatasetFromCluster from "../../../api/RedshiftCluster/removeDatasetFromCluster";
-import enableRedshiftClusterDatasetCopy from "../../../api/RedshiftCluster/enableClusterDatasetCopy";
+import listClusterDatasetTables from "../../../api/RedshiftCluster/listClusterDatasetTables";
 import disableRedshiftClusterDatasetCopy from "../../../api/RedshiftCluster/disableClusterDatasetCopy";
 import {PagedResponseDefault} from "../../../components/defaults";
 import * as ReactIf from "react-if";
-import LoadDatasets from "./LoadDatasets";
+import CopyTables from "./CopyTables";
 
-const ClusterDatasets = ({warehouse, datasets, setDatasets}) => {
+const ClusterTables = ({warehouse}) => {
     const client = useClient();
     const history = useHistory();
-    const [items, setItems] = useState(datasets ? datasets : PagedResponseDefault);
+    const [items, setItems] = useState(PagedResponseDefault);
     const [filter, setFilter] = useState({term:'',page:1,pageSize:10});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showLoadDatasets, setShowLoadDatasets] = useState(false);
     const [copyLoading, setCopyLoading] = useState(false);
+    const [showInfo, setShowInfo] = useState(true);
+
     const fetchItems = async () => {
         setLoading(true);
         const response = await client
-            .query(listClusterDatasets({
+            .query(listClusterDatasetTables({
                 clusterUri:warehouse.clusterUri,
                 filter: filter
             }));
         if (!response.errors) {
-            setItems({...response.data.listRedshiftClusterDatasets});
-            setDatasets && setDatasets({...response.data.listRedshiftClusterDatasets});
+            setItems({...response.data.listRedshiftClusterCopyEnabledTables});
         }
         else{
             setError({
                 header: 'Error',
-                content: `Could not retrieve datasets`
+                content: `Could not retrieve tables`
             })
         }
         setLoading(false);
     }
     const handlePageChange = (e,{activePage})=>{
-        if (activePage<=items.pages&&activePage!=items.page){
+        if (activePage<=items.pages&&activePage!==items.page){
             setFilter({...filter, page:activePage});
         }
     }
 
     useEffect(() => {
         if (client) {
-            if (!datasets) {
-                fetchItems();
-            }
+            fetchItems();
         }
     }, [client])
 
-    const unloadDataset = async (dataset) => {
-        const res = await client.mutate(removeDatasetFromCluster({
-            clusterUri: warehouse.clusterUri,
-            datasetUri: dataset.datasetUri
-        }));
-        if (!res.errors) {
-            await fetchItems();
-        } else {
-            setError({
-                header: 'Error',
-                content: `Could not unload dataset ${dataset.label}`
-            })
-        }
-    };
-    const enableDatasetCopy = async (dataset) => {
-        setCopyLoading(true);
-        const res = await client.mutate(enableRedshiftClusterDatasetCopy({
-            clusterUri: warehouse.clusterUri,
-            datasetUri: dataset.datasetUri
-        }));
-        if (!res.errors) {
-            await fetchItems();
-        } else {
-            setError({
-                header: 'Error',
-                content: `Could not enable dataset ${dataset.label} copy to Redshift cluster`
-            })
-        }
-        setCopyLoading(false);
-    };
-    const disableDatasetCopy = async (dataset) => {
+    const disableDatasetCopy = async (table) => {
         setCopyLoading(true);
         const res = await client.mutate(disableRedshiftClusterDatasetCopy({
             clusterUri: warehouse.clusterUri,
-            datasetUri: dataset.datasetUri
+            datasetUri: table.datasetUri,
+            tableUri: table.tableUri
         }));
         if (!res.errors) {
             await fetchItems();
         } else {
             setError({
                 header: 'Error',
-                content: `Could not disable dataset ${dataset.label} copy to Redshift cluster`
+                content: `Could not disable dataset ${table.label} copy to Redshift cluster`
             })
         }
         setCopyLoading(false);
     };
     return <div>
-        <Button disabled={warehouse.status !== 'available'} size='small' name={`url`} onClick={() => setShowLoadDatasets(true)} loading={false}
+        {showInfo &&
+        <Message
+            positive
+            info
+            onDismiss={()=>(setShowInfo(false))}
+            icon={'info'}
+            header={'Tables Copy Subscriptions'}
+            content={
+                <p>
+                    Load datasets first, and subscribe to tables you want to copy to your Amazon Redshift cluster.
+                </p>
+            }
+        />
+        }
+        <Button size='small' name={`url`} onClick={() => setShowLoadDatasets(true)} disabled={false} loading={false}
                 icon labelPosition='left'>
-            <Icon name='plus circle'/>
-            Load Datasets
+            <Icon name='table'/>
+            Subscribe
         </Button>
         <TableContainer
         loading={loading}
         columns={[
             {label: "Name", key: "label"},
-            {label: "AWS Account", key: 'AwsAccountId'},
-            {label: "Bucket", key: "S3BucketName"},
-            {label: "Created By", key: "owner"},
-            {label: "Unload", key:"unload"},
+            {label: "Schema", key: "RedshiftSchema"},
+            {label: "Location", key: "S3Prefix"},
+            {label: "Action", key:"copy"}
         ]}
         pager={{
             count:items.count,
@@ -129,17 +109,12 @@ const ClusterDatasets = ({warehouse, datasets, setDatasets}) => {
             return {
                 ...node,
                 AwsAccountId: <code>{node.AwsAccountId}</code>,
-                label: (<Header as='h4' image>
-                    <BsIcons.BsFolder/>
-                    <Header.Content>
-                        <Link to={`/dataset/${node.datasetUri}/overview`}>{node.label}</Link>
-                        <Header.Subheader>
-                            <Link to={`/dataset/${node.datasetUri}/overview`}>{node.datasetUri}</Link>
-                        </Header.Subheader>
-                    </Header.Content>
-                </Header>
+                label: (<b>
+                    <Link to={`/table/${node.tableUri}/preview`}>{node.label}</Link>
+                </b>
                 ),
-                unload:<Button size={'small'} disabled={warehouse.status !== 'available'} onClick={()=>{unloadDataset(node)}}>Unload</Button>,
+                RedshiftSchema: '',
+                copy:<Button loading={copyLoading} size={'small'} onClick={()=>{disableDatasetCopy(node)}}>Unsubscribe</Button>
             }
         })}
     />
@@ -155,7 +130,7 @@ const ClusterDatasets = ({warehouse, datasets, setDatasets}) => {
                     trigger={<span/>}
                 >
                     <Modal.Header>
-                        <b>{`Load Datasets to cluster ${warehouse.name}` }</b>
+                        <b>{`Copy tables to cluster ${warehouse.name}` }</b>
                     </Modal.Header>
                     <Modal.Content>
                         {error && <Message negative>
@@ -163,7 +138,7 @@ const ClusterDatasets = ({warehouse, datasets, setDatasets}) => {
                             <p>{error && error.content}</p>
                         </Message>
                         }
-                        <LoadDatasets warehouse={warehouse} reload={fetchItems}/>
+                        <CopyTables warehouse={warehouse} reload={fetchItems}/>
                     </Modal.Content>
                 </Modal>
             </ReactIf.Then>
@@ -171,4 +146,4 @@ const ClusterDatasets = ({warehouse, datasets, setDatasets}) => {
     </div>
 }
 
-export default ClusterDatasets;
+export default ClusterTables;

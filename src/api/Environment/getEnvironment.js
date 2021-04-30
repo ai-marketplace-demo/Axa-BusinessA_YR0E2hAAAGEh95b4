@@ -20,6 +20,11 @@ const getEnvironment = ({environmentUri})=>{
                     owner
                     tags
                     SamlGroupName
+                    subscriptionsEnabled
+                    subscriptionsProducersTopicImported
+                    subscriptionsConsumersTopicImported
+                    subscriptionsConsumersTopicName
+                    subscriptionsProducersTopicName
                     organization{
                         organizationUri
                         label
