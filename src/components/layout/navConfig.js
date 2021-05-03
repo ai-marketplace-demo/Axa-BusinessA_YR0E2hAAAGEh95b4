@@ -45,11 +45,11 @@ const navConfig = [
                 icon: <BsIcons.BsFileCode/>,
                 link: '/notebooks'
             },
-            // {
-            //     label: 'Sagemaker Studio',
-            //     icon: <img src={SagemakerStudioSvg} /> ,
-            //     link: '/sagemakerstudio/userprofiles'
-            // },
+            {
+                label: 'ML Workspace',
+                icon: <BsIcons.BsFileCode/> ,
+                link: '/sagemakerstudio/userprofiles'
+            },
             {
                 label: 'Dashboards',
                 link: '/dashboards',

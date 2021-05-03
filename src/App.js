@@ -46,7 +46,7 @@ const App = (props) => {
                 case 'cognitoHostedUI':
                     getUser().then(userData => setUser(userData));
                     break;
-                case 'signOut':
+                case 'oAuthSignOut':
                     setUser(null);
                     localStorage.clear()
                     break;
