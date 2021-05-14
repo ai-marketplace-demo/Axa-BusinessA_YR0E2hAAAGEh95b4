@@ -46,7 +46,7 @@ const EditForm = ({editable,icon,breadcrumbs,onSubmit,backLink,title,fields,init
     const handleChange= (e)=>{
         setFormData({...formData,[e.target.name]: e.target.value})
     }
-    return <EditFormLayout>
+    return <Segment style={{borderRadius: "0px"}}>
         <Form
             loading={state.submitting}
             error={state.error}>
@@ -163,7 +163,7 @@ const EditForm = ({editable,icon,breadcrumbs,onSubmit,backLink,title,fields,init
                 })
             }
         </div>
-    </EditFormLayout>
+    </Segment>
 }
 
 

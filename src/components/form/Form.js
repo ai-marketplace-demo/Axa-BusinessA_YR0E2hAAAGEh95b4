@@ -39,7 +39,7 @@ const CreateForm = ({icon,breadcrumbs,onSubmit,backLink,title,fields,initialValu
         return <Loader active/>
     }
     return <div>
-        <FormLayout>
+        <Segment style={{borderRadius: "0px"}}>
             <If condition={!ready}>
                 <Then>
                     <Dimmer active>
@@ -138,7 +138,7 @@ const CreateForm = ({icon,breadcrumbs,onSubmit,backLink,title,fields,initialValu
 
                 </Else>
             </If>
-        </FormLayout>
+        </Segment>
     </div>
 }
 
