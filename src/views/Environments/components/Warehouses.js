@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {useHistory, Link} from "react-router-dom";
 import useClient from "../../../api/client";
-import {Button, Dropdown, Grid, Header, Icon, Loader, Message, Modal, Table} from "semantic-ui-react";
+import {Button, Dropdown, Grid, Header, Icon, Loader, Message, Modal, Segment, Table} from "semantic-ui-react";
 import searchRedshiftClusters from '../../../api/RedshiftCluster/searchClusters';
 import {PagedResponseDefault} from "../../../components/defaults";
 import Pager from "../../../components/pager/Pager";
 import * as FiIcon from "react-icons/fi";
+import * as SiIcon from "react-icons/si";
 
 const Warehouses = ({environment, warehouses, setWarehouses}) => {
     const client = useClient();
@@ -64,7 +65,8 @@ const Warehouses = ({environment, warehouses, setWarehouses}) => {
         onPageChange:handlePageChange
     };
 
-    return <div>
+    return <div><Segment style={{borderRadius: "0px"}}>
+        <Header as='h3'><FiIcon.FiBox style={{marginRight: "10px"}}/>Redshift clusters</Header>
         {error &&
             <Message negative>
                 <Message.Header>
@@ -86,7 +88,7 @@ const Warehouses = ({environment, warehouses, setWarehouses}) => {
             </Grid.Column>
 
             <Grid.Column floated='right' width={4}>
-                <div>
+                <div style={{marginTop:"30px"}}>
                     <Button size={'small'} onClick={
                         ()=>{history.push(`/new-warehouse/${environment.environmentUri}`)}}>
                         <Icon name={'plus circle'}/>Create
@@ -126,6 +128,7 @@ const Warehouses = ({environment, warehouses, setWarehouses}) => {
                         </Table.Row>
                     })}
         </Table>
+        </Segment>
     </div>
 
 }

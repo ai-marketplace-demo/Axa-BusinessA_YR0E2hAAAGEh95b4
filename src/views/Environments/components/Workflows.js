@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {useHistory, Link} from "react-router-dom";
 import useClient from "../../../api/client";
-import {Button, Dimmer, Grid, Header, Icon, Loader, Message, Modal, Table} from "semantic-ui-react";
+import {Button, Dimmer, Divider, Grid, Header, Icon, Loader, Message, Modal, Segment, Table} from "semantic-ui-react";
 import searchAirflowClusters from '../../../api/AirflowCluster/searchClusters';
 import {PagedResponseDefault} from "../../../components/defaults";
 import Pager from "../../../components/pager/Pager";
 import getAirflowClusterWebLoginToken from "../../../api/AirflowCluster/getClusterConsoleAccess";
+import * as SiIcon from "react-icons/si";
 
 const Workflows = ({environment, workflows, setWorkflows}) => {
     const client = useClient();
@@ -81,7 +82,8 @@ const Workflows = ({environment, workflows, setWorkflows}) => {
         onPageChange:handlePageChange
     };
 
-    return <div>
+    return <div><Segment style={{borderRadius: "0px"}}>
+        <Header as='h3'><SiIcon.SiApacheairflow style={{marginRight: "10px"}}/>Airflow environments</Header>
         {error &&
             <Message negative>
                 <Message.Header>
@@ -103,7 +105,7 @@ const Workflows = ({environment, workflows, setWorkflows}) => {
             </Grid.Column>
 
             <Grid.Column floated='right' width={3}>
-                <div>
+                <div style={{marginTop:"30px"}}>
                     <Button size={'small'} onClick={
                         ()=>{history.push(`/new-workflow/${environment.environmentUri}`)}}>
                         <Icon name={'plus circle'}/>Create
@@ -147,7 +149,7 @@ const Workflows = ({environment, workflows, setWorkflows}) => {
                         </Table.Row>
                     })}
         </Table>
-    </div>
+    </Segment></div>
 }
 
 export default Workflows;
