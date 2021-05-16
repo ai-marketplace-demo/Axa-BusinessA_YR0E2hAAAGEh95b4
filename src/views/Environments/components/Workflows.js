@@ -1,34 +1,51 @@
 import React, {useEffect, useState} from "react";
 import {useHistory, Link} from "react-router-dom";
 import useClient from "../../../api/client";
-import {Button, Dropdown, Grid, Header, Icon, Loader, Message, Modal, Table} from "semantic-ui-react";
-import searchRedshiftClusters from '../../../api/RedshiftCluster/searchClusters';
+import {Button, Dimmer, Grid, Header, Icon, Loader, Message, Modal, Table} from "semantic-ui-react";
+import searchAirflowClusters from '../../../api/AirflowCluster/searchClusters';
 import {PagedResponseDefault} from "../../../components/defaults";
 import Pager from "../../../components/pager/Pager";
-import * as FiIcon from "react-icons/fi";
+import getAirflowClusterWebLoginToken from "../../../api/AirflowCluster/getClusterConsoleAccess";
 
-const Warehouses = ({environment, warehouses, setWarehouses}) => {
+const Workflows = ({environment, workflows, setWorkflows}) => {
     const client = useClient();
     const history = useHistory();
-    const [items, setItems] = useState(warehouses ? warehouses : PagedResponseDefault);
+    const [items, setItems] = useState(workflows ? workflows : PagedResponseDefault);
     const [filter, setFilter] = useState({term:'',page:1,pageSize:10});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isLoadingUI, setIsLoadingUI] = useState(false);
     const fetchItems = async () => {
         setLoading(true);
-        const response = await client.query(searchRedshiftClusters(filter));
+        const response = await client.query(searchAirflowClusters(filter));
         if (!response.errors) {
-            setItems({...response.data.searchRedshiftClusters});
-            setWarehouses && setWarehouses({...response.data.searchRedshiftClusters});
+            setItems({...response.data.searchAirflowClusters});
+            setWorkflows && setWorkflows({...response.data.searchAirflowClusters});
         }
         else{
             setError({
-                header: 'Failed to load warehouses',
+                header: 'Failed to load workflows',
                 content: `Received ${response.errors[0].message}`
             })
         }
         setLoading(false);
     }
+
+    const goToAirflowUI = async (item) => {
+        setIsLoadingUI(true)
+        const response = await client.query(getAirflowClusterWebLoginToken(item.clusterUri));
+
+        if (!response.errors) {
+            window.open(response.data.getAirflowClusterConsoleAccess, '_blank');
+        } else {
+            setError({
+                header: `Airflow Environment ${item.label}`,
+                content: `Failed to access Airflow UI due to: ${response.errors[0].message}`
+            })
+        }
+        setIsLoadingUI(false)
+    };
+
     const handlePageChange = (e,{activePage})=>{
         if (activePage<=items.pages&&activePage!=items.page){
             setFilter({...filter, page:activePage});
@@ -37,7 +54,7 @@ const Warehouses = ({environment, warehouses, setWarehouses}) => {
 
     useEffect(() => {
         if (client) {
-            if (!warehouses) {
+            if (!workflows) {
                 fetchItems();
             }
         }
@@ -81,53 +98,56 @@ const Warehouses = ({environment, warehouses, setWarehouses}) => {
             </Message>
         }
         <Grid>
-            <Grid.Column floated='left' width={8}>
+            <Grid.Column floated='left' width={9}>
                 <Pager {...pager}/>
             </Grid.Column>
 
-            <Grid.Column floated='right' width={4}>
+            <Grid.Column floated='right' width={3}>
                 <div>
                     <Button size={'small'} onClick={
-                        ()=>{history.push(`/new-warehouse/${environment.environmentUri}`)}}>
+                        ()=>{history.push(`/new-workflow/${environment.environmentUri}`)}}>
                         <Icon name={'plus circle'}/>Create
-                    </Button>
-                    <Button size={'small'} onClick={
-                        ()=>{history.push(`/import-warehouse/${environment.environmentUri}`)}}>
-                        <Icon name={'cloud upload'}/>Import
                     </Button>
                 </div>
             </Grid.Column>
         </Grid>
-
+        <Dimmer active={isLoadingUI}>
+            <Loader size='medium'>Redirecting to AirflowUI</Loader>
+        </Dimmer>
         <Table celled compact>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell width={1}>Name</Table.HeaderCell>
-                    <Table.HeaderCell width={6}>Endpoint</Table.HeaderCell>
+                    <Table.HeaderCell width={6}>Airflow UI</Table.HeaderCell>
                     <Table.HeaderCell width={1}>Status</Table.HeaderCell>
                     <Table.HeaderCell width={1}>Actions</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
-
                 {items && items.nodes && items.nodes.map((node)=>{
                         return <Table.Row>
                             <Table.Cell>
                                 {node.label}
                             </Table.Cell>
                             <Table.Cell>
-                                {node.endpoint || '-'}
+                                {node.webServerUrl ?
+                                    <Link
+                                        style={{color:'#2185d0'}}
+                                        onClick={()=>goToAirflowUI(node)}>
+                                            {node.webServerUrl} <Icon color={'blue'} name='external alternate'/>
+                                    </Link>
+                                    : <span>{'-'}</span>
+                                }
                             </Table.Cell>
                             <Table.Cell>
                                 {node.status}
                             </Table.Cell>
                             <Table.Cell>
-                                <Button onClick={()=>{history.push(`/warehouse/${node.clusterUri}/Overview`)}} compact={true}>Manage</Button>
+                                <Button onClick={()=>{history.push(`/workflow/${node.clusterUri}/Overview`)}} compact={true}>Manage</Button>
                             </Table.Cell>
                         </Table.Row>
                     })}
         </Table>
     </div>
-
 }
 
-export default Warehouses;
+export default Workflows;

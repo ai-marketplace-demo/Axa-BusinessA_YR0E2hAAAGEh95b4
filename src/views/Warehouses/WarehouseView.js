@@ -54,7 +54,7 @@ const WarehouseView = (props) => {
             })
         }
         else{
-            history.push(`/warehouses`);
+            history.push(`/environments`);
         }
     };
 
@@ -232,9 +232,9 @@ const WarehouseView = (props) => {
     const actions = <Actions {...warehouse}/>
     const Messages = () => (
         <div>{uiError && <Message negative onDismiss={()=>{setUiError(null)}}>
-                <Message.Header>{uiError.header}</Message.Header>
-                <p>{uiError.content}</p>
-            </Message>
+            <Message.Header>{uiError.header}</Message.Header>
+            <p>{uiError.content}</p>
+        </Message>
         }
             {success && <Message positive onDismiss={()=>{setSuccess(null)}}>
                 <Message.Header>{success.header}</Message.Header>
@@ -260,15 +260,14 @@ const WarehouseView = (props) => {
         }
 
     }
-
     return <ObjectView
         loading={loading}
         back={{
-            link: '/warehouses',
-            label: '< back to warehouses'
+            link: `/environment/${warehouse.environmentUri}/warehouses`,
+            label: '< back to environment warehouses'
         }}
         title={warehouse.label}
-        breadcrumbs={`play/warehouses/${warehouse.clusterUri}`}
+        breadcrumbs={`/environment/${warehouse.environmentUri}/warehouses`}
         label={warehouse.label}
         owner={warehouse.owner}
         created={warehouse.created}

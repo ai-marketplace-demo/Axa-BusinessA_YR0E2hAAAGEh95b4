@@ -67,19 +67,17 @@ const SagemakerStudioForm = () => {
                         description: formData.description,
                         tags: formData.tags,
                         environmentUri: formData.environment.environmentUri,
-                        //FIXME needs backend update
-                        //SamlAdminGroupName: formData.SamlAdminGroupName ? formData.SamlAdminGroupName.value : null,
                     })
                 );
             if (!response.errors) {
                 success({
-                    header: `Sagemaker studio user profile ${formData.label}`,
+                    header: `Notebook ${formData.label}`,
                     content: `Created successfully ${response.data.createSagemakerStudioUserProfile.sagemakerStudioUserProfileUri}`
                 })
             } else {
                 fail({
-                    header: `Sagemaker studio user profile  ${formData.label}`,
-                    content: `Failed to create user profile due to: ${response.errors[0].message}`
+                    header: `Error`,
+                    content: `Failed to create notebook due to: ${response.errors[0].message}`
                 })
             }
         }
@@ -92,15 +90,15 @@ const SagemakerStudioForm = () => {
     }, [client]);
 
     return <CreateForm
-        ready={true}
+        ready={ready}
         onSubmit={submitForm}
-        breadcrumbs={`| Work/SagemakerStudio/CreateUserProfile`}
+        breadcrumbs={`|play/notebook/create`}
         backLink={{
-            label: '< back to sagemaker studio user profile list',
-            link: '/sagemakerstudio/userprofiles'
+            label: '< back to notebooks',
+            link: '/notebooks'
         }}
         icon={<BsIcon.BsFileCode/>}
-        title={`Create Sagemaker Studio User Profile`}
+        title={`Create Notebook`}
         submit={submitForm}
         initialValues={{
             label: '',

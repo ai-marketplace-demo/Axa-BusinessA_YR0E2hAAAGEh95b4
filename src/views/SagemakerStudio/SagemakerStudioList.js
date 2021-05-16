@@ -8,7 +8,7 @@ import listSagemakerStudioUserProfiles from "../../api/SagemakerStudio/listSagem
 import * as Defaults from "../../components/defaults";
 
 const SagemakerStudioUserProfileLink = ({item}) => {
-    return `/sagemakerstudio/userprofile/${item.sagemakerStudioUserProfileUri}/`
+    return `/notebook/${item.sagemakerStudioUserProfileUri}/`
 }
 const SagemakerStudioList = (props) => {
     const [ready, setReady] = useState(false);
@@ -70,13 +70,13 @@ const SagemakerStudioList = (props) => {
 
     return <DataView
         icon={<BsIcon.BsCode/>}
-        title={"UserProfiles"}
+        title={"Notebooks"}
         linkComponent={SagemakerStudioUserProfileLink}
         createLink={() => {
-            return `/new-sm-user-profile`
+            return `/new-notebook`
         }}
         itemBody={SagemakerStudioListItem}
-        breadcrumbs={"/play/sagemakerstudio/userprofiles"}
+        breadcrumbs={"/play/notebooks"}
         loading={!ready}
         pager={{
             ...items,

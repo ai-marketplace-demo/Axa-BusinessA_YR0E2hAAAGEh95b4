@@ -6,7 +6,6 @@ import listEnvironments from "../../api/Environment/listEnvironments";
 import useGroups from "../../api/useGroups";
 import * as Yup from 'yup';
 import * as FiIcon from 'react-icons/fi';
-import {Loader} from "semantic-ui-react";
 import importRedshiftCluster from "../../api/RedshiftCluster/importCluster";
 
 const WarehouseImport = () => {
@@ -113,7 +112,7 @@ const WarehouseImport = () => {
     return <CreateForm
         ready={ready}
         onSubmit={submitForm}
-        breadcrumbs={`|Warehouses/Import`}
+        breadcrumbs={`|warehouse/import`}
         backLink={backLink}
         icon={<FiIcon.FiBox/>}
         title={`Import Redshift Cluster`}

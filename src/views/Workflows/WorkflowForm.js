@@ -5,12 +5,18 @@ import useClient from "../../api/client";
 import listEnvironments from "../../api/Environment/listEnvironments";
 import createAirflowCluster from "../../api/AirflowCluster/createCluster";
 import useGroups from "../../api/useGroups";
+import {useParams} from "react-router-dom";
 
 const WorkflowForm = () => {
     const client = useClient();
     const groups = useGroups();
+    const params = useParams();
     const [environmentOptions, setEnvironmentOptions] = useState([]);
     const [ready, setReady] = useState(false);
+    const [backLink, setBackLink] = useState({
+        label: '< back to workflows',
+        link: `/workflows`
+    });
     const groupOptions = groups ? groups.map((g) => {
         return {value: g, foo: g, label: g}
     }) : [];
@@ -19,8 +25,6 @@ const WorkflowForm = () => {
         {label: 'mw1.medium', value: 'mw1.medium'},
         {label: 'mw1.large', value: 'mw1.large'}
     ];
-
-
 
     const resolveOrganization = (formData) => {
         if (formData.environment && formData.environment.organization) {
@@ -79,8 +83,6 @@ const WorkflowForm = () => {
                 tags: formData.tags,
                 maxWorkers: parseInt(formData.maxWorkers),
                 environmentClass: formData.environmentClass.value,
-
-                //SamlAdminGroupName: formData.SamlAdminGroupName ? formData.SamlAdminGroupName.value : null,
             }
             const response = await client
                 .mutate(createAirflowCluster({
@@ -104,6 +106,13 @@ const WorkflowForm = () => {
 
     useEffect(()=>{
         if (client){
+            setBackLink(params.uri ? {
+                label: '< back to environment workflows',
+                link: `/environment/${params.uri}/workflows`
+            }: {
+                label: '< back to workflows',
+                link: `/workflows`
+            });
             fetchEnvironments();
         }
     },[client]);
@@ -111,11 +120,8 @@ const WorkflowForm = () => {
     return <CreateForm
         ready={true}
         onSubmit={submitForm}
-        breadcrumbs={`| Work/Workflows/Create`}
-        backLink={{
-            label: '< back to workflows list',
-            link: '/workflows'
-        }}
+        breadcrumbs={`|workflow/create`}
+        backLink={backLink}
         icon={<SiIcon.SiApacheairflow/>}
         title={`Create Airflow Environment`}
         submit={submitForm}
