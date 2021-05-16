@@ -66,7 +66,7 @@ const Settings = ({SagemakerStudioUserProfile, reloadSagemakerStudioUserProfile,
             <Button size='small' name={`url`} onClick={getThisSagemakerStudioUserProfilePresignedUrl} disabled={!editable} loading={isOpeningJupyter}
                     icon labelPosition='left'>
                 <Icon name='linkify'/>
-                Open Sagemaker Studio
+                Open Notebook
             </Button>
 
         </div>

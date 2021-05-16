@@ -39,6 +39,8 @@ const searchAirflowClusters= (filter)=>{
                      userRoleForCluster
                      userRoleInEnvironment
                      imported
+                     dagS3Path
+                     webServerUrl
                      vpc
                         organization{
                             organizationUri

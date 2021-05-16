@@ -78,7 +78,7 @@
     "yup": "^0.32.9"
   },
   "scripts": {
-    "start": "GENERATE_SOURCEMAP=true HOST='127.0.0.1' HTTPS=true PORT=1234 react-scripts start ",
+    "start": "GENERATE_SOURCEMAP=true HOST='127.0.0.1' HTTPS=true PORT=8080 react-scripts start ",
     "start-dev": "GENERATE_SOURCEMAP=true HOST='127.0.0.1' HTTPS=true PORT=8080 REACT_APP_STAGE=dev react-scripts start ",
     "build": "react-scripts build",
     "test": "react-scripts test",

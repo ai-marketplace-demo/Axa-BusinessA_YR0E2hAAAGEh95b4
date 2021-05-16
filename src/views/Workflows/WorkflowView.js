@@ -179,7 +179,10 @@ const WorkflowView = (props) => {
             label: '< back to workflows'
         }}
         icon={<SiIcon.SiApacheairflow/>}
-        breadcrumbs={`play/workflows/${workflow.clusterUri}`}
+        back={{
+            link: `/environment/${workflow.environmentUri}/workflows`,
+            label: '< back to environment workflows'
+        }}
         label={workflow.label}
         owner={workflow.owner}
         created={workflow.created}

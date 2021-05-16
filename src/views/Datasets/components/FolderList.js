@@ -109,6 +109,7 @@ const FolderList = ({dataset, folders, setFolders}) => {
             <Icon name='folder outline'/>
             New Folder
         </Button>}
+        <Divider hidden={true}/>
         <TableContainer
         loading={loading}
         columns={[

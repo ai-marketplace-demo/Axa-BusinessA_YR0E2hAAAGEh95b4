@@ -3,6 +3,7 @@ import DatasetList from "./DatasetList";
 import SharedList from "./SharedList";
 import ConsoleAccess from "./ConsoleAccess";
 import Warehouses from "./Warehouses";
+import Workflows from "./Workflows";
 import Subscriptions from "./Subscriptions";
 export {
     Editor,
@@ -10,5 +11,6 @@ export {
     SharedList,
     ConsoleAccess,
     Warehouses,
+    Workflows,
     Subscriptions,
 }

@@ -4,7 +4,7 @@ import useClient from "../../../api/client";
 import createAirflowProject from "../../../api/AirflowCluster/createAirflowProject";
 import listAirflowProjects from "../../../api/AirflowCluster/listClusterProjects";
 import {PagedResponseDefault} from "../../../components/defaults";
-import {Button, Form, Header, Icon, Input, Message, Modal} from "semantic-ui-react";
+import {Button, Divider, Form, Header, Icon, Input, Message, Modal} from "semantic-ui-react";
 import * as ReactIf from "react-if";
 
 const ProjectList = ({workflow, projects, setProjects}) => {
@@ -69,6 +69,7 @@ const ProjectList = ({workflow, projects, setProjects}) => {
             <Icon name='plus circle'/>
             Create Project
         </Button>
+        <Divider hidden={true}/>
         <TableContainer
         loading={loading}
         columns={[

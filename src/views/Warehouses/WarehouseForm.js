@@ -141,7 +141,7 @@ const WarehouseForm = () => {
     return <CreateForm
         ready={ready}
         onSubmit={submitForm}
-        breadcrumbs={`|Warehouses/Create`}
+        breadcrumbs={`|warehouse/create`}
         backLink={backLink}
         icon={<FiIcon.FiBox/>}
         title={`Create Redshift Cluster`}

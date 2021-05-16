@@ -160,7 +160,7 @@ const EnvironmentView = (props) => {
         }}
         owner={env.owner}
         created={env.created}
-        tabs={["overview","console", "datasets", "shared", "subscriptions", "stack"]}
+        tabs={["overview","console", "datasets", "shared", "subscriptions", "warehouses", "workflows", "stack"]}
         actions={actions}
         status={<Status {...env}/>}
         messages={<Messages/>}
@@ -176,6 +176,8 @@ const EnvironmentView = (props) => {
         <Components.DatasetList environment={env}/>
         <Components.SharedList environment={env}/>
         <Components.Subscriptions environment={env} fetchItem={fetchItem}/>
+        <Components.Warehouses environment={env}/>
+        <Components.Workflows environment={env}/>
         <Stack stack={env.stack} reload={fetchItem} update={updateStack}/>
     </ObjectView>
 }

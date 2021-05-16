@@ -125,27 +125,14 @@ const Router=(props)=>{
             </FullScreen>
         </Route>
         <Route path="/notebooks">
-            <Notebooks.NotebookList/>
-        </Route>
-        <Route path="/notebook/:uri/:tab?">
-            <FullScreen>
-                <Notebooks.NotebookView/>
-            </FullScreen>
-        </Route>
-        <Route path="/new-notebook">
-            <FullScreen>
-                <Notebooks.NotebookForm/>
-            </FullScreen>
-        </Route>
-        <Route path="/sagemakerstudio/userprofiles">
             <SagemakerStudio.SagemakerStudioList/>
         </Route>
-        <Route path="/sagemakerstudio/userprofile/:uri/:tab?">
+        <Route path="/notebook/:uri/:tab?">
             <FullScreen>
                 <SagemakerStudio.SagemakerStudioView/>
             </FullScreen>
         </Route>
-        <Route path="/new-sm-user-profile">
+        <Route path="/new-notebook">
             <FullScreen>
                 <SagemakerStudio.SagemakerStudioForm/>
             </FullScreen>
@@ -223,14 +210,9 @@ const Router=(props)=>{
                 <Collections.CollectionForm/>
             </FullScreen>
         </Route>
-        <Route path={"/new-workflow"}>
+        <Route path={"/new-workflow/:uri/:tab?"}>
             <FullScreen>
                 <Workflows.WorkflowForm/>
-            </FullScreen>
-        </Route>
-        <Route path={"/workflows"}>
-            <FullScreen>
-                <Workflows.WorkflowList/>
             </FullScreen>
         </Route>
         <Route path={"/workflow/:uri/:tab?"}>

@@ -41,19 +41,14 @@ const SagemakerStudioView = (props) => {
     const removeSagemakerStudioUserProfile = async () => {
         const response = await client.mutate(deleteSagemakerStudioUserProfile(SagemakerStudioUserProfile.sagemakerStudioUserProfileUri));
         if (!response.errors) {
-            history.push(`/sagemakerstudio/userprofiles`)
+            history.push(`/notebooks`)
         } else {
             setError({
                 header: 'Error',
-                content: `Could not archive dataset ${params.uri}`
+                content: `Could not delete notebook ${params.uri}`
             })
         }
     };
-
-    const backLink = <Link to={`/sagemakerstudio/userprofiles`}>
-        <small>{`<`} back to user profiles</small>
-    </Link>
-
 
     const fetchItem = async () => {
         const response = await client.query(getSagemakerStudioUserProfile(params.uri));
@@ -64,7 +59,7 @@ const SagemakerStudioView = (props) => {
         } else {
             setError({
                 header: 'Error',
-                content: `Could not retrieve Sagemaker user profile ${response.errors[0].messages}`
+                content: `Could not retrieve notebook: ${response.errors[0].messages}`
             })
         }
         setLoading(false);
@@ -97,8 +92,7 @@ const SagemakerStudioView = (props) => {
                     <Button.Group>
                         <Button.Group color='blue'>
                             <Button loading={isOpeningSagemakerStudio}
-                                    onClick={getThisSagemakerStudioUserProfilePresignedUrl}><SiIcon.SiJupyter/> Go to
-                                Sagemaker Studio
+                                    onClick={getThisSagemakerStudioUserProfilePresignedUrl}><SiIcon.SiJupyter/> Open Notebook
 
                             </Button>
                             <Dropdown.Divider/>
@@ -235,11 +229,11 @@ const SagemakerStudioView = (props) => {
         loading={loading}
         title={SagemakerStudioUserProfile.label}
         back={{
-            link: '/sagemakerstudio/userprofiles',
-            label: '< back to Sagemaker studio'
+            link: '/notebooks',
+            label: '< back to notebooks'
         }}
         icon={<BsIcon.BsCode/>}
-        breadcrumbs={`play/sagemakerstudio/userprofile/${SagemakerStudioUserProfile.sagemakerStudioUserProfileUri}`}
+        breadcrumbs={`play/notebooks/${SagemakerStudioUserProfile.sagemakerStudioUserProfileUri}`}
         label={SagemakerStudioUserProfile.label}
         owner={SagemakerStudioUserProfile.owner}
         created={SagemakerStudioUserProfile.created}

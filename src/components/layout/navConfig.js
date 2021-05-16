@@ -42,13 +42,8 @@ const navConfig = [
             },
             {
                 label: 'Notebooks',
-                icon: <BsIcons.BsFileCode/>,
-                link: '/notebooks'
-            },
-            {
-                label: 'ML Workspace',
                 icon: <BsIcons.BsFileCode/> ,
-                link: '/sagemakerstudio/userprofiles'
+                link: '/notebooks'
             },
             {
                 label: 'Dashboards',
@@ -59,16 +54,6 @@ const navConfig = [
                 label: 'Pipelines',
                 icon: <BsIcons.BsGear/>,
                 link: '/pipelines'
-            },
-            {
-                label: 'Workflows',
-                icon: <SiIcon.SiApacheairflow/>,
-                link: '/workflows'
-            },
-            {
-                label: 'Warehouses',
-                icon: <FiIcon.FiBox/>,
-                link: '/warehouses'
             },
         ]
 
