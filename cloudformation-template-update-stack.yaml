@@ -1,0 +1,7 @@
+AWSTemplateFormatVersion: 2021-09-27
+Resources:
+  Topic:
+  LambdaInvokePermission:
+  Subscription:
+  FunctionTopicSubscription:
+  LambdaExecutionRole:
