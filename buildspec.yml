@@ -1,17 +1,15 @@
 version: 0.2
+env:
+  variables:
+    S3_BUCKET: myCloudformationBucket
+    REGION: eu-central-1
 phases:
-  install:
-    runtime-versions:
-      nodejs: 12
   build:
     commands:
-      - echo "Installing dependencies.."
-      - npm install
-      - echo "Unit testing.."
-      - npm test
-      - echo "Building.."
-      - npm build
+      - echo "Packaging CloudFormation nested stacks.."
+      - aws cloudformation package --region $REGION --template-file mainTemplate.yaml --s3-bucket $S3_BUCKET --output-template-file packaged.yml
+      - echo "Done."
 artifacts:
-  base-directory: build
   files:
-    - '**/*'
+    - packaged.yml
+    - parameters/*.json
