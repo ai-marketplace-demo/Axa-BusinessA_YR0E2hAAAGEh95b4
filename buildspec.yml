@@ -2,17 +2,11 @@ version: 0.2
 
 phases:
   install:
-    commands:
-    - npm_config_user=root npm install
+    runtime-versions:
+        php: 7.3
   build:
     commands:
-    - cd *
-    - npm_config_user=root npm i -g serverless
-    - npm_config_user=root npm install serverless-pseudo-parameters
-    - serverless package --config serverless.yml --bucket-artifacts ${BUCKET_ARTIFACTS}
-    - sed -i -E 's/".*\.zip\"/\"S3Key\"':' \"mailswitch-webservice.zip\"/g' .serverless/cloudformation-template-update-stack.json
-    - mv .serverless/cloudformation-template-update-stack.json .serverless/cloud-formation-template.json
-  post_build:
-    commands: 
-    - aws s3 cp .serverless/ s3://${BUCKET_ARTIFACTS}/ --recursive --exclude "*" --include "*.zip" --include "*.json"
-    - aws s3 cp artifacts/ s3://${BUCKET_ARTIFACTS}/ --recursive
+      - php --version
+artifacts:
+  files:
+    -  README.md
