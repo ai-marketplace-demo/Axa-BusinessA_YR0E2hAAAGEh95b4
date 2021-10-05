@@ -1,105 +1,22 @@
 {
-  "name": "datahubuireact",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@antv/x6": "^1.12.21",
-    "@appbaseio/reactivesearch": "^3.14.0",
-    "@aws-amplify/ui-react": "^0.2.34",
-    "@material-ui/core": "^4.11.3",
-    "@monaco-editor/react": "^4.0.9",
-    "@naisutech/react-tree": "^0.4.2",
-    "@nivo/bar": "^0.67.0",
-    "@nivo/core": "^0.67.0",
-    "@nivo/geo": "^0.67.0",
-    "@nivo/line": "^0.67.0",
-    "@nivo/pie": "^0.67.0",
-    "@pathofdev/react-tag-input": "^1.0.7",
-    "@projectstorm/react-diagrams": "^6.0.1-beta.7",
-    "@revolist/revogrid": "^2.9.0",
-    "@revolist/revogrid-react": "^1.9.0",
-    "@rjsf/core": "^2.4.1",
-    "@rjsf/material-ui": "^2.4.1",
-    "@rjsf/semantic-ui": "^2.4.1",
-    "@stencil/react-output-target": "^0.0.9",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@yaireo/tagify": "^3.22.1",
-    "amazon-quicksight-embedding-sdk": "^1.0.12",
-    "antd": "^4.11.2",
-    "apollo-boost": "^0.4.9",
-    "aws-amplify": "^3.3.14",
-    "bootstrap": "^5.0.0-beta1",
-    "codemirror": "^5.59.2",
-    "craco-antd": "^1.19.0",
-    "craco-less": "^1.17.1",
-    "d3": "^6.5.0",
-    "dayjs": "^1.10.4",
-    "emotion": "^11.0.0",
-    "flowpoints": "^1.0.18",
-    "formik": "^2.2.6",
-    "formik-material-ui": "^3.0.1",
-    "formik-semantic-ui-react": "^2.0.0",
-    "jwt-decode": "^3.1.2",
-    "konva": "^7.2.2",
-    "lodash": "^4.17.20",
-    "material-ui": "^0.20.2",
-    "package.json": "^2.0.1",
-    "prop-types": "^15.7.2",
-    "react": "^17.0.1",
-    "react-arrows": "^1.2.0",
-    "react-awesome-loaders": "^0.1.37",
-    "react-codemirror2": "^7.2.1",
-    "react-cool-form": "^0.0.113",
-    "react-copy-to-clipboard": "^5.0.3",
-    "react-cytoscapejs": "^1.2.1",
-    "react-dom": "^17.0.1",
-    "react-hook-form": "^6.14.2",
-    "react-icons": "^4.1.0",
-    "react-if": "^4.0.1",
-    "react-konva": "^17.0.1-3",
-    "react-lineto": "^3.2.0",
-    "react-modal": "^3.12.1",
-    "react-nanny": "^2.6.0",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
-    "react-select": "^4.0.2",
-    "react-tag-autocomplete": "^6.1.0",
-    "react-xarrows": "^1.5.2",
-    "reactstrap": "^8.9.0",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^2.0.3",
-    "semantic-ui-react-input-file": "^1.0.3",
-    "styled-components": "^5.2.1",
-    "styled-css-grid": "^1.2.1",
-    "web-vitals": "^0.2.4",
-    "yup": "^0.32.9"
-  },
+  "name": "lambda-cloudformation-example",
+  "version": "1.0.0",
+  "description": "This project demonstrate usage of CloudFormation template for creating a CloudFormation stack comprising of SNS topic, Subscription and Lambda",
+  "main": "index.js",
   "scripts": {
-    "start": "GENERATE_SOURCEMAP=true HOST='127.0.0.1' HTTPS=true PORT=8080 react-scripts start ",
-    "start-dev": "GENERATE_SOURCEMAP=true HOST='127.0.0.1' HTTPS=true PORT=8080 REACT_APP_STAGE=dev react-scripts start ",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "author": "NitinD",
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nrdio/lambda-cloudformation-example.git"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "author": "Nitin D",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nrdio/lambda-cloudformation-example.git/issues"
+  },
+  "homepage": "https://github.com/nrdio/lambda-cloudformation-example.git#readme"
 }
