@@ -3,7 +3,8 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-        php: 7.3
+        
   build:
     commands:
-      - php --version
+      - cd *
+      - aws s3 cp * s3://${BUCKET_ARTIFACTS}/ --recursive
