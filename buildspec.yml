@@ -2,8 +2,8 @@ version: 0.2
 
 phases:
   install:
-    runtime-versions:
-      - npm_config_user=root npm install
+    commands:
+    - npm_config_user=root npm install
         
   build:
     commands:
