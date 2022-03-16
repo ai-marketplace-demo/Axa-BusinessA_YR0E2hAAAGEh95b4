@@ -61,15 +61,12 @@
   },
 
   "Resources" : {
-    "EC2Instance" : {
-      "Type" : "AWS::EC2::Instance",
+    "HelloBucket" : {
+      "Type" : "AWS::S3::Bucket",
       "Properties" : {
-        "InstanceType" : { "Ref" : "InstanceType" },
-        "SecurityGroups" : [ { "Ref" : "InstanceSecurityGroup" } ],
-        "KeyName" : { "Ref" : "KeyName" },
-        "ImageId" : { "Fn::FindInMap" : [ "AWSRegionArch2AMI", { "Ref" : "AWS::Region" }, "HVM64" ] }
+        "AccessControl" : "PublicRead" 
       }
-    },
+   },
 
     "InstanceSecurityGroup" : {
       "Type" : "AWS::EC2::SecurityGroup",
