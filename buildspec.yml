@@ -7,4 +7,4 @@ phases:
         
   build:
     commands:
-      - aws s3 cp ./ s3://${ARTIFACT_BUCKET}/${ARTIFACT_VERSION} --recursive
+      - aws s3 cp ./ s3://${ARTIFACT_BUCKET}/${ARTIFACT_PATH} --recursive
